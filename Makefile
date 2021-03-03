@@ -9,6 +9,9 @@ $(exec): $(objects)
 run:
 	hello.out
 
+compiler:
+	gcc -c hazel/compiler/hazel.c
+
 %.o: %.c Hazel/lexer/%.h
 	gcc -c $(flags) $< -o $@
 
