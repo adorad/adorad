@@ -238,21 +238,26 @@ defined(__MIPSEL) || defined(__MIPSEL__) || defined(_M_AMD64) || defined(_M_X64)
 
 #ifdef _WIN32
 	#define WINVER 0x0600
-	#ifdef _WIN32_WINNT
-		#undef _WIN32_WINNT
-	#endif
-	#define _WIN32_WINNT 0x0600
-	#ifndef WIN32_FULL
-	#define WIN32_LEAN_AND_MEAN
-	#endif
-	#ifndef _UNICODE
-	#define _UNICODE
-	#endif
-	#ifndef UNICODE
-	#define UNICODE
-	#endif
-	#include <windows.h>
 
+	#ifdef _WIN32_WINNT
+	    #undef _WIN32_WINNT
+	#endif
+
+	#define _WIN32_WINNT 0x0600
+
+	#ifndef WIN32_FULL
+	    #define WIN32_LEAN_AND_MEAN
+	#endif
+
+	#ifndef _UNICODE
+	    #define _UNICODE
+	#endif
+
+	#ifndef UNICODE
+	    #define UNICODE
+	#endif
+
+	#include <windows.h>
 	#include <io.h> // _waccess
 	#include <direct.h> // _wgetcwd
 
@@ -266,8 +271,10 @@ defined(__MIPSEL) || defined(__MIPSEL__) || defined(_M_AMD64) || defined(_M_X64)
 
 		#define EMPTY_STRUCT_DECLARATION int ____dummy_variable
 		#define OPTION_CAST(x)
+
 		#undef __NOINLINE
 		#undef __IRQHANDLER
+
 		#define __NOINLINE __declspec(noinline)
 		#define __IRQHANDLER __declspec(naked)
 
@@ -295,18 +302,18 @@ static void* g_live_info = NULL;
 #define _IN_MAP(val, m) map_exists_1(m, val)
 
 // unsigned/signed comparisons
-static inline UInt8 _us32_gt(uint32_t a, int32_t b) { return a > INT32_MAX || (int32_t)a > b; }
-static inline UInt8 _us32_ge(uint32_t a, int32_t b) { return a >= INT32_MAX || (int32_t)a >= b; }
-static inline UInt8 _us32_eq(uint32_t a, int32_t b) { return a <= INT32_MAX && (int32_t)a == b; }
-static inline UInt8 _us32_ne(uint32_t a, int32_t b) { return a > INT32_MAX || (int32_t)a != b; }
-static inline UInt8 _us32_le(uint32_t a, int32_t b) { return a <= INT32_MAX && (int32_t)a <= b; }
-static inline UInt8 _us32_lt(uint32_t a, int32_t b) { return a < INT32_MAX && (int32_t)a < b; }
-static inline UInt8 _us64_gt(uint64_t a, int64_t b) { return a > INT64_MAX || (int64_t)a > b; }
-static inline UInt8 _us64_ge(uint64_t a, int64_t b) { return a >= INT64_MAX || (int64_t)a >= b; }
-static inline UInt8 _us64_eq(uint64_t a, int64_t b) { return a <= INT64_MAX && (int64_t)a == b; }
-static inline UInt8 _us64_ne(uint64_t a, int64_t b) { return a > INT64_MAX || (int64_t)a != b; }
-static inline UInt8 _us64_le(uint64_t a, int64_t b) { return a <= INT64_MAX && (int64_t)a <= b; }
-static inline UInt8 _us64_lt(uint64_t a, int64_t b) { return a < INT64_MAX && (int64_t)a < b; }
+static inline UInt8 _us32_gt(uint32_t a, int32_t b)    {   return a > INT32_MAX || (int32_t)a > b;      }
+static inline UInt8 _us32_ge(uint32_t a, int32_t b)    {   return a >= INT32_MAX || (int32_t)a >= b;    }
+static inline UInt8 _us32_eq(uint32_t a, int32_t b)    {   return a <= INT32_MAX && (int32_t)a == b;    }
+static inline UInt8 _us32_ne(uint32_t a, int32_t b)    {   return a > INT32_MAX || (int32_t)a != b;     }
+static inline UInt8 _us32_le(uint32_t a, int32_t b)    {   return a <= INT32_MAX && (int32_t)a <= b;    }
+static inline UInt8 _us32_lt(uint32_t a, int32_t b)    {   return a < INT32_MAX && (int32_t)a < b;      }
+static inline UInt8 _us64_gt(uint64_t a, int64_t b)    {   return a > INT64_MAX || (int64_t)a > b;      }
+static inline UInt8 _us64_ge(uint64_t a, int64_t b)    {   return a >= INT64_MAX || (int64_t)a >= b;    }
+static inline UInt8 _us64_eq(uint64_t a, int64_t b)    {   return a <= INT64_MAX && (int64_t)a == b;    }
+static inline UInt8 _us64_ne(uint64_t a, int64_t b)    {   return a > INT64_MAX || (int64_t)a != b;     }
+static inline UInt8 _us64_le(uint64_t a, int64_t b)    {   return a <= INT64_MAX && (int64_t)a <= b;    }
+static inline UInt8 _us64_lt(uint64_t a, int64_t b)    {   return a < INT64_MAX && (int64_t)a < b;      }
 
 #if defined(__MINGW32__) || defined(__MINGW64__) || (defined(_WIN32) && defined(__TINYC__))
 	#undef PRId64
@@ -315,6 +322,7 @@ static inline UInt8 _us64_lt(uint64_t a, int64_t b) { return a < INT64_MAX && (i
 	#undef PRIu64
 	#undef PRIx64
 	#undef PRIX64
+    
 	#define PRId64 "lld"
 	#define PRIi64 "lli"
 	#define PRIo64 "llo"
