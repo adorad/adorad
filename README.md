@@ -1,12 +1,11 @@
 <div align="center">
-<p>
-    <img width="80" src="https://raw.githubusercontent.com/hazel-lang/Hazel-logo/master/dist/v-logo.svg?sanitize=true">
-</p>
+<!-- <p>
+    <img width="80" src="https://raw.githubusercontent.com/hazel-lang/Hazel-logo/master/dist/hazel-logo.svg?sanitize=true">
+</p> -->
 <h1>The Hazel Language</h1>
 
-[vlang.io](https://github.com/hazel-lang/Hazel) |
-[Docs](https://github.com/hazel-lang/Hazel/blob/master/doc/docs.md) |
-[Changelog](https://github.com/hazel-lang/Hazel/blob/master/CHANGELOG.md) |
+[Hazel](https://github.com/hazel-lang/Hazel) |
+[Documentation](https://github.com/hazel-lang/Hazel/blob/master/doc/docs.md) |
 [Contributing](https://github.com/hazel-lang/Hazel/blob/master/CONTRIBUTING.md) |
 [Compiler design](https://github.com/hazel-lang/Hazel/blob/master/COMPILER.md)
 
