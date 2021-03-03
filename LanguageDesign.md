@@ -69,6 +69,7 @@ macro nullthrows(sourceCodeSnippet) {
     )
 }
 ```
+
 ## Defining a Class 
 
 ## Memory Managment
