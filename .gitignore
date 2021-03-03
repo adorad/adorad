@@ -1,3 +1,7 @@
+# HAzel-specific 
+
+test.c 
+
 # Prerequisites
 *.d
 
