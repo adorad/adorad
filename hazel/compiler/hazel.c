@@ -6,10 +6,6 @@
     #undef __has_include
 #endif
 
-int main() {
-    print(this)
-}
-
 #if defined(__has_include)
     #if __has_include(<inttypes.h>)
         #include <inttypes.h>
@@ -62,27 +58,27 @@ typedef UInt8  array_fixed_byte_300[300];
 #endif 
 
 #if defined(_WIN32) || defined(__CYGWIN__)
-	#define HAZEL_EXPORTED_SYMBOL extern __declspec(dllexport)
-	#define HAZEL_LOCAL_SYMBOL static
+    #define HAZEL_EXPORTED_SYMBOL extern __declspec(dllexport)
+    #define HAZEL_LOCAL_SYMBOL static
 #else
-	// 4 < gcc < 5 is used by some older Ubuntu LTS and Centos versions,
-	// and does not support __has_attribute(visibility) ...
-	#ifndef __has_attribute
-		#define __has_attribute(x) 0  // Compatibility with non-clang compilers.
-	#endif
+    // 4 < gcc < 5 is used by some older Ubuntu LTS and Centos versions,
+    // and does not support __has_attribute(visibility) ...
+    #ifndef __has_attribute
+        #define __has_attribute(x) 0  // Compatibility with non-clang compilers.
+    #endif
 
-	#if (defined(__GNUC__) && (__GNUC__ >= 4)) || (defined(__clang__) && __has_attribute(visibility))
-		#ifdef ARM
-			#define HAZEL_EXPORTED_SYMBOL  extern __attribute__((externally_visible,visibility("default")))
-		#else
-			#define HAZEL_EXPORTED_SYMBOL  extern __attribute__((visibility("default")))
-		#endif
+    #if (defined(__GNUC__) && (__GNUC__ >= 4)) || (defined(__clang__) && __has_attribute(visibility))
+        #ifdef ARM
+            #define HAZEL_EXPORTED_SYMBOL  extern __attribute__((externally_visible,visibility("default")))
+        #else
+            #define HAZEL_EXPORTED_SYMBOL  extern __attribute__((visibility("default")))
+        #endif
 
-		#define HAZEL_LOCAL_SYMBOL  __attribute__ ((visibility ("hidden")))
-	#else
-		#define HAZEL_EXPORTED_SYMBOL extern
-		#define HAZEL_LOCAL_SYMBOL static
-	#endif
+        #define HAZEL_LOCAL_SYMBOL  __attribute__ ((visibility ("hidden")))
+    #else
+        #define HAZEL_EXPORTED_SYMBOL extern
+        #define HAZEL_LOCAL_SYMBOL static
+    #endif
 #endif
 
 #include <signal.h>
