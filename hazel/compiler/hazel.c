@@ -48,7 +48,7 @@ typedef UInt8  array_fixed_byte_300[300];
 
 
 ////////////////////////////////////// C HEADERS //////////////////////////////////////
-#include <stdio.h> // TODO(jasmcaus): Remove these includes; defined all function signatures and types manually
+#include <stdio.h> // TODO(jasmcaus): Remove these includes - define all function signatures and types manually
 #include <stdlib.h> 
 
 #ifdef __cplusplus
@@ -286,8 +286,8 @@ defined(__MIPSEL) || defined(__MIPSEL__) || defined(_M_AMD64) || defined(_M_X64)
 #else
     #include <pthread.h>
     #ifndef PTHREAD_RWLOCK_PREFER_WRITER_NONRECURSIVE_NP
-	    // musl does not have that
-	    #define pthread_rwlockattr_setkind_np(a, b)
+        // musl does not have that
+        #define pthread_rwlockattr_setkind_np(a, b)
     #endif
 #endif
 
