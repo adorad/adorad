@@ -87,11 +87,11 @@ typedef UInt8  array_fixed_byte_300[300];
 
 // Check bitness
 #if INTPTR_MAX == INT32_MAX
-	#define TARGET_IS_32BIT 1
+    #define TARGET_IS_32BIT 1
 #elif INTPTR_MAX == INT64_MAX
-	#define TARGET_IS_64BIT 1
+    #define TARGET_IS_64BIT 1
 #else
-	#error "The environment is neither 32 nor 64-bit."
+    #error "The environment is neither 32 nor 64-bit."
 #endif
 
 // Check endianness
@@ -99,59 +99,59 @@ typedef UInt8  array_fixed_byte_300[300];
 defined(__BYTE_ORDER) && __BYTE_ORDER == __BIG_ENDIAN ||  \
 defined(__BIG_ENDIAN__) || defined(__ARMEB__) || defined(__THUMBEB__) || defined(__AARCH64EB__) || \
 defined(_MIBSEB) || defined(__MIBSEB) || defined(__MIBSEB__)
-	#define TARGET_ORDER_IS_BIG
+    #define TARGET_ORDER_IS_BIG
 
 #elif defined(__BYTE_ORDER__) && __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__ || \
 defined(__BYTE_ORDER) && __BYTE_ORDER == __LITTLE_ENDIAN || defined(__LITTLE_ENDIAN__) || \
 defined(__ARMEL__) || defined(__THUMBEL__) || defined(__AARCH64EL__) || defined(_MIPSEL) || \
 defined(__MIPSEL) || defined(__MIPSEL__) || defined(_M_AMD64) || defined(_M_X64) || defined(_M_IX86)
-	#define TARGET_ORDER_IS_LITTLE
+    #define TARGET_ORDER_IS_LITTLE
 
 #else
-	#error "Unknown architecture endianness"
+    #error "Unknown architecture endianness"
 #endif
 
 #ifndef _WIN32
-	#include <ctype.h>
-	#include <locale.h> // tolower
-	#include <sys/time.h>
-	#include <unistd.h> // sleep
-	extern char **environ;
+    #include <ctype.h>
+    #include <locale.h> // tolower
+    #include <sys/time.h>
+    #include <unistd.h> // sleep
+    extern char **environ;
 #endif
 
 
 #if defined(__CYGWIN__) && !defined(_WIN32)
-	#error "Cygwin is not supported. Please use MinGW or Visual Studio."
+    #error "Cygwin is not supported. Please use MinGW or Visual Studio."
 #endif
 
 #ifdef __linux__
-	#include <sys/types.h>
-	#include <sys/wait.h> // os__wait uses wait on nix
+    #include <sys/types.h>
+    #include <sys/wait.h> // os__wait uses wait on nix
 #endif
 
 #ifdef __FreeBSD__
-	#include <sys/types.h>
-	#include <sys/wait.h> // os__wait uses wait on nix
+    #include <sys/types.h>
+    #include <sys/wait.h> // os__wait uses wait on nix
 #endif
 
 #ifdef __DragonFly__
-	#include <sys/types.h>
-	#include <sys/wait.h> // os__wait uses wait on nix
+    #include <sys/types.h>
+    #include <sys/wait.h> // os__wait uses wait on nix
 #endif
 
 #ifdef __OpenBSD__
-	#include <sys/types.h>
-	#include <sys/resource.h>
-	#include <sys/wait.h> // os__wait uses wait on nix
+    #include <sys/types.h>
+    #include <sys/resource.h>
+    #include <sys/wait.h> // os__wait uses wait on nix
 #endif
 
 #ifdef __NetBSD__
-	#include <sys/wait.h> // os__wait uses wait on nix
+    #include <sys/wait.h> // os__wait uses wait on nix
 #endif
 
 #ifdef __sun
-	#include <sys/types.h>
-	#include <sys/wait.h> // os__wait uses wait on nix
+    #include <sys/types.h>
+    #include <sys/wait.h> // os__wait uses wait on nix
 #endif
 
 
@@ -175,118 +175,118 @@ defined(__MIPSEL) || defined(__MIPSEL__) || defined(_M_AMD64) || defined(_M_X64)
 
 // Using just __GNUC__ for detecting gcc, is not reliable because other compilers define it too:
 #ifdef __GNUC__
-	#define __V_GCC__
+    #define __V_GCC__
 #endif
 
 #ifdef __TINYC__
-	#undef __V_GCC__
+    #undef __V_GCC__
 #endif
 
 #ifdef __cplusplus
-	#undef __V_GCC__
+    #undef __V_GCC__
 #endif
 
 #ifdef __clang__
-	#undef __V_GCC__
+    #undef __V_GCC__
 #endif
 
 #ifdef _MSC_VER
-	#undef __V_GCC__
+    #undef __V_GCC__
 #endif
 
 #ifdef __TINYC__
-	#undef EMPTY_STRUCT_DECLARATION
-	#undef EMPTY_STRUCT_INITIALIZATION
-	#define EMPTY_STRUCT_DECLARATION char _dummy
-	#define EMPTY_STRUCT_INITIALIZATION 0
-	#undef EMPTY_ARRAY_OF_ELEMS
-	#define EMPTY_ARRAY_OF_ELEMS(x,n) (x[n])
-	#undef __NOINLINE
-	#undef __IRQHANDLER
+    #undef EMPTY_STRUCT_DECLARATION
+    #undef EMPTY_STRUCT_INITIALIZATION
+    #define EMPTY_STRUCT_DECLARATION char _dummy
+    #define EMPTY_STRUCT_INITIALIZATION 0
+    #undef EMPTY_ARRAY_OF_ELEMS
+    #define EMPTY_ARRAY_OF_ELEMS(x,n) (x[n])
+    #undef __NOINLINE
+    #undef __IRQHANDLER
 	// tcc does not support inlining at all
-	#define __NOINLINE
-	#define __IRQHANDLER
-	#undef TCCSKIP
-	#define TCCSKIP(x)
+    #define __NOINLINE
+    #define __IRQHANDLER
+    #undef TCCSKIP
+    #define TCCSKIP(x)
 	// #include <byteswap.h>
 	#ifndef _WIN32
-		#include <execinfo.h>
-		int tcc_backtrace(const char *fmt, ...);
+	    #include <execinfo.h>
+	    int tcc_backtrace(const char *fmt, ...);
 	#endif
 #endif
 
 
 // for __offset_of
 #ifndef __offsetof
-	#define __offsetof(s,memb) ((size_t)((char *)&((s *)0)->memb - (char *)0))
+    #define __offsetof(s,memb) ((size_t)((char *)&((s *)0)->memb - (char *)0))
 #endif
 
 #define OPTION_CAST(x) (x)
 
 #ifndef V64_PRINTFORMAT
-	#ifdef PRIx64
-		#define V64_PRINTFORMAT "0x%"PRIx64
-	#elif defined(__WIN32__)
-		#define V64_PRINTFORMAT "0x%I64x"
-	#elif defined(__linux__) && defined(__LP64__)
-		#define V64_PRINTFORMAT "0x%lx"
-	#else
-		#define V64_PRINTFORMAT "0x%llx"
-	#endif
+    #ifdef PRIx64
+	    #define V64_PRINTFORMAT "0x%"PRIx64
+    #elif defined(__WIN32__)
+	    #define V64_PRINTFORMAT "0x%I64x"
+    #elif defined(__linux__) && defined(__LP64__)
+	    #define V64_PRINTFORMAT "0x%lx"
+    #else
+	    #define V64_PRINTFORMAT "0x%llx"
+    #endif
 #endif
 
 
 #ifdef _WIN32
-	#define WINVER 0x0600
+    #define WINVER 0x0600
 
-	#ifdef _WIN32_WINNT
+    #ifdef _WIN32_WINNT
 	    #undef _WIN32_WINNT
-	#endif
+    #endif
 
-	#define _WIN32_WINNT 0x0600
+    #define _WIN32_WINNT 0x0600
 
-	#ifndef WIN32_FULL
+    #ifndef WIN32_FULL
 	    #define WIN32_LEAN_AND_MEAN
-	#endif
+    #endif
 
-	#ifndef _UNICODE
+    #ifndef _UNICODE
 	    #define _UNICODE
-	#endif
+    #endif
 
-	#ifndef UNICODE
+    #ifndef UNICODE
 	    #define UNICODE
-	#endif
+    #endif
 
-	#include <windows.h>
-	#include <io.h> // _waccess
-	#include <direct.h> // _wgetcwd
+    #include <windows.h>
+    #include <io.h> // _waccess
+    #include <direct.h> // _wgetcwd
 
-	#ifdef _MSC_VER
-		// On MSVC these are the same (as long as /volatile:ms is passed)
-		#define _Atomic volatile
+    #ifdef _MSC_VER
+	    // On MSVC these are the same (as long as /volatile:ms is passed)
+	    #define _Atomic volatile
 
-		// MSVC cannot parse some things properly
-		#undef EMPTY_STRUCT_DECLARATION
-		#undef OPTION_CAST
+	    // MSVC cannot parse some things properly
+	    #undef EMPTY_STRUCT_DECLARATION
+	    #undef OPTION_CAST
 
-		#define EMPTY_STRUCT_DECLARATION int ____dummy_variable
-		#define OPTION_CAST(x)
+	    #define EMPTY_STRUCT_DECLARATION int ____dummy_variable
+	    #define OPTION_CAST(x)
 
-		#undef __NOINLINE
-		#undef __IRQHANDLER
+	    #undef __NOINLINE
+	    #undef __IRQHANDLER
 
-		#define __NOINLINE __declspec(noinline)
-		#define __IRQHANDLER __declspec(naked)
+	    #define __NOINLINE __declspec(noinline)
+	    #define __IRQHANDLER __declspec(naked)
 
-		#include <dbghelp.h>
-		#pragma comment(lib, "Dbghelp")
-	#endif
+	    #include <dbghelp.h>
+	    #pragma comment(lib, "Dbghelp")
+    #endif
 #else
-	#include <pthread.h>
-	#ifndef PTHREAD_RWLOCK_PREFER_WRITER_NONRECURSIVE_NP
-		// musl does not have that
-		#define pthread_rwlockattr_setkind_np(a, b)
-	#endif
+    #include <pthread.h>
+    #ifndef PTHREAD_RWLOCK_PREFER_WRITER_NONRECURSIVE_NP
+	    // musl does not have that
+	    #define pthread_rwlockattr_setkind_np(a, b)
+    #endif
 #endif
 
 // g_live_info is used by live.info()
@@ -316,19 +316,19 @@ static inline UInt8 _us64_le(uint64_t a, int64_t b)    {   return a <= INT64_MAX
 static inline UInt8 _us64_lt(uint64_t a, int64_t b)    {   return a < INT64_MAX && (int64_t)a < b;      }
 
 #if defined(__MINGW32__) || defined(__MINGW64__) || (defined(_WIN32) && defined(__TINYC__))
-	#undef PRId64
-	#undef PRIi64
-	#undef PRIo64
-	#undef PRIu64
-	#undef PRIx64
-	#undef PRIX64
-    
-	#define PRId64 "lld"
-	#define PRIi64 "lli"
-	#define PRIo64 "llo"
-	#define PRIu64 "llu"
-	#define PRIx64 "llx"
-	#define PRIX64 "llX"
+    #undef PRId64
+    #undef PRIi64
+    #undef PRIo64
+    #undef PRIu64
+    #undef PRIx64
+    #undef PRIX64
+
+    #define PRId64 "lld"
+    #define PRIi64 "lli"
+    #define PRIo64 "llo"
+    #define PRIu64 "llu"
+    #define PRIx64 "llx"
+    #define PRIX64 "llX"
 #endif
 
 ////////////////////////////////////// GLOBALS  //////////////////////////////////////
