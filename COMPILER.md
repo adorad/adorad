@@ -51,7 +51,7 @@ resolved, type information is added to the AST.
 7. `hazel/gen/c` The C backend. It simply walks the AST and generates C code that can be compiled with Clang, GCC, Visual 
 Studio, and TCC.
 
-8. `json.v` defines the json code generation. 
+8. `json.hzl` defines the json code generation. 
 > Note: This file will be removed once Hazel supports comptime code generation, and it will be possible to do this using the 
 language's tools.
 
