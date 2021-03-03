@@ -45,6 +45,17 @@ JIT Engine.
 
 
 ## Defining a Function 
+To define a function simply stick the ``def`` keyword infront. Since Hazel is *statically-typed*, each function argument **must** have an associated type to it (this may be a <ins>built-in type</ins> or a <ins>custom type</ins>). Also like everything else in Hazel, you must use the ``{ }`` brackets to define your code block (Hazel's JIT Engine will complain if this is omitted). If you're used to programming in Scala, this won't be much of a jump.
+
+```python
+def do_something(String message) {
+    print(message)
+}
+
+def do_something_else(Uint8 num1, Uint8 num2) {
+    return num1 + num2 
+}
+```
 
 ## Defining a Class 
 
