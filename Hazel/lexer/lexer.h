@@ -10,7 +10,7 @@ typedef struct LEXER_STRUCT {
     char* contents;
 } lexer_T;
 
-lexer T* lexer_init(char* contents);
+lexer_T* lexer_init(char* contents);
 
 void advanced_lexer(lexer_T* lexer);
 

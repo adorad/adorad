@@ -2,7 +2,7 @@
 #define HAZEL_TOKEN 
 
 
-typdef struct TOKEN_STRUCT {
+typedef struct TOKEN_STRUCT {
     enum {
         TOKEN_ID, 
         TOKEN_EQUALS,
@@ -14,7 +14,7 @@ typdef struct TOKEN_STRUCT {
 
     char* value;
 
-} token_T 
+} token_T;
 
 token_T* token_init(int type, char* value);
 
