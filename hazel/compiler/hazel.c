@@ -46,6 +46,7 @@ typedef UInt8  array_fixed_byte_300[300];
     #endif
 #endif 
 
+
 ////////////////////////////////////// C HEADERS //////////////////////////////////////
 #include <stdio.h> // TODO(jasmcaus): Remove these includes; defined all function signatures and types manually
 #include <stdlib.h> 
@@ -167,10 +168,11 @@ defined(__MIPSEL) || defined(__MIPSEL__) || defined(_M_AMD64) || defined(_M_X64)
 #define __IRQHANDLER __attribute__((interrupt))
 
 #if defined(__x86_64__)
-#define __V_amd64  1
+    #define __V_amd64  1
 #endif
+
 #if defined(__aarch64__) || defined(__arm64__)
-#define __V_aarch64  1
+    #define __V_aarch64  1
 #endif
 
 // Using just __GNUC__ for detecting gcc, is not reliable because other compilers define it too:
@@ -225,13 +227,13 @@ defined(__MIPSEL) || defined(__MIPSEL__) || defined(_M_AMD64) || defined(_M_X64)
 
 #ifndef V64_PRINTFORMAT
     #ifdef PRIx64
-	    #define V64_PRINTFORMAT "0x%"PRIx64
+        #define V64_PRINTFORMAT "0x%"PRIx64
     #elif defined(__WIN32__)
-	    #define V64_PRINTFORMAT "0x%I64x"
+        #define V64_PRINTFORMAT "0x%I64x"
     #elif defined(__linux__) && defined(__LP64__)
-	    #define V64_PRINTFORMAT "0x%lx"
+        #define V64_PRINTFORMAT "0x%lx"
     #else
-	    #define V64_PRINTFORMAT "0x%llx"
+        #define V64_PRINTFORMAT "0x%llx"
     #endif
 #endif
 
@@ -240,21 +242,21 @@ defined(__MIPSEL) || defined(__MIPSEL__) || defined(_M_AMD64) || defined(_M_X64)
     #define WINVER 0x0600
 
     #ifdef _WIN32_WINNT
-	    #undef _WIN32_WINNT
+        #undef _WIN32_WINNT
     #endif
 
     #define _WIN32_WINNT 0x0600
 
     #ifndef WIN32_FULL
-	    #define WIN32_LEAN_AND_MEAN
+        #define WIN32_LEAN_AND_MEAN
     #endif
 
     #ifndef _UNICODE
-	    #define _UNICODE
+        #define _UNICODE
     #endif
 
     #ifndef UNICODE
-	    #define UNICODE
+        #define UNICODE
     #endif
 
     #include <windows.h>
@@ -262,24 +264,24 @@ defined(__MIPSEL) || defined(__MIPSEL__) || defined(_M_AMD64) || defined(_M_X64)
     #include <direct.h> // _wgetcwd
 
     #ifdef _MSC_VER
-	    // On MSVC these are the same (as long as /volatile:ms is passed)
-	    #define _Atomic volatile
+        // On MSVC these are the same (as long as /volatile:ms is passed)
+        #define _Atomic volatile
 
-	    // MSVC cannot parse some things properly
-	    #undef EMPTY_STRUCT_DECLARATION
-	    #undef OPTION_CAST
+        // MSVC cannot parse some things properly
+        #undef EMPTY_STRUCT_DECLARATION
+        #undef OPTION_CAST
 
-	    #define EMPTY_STRUCT_DECLARATION int ____dummy_variable
-	    #define OPTION_CAST(x)
+        #define EMPTY_STRUCT_DECLARATION int ____dummy_variable
+        #define OPTION_CAST(x)
 
-	    #undef __NOINLINE
-	    #undef __IRQHANDLER
+        #undef __NOINLINE
+        #undef __IRQHANDLER
 
-	    #define __NOINLINE __declspec(noinline)
-	    #define __IRQHANDLER __declspec(naked)
+        #define __NOINLINE __declspec(noinline)
+        #define __IRQHANDLER __declspec(naked)
 
-	    #include <dbghelp.h>
-	    #pragma comment(lib, "Dbghelp")
+        #include <dbghelp.h>
+        #pragma comment(lib, "Dbghelp")
     #endif
 #else
     #include <pthread.h>
