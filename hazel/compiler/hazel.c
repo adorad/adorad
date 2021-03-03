@@ -6,6 +6,10 @@
     #undef __has_include
 #endif
 
+int main() {
+    print(this)
+}
+
 #if defined(__has_include)
     #if __has_include(<inttypes.h>)
         #include <inttypes.h>
