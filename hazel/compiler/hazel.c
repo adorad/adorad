@@ -29,12 +29,12 @@ typedef uint16_t UInt16;
 typedef uint32_t UInt32; 
 typedef uint64_t UInt64;
 
-typedef float    Float32;         
+typedef float    Float32;        
 typedef double   Float64; // default float  
 
 typedef unsigned char* BytePtr;
-typedef char*          CharPtr;
-typedef void*          VoidPtr;
+typedef char*         CharPtr;
+typedef void*         VoidPtr;
 
 typedef UInt8  array_fixed_byte_300[300];
 
@@ -379,14 +379,14 @@ void _vcleanup();
 		static inline uint64_t _wyr4(const uint8_t *p) { unsigned v; memcpy(&v, p, 4); return v;}
 	#else
 		#if defined(__GNUC__) || defined(__INTEL_COMPILER) || defined(__clang__)
-			static inline uint64_t _wyr8(const uint8_t *p) { uint64_t v; memcpy(&v, p, 8); return __builtin_bswap64(v);}
-			static inline uint64_t _wyr4(const uint8_t *p) { unsigned v; memcpy(&v, p, 4); return __builtin_bswap32(v);}
+        static inline uint64_t _wyr8(const uint8_t *p) { uint64_t v; memcpy(&v, p, 8); return __builtin_bswap64(v);}
+        static inline uint64_t _wyr4(const uint8_t *p) { unsigned v; memcpy(&v, p, 4); return __builtin_bswap32(v);}
 		#elif defined(_MSC_VER)
-			static inline uint64_t _wyr8(const uint8_t *p) { uint64_t v; memcpy(&v, p, 8); return _byteswap_uint64(v);}
-			static inline uint64_t _wyr4(const uint8_t *p) { unsigned v; memcpy(&v, p, 4); return _byteswap_ulong(v);}
+        static inline uint64_t _wyr8(const uint8_t *p) { uint64_t v; memcpy(&v, p, 8); return _byteswap_uint64(v);}
+        static inline uint64_t _wyr4(const uint8_t *p) { unsigned v; memcpy(&v, p, 4); return _byteswap_ulong(v);}
 		#elif defined(__TINYC__)
-			static inline uint64_t _wyr8(const uint8_t *p) { uint64_t v; memcpy(&v, p, 8); return bswap_64(v);}
-			static inline uint64_t _wyr4(const uint8_t *p) { unsigned v; memcpy(&v, p, 4); return bswap_32(v);}
+        static inline uint64_t _wyr8(const uint8_t *p) { uint64_t v; memcpy(&v, p, 8); return bswap_64(v);}
+        static inline uint64_t _wyr4(const uint8_t *p) { unsigned v; memcpy(&v, p, 4); return bswap_32(v);}
 		#endif
 	#endif
 
@@ -399,14 +399,14 @@ void _vcleanup();
 		*C=_wyrotr(hl,32)^hh; *D=_wyrotr(lh,32)^ll;
 	#else
 		#ifdef __SIZEOF_INT128__
-			__uint128_t r=A; r*=B; *C=(uint64_t)r; *D=(uint64_t)(r>>64);
+        __uint128_t r=A; r*=B; *C=(uint64_t)r; *D=(uint64_t)(r>>64);
 		#elif defined(_MSC_VER) && defined(_M_X64)
-			A=_umul128(A,B,&B); *C=A; *D=B;
+        A=_umul128(A,B,&B); *C=A; *D=B;
 		#else
-			uint64_t ha=A>>32, hb=B>>32, la=(uint32_t)A, lb=(uint32_t)B, hi, lo;
-			uint64_t rh=ha*hb, rm0=ha*lb, rm1=hb*la, rl=la*lb, t=rl+(rm0<<32), c=t<rl;
-			lo=t+(rm1<<32); c+=lo<t; hi=rh+(rm0>>32)+(rm1>>32)+c;
-			*C=lo;	*D=hi;
+        uint64_t ha=A>>32, hb=B>>32, la=(uint32_t)A, lb=(uint32_t)B, hi, lo;
+        uint64_t rh=ha*hb, rm0=ha*lb, rm1=hb*la, rl=la*lb, t=rl+(rm0<<32), c=t<rl;
+        lo=t+(rm1<<32); c+=lo<t; hi=rh+(rm0>>32)+(rm1>>32)+c;
+        *C=lo;	*D=hi;
 		#endif
 	#endif
 	}
@@ -416,19 +416,19 @@ void _vcleanup();
 		start:
 		if (_likely_(i<=16)) {
 	#ifndef	WYHASH_CONDOM
-			uint64_t shift = (i<8)*((8-i)<<3);
-			//WARNING: intended reading outside buffer, trading for speed.
-			_wymix128((_wyr8(p)<<shift)^_wyp0, (_wyr8(p+i-8)>>shift)^_wyp1, &seed, &see1);
+        uint64_t shift = (i<8)*((8-i)<<3);
+        //WARNING: intended reading outside buffer, trading for speed.
+        _wymix128((_wyr8(p)<<shift)^_wyp0, (_wyr8(p+i-8)>>shift)^_wyp1, &seed, &see1);
 	#else
-			if (_likely_(i<=8)) {
-				if (_likely_(i>=4)) _wymix128(_wyr4(p)^_wyp0,_wyr4(p+i-4)^_wyp1, &seed, &see1);
-				else if (_likely_(i)) _wymix128(_wyr3(p,i)^_wyp0,_wyp1, &seed, &see1);
-				else _wymix128(_wyp0,_wyp1, &seed, &see1);
-			}
-			else _wymix128(_wyr8(p)^_wyp0,_wyr8(p+i-8)^_wyp1, &seed, &see1);
+        if (_likely_(i<=8)) {
+            if (_likely_(i>=4)) _wymix128(_wyr4(p)^_wyp0,_wyr4(p+i-4)^_wyp1, &seed, &see1);
+            else if (_likely_(i)) _wymix128(_wyr3(p,i)^_wyp0,_wyp1, &seed, &see1);
+            else _wymix128(_wyp0,_wyp1, &seed, &see1);
+        }
+        else _wymix128(_wyr8(p)^_wyp0,_wyr8(p+i-8)^_wyp1, &seed, &see1);
 	#endif
-			_wymix128(len,_wyp0, &seed, &see1);
-			return	seed^see1;
+        _wymix128(len,_wyp0, &seed, &see1);
+        return	seed^see1;
 		}
 		_wymix128(_wyr8(p)^_wyp0,_wyr8(p+8)^_wyp1, &seed, &see1);
 		i-=16;	p+=16;	goto start;
@@ -1290,9 +1290,9 @@ struct v__vmod__ModFileAndFolder {
 
 
 // Union sum type v__ast__TypeDecl = 
-//          |  190 = v__ast__AliasTypeDecl
-//          |  191 = v__ast__FnTypeDecl  
-//          |  192 = v__ast__SumTypeDecl 
+//        |  190 = v__ast__AliasTypeDecl
+//        |  191 = v__ast__FnTypeDecl  
+//        |  192 = v__ast__SumTypeDecl 
 struct v__ast__TypeDecl {
     union {
         v__ast__AliasTypeDecl* _v__ast__AliasTypeDecl;
@@ -1304,52 +1304,52 @@ struct v__ast__TypeDecl {
 
 
 // Union sum type v__ast__Expr = 
-//          |  194 = v__ast__AnonFn      
-//          |  195 = v__ast__ArrayDecompose
-//          |  196 = v__ast__ArrayInit   
-//          |  197 = v__ast__AsCast      
-//          |  198 = v__ast__Assoc       
-//          |  199 = v__ast__AtExpr      
-//          |  200 = v__ast__BoolLiteral 
-//          |  201 = v__ast__CTempVar    
-//          |  202 = v__ast__CallExpr    
-//          |  203 = v__ast__CastExpr    
-//          |  204 = v__ast__ChanInit    
-//          |  205 = v__ast__CharLiteral 
-//          |  206 = v__ast__Comment     
-//          |  207 = v__ast__ComptimeCall
-//          |  208 = v__ast__ComptimeSelector
-//          |  209 = v__ast__ConcatExpr  
-//          |  210 = v__ast__EnumVal     
-//          |  211 = v__ast__FloatLiteral
-//          |  212 = v__ast__GoExpr      
-//          |  213 = v__ast__Ident       
-//          |  214 = v__ast__IfExpr      
-//          |  215 = v__ast__IfGuardExpr 
-//          |  216 = v__ast__IndexExpr   
-//          |  217 = v__ast__InfixExpr   
-//          |  218 = v__ast__IntegerLiteral
-//          |  219 = v__ast__Likely      
-//          |  220 = v__ast__LockExpr    
-//          |  221 = v__ast__MapInit     
-//          |  222 = v__ast__MatchExpr   
-//          |  223 = v__ast__None        
-//          |  224 = v__ast__OffsetOf    
-//          |  225 = v__ast__OrExpr      
-//          |  226 = v__ast__ParExpr     
-//          |  227 = v__ast__PostfixExpr 
-//          |  228 = v__ast__PrefixExpr  
-//          |  229 = v__ast__RangeExpr   
-//          |  230 = v__ast__SelectExpr  
-//          |  231 = v__ast__SelectorExpr
-//          |  232 = v__ast__SizeOf      
-//          |  233 = v__ast__SqlExpr     
-//          |  234 = v__ast__StringInterLiteral
-//          |  235 = v__ast__StringLiteral
-//          |  236 = v__ast__StructInit  
-//          |  237 = v__ast__Type        
-//          |  238 = v__ast__TypeOf      
-//          |  239 = v__ast__UnsafeExpr  
+//        |  194 = v__ast__AnonFn      
+//        |  195 = v__ast__ArrayDecompose
+//        |  196 = v__ast__ArrayInit   
+//        |  197 = v__ast__AsCast      
+//        |  198 = v__ast__Assoc       
+//        |  199 = v__ast__AtExpr      
+//        |  200 = v__ast__BoolLiteral 
+//        |  201 = v__ast__CTempVar    
+//        |  202 = v__ast__CallExpr    
+//        |  203 = v__ast__CastExpr    
+//        |  204 = v__ast__ChanInit    
+//        |  205 = v__ast__CharLiteral 
+//        |  206 = v__ast__Comment     
+//        |  207 = v__ast__ComptimeCall
+//        |  208 = v__ast__ComptimeSelector
+//        |  209 = v__ast__ConcatExpr  
+//        |  210 = v__ast__EnumVal     
+//        |  211 = v__ast__FloatLiteral
+//        |  212 = v__ast__GoExpr      
+//        |  213 = v__ast__Ident       
+//        |  214 = v__ast__IfExpr      
+//        |  215 = v__ast__IfGuardExpr 
+//        |  216 = v__ast__IndexExpr   
+//        |  217 = v__ast__InfixExpr   
+//        |  218 = v__ast__IntegerLiteral
+//        |  219 = v__ast__Likely      
+//        |  220 = v__ast__LockExpr    
+//        |  221 = v__ast__MapInit     
+//        |  222 = v__ast__MatchExpr   
+//        |  223 = v__ast__None     
+//        |  224 = v__ast__OffsetOf    
+//        |  225 = v__ast__OrExpr      
+//        |  226 = v__ast__ParExpr     
+//        |  227 = v__ast__PostfixExpr 
+//        |  228 = v__ast__PrefixExpr  
+//        |  229 = v__ast__RangeExpr   
+//        |  230 = v__ast__SelectExpr  
+//        |  231 = v__ast__SelectorExpr
+//        |  232 = v__ast__SizeOf      
+//        |  233 = v__ast__SqlExpr     
+//        |  234 = v__ast__StringInterLiteral
+//        |  235 = v__ast__StringLiteral
+//        |  236 = v__ast__StructInit  
+//        |  237 = v__ast__Type     
+//        |  238 = v__ast__TypeOf      
+//        |  239 = v__ast__UnsafeExpr  
 struct v__ast__Expr {
     union {
         v__ast__AnonFn* _v__ast__AnonFn;
@@ -1404,31 +1404,31 @@ struct v__ast__Expr {
 
 
 // Union sum type v__ast__Stmt = 
-//          |  241 = v__ast__AssertStmt  
-//          |  242 = v__ast__AssignStmt  
-//          |  243 = v__ast__Block       
-//          |  244 = v__ast__BranchStmt  
-//          |  245 = v__ast__CompFor     
-//          |  246 = v__ast__ConstDecl   
-//          |  247 = v__ast__DeferStmt   
-//          |  248 = v__ast__EnumDecl    
-//          |  249 = v__ast__ExprStmt    
-//          |  141 = v__ast__FnDecl      
-//          |  250 = v__ast__ForCStmt    
-//          |  251 = v__ast__ForInStmt   
-//          |  252 = v__ast__ForStmt     
-//          |  253 = v__ast__GlobalDecl  
-//          |  254 = v__ast__GoStmt      
-//          |  255 = v__ast__GotoLabel   
-//          |  256 = v__ast__GotoStmt    
-//          |  257 = v__ast__HashStmt    
-//          |  258 = v__ast__Import      
-//          |  259 = v__ast__InterfaceDecl
-//          |  260 = v__ast__Module      
-//          |  261 = v__ast__Return      
-//          |  262 = v__ast__SqlStmt     
-//          |  263 = v__ast__StructDecl  
-//          |  193 = v__ast__TypeDecl    
+//        |  241 = v__ast__AssertStmt  
+//        |  242 = v__ast__AssignStmt  
+//        |  243 = v__ast__Block       
+//        |  244 = v__ast__BranchStmt  
+//        |  245 = v__ast__CompFor     
+//        |  246 = v__ast__ConstDecl   
+//        |  247 = v__ast__DeferStmt   
+//        |  248 = v__ast__EnumDecl    
+//        |  249 = v__ast__ExprStmt    
+//        |  141 = v__ast__FnDecl      
+//        |  250 = v__ast__ForCStmt    
+//        |  251 = v__ast__ForInStmt   
+//        |  252 = v__ast__ForStmt     
+//        |  253 = v__ast__GlobalDecl  
+//        |  254 = v__ast__GoStmt      
+//        |  255 = v__ast__GotoLabel   
+//        |  256 = v__ast__GotoStmt    
+//        |  257 = v__ast__HashStmt    
+//        |  258 = v__ast__Import      
+//        |  259 = v__ast__InterfaceDecl
+//        |  260 = v__ast__Module      
+//        |  261 = v__ast__Return      
+//        |  262 = v__ast__SqlStmt     
+//        |  263 = v__ast__StructDecl  
+//        |  193 = v__ast__TypeDecl    
 struct v__ast__Stmt {
     union {
         v__ast__AssertStmt* _v__ast__AssertStmt;
@@ -1462,9 +1462,9 @@ struct v__ast__Stmt {
 
 
 // Union sum type v__ast__ScopeObject = 
-//          |  265 = v__ast__ConstField  
-//          |  266 = v__ast__GlobalField 
-//          |  267 = v__ast__Var         
+//        |  265 = v__ast__ConstField  
+//        |  266 = v__ast__GlobalField 
+//        |  267 = v__ast__Var       
 struct v__ast__ScopeObject {
     union {
         v__ast__ConstField* _v__ast__ConstField;
@@ -1476,20 +1476,20 @@ struct v__ast__ScopeObject {
 
 
 // Union sum type v__ast__Node = 
-//          |  265 = v__ast__ConstField  
-//          |  269 = v__ast__EnumField   
-//          |  240 = v__ast__Expr        
-//          |  270 = v__ast__Field       
-//          |  132 = v__ast__File        
-//          |  266 = v__ast__GlobalField 
-//          |  271 = v__ast__IfBranch    
-//          |  272 = v__ast__MatchBranch 
-//          |  268 = v__ast__ScopeObject 
-//          |  273 = v__ast__SelectBranch
-//          |  264 = v__ast__Stmt        
-//          |  274 = v__ast__StructField 
-//          |  275 = v__ast__StructInitField
-//          |  276 = v__table__Param     
+//        |  265 = v__ast__ConstField  
+//        |  269 = v__ast__EnumField   
+//        |  240 = v__ast__Expr     
+//        |  270 = v__ast__Field       
+//        |  132 = v__ast__File     
+//        |  266 = v__ast__GlobalField 
+//        |  271 = v__ast__IfBranch    
+//        |  272 = v__ast__MatchBranch 
+//        |  268 = v__ast__ScopeObject 
+//        |  273 = v__ast__SelectBranch
+//        |  264 = v__ast__Stmt     
+//        |  274 = v__ast__StructField 
+//        |  275 = v__ast__StructInitField
+//        |  276 = v__table__Param     
 struct v__ast__Node {
     union {
         v__ast__ConstField* _v__ast__ConstField;
@@ -1521,8 +1521,8 @@ struct v__ast__EmbeddedFile {
 
 
 // Union sum type v__ast__IdentInfo = 
-//          |  316 = v__ast__IdentFn     
-//          |  317 = v__ast__IdentVar    
+//        |  316 = v__ast__IdentFn     
+//        |  317 = v__ast__IdentVar    
 struct v__ast__IdentInfo {
     union {
         v__ast__IdentFn* _v__ast__IdentFn;
@@ -1533,8 +1533,8 @@ struct v__ast__IdentInfo {
 
 
 // Union sum type v__table__FExpr = 
-//          |    3 = byteptr             
-//          |    2 = voidptr             
+//        |    3 = byteptr           
+//        |    2 = voidptr           
 struct v__table__FExpr {
     union {
         byteptr* _byteptr;
@@ -1549,20 +1549,20 @@ EMPTY_STRUCT_DECLARATION;
 
 
 // Union sum type v__table__TypeInfo = 
-//          |  355 = v__table__Aggregate 
-//          |  357 = v__table__Alias     
-//          |  340 = v__table__Array     
-//          |  360 = v__table__ArrayFixed
-//          |  358 = v__table__Chan      
-//          |  364 = v__table__Enum      
-//          |  362 = v__table__FnType    
-//          |  144 = v__table__GenericStructInst
-//          |  356 = v__table__Interface 
-//          |  341 = v__table__Map       
-//          |  361 = v__table__MultiReturn
-//          |  145 = v__table__Struct    
-//          |  363 = v__table__SumType   
-//          |  359 = v__table__Thread    
+//        |  355 = v__table__Aggregate 
+//        |  357 = v__table__Alias     
+//        |  340 = v__table__Array     
+//        |  360 = v__table__ArrayFixed
+//        |  358 = v__table__Chan      
+//        |  364 = v__table__Enum      
+//        |  362 = v__table__FnType    
+//        |  144 = v__table__GenericStructInst
+//        |  356 = v__table__Interface 
+//        |  341 = v__table__Map       
+//        |  361 = v__table__MultiReturn
+//        |  145 = v__table__Struct    
+//        |  363 = v__table__SumType   
+//        |  359 = v__table__Thread    
 struct v__table__TypeInfo {
     union {
         v__table__Aggregate* _v__table__Aggregate;
