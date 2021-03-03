@@ -286,5 +286,44 @@ defined(__MIPSEL) || defined(__MIPSEL__) || defined(_M_AMD64) || defined(_M_X64)
 static void* g_live_info = NULL;
 
 ////////////////////////////////////// USEFUL C MACROS //////////////////////////////////////
+//#define tos4(s, slen) ((string){.str=(s), .len=(slen)})
+// `"" s` is used to enforce a string literal argument
+#define _SLIT(s) ((string){.str=(byteptr)("" s), .len=(sizeof(s)-1), .is_lit=1})
+// take the address of an rvalue
+#define ADDR(type, expr) (&((type[]){expr}[0]))
+#define _PUSH_MANY(arr, val, tmp, tmp_typ) {tmp_typ tmp = (val); array_push_many(arr, tmp.data, tmp.len);}
+#define _IN_MAP(val, m) map_exists_1(m, val)
+
+// unsigned/signed comparisons
+static inline UInt8 _us32_gt(uint32_t a, int32_t b) { return a > INT32_MAX || (int32_t)a > b; }
+static inline UInt8 _us32_ge(uint32_t a, int32_t b) { return a >= INT32_MAX || (int32_t)a >= b; }
+static inline UInt8 _us32_eq(uint32_t a, int32_t b) { return a <= INT32_MAX && (int32_t)a == b; }
+static inline UInt8 _us32_ne(uint32_t a, int32_t b) { return a > INT32_MAX || (int32_t)a != b; }
+static inline UInt8 _us32_le(uint32_t a, int32_t b) { return a <= INT32_MAX && (int32_t)a <= b; }
+static inline UInt8 _us32_lt(uint32_t a, int32_t b) { return a < INT32_MAX && (int32_t)a < b; }
+static inline UInt8 _us64_gt(uint64_t a, int64_t b) { return a > INT64_MAX || (int64_t)a > b; }
+static inline UInt8 _us64_ge(uint64_t a, int64_t b) { return a >= INT64_MAX || (int64_t)a >= b; }
+static inline UInt8 _us64_eq(uint64_t a, int64_t b) { return a <= INT64_MAX && (int64_t)a == b; }
+static inline UInt8 _us64_ne(uint64_t a, int64_t b) { return a > INT64_MAX || (int64_t)a != b; }
+static inline UInt8 _us64_le(uint64_t a, int64_t b) { return a <= INT64_MAX && (int64_t)a <= b; }
+static inline UInt8 _us64_lt(uint64_t a, int64_t b) { return a < INT64_MAX && (int64_t)a < b; }
+
+#if defined(__MINGW32__) || defined(__MINGW64__) || (defined(_WIN32) && defined(__TINYC__))
+	#undef PRId64
+	#undef PRIi64
+	#undef PRIo64
+	#undef PRIu64
+	#undef PRIx64
+	#undef PRIX64
+	#define PRId64 "lld"
+	#define PRIi64 "lli"
+	#define PRIo64 "llo"
+	#define PRIu64 "llu"
+	#define PRIx64 "llx"
+	#define PRIX64 "llX"
+#endif
+
+////////////////////////////////////// GLOBALS  //////////////////////////////////////
+
 
 #endif // HAZEL_LANG_COMPILER 
