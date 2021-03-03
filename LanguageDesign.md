@@ -57,6 +57,18 @@ def do_something_else(Uint8 num1, Uint8 num2) {
 }
 ```
 
+## Macros 
+Hazel uses LISP-style macros (see [here](https://stopa.io/post/229) for more).
+```js
+macro nullthrows(sourceCodeSnippet) {
+    return "
+        const result = ${sourceCodeSnippet}; 
+        if (result is null or result is undefined) {
+            throw new Error("Uh oh, this returned null:" + ${String(sourceCodeSnippet)});
+        } else return result;
+    ";
+}
+```
 ## Defining a Class 
 
 ## Memory Managment
