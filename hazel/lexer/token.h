@@ -1,6 +1,9 @@
 #ifndef HAZEL_TOKEN
 #define HAZEL_TOKEN 
 
+// token.h defines constants representing the lexical tokens of the Hazel programming language and basic operations on 
+// tokens (printing, predicates).
+//
 
 typedef struct TOKEN_STRUCT {
     enum {
