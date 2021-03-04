@@ -4,6 +4,7 @@
 // token.h defines constants representing the lexical tokens of the Hazel programming language and basic operations on 
 // tokens (printing, predicates).
 //
+// https://github.com/golang/go/blob/964639cc338db650ccadeafb7424bc8ebb2c0f6c/src/go/token/token.go
 
 typedef struct TOKEN_STRUCT {
     enum {
