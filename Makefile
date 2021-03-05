@@ -55,16 +55,16 @@ clean:
 .PHONY 
 regenerate-tokens:
 	# Regenerate hazel/runtime/parser/token.h from tools/scripts/generate_tokens.py 
-	python $(SRCDIR)/tools/scripts/generate_tokens.py header \
+	python $(SRCDIR)/tools/scripts/generate_tokens.py token_header \
 		   $(SRCDIR)/hazel/runtime/grammar/Tokens       \ 
-		   $(SRCDIR)/hazel/runtime/parser/token.h       \
+		   $(SRCDIR)/hazel/runtime/parser/__token.h       \
 
-	python $(SRCDIR)/tools/scripts/generate_tokens.py c \
+	python $(SRCDIR)/tools/scripts/generate_tokens.py token_c \
 		   $(SRCDIR)/hazel/runtime/grammar/Tokens       \ 
-		   $(SRCDIR)/hazel/runtime/parser/token.c       \
+		   $(SRCDIR)/hazel/runtime/parser/__token.c       \
 
-	python $(SRCDIR)/tools/scripts/generate_tokens.py py \
+	python $(SRCDIR)/tools/scripts/generate_tokens.py token_py \
 		   $(SRCDIR)/hazel/runtime/grammar/Tokens       \ 
-		   $(SRCDIR)/hazel/runtime/parser/token.py      \
+		   $(SRCDIR)/hazel/runtime/parser/__token.py      \
 		   
 
