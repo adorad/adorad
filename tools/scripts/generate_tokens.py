@@ -13,7 +13,7 @@ def load_tokens(path):
     with open(path) as fp:
         for line in fp:
             line = line.strip()
-            # Strop comments 
+            # Strip comments 
             i = line.find('#')
 
             if i>=0:
@@ -99,7 +99,7 @@ def make_token_header(infile, outfile='hazel/runtime/parser/token.h'):
 
     defines = [] 
     for value, name in enumerate(token_names[:ERRORTOKEN + 1]):
-        defines.append("define %-15s %d\n" % (name, value))
+        defines.append("#define %-15s %d\n" % (name, value))
     
     if update_file(outfile, token_h_template % (
             ''.join(defines),
