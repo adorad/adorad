@@ -78,7 +78,7 @@ extern "C" {
                                (x) == INDENT    || \\
                                (x) == DEDENT)
 
-const struct TokenNames; 
+const char* const TokenNames[]; 
 int Token_OneChar(int);
 int Token_TwoChars(int, int);
 int Token_ThreeChars(int, int, int);
@@ -119,11 +119,9 @@ token_c_template = """\
 #include "hazel/runtime/parser/tokens.h"
 
 // Token Names
-const struct TokenNames {
-    enum {
-    %s\
-    }
-}
+const char* const TokenNames = {
+%s\
+};
 
 // Return the token corresponding to a single character
 int Token_OneChar(int) {
