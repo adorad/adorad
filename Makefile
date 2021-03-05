@@ -29,7 +29,7 @@ EXE        =  @EXEEXT@
 BUILDEXE   =  @BUILDEXEEXT@
 
 
-
+# ======================== MISC VARIABLES ========================
 exec = hello.out 
 sources = $(wildcard Hazel/*.c Hazel/lexer/*.c)
 objects = $(sources:Hazel/.c=.o)
