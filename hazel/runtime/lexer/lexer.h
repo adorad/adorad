@@ -12,7 +12,7 @@ typedef struct LEXER_STRUCT {
 
 lexer_T* lexer_init(char* contents);
 
-void advance_lexer(lexer_T* lexer);
+void lexer_advance(lexer_T* lexer);
 
 void lexer_skip_whitespace(lexer_T* lexer);
 
