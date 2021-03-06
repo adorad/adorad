@@ -53,6 +53,12 @@ TokenNames* lexer_collect_string(lexer_T* lexer) {
     return token_init(STRING, value);
 }
 
+char* lexer_get_curr_char_as_string(lexer_T* lexer) {
+    char* str = calloc(2, sizeof(char));
+    str[0] = lexer->c;
+    str[1] = '\0';
+}
+
 void lexer_get_next_token(lexer_T* lexer) {
     while(lexer->c != '\0' && lexer->i < strlen(lexer->contents)) {
         if(lexer->c == ' ' || lexer->c == 10) 
@@ -89,8 +95,4 @@ void lexer_get_next_token(lexer_T* lexer) {
             case ')': return lexer_advance_with_token(lexer, token_init(RPAREN, lexer_get_curr_char_as_string(lexer))); break;
         }
     }
-}
-
-char* lexer_get_curr_char_as_string(lexer_T* lexer) {
-
 }
