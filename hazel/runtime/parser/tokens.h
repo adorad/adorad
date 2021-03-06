@@ -9,8 +9,10 @@
 // Set of lexical tokens in the Hazel Programming Language
 typedef struct Tokens {
     enum {
+        // Special (internal usage only)
+        TOK_ID, 
         // Special Tokens
-        EOF,        // EOF
+        TOK_EOF,        // EOF
         ERROR,      
         COMMENT,    // //
         WHITESPACE, // '\n  \t'

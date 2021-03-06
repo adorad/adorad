@@ -1,6 +1,8 @@
 #include <stdlib.h> 
 #include <string.h>
+#include <ctype.h> 
 
+#include <hazel/internal/defines.h>
 #include <hazel/runtime/lexer/lexer.h> 
 #include <hazel/runtime/parser/tokens.h> 
 
@@ -31,6 +33,24 @@ void lexer_skip_whitespace(lexer_T* lexer) {
     }
 }
 
+TokenNames* lexer_collect_token_id(lexer_T* lexer) {
+    char* value = calloc(1, sizeof(char));
+    value[0] = '\0'; // NULL 
+
+    // While Alphanumeric 
+    while(isalnum(lexer->c)) {
+        char* s = lexer_get_curr_char_as_string(lexer);
+        // Reallocate to fit the string we create here 
+        value = realloc(value, (strlen(value) + strlen(s)+1)*sizeof(char));
+        // Append `s` to `value`
+        strcat(value, s); 
+
+        lexer_advance(lexer);
+    }
+
+    return token_init(TOK_ID, value);
+}
+
 TokenNames* lexer_collect_string(lexer_T* lexer) {
     // Skip over the quote ("") we encounter
     lexer_advance(lexer);
@@ -45,6 +65,8 @@ TokenNames* lexer_collect_string(lexer_T* lexer) {
         value = realloc(value, (strlen(value) + strlen(s)+1)*sizeof(char));
         // Append `s` to `value`
         strcat(value, s); 
+
+        lexer_advance(lexer);
     }
 
     // Ignore closing quote
@@ -59,10 +81,15 @@ char* lexer_get_curr_char_as_string(lexer_T* lexer) {
     str[1] = '\0';
 }
 
+
 void lexer_get_next_token(lexer_T* lexer) {
     while(lexer->c != '\0' && lexer->i < strlen(lexer->contents)) {
         if(lexer->c == ' ' || lexer->c == 10) 
             lexer_skip_whitespace(lexer);
+
+        if(isalnum(lexer->c)) {
+            return lexer_collect_token_id(lexer);
+        }
 
         if(lexer->c == "") {
             return lexer_collect_string(lexer);
@@ -95,4 +122,5 @@ void lexer_get_next_token(lexer_T* lexer) {
             case ')': return lexer_advance_with_token(lexer, token_init(RPAREN, lexer_get_curr_char_as_string(lexer))); break;
         }
     }
+    return token_init(TOK_EOF, "\0"); 
 }
