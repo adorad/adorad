@@ -41,37 +41,42 @@ sources = $(wildcard hazel/runtime/lexer/*.c hazel/*.c)
 objects = $(sources:Hazel/.c=.o)
 flags = -g
 
-all:
-    gcc $(objects) $(flags) -o $(exec) -I .
-    make run
+all :
+	gcc $(objects) $(flags) -o $(exec) -I .
+	echo Compiled Hazel 
+	echo ----------------------------------------
+	echo ----------------------------------------
+	$(exec)
+.PHONY: all 
 
 compile:
-    gcc $(objects) $(flags) -o $(exec) -I .
+	gcc $(objects) $(flags) -o $(exec) -I .
+.PHONY: compile
 
 run:
-    $(exec)
-.PHONY run
+	$(exec)
+.PHONY: run
 
 compiler:
-    gcc -c hazel/compiler/hazel.c
-.PHONY compiler
+	gcc -c hazel/compiler/hazel.c
+.PHONY: compiler
 
 clean:
-    rm $(exec)
-.PHONY clean
+	rm $(exec)
+.PHONY: clean
 
 regenerate-tokens:
-    # Regenerate hazel/runtime/parser/token.h from tools/scripts/generate_tokens.py
-    python $(SRCDIR)/tools/scripts/generate_tokens.py token_header \
-           $(SRCDIR)/hazel/runtime/grammar/Tokens       \
-           $(SRCDIR)/hazel/runtime/parser/__token.h       \
+	# Regenerate hazel/runtime/parser/token.h from tools/scripts/generate_tokens.py
+	python $(SRCDIR)/tools/scripts/generate_tokens.py token_header \
+		   $(SRCDIR)/hazel/runtime/grammar/Tokens       \
+		   $(SRCDIR)/hazel/runtime/parser/__token.h       \
 
-    python $(SRCDIR)/tools/scripts/generate_tokens.py token_c \
-           $(SRCDIR)/hazel/runtime/grammar/Tokens       \
-           $(SRCDIR)/hazel/runtime/parser/__token.c       \
+	python $(SRCDIR)/tools/scripts/generate_tokens.py token_c \
+		   $(SRCDIR)/hazel/runtime/grammar/Tokens       \
+		   $(SRCDIR)/hazel/runtime/parser/__token.c       \
 
-    python $(SRCDIR)/tools/scripts/generate_tokens.py token_py \
-           $(SRCDIR)/hazel/runtime/grammar/Tokens       \
-           $(SRCDIR)/hazel/runtime/parser/__token.py      \
-.PHONY regenerate-tokens
+	python $(SRCDIR)/tools/scripts/generate_tokens.py token_py \
+		   $(SRCDIR)/hazel/runtime/grammar/Tokens       \
+		   $(SRCDIR)/hazel/runtime/parser/__token.py      \
+.PHONY: regenerate-tokens
 
