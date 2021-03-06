@@ -245,11 +245,11 @@ def make_token_py(infile, outfile='hazel/runtime/parser/tokens.py'):
         print("%s regenerated from %s" % (outfile, infile))
 
 
-def main(op, infile='hazel/runtime/parser', *args):
+def mainfunc(op, infile='hazel/runtime/parser', *args):
     make = globals()['make_' + op]
     make(infile, *args)
 
 #pylint:disable=no-value-for-parameter
 if __name__ == '__main__':
     import sys
-    main(*sys.argv[1:])
+    mainfunc(*sys.argv[1:])

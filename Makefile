@@ -30,16 +30,16 @@ BUILDEXE   =  @BUILDEXEEXT@
 
 
 # ======================== MISC VARIABLES ========================
-exec = hello.out 
-sources = $(wildcard Hazel/*.c Hazel/lexer/*.c)
+exec = hazel.out
+sources = $(wildcard hazel/runtime/lexer/*.c hazel/*.c)
 objects = $(sources:Hazel/.c=.o)
 flags = -g 
 
 $(exec): $(objects)
-	gcc $(objects) $(flags) -o $(exec)
+	gcc $(objects) $(flags) -o $(exec) -I .
 
 run:
-	hello.out
+	$(exec)
 
 compiler:
 	gcc -c hazel/compiler/hazel.c
@@ -52,7 +52,7 @@ clean:
 	-rm *.o
 	-rm Hazel/*.o
 
-.PHONY 
+# .PHONY 
 regenerate-tokens:
 	# Regenerate hazel/runtime/parser/token.h from tools/scripts/generate_tokens.py 
 	python $(SRCDIR)/tools/scripts/generate_tokens.py token_header \

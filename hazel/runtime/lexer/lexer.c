@@ -1,3 +1,5 @@
+#include <stdlib.h> 
+
 #include <hazel/runtime/lexer/lexer.h> 
 
 lexer_T* lexer_init(char* contents) {

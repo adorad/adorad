@@ -5,8 +5,6 @@
 // tokens (printing, predicates).
 //
 
-TokenNames* token_init(int type, char* value);
-
 // Set of lexical tokens in the Hazel Programming Language
 enum TokenNames {
     // Special Tokens
@@ -317,6 +315,9 @@ enum TokenNames {
 //     }
 //     return c;
 // }
+
+
+enum TokenNames* token_init(int type, char* value);
 
 
 #endif // HAZEL_TOKEN 
