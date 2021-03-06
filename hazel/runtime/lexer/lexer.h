@@ -4,7 +4,7 @@
 #include <hazel/runtime/parser/tokens.h>
 
 
-typedef struct LEXER_STRUCT {
+typedef struct Lexer {
     char c;
     unsigned int i;
     char* contents;

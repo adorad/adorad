@@ -5,7 +5,7 @@
 #include <hazel/runtime/parser/tokens.h> 
 
 lexer_T* lexer_init(char* contents) {
-    lexer_T* lexer = calloc(1, sizeof(struct LEXER_STRUCT)); 
+    lexer_T* lexer = calloc(1, sizeof(struct Lexer)); 
     lexer->contents = contents; 
     lexer->i = 0; 
     lexer->c = contents[lexer->i];
@@ -20,7 +20,7 @@ void lexer_advance(lexer_T* lexer) {
     }
 }
 
-enum TokenNames* lexer_advance_with_token(lexer_T* lexer, enum TokenNames* tok) {
+TokenNames* lexer_advance_with_token(lexer_T* lexer, TokenNames* tok) {
     lexer_advance(lexer);
     return tok; 
 }
@@ -43,7 +43,7 @@ void lexer_get_next_token(lexer_T* lexer) {
     }
 }
 
-enum TokenNames* lexer_collect_string(lexer_T* lexer) {
+TokenNames* lexer_collect_string(lexer_T* lexer) {
 
 }
 
