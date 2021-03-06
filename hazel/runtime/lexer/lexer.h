@@ -16,4 +16,8 @@ void advance_lexer(lexer_T* lexer);
 
 void lexer_skip_whitespace(lexer_T* lexer);
 
+void lexer_get_next_token(lexer_T* lexer);
+
+char* lexer_get_curr_char_as_string(lexer_T* lexer);
+
 #endif
