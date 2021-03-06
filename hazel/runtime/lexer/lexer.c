@@ -38,6 +38,30 @@ void lexer_get_next_token(lexer_T* lexer) {
         
         switch(lexer->c) {
             case '=': return lexer_advance_with_token(lexer, token_init(EQUALS, lexer_get_curr_char_as_string(lexer))); break; 
+            case ';': return lexer_advance_with_token(lexer, token_init(COLON,  lexer_get_curr_char_as_string(lexer))); break; 
+            case ',': return lexer_advance_with_token(lexer, token_init(COMMA,  lexer_get_curr_char_as_string(lexer))); break; 
+            case '@': return lexer_advance_with_token(lexer, token_init(AT_SIGN, lexer_get_curr_char_as_string(lexer))); break;
+            // Operators 
+            case '+': return lexer_advance_with_token(lexer, token_init(ADD, lexer_get_curr_char_as_string(lexer))); break; 
+            case '-': return lexer_advance_with_token(lexer, token_init(SUBTRACT, lexer_get_curr_char_as_string(lexer))); break; 
+            case '*': return lexer_advance_with_token(lexer, token_init(MUTLIPLICATION, lexer_get_curr_char_as_string(lexer))); break; 
+            case '/': return lexer_advance_with_token(lexer, token_init(QUOTIENT, lexer_get_curr_char_as_string(lexer))); break; 
+            case '%': return lexer_advance_with_token(lexer, token_init(REM, lexer_get_curr_char_as_string(lexer))); break; 
+            case '&': return lexer_advance_with_token(lexer, token_init(AND, lexer_get_curr_char_as_string(lexer))); break; 
+            case '|': return lexer_advance_with_token(lexer, token_init(OR, lexer_get_curr_char_as_string(lexer))); break; 
+            case '!': return lexer_advance_with_token(lexer, token_init(NOT, lexer_get_curr_char_as_string(lexer))); break; 
+            case '^': return lexer_advance_with_token(lexer, token_init(XOR, lexer_get_curr_char_as_string(lexer))); break; 
+            // Comparison
+            case '>': return lexer_advance_with_token(lexer, token_init(GREATER, lexer_get_curr_char_as_string(lexer))); break; 
+            case '<': return lexer_advance_with_token(lexer, token_init(LESS, lexer_get_curr_char_as_string(lexer))); break; 
+            // Delimiters
+            case '[': return lexer_advance_with_token(lexer, token_init(LBRACK, lexer_get_curr_char_as_string(lexer))); break; 
+            case ']': return lexer_advance_with_token(lexer, token_init(RBRACK, lexer_get_curr_char_as_string(lexer))); break; 
+            case '{': return lexer_advance_with_token(lexer, token_init(LBRACE, lexer_get_curr_char_as_string(lexer))); break; 
+            case '}': return lexer_advance_with_token(lexer, token_init(RBRACE, lexer_get_curr_char_as_string(lexer))); break; 
+            case '(': return lexer_advance_with_token(lexer, token_init(LPAREN, lexer_get_curr_char_as_string(lexer))); break; 
+            case ')': return lexer_advance_with_token(lexer, token_init(RPAREN, lexer_get_curr_char_as_string(lexer))); break;
+
 
         }
     }

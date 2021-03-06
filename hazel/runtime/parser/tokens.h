@@ -77,8 +77,8 @@ typedef struct Tokens {
 
         // Operators 
         ADD,            // +
-        SUB,            // - 
-        MUTLIPLICATION, // ×
+        SUBTRACT,            // - 
+        MUTLIPLICATION, // *
         QUOTIENT,       // /
         REM,            // %
 
