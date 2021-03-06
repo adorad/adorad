@@ -31,11 +31,37 @@ void lexer_skip_whitespace(lexer_T* lexer) {
     }
 }
 
+TokenNames* lexer_collect_string(lexer_T* lexer) {
+    // Skip over the quote ("") we encounter
+    lexer_advance(lexer);
+
+    char* value = calloc(1, sizeof(char));
+    value[0] = '\0'; // NULL 
+
+    // Find the closing quote 
+    while(lexer->c != "") {
+        char* s = lexer_get_curr_char_as_string(lexer);
+        // Reallocate to fit the string we create here 
+        value = realloc(value, (strlen(value) + strlen(s)+1)*sizeof(char));
+        // Append `s` to `value`
+        strcat(value, s); 
+    }
+
+    // Ignore closing quote
+    lexer_advance(lexer);
+
+    return token_init(STRING, value);
+}
+
 void lexer_get_next_token(lexer_T* lexer) {
     while(lexer->c != '\0' && lexer->i < strlen(lexer->contents)) {
         if(lexer->c == ' ' || lexer->c == 10) 
             lexer_skip_whitespace(lexer);
-        
+
+        if(lexer->c == "") {
+            return lexer_collect_string(lexer);
+        }
+
         switch(lexer->c) {
             case '=': return lexer_advance_with_token(lexer, token_init(EQUALS, lexer_get_curr_char_as_string(lexer))); break; 
             case ';': return lexer_advance_with_token(lexer, token_init(COLON,  lexer_get_curr_char_as_string(lexer))); break; 
@@ -61,14 +87,8 @@ void lexer_get_next_token(lexer_T* lexer) {
             case '}': return lexer_advance_with_token(lexer, token_init(RBRACE, lexer_get_curr_char_as_string(lexer))); break; 
             case '(': return lexer_advance_with_token(lexer, token_init(LPAREN, lexer_get_curr_char_as_string(lexer))); break; 
             case ')': return lexer_advance_with_token(lexer, token_init(RPAREN, lexer_get_curr_char_as_string(lexer))); break;
-
-
         }
     }
-}
-
-TokenNames* lexer_collect_string(lexer_T* lexer) {
-
 }
 
 char* lexer_get_curr_char_as_string(lexer_T* lexer) {
