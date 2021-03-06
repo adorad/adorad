@@ -36,8 +36,8 @@ $(VERBOSE)MAKESILENT = -s
 $(VERBOSE).SILENT:
 
 # ======================== MISC VARIABLES ========================
-exec = hazel.out
-sources = $(wildcard hazel/runtime/lexer/*.c hazel/*.c)
+exec = hazel
+sources = $(wildcard hazel/runtime/lexer/*.c hazel/runtime/parser/*.c hazel/*.c )
 objects = $(sources:Hazel/.c=.o)
 flags = -g
 
@@ -62,7 +62,7 @@ compiler:
 .PHONY: compiler
 
 clean:
-	rm $(exec)
+	rm $(exec).exe
 .PHONY: clean
 
 regenerate-tokens:
