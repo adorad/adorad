@@ -6,8 +6,9 @@
 #include <hazel/runtime/lexer/lexer.h> 
 #include <hazel/runtime/parser/tokens.h> 
 
-lexer_T* lexer_init(char* contents) {
-    lexer_T* lexer = calloc(1, sizeof(struct Lexer)); 
+
+Lexer* lexer_init(char* contents) {
+    Lexer* lexer = calloc(1, sizeof(struct LexerDef)); 
     lexer->contents = contents; 
     lexer->i = 0; 
     lexer->c = contents[lexer->i];
@@ -15,25 +16,25 @@ lexer_T* lexer_init(char* contents) {
     return lexer; 
 }
 
-void lexer_advance(lexer_T* lexer) {
+void lexer_advance(Lexer* lexer) {
     if(lexer->c != '\0' && lexer->i < strlen(lexer->contents)) {
         lexer->i += 1;
         lexer->c = lexer->contents[lexer->i];
     }
 }
 
-TokenNames* lexer_advance_with_token(lexer_T* lexer, TokenNames* tok) {
+Token* lexer_advance_with_token(Lexer* lexer, Token* tok) {
     lexer_advance(lexer);
     return tok; 
 }
 
-void lexer_skip_whitespace(lexer_T* lexer) {
+void lexer_skip_whitespace(Lexer* lexer) {
     while(lexer->c == ' ' || lexer->c == 10) {
         lexer_advance(lexer);
     }
 }
 
-TokenNames* lexer_collect_token_id(lexer_T* lexer) {
+Token* lexer_collect_token_id(Lexer* lexer) {
     char* value = calloc(1, sizeof(char));
     value[0] = '\0'; // NULL 
 
@@ -51,7 +52,7 @@ TokenNames* lexer_collect_token_id(lexer_T* lexer) {
     return token_init(TOK_ID, value);
 }
 
-TokenNames* lexer_collect_string(lexer_T* lexer) {
+Token* lexer_collect_string(Lexer* lexer) {
     // Skip over the quote ("") we encounter
     lexer_advance(lexer);
 
@@ -59,7 +60,7 @@ TokenNames* lexer_collect_string(lexer_T* lexer) {
     value[0] = '\0'; // NULL 
 
     // Find the closing quote 
-    while(lexer->c != "") {
+    while(lexer->c != '"') {
         char* s = lexer_get_curr_char_as_string(lexer);
         // Reallocate to fit the string we create here 
         value = realloc(value, (strlen(value) + strlen(s)+1)*sizeof(char));
@@ -75,14 +76,14 @@ TokenNames* lexer_collect_string(lexer_T* lexer) {
     return token_init(STRING, value);
 }
 
-char* lexer_get_curr_char_as_string(lexer_T* lexer) {
+char* lexer_get_curr_char_as_string(Lexer* lexer) {
     char* str = calloc(2, sizeof(char));
     str[0] = lexer->c;
     str[1] = '\0';
 }
 
 
-void lexer_get_next_token(lexer_T* lexer) {
+Token* lexer_get_next_token(Lexer* lexer) {
     while(lexer->c != '\0' && lexer->i < strlen(lexer->contents)) {
         if(lexer->c == ' ' || lexer->c == 10) 
             lexer_skip_whitespace(lexer);
@@ -91,7 +92,7 @@ void lexer_get_next_token(lexer_T* lexer) {
             return lexer_collect_token_id(lexer);
         }
 
-        if(lexer->c == "") {
+        if(lexer->c == '"') {
             return lexer_collect_string(lexer);
         }
 
