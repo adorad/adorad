@@ -1,13 +1,11 @@
 #ifndef HAZEL_TOKEN
 #define HAZEL_TOKEN 
 
-#include <stdlib.h> 
-
 // token.h defines constants representing the lexical tokens of the Hazel programming language and basic operations on 
 // tokens (printing, predicates).
 
 // Set of lexical tokens in the Hazel Programming Language
-typedef struct Tokens {
+typedef struct TokenNames {
     enum {
         // Special (internal usage only)
         TOK_ID, 
@@ -162,7 +160,7 @@ typedef struct Tokens {
     } type; // enum
 
     char* value; 
-} TokenNames; 
+} Token; 
 
 
 // Use a custom type here: 
@@ -324,11 +322,7 @@ typedef struct Tokens {
 // }
 
 
-TokenNames* token_init(int type, char* value) {
-    TokenNames* tok = calloc(1, sizeof(struct Tokens)); 
-    tok->type = type; 
-    tok->value = value;
-}
+Token* token_init(int type, char* value);
 
 
 #endif // HAZEL_TOKEN 
