@@ -15,6 +15,8 @@
 #
 # See the section "Build instructions" in the README file for more instructions. 
 
+.PHONY : all run compiler clean 
+
 # ======================== VARIABLES SET BY CONFIGURE ========================
 VERSION    = @VERSION@
 SRCDIR     = @SRCDIR@
@@ -35,7 +37,11 @@ sources = $(wildcard hazel/runtime/lexer/*.c hazel/*.c)
 objects = $(sources:Hazel/.c=.o)
 flags = -g 
 
-$(exec): $(objects)
+all:
+	gcc $(objects) $(flags) -o $(exec) -I .
+	run 
+
+compile: 
 	gcc $(objects) $(flags) -o $(exec) -I .
 
 run:
@@ -44,13 +50,8 @@ run:
 compiler:
 	gcc -c hazel/compiler/hazel.c
 
-%.o: %.c Hazel/lexer/%.h
-	gcc -c $(flags) $< -o $@
-
 clean:
-	-rm *.out
-	-rm *.o
-	-rm Hazel/*.o
+	rm $(exec)
 
 # .PHONY 
 regenerate-tokens:
