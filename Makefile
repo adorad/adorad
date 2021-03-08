@@ -65,6 +65,19 @@ clean:
 	rm $(exec).exe
 .PHONY: clean
 
+# For test.c (internal usage only)
+compiletest:
+	gcc test.c $(flags) -o test
+.PHONY: compiletest 
+
+runtest:
+	test
+.PHONY: runtest 
+
+cleantest:
+	rm test.exe
+.PHONY: cleantest 
+
 regenerate-tokens:
 	# Regenerate hazel/runtime/parser/token.h from tools/scripts/generate_tokens.py
 	python $(SRCDIR)/tools/scripts/generate_tokens.py token_header \
