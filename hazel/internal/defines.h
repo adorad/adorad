@@ -1,6 +1,7 @@
 #pragma once 
 
 #define null (void*)0
+#define nullchar '\0'
 
 // bool is a basic type in C++ and not C
 // We could just have used <stdbool.h> but I prefer this -- smaller binary, easily maintanable

@@ -170,152 +170,151 @@ typedef struct TokenNames {
 // Something similar to Go's implementation: 
 // https://github.com/golang/go/blob/964639cc338db650ccadeafb7424bc8ebb2c0f6c/src/go/token/token.go
 // Dict{TokenNames, String} {
-//     // Special Tokens
-//     EOF        : "EOF"
-//     COMMENT    : "COMMENT"
-//     IDENTIFIER : "DENTIFIER"
-//     AT_SIGN    : "@"
-//     COMMA      : ","
-//     SEMICOLON  : ";"
+typedef const struct AllTokens all_tokens[] = {
+    // Special Tokens
+    { EOF        , "EOF" },
+    { COMMENT    , "COMMENT" },
+    { IDENTIFIER , "DENTIFIER" },
+    { AT_SIGN    , "@" },
+    { COMMA      , "," },
+    { SEMICOLON  , ";" },
 
-//     // Keywords
-//     BEGIN     : "begin"
-//     BREAK     : "break"
-//     CASE      : "case"
-//     CATCH     : "catch"
-//     CONST     : "const"
-//     CONTINUE  : "continue"
-//     DO        : "do"
-//     DEF       : "def"
-//     DEFAULT   : "default"
-//     ELSE      : "else"
-//     ELSEIF    : "elseif"
-//     EXPORT    : "export"
-//     FINALLY   : "finally"
-//     FOR       : "for"
+    // Keywords
+    { BEGIN     , "begin" },
+    { BREAK     , "break" },
+    { CASE      , "case" },
+    { CATCH     , "catch" },
+    { CONST     , "const" },
+    { CONTINUE  , "continue" },
+    { DO        , "do" },
+    { DEF       , "def" },
+    { DEFAULT   , "default" },
+    { ELSE      , "else" },
+    { ELSEIF    , "elseif" },
+    { EXPORT    , "export" },
+    { FINALLY   , "finally" },
+    { FOR       , "for" },
 
-//     // GLOBAL    : "global"
-//     IF        : "if"
-//     IMPORT    : "import"
-//     INCLUDE   : "include"
-//     MACRO     : "macro"
-//     MATCH     : "match"
-//     MODULE    : "module"
-//     MUTABLE   : "mutable"
-//     // NEW       : "new"
-//     RANGE     : "range"
-//     RETURN    : "return"
-//     STRUCT    : "struct"
-//     TRY       : "try"
-//     TYPE      : "type"
-//     USE       : "use"
-//     WHERE     : "where"
-//     WHILE     : "while"
+    // GLOBAL    , "global"
+    { IF        , "if" },
+    { IMPORT    , "import" },
+    { INCLUDE   , "include" },
+    { MACRO     , "macro" },
+    { MATCH     , "match" },
+    { MODULE    , "module" },
+    { MUTABLE   , "mutable" },
+    // NEW       , "new"
+    { RANGE     , "range" },
+    { RETURN    , "return" },
+    { STRUCT    , "struct" },
+    { TRY       , "try" },
+    { TYPE      , "type" },
+    { USE       , "use" },
+    { WHERE     , "where" },
+    { WHILE     , "while" },
 
-//     // Literals
-//     INTEGER : "INTEGER"
-//     FLOAT   : "FLOAT"
-//     STRING  : "STRING"
-//     IMAG    : "IMAG"
-//     CHAR    : "CHAR"
-//     TRUE    : "TRUE"
-//     FALSE   : "FALSE"
+    // Literals
+    { INTEGER , "INTEGER" },
+    { FLOAT   , "FLOAT" },
+    { STRING  , "STRING" },
+    { IMAG    , "IMAG" },
+    { CHAR    , "CHAR" },
+    { TRUE    , "TRUE" },
+    { FALSE   , "FALSE" },
 
-//     // Operators 
-//     ADD            : "+"
-//     SUB            : "- "
-//     MUTLIPLICATION : "*"
-//     QUOTIENT       : "/"
-//     REM            : "%"
+    // Operators 
+    { ADD            , "+" },
+    { SUB            , "- " },
+    { MUTLIPLICATION , "*" },
+    { QUOTIENT       , "/" },
+    { REM            , "%" },
 
-//     AND       : "&"
-//     OR        : "|"
-//     NOT       : "!"
-//     XOR       : "^"
-//     AND_NOT   : "&^"
-//     LAND      : "&&"
-//     LOR       : "||"
-//     INCREMENT : "++"
-//     DECREMENT : "--"
+    { AND       , "&" },
+    { OR        , "|" },
+    { NOT       , "!" },
+    { XOR       , "^" },
+    { AND_NOT   , "&^" },
+    { LAND      , "&&" },
+    { LOR       , "||" },
+    { INCREMENT , "++" },
+    { DECREMENT , "--" },
 
-//     // Comparison
-//     GREATER                  : ">" 
-//     LESS                     : "<"
-//     GREATER_THAN             : ">="
-//     GREATER_THAN_OR_EQUAL_TO : "≥"
-//     LESS_THAN                : "<="
-//     LESS_THAN_OR_EQUAL_TO    : '≤'
-//     DOUBLEEQUALS             : "==" 
-//     NOT_EQUALS               : '!='
-//     NOT_EQUAL_TO             : "≠"
-//     IN                       : "in"
-//     ISA                      : "isa"
+    // Comparison
+    { GREATER                  , ">"  },
+    { LESS                     , "<" },
+    { GREATER_THAN             , ">=" },
+    { GREATER_THAN_OR_EQUAL_TO , "≥" },
+    { LESS_THAN                , "<=" },
+    { LESS_THAN_OR_EQUAL_TO    : '≤' },
+    { DOUBLEEQUALS             , "=="  },
+    { NOT_EQUALS               : '!=' },
+    { NOT_EQUAL_TO             , "≠" },
+    { IN                       , "in" },
+    { ISA                      , "isa" },
 
-//     // Delimiters
-//     LBRACK  : "["
-//     RBRACK  : "]"
-//     LBRACE  : "{"
-//     RBRACE  : "}"
-//     LPAREN  : "("
-//     RPAREN  : ")"
+    // Delimiters
+    { LBRACK  , "[" },
+    { RBRACK  , "]" },
+    { LBRACE  , "{" },
+    { RBRACE  , "}" },
+    { LPAREN  , "(" },
+    { RPAREN  , ")" },
 
-//     // Assignments
-//     EQUALS           : "=" 
-//     PLUS_EQUALS      : "+="
-//     MINUS_EQUALS     : "-="
-//     START_EQUALS     : "*="
-//     OR_EQUALS        : "|="
-//     DIVISION_EQUALS  : "÷="
-//     FWD_SLASH_EQUALS : "/="
-//     REM_EQUALS       : "%="
-//     LBITSHIFT_EQUALS : "<<="
-//     RBITSHIFT_EQUALS : ">>="
-//     AND_EQUALS       : "&="
-//     APPROX           : "~"
+    // Assignments
+    { EQUALS           , "="  },
+    { PLUS_EQUALS      , "+=" },
+    { MINUS_EQUALS     , "-=" },
+    { START_EQUALS     , "*=" },
+    { OR_EQUALS        , "|=" },
+    { DIVISION_EQUALS  , "÷=" },
+    { FWD_SLASH_EQUALS , "/=" },
+    { REM_EQUALS       , "%=" },
+    { LBITSHIFT_EQUALS , "<<=" },
+    { RBITSHIFT_EQUALS , ">>=" },
+    { AND_EQUALS       , "&=" },
+    { APPROX           , "~" },
 
-//     // Colons
-//     COLON    : ":"
-//     DOT      : "."
-//     DDOT     : ".."
-//     ELLIPSIS : "..."
+    // Colons
+    { COLON    , ":" },
+    { DOT      , "." },
+    { DDOT     , ".." },
+    { ELLIPSIS , "..." },
 
-//     // Bitshifts
-//     LBITSHIFT : "<<"
-//     RBITSHIFT : ">>"
+    // Bitshifts
+    { LBITSHIFT , "<<" },
+    { RBITSHIFT , ">>" },
 
-//     // Conditional
-//     CONDITIONAL : "?"
+    // Conditional },
+    { CONDITIONAL , "?" },
 
-//     // Arrows
-//     PAIR_ARROWS                : "=>"
-//     ANON_FUNC                  : "->"
-//     LEFT_ARROW                 : "<-"
-//     LEFTWARDS_ARROW            : "←"
-//     RIGHTWARDS_ARROW           : "→"
-//     HALFWIDTH_LEFTWARDS_ARROW  : "￩"
-//     HALFWIDTH_RIGHTWARDS_ARROW : "￫"
-//     LONG_LEFTWARDS_ARROW       : "⟵"
-//     LONG_RIGHTWARDS_ARROW      : "⟶ "
+    // Arrows },
+    { PAIR_ARROWS                , "=>" },
+    { ANON_FUNC                  , "->" },
+    { LEFT_ARROW                 , "<-" },
+    { LEFTWARDS_ARROW            , "←" },
+    { RIGHTWARDS_ARROW           , "→" },
+    { HALFWIDTH_LEFTWARDS_ARROW  , "￩" },
+    { HALFWIDTH_RIGHTWARDS_ARROW , "￫" },
+    { LONG_LEFTWARDS_ARROW       , "⟵" },
+    { LONG_RIGHTWARDS_ARROW      , "⟶ " },
 
-//     // Declaration (we might/might not use this)
-//     DECLARATION : "::"
+     // Declaration (we might/might not use this) },
+    { DECLARATION , "::" }
     
-// }; // custom Dict 'tokens'
+}; // custom Dict 'tokens'
 
 
 // Returns the string corresponding to the Token tok. 
 // For operators, delimiters and keywords, the string is the actual token character sequence (e.g. for the token ADD,
 // the string is "+"). For all other tokens, the string corresponds to the token constant name (e.g. for the token
 // IN, the string is "IN")
-// const char* get_tok_string(TokenNames tok) {
-//     char c = '';
-//     enum TokenNames enumsize; 
-//     enumsize = SIZE_OF_ENUM;
+// const char* get_tok_string(Token tok) {
+//     char c = nullchar;
 
-//     if(tok>=0 && tok > TokenNames(enumsize)) {
+//     if(tok>=0 && tok > Token(enumsize)) {
 //         c = tokens[tok];
 //     }
-//     if c == '' {
+//     if c == nullchar {
 //         c = "token(" + tokens.strconv(int(tok)) + ")";
 //     }
 //     return c;
