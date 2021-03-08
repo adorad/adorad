@@ -1,6 +1,10 @@
 #ifndef HAZEL_TOKEN
 #define HAZEL_TOKEN 
 
+#include <string.h> 
+#include <stdlib.h> 
+#include <hazel/internal/defines.h> 
+
 // token.h defines constants representing the lexical tokens of the Hazel programming language and basic operations on 
 // tokens (printing, predicates).
 
@@ -176,7 +180,6 @@ struct AllTokens {
     Token tok; // nbytes = 16
     const char* key;
 };
-
 
 #define num_all_tokens 102
 static const struct AllTokens all_tokens[] = {
@@ -471,11 +474,6 @@ static const struct AllTokens all_arrows[] = {
 //     return c;
 // }
 
-bool lexer_is_keyword() {
-
-}
-
 Token* token_init(int type, char* value);
-
 
 #endif // HAZEL_TOKEN 
