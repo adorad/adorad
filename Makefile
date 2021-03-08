@@ -71,17 +71,17 @@ test:
 	test 
 .PHONY: test 
 
-compiletest:
+testcompile:
 	gcc test.c $(flags) -o test -I .
-.PHONY: compiletest 
+.PHONY: testcompile 
 
-runtest:
+testrun:
 	test
-.PHONY: runtest 
+.PHONY: testrun 
 
-cleantest:
+testclean:
 	rm test.exe
-.PHONY: cleantest 
+.PHONY: testclean 
 
 regenerate-tokens:
 	# Regenerate hazel/runtime/parser/token.h from tools/scripts/generate_tokens.py
