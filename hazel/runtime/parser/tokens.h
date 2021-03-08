@@ -1,7 +1,6 @@
 #ifndef HAZEL_TOKEN
 #define HAZEL_TOKEN 
 
-#include <string.h> 
 #include <stdlib.h> 
 #include <hazel/internal/defines.h> 
 

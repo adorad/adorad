@@ -19,6 +19,13 @@ static inline bool isnum(char c) {
     return ((c >= '0' && c <= '9'));
 }
 
+
+bool lexer_is_keyword() {
+    for(int i=0; i<num_all_keywords; i++) {
+        if(!strcmp())
+    }
+}
+
 Lexer* lexer_init(char* contents) {
     Lexer* lexer = calloc(1, sizeof(struct LexerDef)); 
     lexer->contents = contents; 
