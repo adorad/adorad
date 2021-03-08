@@ -1,5 +1,3 @@
-
-
 // Includes all the files needed for Hazel compilation
 
 // This ALWAYS needs to be right at the top 
