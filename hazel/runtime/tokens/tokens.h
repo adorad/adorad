@@ -50,6 +50,7 @@ typedef struct TokenNames {
         // NEW // ==> if we go for a memory-safety approach like Rust
         RANGE,
         RETURN, 
+        RUNE, 
         STRUCT, 
         TRY, 
         TYPE, 
@@ -180,7 +181,7 @@ struct AllTokens {
     const char* key;
 };
 
-#define num_all_tokens 102
+#define num_all_tokens 103
 static const struct AllTokens all_tokens[] = {
     // Special Tokens
     { TOK_EOF    , "EOF" },
@@ -217,6 +218,7 @@ static const struct AllTokens all_tokens[] = {
     // NEW       , "new"
     { RANGE     , "range" },
     { RETURN    , "return" },
+    { RUNE      , "rune" },
     { STRUCT    , "struct" },
     { TRY       , "try" },
     { TYPE      , "type" },
@@ -325,7 +327,7 @@ static const struct AllTokens all_special_tokens[] = {
     { SEMICOLON  , ";" }
 }; 
 
-#define num_all_keywords 29
+#define num_all_keywords 30
 static const struct AllTokens all_keywords[] = {
     // Keywords
     { BEGIN     , "begin" },
@@ -353,6 +355,7 @@ static const struct AllTokens all_keywords[] = {
     // NEW       , "new"
     { RANGE     , "range" },
     { RETURN    , "return" },
+    { RUNE      , "rune" },
     { STRUCT    , "struct" },
     { TRY       , "try" },
     { TYPE      , "type" },
