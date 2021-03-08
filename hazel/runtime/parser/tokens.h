@@ -308,6 +308,148 @@ static const struct AllTokens all_tokens[] = {
     
 }; 
 
+static const struct AllTokens all_special_tokens[] = {
+    // Special Tokens
+    { TOK_EOF        , "EOF" },
+    { COMMENT    , "COMMENT" },
+    { IDENTIFIER , "DENTIFIER" },
+    { AT_SIGN    , "@" },
+    { COMMA      , "," },
+    { SEMICOLON  , ";" }
+}; 
+
+static const struct AllTokens all_keywords[] = {
+    // Keywords
+    { BEGIN     , "begin" },
+    { BREAK     , "break" },
+    { CASE      , "case" },
+    { CATCH     , "catch" },
+    { CONST     , "const" },
+    { CONTINUE  , "continue" },
+    { DO        , "do" },
+    { DEF       , "def" },
+    { DEFAULT   , "default" },
+    { ELSE      , "else" },
+    { ELSEIF    , "elseif" },
+    { EXPORT    , "export" },
+    { FINALLY   , "finally" },
+    { FOR       , "for" },
+    // GLOBAL    , "global"
+    { IF        , "if" },
+    { IMPORT    , "import" },
+    { INCLUDE   , "include" },
+    { MACRO     , "macro" },
+    { MATCH     , "match" },
+    { MODULE    , "module" },
+    { MUTABLE   , "mutable" },
+    // NEW       , "new"
+    { RANGE     , "range" },
+    { RETURN    , "return" },
+    { STRUCT    , "struct" },
+    { TRY       , "try" },
+    { TYPE      , "type" },
+    { USE       , "use" },
+    { WHERE     , "where" },
+    { WHILE     , "while" }
+}; 
+
+static const struct AllTokens all_literals[] = {
+    // Literals
+    { INTEGER , "INTEGER" },
+    { FLOAT   , "FLOAT" },
+    { STRING  , "STRING" },
+    { IMAG    , "IMAG" },
+    { CHAR    , "CHAR" },
+    { TRUE    , "TRUE" },
+    { FALSE   , "FALSE" }
+}; 
+
+static const struct AllTokens all_operators[] = {
+    // Operators 
+    { ADD            , "+" },
+    { SUBTRACT       , "-" },
+    { MUTLIPLICATION , "*" },
+    { QUOTIENT       , "/" },
+    { REM            , "%" },
+
+    { AND       , "&" },
+    { OR        , "|" },
+    { NOT       , "!" },
+    { XOR       , "^" },
+    { AND_NOT   , "&^" },
+    { LAND      , "&&" },
+    { LOR       , "||" },
+    { INCREMENT , "++" },
+    { DECREMENT , "--" },
+
+    // Comparison
+    { GREATER                  , ">"  },
+    { LESS                     , "<" },
+    { GREATER_THAN             , ">=" },
+    { GREATER_THAN_OR_EQUAL_TO , "≥" },
+    { LESS_THAN                , "<=" },
+    { LESS_THAN_OR_EQUAL_TO    , "≤" },
+    { DOUBLEEQUALS             , "=="  },
+    { NOT_EQUALS               , "!="  },
+    { NOT_EQUAL_TO             , "≠" },
+    { IN                       , "in" },
+    { ISA                      , "isa" }
+}; 
+
+
+static const struct AllTokens all_delimiters[] = {
+    // Delimiters
+    { LBRACK  , "[" },
+    { RBRACK  , "]" },
+    { LBRACE  , "{" },
+    { RBRACE  , "}" },
+    { LPAREN  , "(" },
+    { RPAREN  , ")" }
+}; 
+
+
+static const struct AllTokens all_assignment_ops[] = {
+    // Assignments
+    { EQUALS           , "="  },
+    { PLUS_EQUALS      , "+=" },
+    { MINUS_EQUALS     , "-=" },
+    { START_EQUALS     , "*=" },
+    { OR_EQUALS        , "|=" },
+    { DIVISION_EQUALS  , "÷=" },
+    { FWD_SLASH_EQUALS , "/=" },
+    { REM_EQUALS       , "%=" },
+    { LBITSHIFT_EQUALS , "<<=" },
+    { RBITSHIFT_EQUALS , ">>=" },
+    { AND_EQUALS       , "&=" },
+    { APPROX           , "~" }
+}; 
+
+
+static const struct AllTokens all_colons[] = {
+    // Colons
+    { COLON    , ":" },
+    { DOT      , "." },
+    { DDOT     , ".." },
+    { ELLIPSIS , "..." },
+}; 
+
+static const struct AllTokens all_arrows[] = {
+    // Arrows },
+    { PAIR_ARROWS                , "=>" },
+    { ANON_FUNC                  , "->" },
+    { LEFT_ARROW                 , "<-" },
+    { LEFTWARDS_ARROW            , "←" },
+    { RIGHTWARDS_ARROW           , "→" },
+    { HALFWIDTH_LEFTWARDS_ARROW  , "￩" },
+    { HALFWIDTH_RIGHTWARDS_ARROW , "￫" },
+    { LONG_LEFTWARDS_ARROW       , "⟵" },
+    { LONG_RIGHTWARDS_ARROW      , "⟶ " },
+}; 
+
+
+
+
+
 
 // Returns the string corresponding to the Token tok. 
 // For operators, delimiters and keywords, the string is the actual token character sequence (e.g. for the token ADD,
