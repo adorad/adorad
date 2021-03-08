@@ -7,6 +7,18 @@
 #include <hazel/runtime/parser/tokens.h> 
 
 
+static inline bool ignore(char c) {
+    return (c==' ' || c=='\t' || c=='\r');
+}
+
+static inline bool isletter(char c) {
+    return ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c == '_'));
+}
+
+static inline bool isnum(char c) {
+    return ((c >= '0' && c <= '9'));
+}
+
 Lexer* lexer_init(char* contents) {
     Lexer* lexer = calloc(1, sizeof(struct LexerDef)); 
     lexer->contents = contents; 
@@ -124,4 +136,8 @@ Token* lexer_get_next_token(Lexer* lexer) {
         }
     }
     return token_init(TOK_EOF, "\0"); 
+}
+
+bool lexer_is_keyword(Token* token) {
+
 }
