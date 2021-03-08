@@ -13,7 +13,7 @@ typedef struct TokenNames {
         // Special (internal usage only)
         TOK_ID, 
         // Special Tokens
-        TOK_EOF,        // EOF
+        TOK_EOF,    // EOF
         ERROR,      
         COMMENT,    // //
         WHITESPACE, // '\n  \t'
