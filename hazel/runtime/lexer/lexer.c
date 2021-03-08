@@ -2,7 +2,7 @@
 #include <string.h>
 #include <ctype.h> 
 
-#include <hazel/internal/defines.h>
+#include <hazel/core/defines.h>
 #include <hazel/runtime/lexer/lexer.h> 
 #include <hazel/runtime/tokens/tokens.h> 
 
