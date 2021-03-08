@@ -170,9 +170,14 @@ typedef struct TokenNames {
 // Something similar to Go's implementation: 
 // https://github.com/golang/go/blob/964639cc338db650ccadeafb7424bc8ebb2c0f6c/src/go/token/token.go
 // Dict{TokenNames, String} {
-typedef const struct AllTokens all_tokens[] = {
+struct AllTokens {
+    Token tok;
+    const char* key;
+};
+
+static const struct AllTokens all_tokens[] = {
     // Special Tokens
-    { EOF        , "EOF" },
+    { TOK_EOF        , "EOF" },
     { COMMENT    , "COMMENT" },
     { IDENTIFIER , "DENTIFIER" },
     { AT_SIGN    , "@" },
@@ -224,7 +229,7 @@ typedef const struct AllTokens all_tokens[] = {
 
     // Operators 
     { ADD            , "+" },
-    { SUB            , "- " },
+    { SUBTRACT       , "-" },
     { MUTLIPLICATION , "*" },
     { QUOTIENT       , "/" },
     { REM            , "%" },
@@ -245,9 +250,9 @@ typedef const struct AllTokens all_tokens[] = {
     { GREATER_THAN             , ">=" },
     { GREATER_THAN_OR_EQUAL_TO , "≥" },
     { LESS_THAN                , "<=" },
-    { LESS_THAN_OR_EQUAL_TO    : '≤' },
+    { LESS_THAN_OR_EQUAL_TO    , "≤" },
     { DOUBLEEQUALS             , "=="  },
-    { NOT_EQUALS               : '!=' },
+    { NOT_EQUALS               , "!="  },
     { NOT_EQUAL_TO             , "≠" },
     { IN                       , "in" },
     { ISA                      , "isa" },
@@ -301,7 +306,7 @@ typedef const struct AllTokens all_tokens[] = {
      // Declaration (we might/might not use this) },
     { DECLARATION , "::" }
     
-}; // custom Dict 'tokens'
+}; 
 
 
 // Returns the string corresponding to the Token tok. 
