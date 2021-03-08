@@ -4,7 +4,7 @@
 
 #include <hazel/internal/defines.h>
 #include <hazel/runtime/lexer/lexer.h> 
-#include <hazel/runtime/parser/tokens.h> 
+#include <hazel/runtime/tokens/tokens.h> 
 
 
 static inline bool ignore(char c) {

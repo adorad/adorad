@@ -1,7 +1,7 @@
 #ifndef HAZEL_LEXER
 #define HAZEL_LEXER 
 
-#include <hazel/runtime/parser/tokens.h>
+#include <hazel/runtime/tokens/tokens.h>
 
 typedef struct LexerDef {
     char c;

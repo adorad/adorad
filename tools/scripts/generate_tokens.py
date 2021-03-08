@@ -1,7 +1,7 @@
 # Generates tokens which are defined in hazel/grammar/Tokens
 # The files are (relative to the root) are:
-#   1. hazel/runtime/parser/token.h
-#   2. hazel/runtime/parser/token.c
+#   1. hazel/runtime/tokens/token.h
+#   2. hazel/runtime/tokens/token.c
 
 NT_OFFSET = 256 
 
@@ -94,7 +94,7 @@ TokenNames* token_init(int type, char* value);
 """
 
 
-def make_token_header(infile, outfile='hazel/runtime/parser/token.h'):
+def make_token_header(infile, outfile='hazel/runtime/tokens/token.h'):
     token_names, ERRORTOKEN, _ = load_tokens(infile)
 
     defines = [] 
@@ -116,7 +116,7 @@ token_c_template = """\
 
 
 #if 0
-#include "hazel/runtime/parser/tokens.h"
+#include "hazel/runtime/tokens/tokens.h"
 
 // Token Names
 const char* const TokenNames = {
@@ -166,7 +166,7 @@ def generate_chars_to_token(mapping, n=1):
     return ''.join(result)
 
 
-def make_token_c(infile, outfile='hazel/runtime/parser/token.c'):
+def make_token_c(infile, outfile='hazel/runtime/tokens/token.c'):
     tok_names, ERRORTOKEN, string_to_tok = load_tokens(infile)
     string_to_tok['<>'] = string_to_tok['!=']
     chars_to_token = {}
@@ -223,7 +223,7 @@ def ISEOF(x):
     return x == ENDMARKER
 '''
 
-def make_token_py(infile, outfile='hazel/runtime/parser/tokens.py'):
+def make_token_py(infile, outfile='hazel/runtime/tokens/tokens.py'):
     tok_names, ERRORTOKEN, string_to_tok = load_tokens(infile)
 
     constants = []
@@ -245,7 +245,7 @@ def make_token_py(infile, outfile='hazel/runtime/parser/tokens.py'):
         print("%s regenerated from %s" % (outfile, infile))
 
 
-def mainfunc(op, infile='hazel/runtime/parser', *args):
+def mainfunc(op, infile='hazel/runtime/tokens', *args):
     make = globals()['make_' + op]
     make(infile, *args)
 
