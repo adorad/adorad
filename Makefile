@@ -66,8 +66,13 @@ clean:
 .PHONY: clean
 
 # For test.c (internal usage only)
+test:
+	gcc test.c $(flags) -o test -I .
+	test 
+.PHONY: test 
+
 compiletest:
-	gcc test.c $(flags) -o test
+	gcc test.c $(flags) -o test -I .
 .PHONY: compiletest 
 
 runtest:

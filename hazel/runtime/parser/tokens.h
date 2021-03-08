@@ -170,14 +170,18 @@ typedef struct TokenNames {
 // Something similar to Go's implementation: 
 // https://github.com/golang/go/blob/964639cc338db650ccadeafb7424bc8ebb2c0f6c/src/go/token/token.go
 // Dict{TokenNames, String} {
+
+// nbytes in AllTokens = 24
 struct AllTokens {
-    Token tok;
+    Token tok; // nbytes = 16
     const char* key;
 };
 
+
+#define num_all_tokens 102
 static const struct AllTokens all_tokens[] = {
     // Special Tokens
-    { TOK_EOF        , "EOF" },
+    { TOK_EOF    , "EOF" },
     { COMMENT    , "COMMENT" },
     { IDENTIFIER , "DENTIFIER" },
     { AT_SIGN    , "@" },
@@ -308,9 +312,10 @@ static const struct AllTokens all_tokens[] = {
     
 }; 
 
+#define num_all_special_tokens 6
 static const struct AllTokens all_special_tokens[] = {
     // Special Tokens
-    { TOK_EOF        , "EOF" },
+    { TOK_EOF    , "EOF" },
     { COMMENT    , "COMMENT" },
     { IDENTIFIER , "DENTIFIER" },
     { AT_SIGN    , "@" },
@@ -318,6 +323,7 @@ static const struct AllTokens all_special_tokens[] = {
     { SEMICOLON  , ";" }
 }; 
 
+#define num_all_keywords 29
 static const struct AllTokens all_keywords[] = {
     // Keywords
     { BEGIN     , "begin" },
@@ -353,6 +359,7 @@ static const struct AllTokens all_keywords[] = {
     { WHILE     , "while" }
 }; 
 
+#define num_all_literals 7
 static const struct AllTokens all_literals[] = {
     // Literals
     { INTEGER , "INTEGER" },
@@ -364,6 +371,7 @@ static const struct AllTokens all_literals[] = {
     { FALSE   , "FALSE" }
 }; 
 
+#define num_all_operators 25
 static const struct AllTokens all_operators[] = {
     // Operators 
     { ADD            , "+" },
@@ -396,7 +404,7 @@ static const struct AllTokens all_operators[] = {
     { ISA                      , "isa" }
 }; 
 
-
+#define num_all_delimiters 6
 static const struct AllTokens all_delimiters[] = {
     // Delimiters
     { LBRACK  , "[" },
@@ -407,7 +415,7 @@ static const struct AllTokens all_delimiters[] = {
     { RPAREN  , ")" }
 }; 
 
-
+#define num_all_assignment_ops 12
 static const struct AllTokens all_assignment_ops[] = {
     // Assignments
     { EQUALS           , "="  },
@@ -424,7 +432,7 @@ static const struct AllTokens all_assignment_ops[] = {
     { APPROX           , "~" }
 }; 
 
-
+#define num_all_colons 4   // or (int)sizeof(all_colons)/sizeof(AllTokens) 
 static const struct AllTokens all_colons[] = {
     // Colons
     { COLON    , ":" },
@@ -463,6 +471,9 @@ static const struct AllTokens all_arrows[] = {
 //     return c;
 // }
 
+bool lexer_is_keyword() {
+
+}
 
 Token* token_init(int type, char* value);
 
