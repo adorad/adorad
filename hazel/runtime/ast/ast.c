@@ -1,3 +1,5 @@
+#include <stdlib.h> 
+
 #include <hazel/core/hdef.h>
 #include <hazel/runtime/ast/ast.h> 
 
