@@ -13,11 +13,11 @@ typedef struct AstDef {
     } type; 
 
     // AST_VARIABLE_DEFINITION
-    char* variable_definition_variable_name ; 
-    struct AstDef* variable_definition_value;
+    char* var_definition_var_name ; 
+    struct AstDef* var_definition_value;
 
     // AST_VARIABLE
-    char* variable_name; 
+    char* var_name; 
 
     // AST_FUNCTION_CALL
     char* function_call_name; 

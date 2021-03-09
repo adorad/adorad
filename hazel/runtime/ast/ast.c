@@ -8,11 +8,11 @@ Ast* ast_init(int type) {
     ast->type = type; 
     
     // AST_VARIABLE_DEFINITION
-    ast->variable_definition_variable_name = null; 
-    ast->variable_definition_value = null;
+    ast->var_definition_var_name = null; 
+    ast->var_definition_value = null;
 
     // AST_VARIABLE
-    ast->variable_name = null; 
+    ast->var_name = null; 
 
     // AST_FUNCTION_CALL
     ast->function_call_name = null; 
