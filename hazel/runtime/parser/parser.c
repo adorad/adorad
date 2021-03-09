@@ -12,7 +12,7 @@ Parser* parser_init(Lexer* lexer) {
     return parser; 
 }
 
-void parser_eat(Parser* parser, int tok_type) {
+void parser_chomp(Parser* parser, int tok_type) {
     if(parser->curr_tok->type == tok_type) {
         parser->curr_tok = lexer_get_next_token(parser->lexer);
     } else {
@@ -62,7 +62,7 @@ Ast* parser_parser_stmts(Parser* parser) {
     // SEMICOLON is the statement delimiter
     // TODO(jasmcaus) Remove this need.
     while(parser->curr_tok->type == SEMICOLON) {
-        parser_eat(parser, SEMICOLON);
+        parser_chomp(parser, SEMICOLON);
 
         Ast* ast_statement = parser_parse_stmt(parser);
         compound->compound_size += 1;
@@ -94,7 +94,7 @@ Ast* parser_parse_function_call(Parser* parser) {
 
 Ast* parser_parse_variable(Parser* parser) {
     char* tok_value = parser->curr_tok->value; 
-    parser_eat(parser, TOK_ID); 
+    parser_chomp(parser, TOK_ID); 
 
     if(parser->curr_tok->type == LPAREN)
         return parser_parse_function_call(parser); 
@@ -106,10 +106,10 @@ Ast* parser_parse_variable(Parser* parser) {
 }
 
 Ast* parser_parse_variable_definition(Parser* parser) {
-    parser_eat(parser, TOK_ID); // var
+    parser_chomp(parser, TOK_ID); // var
     char* var_definition_var_name = parser->curr_tok->value;
-    parser_eat(parser, TOK_ID); // variable name 
-    parser_eat(parser, EQUALS); // ="
+    parser_chomp(parser, TOK_ID); // variable name 
+    parser_chomp(parser, EQUALS); // ="
     Ast* var_definition_value = parser_parse_expression(parser); 
 
     Ast* var_definition = ast_init(AST_VARIABLE_DEFINITION);
