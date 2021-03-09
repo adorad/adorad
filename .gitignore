@@ -12,6 +12,7 @@ out/*
 main.c
 test.c
 test.py
+g.bat 
 
 # PyPi 
 dist/*
