@@ -74,8 +74,10 @@ Ast* parser_parser_stmts(Parser* parser) {
 }
 // Parse mathematical expressions
 // Eg: 1 + 2 * 3
-Ast* parser_parse_expression(Parser* parse) {
-
+Ast* parser_parse_expression(Parser* parser) {
+    switch(parser->curr_tok->type) {
+        case STRING: return parser_parse_string(parser);
+    }
 }
 // Parse things that are multiplied
 // Eg: 1 * 2 * (3+4)
@@ -118,5 +120,9 @@ Ast* parser_parse_variable_definition(Parser* parser) {
 }
 
 Ast* parser_parse_string(Parser* parser) {
-
+    Ast* ast_str = ast_init(STRING); 
+    ast_str->string_value = parser->curr_tok->value; 
+    
+    parser_chomp(parser, STRING); 
+    return ast_str; 
 }
