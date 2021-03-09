@@ -15,7 +15,7 @@
 #endif
 
 // bool is a basic type in C++ and not C
-// We could just have used <stdbool.h> but I prefer this -- smaller binary, easily maintanable
+// We could just have used <stdbool.h> but I prefer this as it results in a smaller binary
 #ifndef __cplusplus
     typedef unsigned char bool;
     static const bool false = 0;
