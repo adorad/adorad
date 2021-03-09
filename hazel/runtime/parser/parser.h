@@ -20,5 +20,18 @@ void parser_eat(Parser* parser, int tok_type);
 // It will return the whole AST tree of the entire source code when parsed. 
 Ast* parser_parse(Parser* parser); 
 
+// Parse a single statement
+Ast* parser_parse_stmt(Parser* parser);
+// Parse multiple statements
+Ast* parser_parser_stmts(Parser* parser); 
+// Parse mathematical expressions
+// Eg: 1 + 2 * 3
+Ast* parser_parse_expression(Parser* parse); 
+// Parse things that are multiplied
+// Eg: 1 * 2 * (3+4)
+Ast* parser_parse_factor(Parser* parser); 
+// Parse things that are added
+// Eg: 1 + 2 + (3*4)
+Ast* parser_parse_term(Parser* parser); 
 
 #endif // HAZEL_PARSER 
