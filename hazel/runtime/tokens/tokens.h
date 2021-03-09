@@ -181,12 +181,12 @@ struct AllTokens {
     const char* key;
 };
 
-#define num_all_tokens 103
+#define num_all_tokens (int)sizeof(all_tokens)/sizeof(AllTokens)
 static const struct AllTokens all_tokens[] = {
     // Special Tokens
     { TOK_EOF    , "EOF" },
     { COMMENT    , "COMMENT" },
-    { IDENTIFIER , "DENTIFIER" },
+    { IDENTIFIER , "IDENTIFIER" },
     { AT_SIGN    , "@" },
     { COMMA      , "," },
     { SEMICOLON  , ";" },
@@ -316,18 +316,18 @@ static const struct AllTokens all_tokens[] = {
     
 }; 
 
-#define num_all_special_tokens 6
+#define num_all_special_tokens (int)sizeof(all_special_tokens)/sizeof(AllTokens)
 static const struct AllTokens all_special_tokens[] = {
     // Special Tokens
     { TOK_EOF    , "EOF" },
     { COMMENT    , "COMMENT" },
-    { IDENTIFIER , "DENTIFIER" },
+    { IDENTIFIER , "IDENTIFIER" },
     { AT_SIGN    , "@" },
     { COMMA      , "," },
     { SEMICOLON  , ";" }
 }; 
 
-#define num_all_keywords 30
+#define num_all_keywords (int)sizeof(all_keywords)/sizeof(AllTokens)
 static const struct AllTokens all_keywords[] = {
     // Keywords
     { BEGIN     , "begin" },
@@ -364,7 +364,7 @@ static const struct AllTokens all_keywords[] = {
     { WHILE     , "while" }
 }; 
 
-#define num_all_literals 7
+#define num_all_literals (int)sizeof(all_literals)/sizeof(AllTokens)
 static const struct AllTokens all_literals[] = {
     // Literals
     { INTEGER , "INTEGER" },
@@ -376,7 +376,7 @@ static const struct AllTokens all_literals[] = {
     { FALSE   , "FALSE" }
 }; 
 
-#define num_all_operators 25
+#define num_all_operators (int)sizeof(all_operators)/sizeof(AllTokens)
 static const struct AllTokens all_operators[] = {
     // Operators 
     { ADD            , "+" },
@@ -409,7 +409,7 @@ static const struct AllTokens all_operators[] = {
     { ISA                      , "isa" }
 }; 
 
-#define num_all_delimiters 6
+#define num_all_delimiters (int)sizeof(all_delimiters)/sizeof(AllTokens)
 static const struct AllTokens all_delimiters[] = {
     // Delimiters
     { LBRACK  , "[" },
@@ -420,7 +420,7 @@ static const struct AllTokens all_delimiters[] = {
     { RPAREN  , ")" }
 }; 
 
-#define num_all_assignment_ops 12
+#define num_all_assignment_ops (int)sizeof(all_assignment_ops)/sizeof(AllTokens)
 static const struct AllTokens all_assignment_ops[] = {
     // Assignments
     { EQUALS           , "="  },
@@ -437,7 +437,7 @@ static const struct AllTokens all_assignment_ops[] = {
     { APPROX           , "~" }
 }; 
 
-#define num_all_colons 4   // or (int)sizeof(all_colons)/sizeof(AllTokens) 
+#define num_all_colons (int)sizeof(all_colons)/sizeof(AllTokens) 
 static const struct AllTokens all_colons[] = {
     // Colons
     { COLON    , ":" },
@@ -446,6 +446,7 @@ static const struct AllTokens all_colons[] = {
     { ELLIPSIS , "..." },
 }; 
 
+#define num_all_arrows (int)sizeof(all_arrows)/sizeof(AllTokens)
 static const struct AllTokens all_arrows[] = {
     // Arrows },
     { PAIR_ARROWS                , "=>" },
