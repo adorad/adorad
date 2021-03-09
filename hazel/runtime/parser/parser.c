@@ -88,9 +88,21 @@ Ast* parser_parse_term(Parser* parser) {
 
 }
 
-Ast* parser_parse_function_call(Parser* parser);
-Ast* parser_parse_variable(Parser* parser) {
+Ast* parser_parse_function_call(Parser* parser) {
 
+}
+
+Ast* parser_parse_variable(Parser* parser) {
+    char* tok_value = parser->curr_tok->value; 
+    parser_eat(parser, TOK_ID); 
+
+    if(parser->curr_tok->type == LPAREN)
+        return parser_parse_function_call(parser); 
+    
+    Ast* ast_var = ast_init(AST_VARIABLE); 
+    ast_var->var_name = tok_value; 
+
+    return ast_var; 
 }
 
 Ast* parser_parse_variable_definition(Parser* parser) {
