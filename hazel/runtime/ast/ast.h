@@ -1,6 +1,8 @@
 #ifndef HAZEL_AST
 #define HAZEL_AST 
 
+#include <hazel/core/defines.h> 
+
 typedef struct AstDef {
     enum {
         AST_VARIABLE_DEFINITION, 
@@ -19,7 +21,7 @@ typedef struct AstDef {
     // AST_FUNCTION_CALL
     char* function_call_name; 
     struct AstDef** function_call_args; 
-    size_t function_call_args_size; 
+    Ull function_call_args_size; 
 
     // AST_STRING
     char* string_value; 

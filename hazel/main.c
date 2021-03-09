@@ -3,5 +3,5 @@
 #include <hazel/hazel.h>
 
 int main() {
-    printf(len(all_arrows));
+    printf("%d", 1);
 }
