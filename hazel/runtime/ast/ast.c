@@ -1,4 +1,4 @@
-#include <hazel/core/defines.h>
+#include <hazel/core/hdef.h>
 #include <hazel/runtime/ast/ast.h> 
 
 Ast* ast_init(int type) {

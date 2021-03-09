@@ -1,7 +1,7 @@
 #ifndef HAZEL_AST
 #define HAZEL_AST 
 
-#include <hazel/core/defines.h> 
+#include <hazel/core/hdef.h> 
 
 typedef struct AstDef {
     enum {
