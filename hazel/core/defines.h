@@ -1,6 +1,6 @@
 #pragma once 
 
-#define null (void*)0
+#define null     (void*)0
 #define nullchar '\0'
 
 // The same thing as size_t 
