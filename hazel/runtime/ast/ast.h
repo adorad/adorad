@@ -8,7 +8,8 @@ typedef struct AstDef {
         AST_VARIABLE_DEFINITION, 
         AST_VARIABLE, 
         AST_FUNCTION_CALL, 
-        AST_STRING
+        AST_STRING, 
+        AST_COMPOUND    // List of AST nodes 
     } type; 
 
     // AST_VARIABLE_DEFINITION
@@ -25,6 +26,10 @@ typedef struct AstDef {
 
     // AST_STRING
     char* string_value; 
+
+    // AST_COMPOUND
+    struct AstDef** compound_value; 
+    Ull compound_size; 
 } Ast;
 
 #endif // HAZEL_AST 

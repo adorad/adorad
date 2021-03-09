@@ -22,5 +22,8 @@ Ast* ast_init(int type) {
     // AST_STRING
     ast->string_value = null; 
 
+    // AST_COMPOUND
+    ast->compound_value = null; 
+    ast->compound_size = 0; 
     return ast; 
 }
