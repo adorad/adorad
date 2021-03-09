@@ -29,7 +29,7 @@ Lexer* lexer_init(char* contents) {
 }
 
 void lexer_advance(Lexer* lexer) {
-    if(lexer->c != '\0' && lexer->i < strlen(lexer->contents)) {
+    if(lexer->c != nullchar && lexer->i < strlen(lexer->contents)) {
         lexer->i += 1;
         lexer->c = lexer->contents[lexer->i];
     }
@@ -48,7 +48,7 @@ void lexer_skip_whitespace(Lexer* lexer) {
 
 Token* lexer_collect_token_id(Lexer* lexer) {
     char* value = calloc(1, sizeof(char));
-    value[0] = '\0'; // NULL 
+    value[0] = nullchar; 
 
     // While Alphanumeric 
     while(isalnum(lexer->c)) {
@@ -69,7 +69,7 @@ Token* lexer_collect_string(Lexer* lexer) {
     lexer_advance(lexer);
 
     char* value = calloc(1, sizeof(char));
-    value[0] = '\0'; // NULL 
+    value[0] = nullchar; 
 
     // Find the closing quote 
     while(lexer->c != '"') {
@@ -91,12 +91,12 @@ Token* lexer_collect_string(Lexer* lexer) {
 char* lexer_get_curr_char_as_string(Lexer* lexer) {
     char* str = calloc(2, sizeof(char));
     str[0] = lexer->c;
-    str[1] = '\0';
+    str[1] = nullchar;
 }
 
 
 Token* lexer_get_next_token(Lexer* lexer) {
-    while(lexer->c != '\0' && lexer->i < strlen(lexer->contents)) {
+    while(lexer->c != nullchar && lexer->i < strlen(lexer->contents)) {
         if(lexer->c == ' ' || lexer->c == 10) 
             lexer_skip_whitespace(lexer);
 
