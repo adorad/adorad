@@ -21,3 +21,13 @@
     static const bool false = 0;
     static const bool true = 1;
 #endif 
+
+// #ifndef __cplusplus
+//     #define bool   _Bool
+//     #define true   1
+//     #define false  0
+// #else
+    /* Supporting _Bool in C++ is a GCC extension.  */
+    // #define _Bool	bool
+// #endif // __cplusplus 
+
