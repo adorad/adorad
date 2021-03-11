@@ -1,6 +1,5 @@
 #include <stdlib.h> 
 #include <string.h>
-#include <ctype.h> 
 
 #include <hazel/core/hdef.h>
 #include <hazel/runtime/lexer/lexer.h> 
