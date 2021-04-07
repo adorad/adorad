@@ -62,6 +62,8 @@ Using a script `hello.hazel`:
 print("Hello World")
 ```
 
+Running on the terminal is as easy as:
+
 ```shell
 $ hazel hello.hzl
 Hello World
