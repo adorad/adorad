@@ -42,6 +42,57 @@
 - C backend
 
 
+## Interactive Shell
+
+```shell
+$ hazel
+    Hazel Language 0.0.1 (Apr 8 2021 02:39:23)
+    GCC version: 9.3.0 on linux
+    All engines are a go!
+
+hazel> print("Hello World")
+Hello World
+hazel> exit
+    Goodbye! Set the world on fire!
+```
+
+Using a script `hello.hazel`:
+
+```ruby
+print("Hello World")
+```
+
+```shell
+$ hazel hello.hzl
+Hello World
+```
+
+## Compiler
+
+```shell
+$ chaos -c hello.kaos -o hello
+Starting the compiler engine...
+Compiling Hazel code into build/hello.c
+Compiling the C code into machine code...
+Cleaning up the temporary files...
+
+Finished compiling.
+
+Binary is ready here: build/hello
+$ build/hello
+hello world
+```
+
+Run `hazel --help` to see more options.
+
+## Uninstall Hazel
+
+You can uninstall the `hazel` binary and its C headers with:
+
+```shell
+make uninstall
+```
+
 ## Stability guarantee and future changes
 
 Despite being at an early development stage, the Hazel language is relatively stable and has backwards compatibility 
