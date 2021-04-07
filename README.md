@@ -112,7 +112,7 @@ Our guarantee: Hazel is always going to be lightweight, portable and *extremely*
 
 ### Linux, macOS, Windows, *BSD, Solaris, WSL, Android, Raspbian
 
-```bash
+```shell
 git clone https://github.com/hazel-lang/Hazel
 cd Hazel
 make
@@ -127,9 +127,10 @@ Now you can try `./hazel run examples/hello_world.hzl` (`hazel.exe` on Windows).
 
 Hazel is constantly being updated. To update Hazel, simply run:
 
-```bash
+```shell
 hazel up
 ```
+
 
 ### C compiler
 
@@ -139,6 +140,7 @@ installed.
 However, if none is found when running `make` on Linux or Windows, TCC is downloaded as the default C backend.
 It's very lightweight (several MB) so this shouldn't take too long.
 
+
 ### Symlinking
 
 NB: it is *highly recommended*, that you put Hazel on your PATH. That saves you the effort to type in the full path to your 
@@ -146,7 +148,7 @@ Hazel executable every time. Hazel provides a convenience `hazel symlink` comman
 
 On Unix systems, it creates a `/usr/local/bin/Hazel` symlink to your executable. To do that, run:
 
-```bash
+```shell
 sudo ./hazel symlink
 ```
 
@@ -188,28 +190,29 @@ docker run --rm -it vlang:latest
 
 </details> -->
 
+
 ### Testing and running the examples
 
 Make sure Hazel can compile itself:
 
-```bash
+```shell
 hazel self
 ```
 
-```bash
+```shell
 $ hazel
-Hazel 0.1.x
-Use Ctrl-C or `exit` to exit
+    Hazel Language 0.0.1 (Apr 8 2021 02:39:23)
+    GCC version: 9.3.0 on linux
+    All engines are a go!
 
->>> print('Hello world')
+hazel> print('Hello world')
 Hello world
->>>
 ```
 
 ```bash
 cd examples
 hazel hello_world.hzl && ./hello_world    # or simply
-hazel run hello_world.hzl                 # this builds the program and runs it right away
+hazel  hello_world.hzl                 # this builds the program and runs it right away
 ```
 
 ## Hazel sync
