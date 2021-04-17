@@ -23,9 +23,6 @@
 
 <!-- This is the repository for Hazel development code. The language design is based very similarly to C++, Lua and Julia. -->
 
-
-Can use https://github.com/SofiaCPP/IPL
-
 ## Key Features of Hazel
 
 - Simplicity: the language can be learned in less than an hour
