@@ -11,7 +11,6 @@
 
 </div>
 <div align="center">
- Can use https://github.com/SofiaCPP/IPL
 <!--
 [![Build Status][WorkflowBadge]][WorkflowUrl]
 -->
@@ -23,6 +22,9 @@
 </div>
 
 <!-- This is the repository for Hazel development code. The language design is based very similarly to C++, Lua and Julia. -->
+
+
+Can use https://github.com/SofiaCPP/IPL
 
 ## Key Features of Hazel
 
