@@ -14,8 +14,24 @@ static inline bool isletter(char c) {
     return ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c == '_'));
 }
 
-static inline bool isnum(char c) {
+static inline bool isUpperCase(char c) {
+    return (c>='A' && c<='Z');
+}
+
+static inline bool isLowerCase(char c) {
+    return (c>='a' && c<='z');
+}
+
+static inline bool isDigit(char c) {
     return ((c >= '0' && c <= '9'));
+}
+
+static inline bool isNewLine(char c) {
+    return c == '\n';
+}
+
+static inline bool isEnd(char c) {
+    return c == '\0';
 }
 
 Lexer* lexer_init(char* contents) {
