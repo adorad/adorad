@@ -91,7 +91,6 @@ Ast* parser_parse_term(Parser* parser) {
 }
 
 Ast* parser_parse_function_call(Parser* parser) {
-
 }
 
 Ast* parser_parse_variable(Parser* parser) {
