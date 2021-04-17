@@ -55,7 +55,7 @@ hazel> exit
     Goodbye! Set the world on fire!
 ```
 
-Using a script `hello.hazel`:
+Using a script `hello.hzl`:
 
 ```ruby
 print("Hello World")
@@ -71,7 +71,7 @@ Hello World
 ## Compiler
 
 ```shell
-$ chaos -c hello.kaos -o hello
+$ hazel compile hello.hzl -o hello
 Starting the compiler engine...
 Compiling Hazel code into build/hello.c
 Compiling the C code into machine code...
