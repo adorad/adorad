@@ -9,6 +9,7 @@ python/build/*
 docs/build/*
 build/*
 out/*
+test/*
 main.c
 test.c
 test.py

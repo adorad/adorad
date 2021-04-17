@@ -8,12 +8,14 @@ Parser* parser_init(Lexer* lexer) {
     Parser* parser = calloc(1, sizeof(struct ParserDef));
     parser->lexer = lexer; 
     parser->curr_tok = lexer_get_next_token(lexer);
+    parser->prev_tok = parser->curr_tok;
 
     return parser; 
 }
 
 void parser_chomp(Parser* parser, int tok_type) {
     if(parser->curr_tok->type == tok_type) {
+        parser->prev_tok = parser->curr_tok;
         parser->curr_tok = lexer_get_next_token(parser->lexer);
     } else {
         printf("Unexpected token `%s` of type `%d`", parser->curr_tok->value, parser->curr_tok->type);
@@ -38,17 +40,14 @@ Ast* parser_parse_id(Parser* parser) {
 
 // Parse a single statement
 Ast* parser_parse_stmt(Parser* parser) {
-    switch (parser->curr_tok->type)
-    {
-    case TOK_ID: {
-        return parser_parse_id(parser);
-        break;
+    switch (parser->curr_tok->type) {
+        case TOK_ID: {
+            return parser_parse_id(parser);
+        }
     }
-    
-    default:
-        break;
-    }
+    return ast_init(AST_NOOP);
 }
+
 // Parse multiple statements
 Ast* parser_parser_stmts(Parser* parser) {
     // Create a compound-style AST node 
@@ -58,6 +57,7 @@ Ast* parser_parser_stmts(Parser* parser) {
     // Parse first statement
     Ast* ast_statement = parser_parse_stmt(parser);
     compound->compound_value[0] = ast_statement; 
+    compound->compound_size += 1;
 
     // SEMICOLON is the statement delimiter
     // TODO(jasmcaus) Remove this need.

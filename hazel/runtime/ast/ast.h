@@ -6,10 +6,12 @@
 typedef struct AstDef {
     enum {
         AST_VARIABLE_DEFINITION, 
+        AST_FUNC_DEFINITION, 
         AST_VARIABLE, 
-        AST_FUNCTION_CALL, 
+        AST_FUNC_CALL, 
         AST_STRING, 
-        AST_COMPOUND    // List of AST nodes 
+        AST_COMPOUND,
+        AST_NOOP      // List of AST nodes 
     } type; 
 
     // AST_VARIABLE_DEFINITION
