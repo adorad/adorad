@@ -9,8 +9,8 @@ typedef struct LexerStruct {
     Ull contents_length; 
 
     char curr_char; 
-    unsigned int char_idx; 
-    unsigned int line_no; 
+    unsigned int char_idx; // the index of the token
+    unsigned int line_no;  // the line number in the source where the token occured
 } Lexer; 
 
 
