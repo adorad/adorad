@@ -12,3 +12,18 @@ Token* token_init(int type, char* value) {
     return token;
 }    
 
+Token* token_clone(Token* token) {
+    return token_init(token->type, token->value); 
+}
+
+Token* token_free(Token* token) {
+    free(token->value); // Important because we allocate separately for `token->value`
+    free(token);
+}
+
+char* token_to_string(Token* token) {
+    char* str = calloc(strlen(token->value)+1, sizeof(char));
+    strcopy(str, token->value);
+
+    return str;
+}
