@@ -3,9 +3,9 @@
 
 // Data Types used in the Hazel Programming Language
 typedef enum Hazel_Types {
+    Any, 
     Null, 
     Bool, 
-    Any, 
     Byte, 
     String, 
     Rune, 
@@ -24,7 +24,7 @@ typedef enum Hazel_Types {
     Unsigned64, 
     // Unsigned128, // Will be supported in the future
 
-    // Tensor-related typed
+    // Tensor-related types
     TensorInt16,
     TensorInt32, 
     TensorInt64, 
