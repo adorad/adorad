@@ -16,7 +16,7 @@ Token* token_clone(Token* token) {
     return token_init(token->type, token->value); 
 }
 
-Token* token_free(Token* token) {
+void token_free(Token* token) {
     free(token->value); // Important because we allocate separately for `token->value`
     free(token);
 }

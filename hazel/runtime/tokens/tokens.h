@@ -168,7 +168,7 @@ typedef struct TokenNames {
 
 Token* token_init(int type, char* value);
 Token* token_clone(Token* token);
-Token* token_free(Token* token);
+void token_free(Token* token);
 char* token_to_string(Token* token);
 
 // Use a custom type here: 
