@@ -166,6 +166,11 @@ typedef struct TokenNames {
 } Token; 
 
 
+Token* token_init(int type, char* value);
+Token* token_clone(Token* token);
+Token* token_free(Token* token);
+char* token_to_string(Token* token);
+
 // Use a custom type here: 
 // Like a Dict{TokenNames, String} mapping
 // Useful only when a bootstrapped compiler is available
@@ -175,10 +180,10 @@ typedef struct TokenNames {
 // Dict{TokenNames, String} {
 
 // nbytes in AllTokens = 24
-struct AllTokens {
-    Token tok; // nbytes = 16
-    const char* key;
-};
+// struct AllTokens {
+//     Token tok; // nbytes = 16
+//     const char* key;
+// };
 
 // #define num_all_tokens (int)sizeof(all_tokens)/sizeof(AllTokens)
 // static const struct AllTokens all_tokens[] = {
@@ -475,8 +480,6 @@ struct AllTokens {
 //     }
 //     return c;
 // }
-
-Token* token_init(int type, char* value);
 
 
 #endif // HAZEL_TOKEN 
