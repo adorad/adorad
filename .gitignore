@@ -10,7 +10,6 @@ docs/build/*
 build/*
 out/*
 test/*
-main.c
 test.c
 test.py
 g.bat 
