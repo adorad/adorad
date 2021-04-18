@@ -28,7 +28,7 @@ void lexer_skip_block_comment(Lexer* lexer);
 
 Token* lexer_collect_string(Lexer* lexer); 
 Token* lexer_collect_char(Lexer* lexer); 
-Token* lexer_collect_number(Lexer* lexer); 
+Token* lexer_collect_digit(Lexer* lexer); 
 Token* lexer_collect_token_id(Lexer* lexer); 
 
 char* lexer_collect_charstr(Lexer* lexer);
