@@ -478,4 +478,5 @@ struct AllTokens {
 
 Token* token_init(int type, char* value);
 
+
 #endif // HAZEL_TOKEN 
