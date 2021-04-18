@@ -1,3 +1,6 @@
+#ifndef _HAZEL_TYPE_H
+#define _HAZEL_TYPE_H
+
 // A minimal rewrite of C's ctype.h
 
 static inline bool ignore(char c) {
@@ -39,3 +42,5 @@ static inline bool isNewLine(char c) {
 static inline bool isEnd(char c) {
     return c == '\0';
 }
+
+#endif // _HAZEL_TYPE_H
