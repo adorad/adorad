@@ -56,8 +56,8 @@ extern "C" {
 #endif 
 
 // A signed sizeof is more useful 
-#ifndef hazel_sizeof
-    #define hazel_sizeof(x)     (ptrdiff_t)(sizeof(x))
+#ifndef cstl_sizeof
+    #define cstl_sizeof(x)     (ptrdiff_t)(sizeof(x))
 #endif 
 
 // Statics!
