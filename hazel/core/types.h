@@ -199,8 +199,6 @@ typedef Int32 Rune;
 CSTL_CHECK(sizeof(UIntptr) == sizeof(Intptr));
 
 
-
-
 #if defined(__cplusplus)
 }
 #endif
