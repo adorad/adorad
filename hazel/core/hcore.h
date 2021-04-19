@@ -381,6 +381,47 @@ typedef Int32 Rune;
     #endif 
 #endif 
 
+// Force Inline
+#ifndef (force_inline)
+    #if defined(_MSC_VER)
+        #if _MSC_VER < 1300
+            #define force_inline
+        #else 
+            #define force_inline __forceinline
+        #endif 
+    #else 
+        #define force_inline    __attribute__ ((__always_inline__))
+    #endif 
+#endif 
+
+// No Inline 
+#ifndef (no_inline)
+    #if defined(_MSC_VER)
+        #define no_inline   __declspec(noinline)
+    #else 
+        #define no_inline   __attribute__ ((noinline))
+    #endif 
+#endif 
+
+
+// Cast 
+#ifndef cast 
+    #define cast(Type)  (Type)
+#endif 
+
+// A signed sizeof is more useful 
+#ifndef hazel_sizeof
+    #define hazel_sizeof(x)     (ptrdiff_t)(sizeof(x))
+#endif 
+
+// Statics!
+// static means 3-4 different things in C/C++!!
+#ifndef HAZEL_GLOBAL
+    #define HAZEL_GLOBAL       static // Global Variables
+    #define HAZEL_INTERNAL     static // Internal Linkage
+    #define HAZEL_LOCALPERSIST static // Local Persisting Variables  
+#endif 
+
 
 #ifndef(__cplusplus)
 }
