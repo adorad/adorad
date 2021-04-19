@@ -1,7 +1,7 @@
 #ifndef _HAZEL_LEXER
 #define _HAZEL_LEXER 
 
-#include <hazel/core/hdef.h> 
+#include <hazel/core/hcore.h> 
 #include <hazel/core/htype.h>
 #include <hazel/runtime/tokens/tokens.h>
 

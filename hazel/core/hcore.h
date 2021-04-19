@@ -21,7 +21,7 @@ CREDITS
 	Written Jason Dsouza
 */
 
-#if defined(__cplusplus)
+#ifndef(__cplusplus)
 extern "C" {
 #endif
 
@@ -206,7 +206,7 @@ extern "C" {
     #include <sys/types.h>
     #include <sys/socket.h>
     #include <sys/uio.h>
-    
+
     #define lseek64 lseek
     #define sendfile(out, in, offset, count) sendfile(out, in, offset, count, NULL, NULL, 0)
 #endif
@@ -215,8 +215,75 @@ extern "C" {
     #include <semaphore.h>
 #endif
 
+// Base Types (similar to the Types in the Hazel Language) ==========================================
+#if defined(HAZEL_COMPILER_MSVC)
+    #if _MSVC_VER < 1300 
+        typedef unsigned char     UInt8;
+        typedef signed char       Int8;
+        typedef unsigned short    UInt16;
+        typedef signed short      Int16;
+        typedef unsigned int      UInt32;
+        typedef signed int        Int32;
+    #else 
+        typedef unsigned __int8   UInt8;
+        typedef signed __int8     Int8;
+        typedef unsigned __int16  UInt16;
+        typedef signed __int16    Int16;
+        typedef unsigned __int32  UInt32;
+        typedef signed __int32    Int32;
+    #endif 
 
-#if defined(__cplusplus)
+    typedef unsigned __int64  UInt64; 
+    typedef signed __int64    Int64;
+
+#else 
+    #include <stdint.h>
+    typedef uint8_t   UInt8; 
+    typedef int8_t    Int8; 
+    typedef uint16_t  UInt16; 
+    typedef int16_t   Int16; 
+    typedef uint32_t  UInt32; 
+    typedef int32_t   Int32; 
+    typedef uint64_t  UInt64; 
+    typedef int64_t   Int64; 
+#endif // Hazel Basic Types 
+
+
+// More Useful Types 
+#define null     (void*)0
+#define nullchar '\0'
+
+// The same thing as size_t 
+#ifndef _Ull_DEFINED
+    #define _Ull_DEFINED
+    #undef Ull
+    #ifdef _WIN64
+        typedef unsigned __int64 Ull;
+    #else
+        typedef unsigned int Ull;
+    #endif //_WIN64
+#endif
+
+// bool is a basic type in C++ and not C
+// We could just have used <stdbool.h> but I prefer this as it results in a smaller binary
+#ifndef __cplusplus
+    typedef unsigned char bool;
+    static const bool false = 0;
+    static const bool true = 1;
+#endif 
+
+// #ifndef __cplusplus
+//     #define bool   _Bool
+//     #define true   1
+//     #define false  0
+// #else
+    /* Supporting _Bool in C++ is a GCC extension.  */
+    // #define _Bool	bool
+// #endif // __cplusplus 
+
+
+
+#ifndef(__cplusplus)
 }
 #endif
 

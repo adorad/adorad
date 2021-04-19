@@ -2,7 +2,7 @@
 #define HAZEL_TOKEN 
 
 #include <stdlib.h> 
-#include <hazel/core/hdef.h> 
+#include <hazel/core/hcore.h> 
 
 // token.h defines constants representing the lexical tokens of the Hazel programming language and basic operations on 
 // tokens (printing, predicates).
