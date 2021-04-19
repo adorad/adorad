@@ -115,21 +115,6 @@ typedef Int32 Rune;
 #define Float64_MAX 1.7976931348623157e+308
 
 
-// More Useful Types 
-#ifndef null 
-    #if defined(__cplusplus)
-        #if __cplusplus >= 201103L
-            #define null    nullptr 
-        #else 
-            #define null    0
-        #endif 
-    #else 
-        #define null    (void*)0
-    #endif
-#endif 
-
-#define nullchar '\0'
-
 // The same thing as size_t 
 #ifndef _Ull_DEFINED
     #define _Ull_DEFINED
@@ -154,6 +139,23 @@ typedef Int32 Rune;
     #endif //_WIN64
 #endif
 
+
+// More Useful Types 
+#ifndef null 
+    #if defined(__cplusplus)
+        #if __cplusplus >= 201103L
+            #define null    nullptr 
+        #else 
+            #define null    0
+        #endif 
+    #else 
+        #define null    (void*)0
+    #endif
+#endif 
+
+#define nullchar '\0' 
+
+
 // bool is a basic type in C++ and not C
 // We could just have used <stdbool.h> but I prefer this as it results in a smaller binary
 #ifndef __cplusplus
@@ -170,6 +172,34 @@ typedef Int32 Rune;
     /* Supporting _Bool in C++ is a GCC extension.  */
     // #define _Bool	bool
 // #endif // __cplusplus 
+
+
+// (U)Intptr is only here for semantic reasons really as this library will only support 32/64 bit OSes.
+// Are there any modern OSes (not 16 bit) where Intptr != ptrdiff_t/Ll ?
+#if defined(_WIN64)
+    typedef signed   __int64    Intptr;
+    typedef unsigned __int64    UIntptr;
+#elif defined(_WIN32)
+    // To mark types changing their size, e.g. Intptr
+    #ifndef _W64
+        #if !defined(__midl) && (defined(_X86_) || defined(_M_IX86)) && _MSC_VER >= 1300
+            #define _W64 __w64
+        #else
+            #define _W64
+        #endif
+    #endif
+
+    typedef _W64 signed int     Intptr;
+    typedef _W64 unsigned int   UIntptr;
+#else
+    typedef  uintptr_t   UIntptr;
+    typedef  intptr_t    Intptr;
+#endif
+
+CSTL_CHECK(sizeof(UIntptr) == sizeof(Intptr));
+
+
+
 
 #if defined(__cplusplus)
 }
