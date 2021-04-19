@@ -359,6 +359,17 @@ typedef Int32 Rune;
 // #endif // __cplusplus 
 
 
+// Inline 
+#ifndef(__cplusplus) 
+    #if defined(_MSC_VER) && _MSC_VER <= 1800 
+        #define inline  __inline
+    #elif !defined(__STDC_VERSION__)
+        #define inline __inline__
+    #else 
+        #define inline 
+    #endif 
+#endif 
+
 
 #ifndef(__cplusplus)
 }
