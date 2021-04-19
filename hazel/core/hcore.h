@@ -118,11 +118,7 @@ extern "C" {
 #endif // HAZEL_CPU_...
 
 
-////////////////////////////////////////////////////////////////
-//
-// Headers
-//
-//
+// Headers ==========================================
 
 #if defined(_WIN32) && !defined(__MINGW32__)
     #ifndef _CRT_SECURE_NO_WARNINGS
