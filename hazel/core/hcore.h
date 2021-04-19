@@ -327,7 +327,18 @@ typedef Int32 Rune;
 
 
 // More Useful Types 
-#define null     (void*)0
+#ifndef null 
+    #if defined(__cplusplus)
+        #if __cplusplus >= 201103L
+            #define null    nullptr 
+        #else 
+            #define null    0
+        #endif 
+    
+    #else 
+        #define null    (void*)0
+#endif 
+
 #define nullchar '\0'
 
 // The same thing as size_t 
