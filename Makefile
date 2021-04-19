@@ -64,7 +64,7 @@ run:
 .PHONY: run
 
 release:
-	$(CC) $(objects) $(flags) -o $(exec) -I .
+	echo $(CC) $(objects) $(flags) -o $(exec) -I .
 
 clean:
 	rm $(exec).exe
