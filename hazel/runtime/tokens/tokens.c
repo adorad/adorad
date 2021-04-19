@@ -7,7 +7,7 @@ Token* token_init(int type, char* value) {
     Token* token = calloc(1, sizeof(Token));
     token->type = type; 
     token->value = calloc(strlen(value)+1, sizeof(char)); 
-    strcopy(token->value, value);
+    strcpy(token->value, value);
 
     return token;
 }    
@@ -23,7 +23,7 @@ void token_free(Token* token) {
 
 char* token_to_string(Token* token) {
     char* str = calloc(strlen(token->value)+1, sizeof(char));
-    strcopy(str, token->value);
+    strcpy(str, token->value);
 
     return str;
 }

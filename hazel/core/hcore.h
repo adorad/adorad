@@ -1,4 +1,5 @@
-#pragma once 
+#ifndef _HAZEL_CORE_CSTDLIB_H
+#define _HAZEL_CORE_CSTDLIB_H
 
 /** 
     Jason Dsouza's (jasmcaus) C Helper Library 
@@ -24,6 +25,10 @@ CREDITS
 extern "C" {
 #endif
 
+// For the implementation
+#ifndef HAZEL_CORE_CSTDLIB_IMPL
+    #define HAZEL_CORE_CSTDLIB_IMPL
+#endif 
 
 // Operating Systems ==========================================
 // HAZEL_SYSTEM_...
@@ -76,10 +81,10 @@ extern "C" {
 
 // Defines ==========================================
 #ifndef HAZEL_DEF 
-    #ifdef HAZEL_STATIC
-        #define HAZEL_DEF static
-    #else 
+    #ifdef HAZEL_EXTERN
         #define HAZEL_DEF extern
+    #else 
+        #define HAZEL_DEF static
     #endif 
 #endif // HAZEL_DEF
 
@@ -503,22 +508,23 @@ typedef Int32 Rune;
 
 
 // Char Things ==========================================
-HAZEL_DEF char toLower        (char c);
-HAZEL_DEF char toUpper        (char c);
-HAZEL_DEF bool isWhitespace   (char c);
-HAZEL_DEF bool isLower        (char c);
-HAZEL_DEF bool isUpper        (char c);
-HAZEL_DEF bool isLetter       (char c);
-HAZEL_DEF bool isDigit        (char c);
-HAZEL_DEF bool isHexDigit     (char c);
-HAZEL_DEF bool isAlpha        (char c);
-HAZEL_DEF bool isAlphanumeric (char c);
-HAZEL_DEF Int32  digitToInt        (char c);
-HAZEL_DEF Int32  hexDigitToInt    (char c);
+HAZEL_DEF inline char toLower        (char c);
+HAZEL_DEF inline char toUpper        (char c);
+HAZEL_DEF inline bool isWhitespace   (char c);
+HAZEL_DEF inline bool isLower        (char c);
+HAZEL_DEF inline bool isUpper        (char c);
+HAZEL_DEF inline bool isLetter       (char c);
+HAZEL_DEF inline bool isDigit        (char c);
+HAZEL_DEF inline bool isHexDigit     (char c);
+HAZEL_DEF inline bool isAlpha        (char c);
+HAZEL_DEF inline bool isAlphanumeric (char c);
+HAZEL_DEF inline Int32  digitToInt        (char c);
+HAZEL_DEF inline Int32  hexDigitToInt    (char c);
 
 // ASCII only
-HAZEL_DEF void strToLower(char* str);
-HAZEL_DEF void strToUpper(char* str);
+HAZEL_DEF inline void strToLower(char* str);
+HAZEL_DEF inline void strToUpper(char* str);
+
 
 
 // // NOTE(jasmcaus): A less fucking crazy strtok!
@@ -675,9 +681,15 @@ static inline void strToUpper(char* str) {
     }
 }
 
+#ifndef HAZEL_CORE_CSTDLIB_IMPL_COMPLETED
+    #define HAZEL_CORE_CSTDLIB_IMPL_COMPLETED
+#endif // HAZEL_CORE_CSTDLIB_IMPL_COMPLETED
+
 #endif // HAZEL_CORE_CSTDLIB_IMPL
 
 
 #if defined(__cplusplus)
 }
 #endif
+
+#endif // _HAZEL_CORE_CSTDLIB_H

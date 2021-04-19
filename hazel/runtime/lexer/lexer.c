@@ -31,7 +31,7 @@ Token* lexer_get_next_token(Lexer* lexer) {
         if(isDigit(lexer->curr_char)) 
             lexer_collect_digit(lexer);
         
-        if(isAlnum(lexer->curr_char)) 
+        if(isAlphanumeric(lexer->curr_char)) 
             lexer_collect_token_id(lexer);
     }
 } 
