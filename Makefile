@@ -15,7 +15,7 @@
 #
 # See the section "Build instructions" in the README file for more instructions.
 
-.PHONY : all run compiler clean
+.PHONY : all run clean
 
 # ======================== VARIABLES SET BY CONFIGURE ========================
 VERSION    = @VERSION@
@@ -40,9 +40,10 @@ exec = hazel
 sources = $(wildcard hazel/runtime/lexer/*.c hazel/runtime/tokens/*.c hazel/runtime/ast/*.c hazel/runtime/parser/*.c hazel/*.c )
 objects = $(sources:Hazel/.c=.o)
 flags = -g
+CC = gcc
 
 all :
-	gcc $(objects) $(flags) -o $(exec) -I .
+	$(CC) $(objects) $(flags) -o $(exec) -I .
 	echo Compiled Hazel 
 	echo ----------------------------------------
 	echo ----------------------------------------
@@ -50,32 +51,33 @@ all :
 .PHONY: all 
 
 compile:
-	gcc $(objects) $(flags) -o $(exec) -I .
+	$(CC) $(objects) $(flags) -o $(exec) -I .
 .PHONY: compile
 
 echo:
 	echo Working
 .PHONY: echo 
+
 run:
 	$(exec)
 .PHONY: run
 
-compiler:
-	gcc -c hazel/compiler/hazel.c
-.PHONY: compiler
+release:
+	$(CC) $(objects) $(flags) -o $(exec) -I .
 
 clean:
 	rm $(exec).exe
 .PHONY: clean
 
+
 # For test.c (internal usage only)
 test:
-	gcc test.c $(flags) -o test -I .
+	$(CC) test.c $(flags) -o test -I .
 	test 
 .PHONY: test 
 
 testcompile:
-	gcc test.c $(flags) -o test -I .
+	$(CC) test.c $(flags) -o test -I .
 .PHONY: testcompile 
 
 testrun:
