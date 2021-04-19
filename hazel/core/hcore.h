@@ -1,5 +1,4 @@
-#ifndef _HAZEL_CORE_CSTLIB_H
-#define _HAZEL_CORE_CSTLIB_H
+#pragma once 
 
 /** 
     Jason Dsouza's (jasmcaus) C Helper Library 
@@ -21,7 +20,7 @@ CREDITS
 	Written Jason Dsouza
 */
 
-#ifndef(__cplusplus)
+#ifdef __cplusplus
 extern "C" {
 #endif
 
@@ -295,7 +294,7 @@ typedef Int32 Rune;
 #define HAZEL_RUNE_EOF     cast(Rune)(-1)
 
 // Max and Min 
-#ifndef UInt8_MIN
+#ifndef UInt8_MIN 
     #define UInt8_MIN 0u
     #define UInt8_MAX 0xffu
     #define Int8_MIN  (-0x7f - 1)
@@ -329,8 +328,9 @@ typedef Int32 Rune;
 
         #define INTSIZE_MIX Int64_MIN
         #define INTSIZE_MAX Int64_MAX
+    #endif 
 #else
-        #error Unknown architecture size. JHazel only supports 32-bit and 64-bit architectures.
+        #error Unknown architecture size. Hazel only supports 32-bit and 64-bit architectures.
 #endif 
 
 #define Float32_MIN 1.17549435e-38f
@@ -348,9 +348,9 @@ typedef Int32 Rune;
         #else 
             #define null    0
         #endif 
-    
     #else 
         #define null    (void*)0
+    #endif
 #endif 
 
 #define nullchar '\0'
@@ -359,6 +359,7 @@ typedef Int32 Rune;
 #ifndef _Ull_DEFINED
     #define _Ull_DEFINED
     #undef Ull
+
     #ifdef _WIN64
         typedef unsigned __int64 Ull;
     #else
@@ -385,7 +386,7 @@ typedef Int32 Rune;
 
 
 // Inline 
-#ifndef(__cplusplus) 
+#ifdef __cplusplus
     #if defined(_MSC_VER) && _MSC_VER <= 1800 
         #define inline  __inline
     #elif !defined(__STDC_VERSION__)
@@ -396,7 +397,7 @@ typedef Int32 Rune;
 #endif 
 
 // Force Inline
-#ifndef (force_inline)
+#ifndef force_inline
     #if defined(_MSC_VER)
         #if _MSC_VER < 1300
             #define force_inline
@@ -409,7 +410,7 @@ typedef Int32 Rune;
 #endif 
 
 // No Inline 
-#ifndef (no_inline)
+#ifndef no_inline
     #if defined(_MSC_VER)
         #define no_inline   __declspec(noinline)
     #else 
@@ -635,8 +636,6 @@ static inline void strToUpper(char* str) {
 #endif // HAZEL_CORE_CSTDLIB_IMPL
 
 
-#ifndef(__cplusplus)
+#if defined(__cplusplus)
 }
 #endif
-
-#endif // _HAZEL_CORE_CSTLIB_H
