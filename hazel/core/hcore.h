@@ -369,9 +369,9 @@ typedef Int32 Rune;
 // bool is a basic type in C++ and not C
 // We could just have used <stdbool.h> but I prefer this as it results in a smaller binary
 #ifndef __cplusplus
-    typedef unsigned char bool;
+    typedef Bool8 bool;
     static const bool false = 0;
-    static const bool true = 1;
+    static const bool true  = 1;
 #endif 
 
 // #ifndef __cplusplus
@@ -462,61 +462,53 @@ typedef Int32 Rune;
 // Char Things ==========================================
 HAZEL_DEF char toLower        (char c);
 HAZEL_DEF char toUpper        (char c);
-HAZEL_DEF b32  isWhitespace   (char c);
-HAZEL_DEF b32  isDigit        (char c);
-HAZEL_DEF b32  isHexDigit     (char c);
-HAZEL_DEF b32  isAlpha        (char c);
-HAZEL_DEF b32  isAlphanumeric (char c);
-HAZEL_DEF Int32  gb_digit_to_int        (char c);
-HAZEL_DEF Int32  gb_hex_digit_to_int    (char c);
+HAZEL_DEF bool isWhitespace   (char c);
+HAZEL_DEF bool isLower        (char c);
+HAZEL_DEF bool isUpper        (char c);
+HAZEL_DEF bool isLetter       (char c);
+HAZEL_DEF bool isDigit        (char c);
+HAZEL_DEF bool isHexDigit     (char c);
+HAZEL_DEF bool isAlpha        (char c);
+HAZEL_DEF bool isAlphanumeric (char c);
+HAZEL_DEF Int32  digitToInt        (char c);
+HAZEL_DEF Int32  hexDigitToInt    (char c);
 
 // ASCII only
 HAZEL_DEF void strToLower(char* str);
 HAZEL_DEF void strToUpper(char* str);
 
-HAZEL_DEF ptrdiff_t gb_strlen (char const* str);
-HAZEL_DEF ptrdiff_t gb_strnlen(char const* str, ptrdiff_t max_len);
-HAZEL_DEF Int32   gb_strcmp (char const* s1, char const* s2);
-HAZEL_DEF Int32   gb_strncmp(char const* s1, char const* s2, ptrdiff_t len);
-HAZEL_DEF char* gb_strcpy (char* dest, char const* source);
-HAZEL_DEF char* gb_strncpy(char* dest, char const* source, ptrdiff_t len);
-HAZEL_DEF ptrdiff_t gb_strlcpy(char* dest, char const* source, ptrdiff_t len);
-HAZEL_DEF char* gb_strrev (char* str); // NOTE(jasmcaus): ASCII only
 
-// NOTE(jasmcaus): A less fucking crazy strtok!
-HAZEL_DEF char const* gb_strtok(char* output, char const* src, char const* delimit);
+// // NOTE(jasmcaus): A less fucking crazy strtok!
+// HAZEL_DEF char const* gb_strtok(char* output, char const* src, char const* delimit);
 
-HAZEL_DEF b32 gb_str_has_prefix(char const* str, char const* prefix);
-HAZEL_DEF b32 gb_str_has_suffix(char const* str, char const* suffix);
+// HAZEL_DEF bool gb_str_has_prefix(char const* str, char const* prefix);
+// HAZEL_DEF bool gb_str_has_suffix(char const* str, char const* suffix);
 
-HAZEL_DEF char const* gb_char_first_occurence(char const* str, char c);
-HAZEL_DEF char const* gb_char_last_occurence (char const* str, char c);
+// HAZEL_DEF char const* gb_char_first_occurence(char const* str, char c);
+// HAZEL_DEF char const* gb_char_last_occurence (char const* str, char c);
 
-HAZEL_DEF void gb_str_concat(char* dest, ptrdiff_t dest_len,
-                          char const* src_a, ptrdiff_t src_a_len,
-                          char const* src_b, ptrdiff_t src_b_len);
+// HAZEL_DEF void gb_str_concat(char* dest, ptrdiff_t dest_len,
+//                           char const* src_a, ptrdiff_t src_a_len,
+//                           char const* src_b, ptrdiff_t src_b_len);
 
 
-////////////////////////////////////////////////////////////////
-//
-// UTF-8 Handling
-//
-//
 
-// NOTE(jasmcaus): Does not check if utf-8 string is valid
-HAZEL_DEF ptrdiff_t gb_utf8_strlen (u8 const* str);
-HAZEL_DEF ptrdiff_t gb_utf8_strnlen(u8 const* str, ptrdiff_t max_len);
+// ////////////////////////////////////////////////////////////////
+// // UTF-8 Handling
+// // Does not check if utf-8 string is valid
+// HAZEL_DEF ptrdiff_t gb_utf8_strlen (UInt8 const* str);
+// HAZEL_DEF ptrdiff_t gb_utf8_strnlen(UInt8 const* str, ptrdiff_t max_len);
 
-// NOTE(jasmcaus): Windows doesn't handle 8 bit filenames well ('cause Micro$hit)
-HAZEL_DEF u16 *gb_utf8_to_ucs2    (u16 *buffer, ptrdiff_t len, u8 const* str);
-HAZEL_DEF u8 * gb_ucs2_to_utf8    (u8 *buffer, ptrdiff_t len, u16 const* str);
-HAZEL_DEF u16 *gb_utf8_to_ucs2_buf(u8 const* str);   // NOTE(jasmcaus): Uses locally persisting buffer
-HAZEL_DEF u8 * gb_ucs2_to_utf8_buf(u16 const* str); // NOTE(jasmcaus): Uses locally persisting buffer
+// // NOTE(jasmcaus): Windows doesn't handle 8 bit filenames well ('cause Micro$hit)
+// HAZEL_DEF UInt16 *gb_utf8_to_ucs2    (UInt16 *buffer, ptrdiff_t len, UInt8 const* str);
+// HAZEL_DEF UInt8 * gb_ucs2_to_utf8    (UInt8 *buffer, ptrdiff_t len, UInt16 const* str);
+// HAZEL_DEF UInt16 *gb_utf8_to_ucs2_buf(UInt8 const* str);   // NOTE(jasmcaus): Uses locally persisting buffer
+// HAZEL_DEF UInt8 * gb_ucs2_to_utf8_buf(UInt16 const* str); // NOTE(jasmcaus): Uses locally persisting buffer
 
-// NOTE(jasmcaus): Returns size of codepoint in bytes
-HAZEL_DEF ptrdiff_t gb_utf8_decode        (u8 const* str, ptrdiff_t str_len, Rune *codepoint);
-HAZEL_DEF ptrdiff_t gb_utf8_codepoint_size(u8 const* str, ptrdiff_t str_len);
-HAZEL_DEF ptrdiff_t gb_utf8_encode_rune   (u8 buf[4], Rune r);
+// // NOTE(jasmcaus): Returns size of codepoint in bytes
+// HAZEL_DEF ptrdiff_t gb_utf8_decode        (UInt8 const* str, ptrdiff_t str_len, Rune *codepoint);
+// HAZEL_DEF ptrdiff_t gb_utf8_codepoint_size(UInt8 const* str, ptrdiff_t str_len);
+// HAZEL_DEF ptrdiff_t gb_utf8_encode_rune   (UInt8 buf[4], Rune r);
 
 
 // Memory ==========================================
@@ -552,8 +544,93 @@ HAZEL_DEF void gb_sleep_ms    (UInt32 ms);
 #if defined(HAZEL_CORE_CSTDLIB_IMPL) && !defined(HAZEL_CORE_CSTDLIB_IMPL_COMPLETED)
 #define HAZEL_CORE_CSTDLIB_IMPL
 
+static inline char toLower(char c) {
+    if(c >= 'A' && c <= 'Z') 
+        return 'a' + (c - 'A');
+    return c;
+}
 
+static inline char toUpper(char c) {
+    if(c >= 'a' && c <= 'z') 
+        return 'A' + (c - 'a');
+    return c;
+}
 
+static inline bool isWhitespace(char c) {
+    if(c == ' '  ||
+       c == '\t' ||
+       c == '\n' ||
+       c == '\r' ||
+       c == '\f' ||
+       c == '\v')
+       return true; 
+    return false;
+}
+
+static inline bool isUpper(char c) {
+    return (c>='A' && c<='Z');
+}
+
+static inline bool isLower(char c) {
+    return (c>='a' && c<='z');
+}
+
+static inline bool isLetter(char c) {
+    return ((c >= 'a' && c <= 'z') || 
+            (c >= 'A' && c <= 'Z') || 
+            (c == '_') );
+}
+
+static inline bool isDigit(char c) {
+    return ((c >= '0' && c <= '9'));
+}
+
+static inline bool isHexDigit(char c) {
+    return (isDigit(c)                   ||
+            HAZEL_IS_BETWEEN(c, 'a', 'f' ||
+            HAZEL_IS_BETWEEN(c, 'A', 'F'); 
+}
+
+static inline bool isAlpha(char c) {
+    return (isUpper(c) || isLower(c));
+}
+
+static inline bool isAlphanumeric(char c) {
+    return isAlpha(c) || isDigit(c);
+}
+
+static inline Int32 digitToInt(char c) {
+    return isDigit(c) ? c-'0' : c-'W';
+}
+
+static inline Int32 hexDigitToInt(char c) {
+    if(isDigit(c))
+        return digitToInt(c);
+
+    else if (HAZEL_IS_BETWEEN(c, 'a', 'f'))
+        return c-'a' + 10; 
+
+    else if (HAZEL_IS_BETWEEN(c, 'A', 'F'))
+        return c-'A' + 10; 
+
+    return -1; 
+}
+
+static inline void strToLower(char* str) {
+    if(!str) return; 
+    while(*str) {
+        *str = toLower(*str);
+        str++;
+    }
+}
+
+static inline void strToUpper(char* str) {
+    if(!str) return; 
+    while(*str) {
+        *str = toUpper(*str);
+        str++;
+    }
+}
 
 #endif // HAZEL_CORE_CSTDLIB_IMPL
 
