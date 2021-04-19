@@ -273,6 +273,59 @@ HAZEL_CHECK(sizeof(UInt64) == 8);
 HAZEL_CHECK(sizeof(Float32) == 4);
 HAZEL_CHECK(sizeof(Float64) == 8);
 
+// Unicode codepoint
+typedef Int32 Rune; 
+#define HAZEL_RUNE_INVALID cast(Rune)(0xfffd)
+#define HAZEL_RUNE_MAX     cast(Rune)(0x0010ffff)
+#define HAZEL_RUNE_BOM     cast(Rune)(0xfeff)
+#define HAZEL_RUNE_EOF     cast(Rune)(-1)
+
+// Max and Min 
+#ifndef UInt8_MIN
+    #define UInt8_MIN 0u
+    #define UInt8_MAX 0xffu
+    #define Int8_MIN  (-0x7f - 1)
+    #define Int8_MAX  0x7f
+
+    #define UInt16_MIN 0u
+    #define UInt16_MAX 0xffffu
+    #define Int16_MIN  (-0x7fff - 1)
+    #define Int16_MAX  0x7fff
+ 
+    #define UInt32_MIN 0u
+    #define UInt32_MAX 0xffffffffu
+    #define Int32_MIN  (-0x7fffffff - 1)
+    #define Int32_MAX  0x7fffffff
+
+    #define UInt64_MIN 0ull
+    #define UInt64_MAX 0xffffffffffffffffull
+    #define Int64_MIN  (-0x7fffffffffffffffll - 1)
+    #define Int64_MAX  0x7fffffffffffffffll
+
+    #if defined(GB_ARCH_32_BIT)
+        #define UINTSIZE_MIX UInt32_MIN
+        #define UINTSIZE_MAX UInt32_MAX
+
+        #define INTSIZE_MIX Int32_MIN
+        #define INTSIZE_MAX Int32_MAX
+    
+    #elif defined(GB_ARCH_64_BIT)
+        #define UINTSIZE_MIX UInt64_MIN
+        #define UINTSIZE_MAX UInt64_MAX
+
+        #define INTSIZE_MIX Int64_MIN
+        #define INTSIZE_MAX Int64_MAX
+#else
+        #error Unknown architecture size. JHazel only supports 32-bit and 64-bit architectures.
+#endif 
+
+#define Float32_MIN 1.17549435e-38f
+#define Float32_MAX 3.40282347e+38f
+
+#define Float64_MIN 2.2250738585072014e-308
+#define Float64_MAX 1.7976931348623157e+308
+
+
 // More Useful Types 
 #define null     (void*)0
 #define nullchar '\0'
