@@ -56,7 +56,7 @@ compile:
 .PHONY: compile
 
 echo:
-	echo Working
+	echo Working!
 .PHONY: echo 
 
 run:
