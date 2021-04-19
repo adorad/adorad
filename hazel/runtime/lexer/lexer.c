@@ -1,8 +1,6 @@
 #include <string.h>
 #include <stdio.h> 
 
-#include <hazel/core/hdef.h>
-#include <hazel/core/type.h>
 #include <hazel/runtime/lexer/lexer.h>
 
 // Create a new lexer
