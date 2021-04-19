@@ -257,15 +257,21 @@ extern "C" {
     typedef int64_t   Int64; 
 #endif // Hazel Basic Types 
 
-HAZEL_CHECK(sizeof(u8)  == sizeof(i8));
-HAZEL_CHECK(sizeof(u16) == sizeof(i16));
-HAZEL_CHECK(sizeof(u32) == sizeof(i32));
-HAZEL_CHECK(sizeof(u64) == sizeof(i64));
+typedef float  Float32; 
+typedef double Float64; 
 
-HAZEL_CHECK(sizeof(u8)  == 1);
-HAZEL_CHECK(sizeof(u16) == 2);
-HAZEL_CHECK(sizeof(u32) == 4);
-HAZEL_CHECK(sizeof(u64) == 8);
+HAZEL_CHECK(sizeof(UInt8)  == sizeof(Int8));
+HAZEL_CHECK(sizeof(UInt16) == sizeof(Int16));
+HAZEL_CHECK(sizeof(UInt32) == sizeof(Int32));
+HAZEL_CHECK(sizeof(UInt64) == sizeof(Int64));
+
+HAZEL_CHECK(sizeof(UInt8)  == 1);
+HAZEL_CHECK(sizeof(UInt16) == 2);
+HAZEL_CHECK(sizeof(UInt32) == 4);
+HAZEL_CHECK(sizeof(UInt64) == 8);
+
+HAZEL_CHECK(sizeof(Float32) == 4);
+HAZEL_CHECK(sizeof(Float64) == 8);
 
 // More Useful Types 
 #define null     (void*)0
