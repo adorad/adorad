@@ -129,7 +129,7 @@ extern "C" {
 
 #ifndef HAZEL_CHECK
 	#define HAZEL_CHECK3(cond, msg) typedef char static_assertion_##msg[(!!(cond))*2-1]
-	// NOTE(bill): Token pasting madness!!
+	// NOTE(jasmcaus): Token pasting madness!!
 	#define HAZEL_CHECK2(cond, line) HAZEL_CHECK3(cond, static_assertion_at_line_##line)
 	#define HAZEL_CHECK1(cond, line) HAZEL_CHECK2(cond, line)
 	#define HAZEL_CHECK(cond)        HAZEL_CHECK1(cond, __LINE__)
@@ -462,41 +462,41 @@ HAZEL_DEF b32  gb_char_is_digit       (char c);
 HAZEL_DEF b32  gb_char_is_hex_digit   (char c);
 HAZEL_DEF b32  gb_char_is_alpha       (char c);
 HAZEL_DEF b32  gb_char_is_alphanumeric(char c);
-HAZEL_DEF i32  gb_digit_to_int        (char c);
-HAZEL_DEF i32  gb_hex_digit_to_int    (char c);
+HAZEL_DEF Int32  gb_digit_to_int        (char c);
+HAZEL_DEF Int32  gb_hex_digit_to_int    (char c);
 
-// NOTE(bill): ASCII only
-HAZEL_DEF void gb_str_to_lower(char *str);
-HAZEL_DEF void gb_str_to_upper(char *str);
+// NOTE(jasmcaus): ASCII only
+HAZEL_DEF void gb_str_to_lower(char* str);
+HAZEL_DEF void gb_str_to_upper(char* str);
 
-HAZEL_DEF isize gb_strlen (char const *str);
-HAZEL_DEF isize gb_strnlen(char const *str, isize max_len);
-HAZEL_DEF i32   gb_strcmp (char const *s1, char const *s2);
-HAZEL_DEF i32   gb_strncmp(char const *s1, char const *s2, isize len);
-HAZEL_DEF char *gb_strcpy (char *dest, char const *source);
-HAZEL_DEF char *gb_strncpy(char *dest, char const *source, isize len);
-HAZEL_DEF isize gb_strlcpy(char *dest, char const *source, isize len);
-HAZEL_DEF char *gb_strrev (char *str); // NOTE(bill): ASCII only
+HAZEL_DEF ptrdiff_t gb_strlen (char const* str);
+HAZEL_DEF ptrdiff_t gb_strnlen(char const* str, ptrdiff_t max_len);
+HAZEL_DEF Int32   gb_strcmp (char const* s1, char const* s2);
+HAZEL_DEF Int32   gb_strncmp(char const* s1, char const* s2, ptrdiff_t len);
+HAZEL_DEF char* gb_strcpy (char* dest, char const* source);
+HAZEL_DEF char* gb_strncpy(char* dest, char const* source, ptrdiff_t len);
+HAZEL_DEF ptrdiff_t gb_strlcpy(char* dest, char const* source, ptrdiff_t len);
+HAZEL_DEF char* gb_strrev (char* str); // NOTE(jasmcaus): ASCII only
 
-// NOTE(bill): A less fucking crazy strtok!
-HAZEL_DEF char const *gb_strtok(char *output, char const *src, char const *delimit);
+// NOTE(jasmcaus): A less fucking crazy strtok!
+HAZEL_DEF char const* gb_strtok(char* output, char const* src, char const* delimit);
 
-HAZEL_DEF b32 gb_str_has_prefix(char const *str, char const *prefix);
-HAZEL_DEF b32 gb_str_has_suffix(char const *str, char const *suffix);
+HAZEL_DEF b32 gb_str_has_prefix(char const* str, char const* prefix);
+HAZEL_DEF b32 gb_str_has_suffix(char const* str, char const* suffix);
 
-HAZEL_DEF char const *gb_char_first_occurence(char const *str, char c);
-HAZEL_DEF char const *gb_char_last_occurence (char const *str, char c);
+HAZEL_DEF char const* gb_char_first_occurence(char const* str, char c);
+HAZEL_DEF char const* gb_char_last_occurence (char const* str, char c);
 
-HAZEL_DEF void gb_str_concat(char *dest, isize dest_len,
-                          char const *src_a, isize src_a_len,
-                          char const *src_b, isize src_b_len);
+HAZEL_DEF void gb_str_concat(char* dest, ptrdiff_t dest_len,
+                          char const* src_a, ptrdiff_t src_a_len,
+                          char const* src_b, ptrdiff_t src_b_len);
 
-HAZEL_DEF u64   gb_str_to_u64(char const *str, char **end_ptr, i32 base); // TODO(bill): Support more than just decimal and hexadecimal
-HAZEL_DEF i64   gb_str_to_i64(char const *str, char **end_ptr, i32 base); // TODO(bill): Support more than just decimal and hexadecimal
-HAZEL_DEF f32   gb_str_to_f32(char const *str, char **end_ptr);
-HAZEL_DEF f64   gb_str_to_f64(char const *str, char **end_ptr);
-HAZEL_DEF void  gb_i64_to_str(i64 value, char *string, i32 base);
-HAZEL_DEF void  gb_u64_to_str(u64 value, char *string, i32 base);
+HAZEL_DEF UInt64   gb_str_to_UInt64(char const* str, char* *end_ptr, Int32 base); // TODO(jasmcaus): Support more than just decimal and hexadecimal
+HAZEL_DEF Int64   gb_str_to_Int64(char const* str, char* *end_ptr, Int32 base); // TODO(jasmcaus): Support more than just decimal and hexadecimal
+HAZEL_DEF Float32   gb_str_to_Float32(char const* str, char* *end_ptr);
+HAZEL_DEF Float64   gb_str_to_Float64(char const* str, char* *end_ptr);
+HAZEL_DEF void  gb_Int64_to_str(Int64 value, char* string, Int32 base);
+HAZEL_DEF void  gb_UInt64_to_str(UInt64 value, char* string, Int32 base);
 
 
 ////////////////////////////////////////////////////////////////
@@ -505,20 +505,20 @@ HAZEL_DEF void  gb_u64_to_str(u64 value, char *string, i32 base);
 //
 //
 
-// NOTE(bill): Does not check if utf-8 string is valid
-HAZEL_DEF isize gb_utf8_strlen (u8 const *str);
-HAZEL_DEF isize gb_utf8_strnlen(u8 const *str, isize max_len);
+// NOTE(jasmcaus): Does not check if utf-8 string is valid
+HAZEL_DEF ptrdiff_t gb_utf8_strlen (u8 const* str);
+HAZEL_DEF ptrdiff_t gb_utf8_strnlen(u8 const* str, ptrdiff_t max_len);
 
-// NOTE(bill): Windows doesn't handle 8 bit filenames well ('cause Micro$hit)
-HAZEL_DEF u16 *gb_utf8_to_ucs2    (u16 *buffer, isize len, u8 const *str);
-HAZEL_DEF u8 * gb_ucs2_to_utf8    (u8 *buffer, isize len, u16 const *str);
-HAZEL_DEF u16 *gb_utf8_to_ucs2_buf(u8 const *str);   // NOTE(bill): Uses locally persisting buffer
-HAZEL_DEF u8 * gb_ucs2_to_utf8_buf(u16 const *str); // NOTE(bill): Uses locally persisting buffer
+// NOTE(jasmcaus): Windows doesn't handle 8 bit filenames well ('cause Micro$hit)
+HAZEL_DEF u16 *gb_utf8_to_ucs2    (u16 *buffer, ptrdiff_t len, u8 const* str);
+HAZEL_DEF u8 * gb_ucs2_to_utf8    (u8 *buffer, ptrdiff_t len, u16 const* str);
+HAZEL_DEF u16 *gb_utf8_to_ucs2_buf(u8 const* str);   // NOTE(jasmcaus): Uses locally persisting buffer
+HAZEL_DEF u8 * gb_ucs2_to_utf8_buf(u16 const* str); // NOTE(jasmcaus): Uses locally persisting buffer
 
-// NOTE(bill): Returns size of codepoint in bytes
-HAZEL_DEF isize gb_utf8_decode        (u8 const *str, isize str_len, Rune *codepoint);
-HAZEL_DEF isize gb_utf8_codepoint_size(u8 const *str, isize str_len);
-HAZEL_DEF isize gb_utf8_encode_rune   (u8 buf[4], Rune r);
+// NOTE(jasmcaus): Returns size of codepoint in bytes
+HAZEL_DEF ptrdiff_t gb_utf8_decode        (u8 const* str, ptrdiff_t str_len, Rune *codepoint);
+HAZEL_DEF ptrdiff_t gb_utf8_codepoint_size(u8 const* str, ptrdiff_t str_len);
+HAZEL_DEF ptrdiff_t gb_utf8_encode_rune   (u8 buf[4], Rune r);
 
 
 // Memory ==========================================
@@ -531,10 +531,10 @@ HAZEL_DEF isize gb_utf8_encode_rune   (u8 buf[4], Rune r);
 
 
 // Time ==========================================
-HAZEL_DEF u64  gb_rdtsc       (void);
-HAZEL_DEF f64  gb_time_now    (void); // NOTE(bill): This is only for relative time e.g. game loops
-HAZEL_DEF u64  gb_utc_time_now(void); // NOTE(bill): Number of microseconds since 1601-01-01 UTC
-HAZEL_DEF void gb_sleep_ms    (u32 ms);
+HAZEL_DEF UInt64  gb_rdtsc       (void);
+HAZEL_DEF Float64  gb_time_now    (void); // NOTE(jasmcaus): This is only for relative time e.g. game loops
+HAZEL_DEF UInt64  gb_utc_time_now(void); // NOTE(jasmcaus): Number of microseconds since 1601-01-01 UTC
+HAZEL_DEF void gb_sleep_ms    (UInt32 ms);
 
 
 //
