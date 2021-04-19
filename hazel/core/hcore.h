@@ -282,6 +282,11 @@ HAZEL_CHECK(sizeof(UInt64) == 8);
 HAZEL_CHECK(sizeof(Float32) == 4);
 HAZEL_CHECK(sizeof(Float64) == 8);
 
+// Bool-sy
+typedef Int8  Bool8; 
+typedef Int16 Bool16;
+typedef Int32 Bool32; // Prefer this!
+
 // Unicode codepoint
 typedef Int32 Rune; 
 #define HAZEL_RUNE_INVALID cast(Rune)(0xfffd)
@@ -455,19 +460,19 @@ typedef Int32 Rune;
 
 
 // Char Things ==========================================
-HAZEL_DEF char gb_char_to_lower       (char c);
-HAZEL_DEF char gb_char_to_upper       (char c);
-HAZEL_DEF b32  gb_char_is_space       (char c);
-HAZEL_DEF b32  gb_char_is_digit       (char c);
-HAZEL_DEF b32  gb_char_is_hex_digit   (char c);
-HAZEL_DEF b32  gb_char_is_alpha       (char c);
-HAZEL_DEF b32  gb_char_is_alphanumeric(char c);
+HAZEL_DEF char toLower        (char c);
+HAZEL_DEF char toUpper        (char c);
+HAZEL_DEF b32  isWhitespace   (char c);
+HAZEL_DEF b32  isDigit        (char c);
+HAZEL_DEF b32  isHexDigit     (char c);
+HAZEL_DEF b32  isAlpha        (char c);
+HAZEL_DEF b32  isAlphanumeric (char c);
 HAZEL_DEF Int32  gb_digit_to_int        (char c);
 HAZEL_DEF Int32  gb_hex_digit_to_int    (char c);
 
-// NOTE(jasmcaus): ASCII only
-HAZEL_DEF void gb_str_to_lower(char* str);
-HAZEL_DEF void gb_str_to_upper(char* str);
+// ASCII only
+HAZEL_DEF void strToLower(char* str);
+HAZEL_DEF void strToUpper(char* str);
 
 HAZEL_DEF ptrdiff_t gb_strlen (char const* str);
 HAZEL_DEF ptrdiff_t gb_strnlen(char const* str, ptrdiff_t max_len);
@@ -490,13 +495,6 @@ HAZEL_DEF char const* gb_char_last_occurence (char const* str, char c);
 HAZEL_DEF void gb_str_concat(char* dest, ptrdiff_t dest_len,
                           char const* src_a, ptrdiff_t src_a_len,
                           char const* src_b, ptrdiff_t src_b_len);
-
-HAZEL_DEF UInt64   gb_str_to_UInt64(char const* str, char* *end_ptr, Int32 base); // TODO(jasmcaus): Support more than just decimal and hexadecimal
-HAZEL_DEF Int64   gb_str_to_Int64(char const* str, char* *end_ptr, Int32 base); // TODO(jasmcaus): Support more than just decimal and hexadecimal
-HAZEL_DEF Float32   gb_str_to_Float32(char const* str, char* *end_ptr);
-HAZEL_DEF Float64   gb_str_to_Float64(char const* str, char* *end_ptr);
-HAZEL_DEF void  gb_Int64_to_str(Int64 value, char* string, Int32 base);
-HAZEL_DEF void  gb_UInt64_to_str(UInt64 value, char* string, Int32 base);
 
 
 ////////////////////////////////////////////////////////////////
