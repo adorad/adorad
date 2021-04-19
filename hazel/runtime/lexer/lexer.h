@@ -2,7 +2,6 @@
 #define _HAZEL_LEXER 
 
 #include <hazel/core/hcore.h> 
-#include <hazel/core/htype.h>
 #include <hazel/runtime/tokens/tokens.h>
 
 typedef struct LexerStruct {
