@@ -8,163 +8,171 @@
 // tokens (printing, predicates).
 
 // Set of lexical tokens in the Hazel Programming Language
+#define ALLTOKENS \ 
+    /* Special (internal usage only) */ \
+    TOKENKIND(TOK_ID,  "TOK_ID"), \
+    TOKENKIND(TOK_EOF, "TOK_EOF"), \
+    TOKENKIND(ILLEGAL, "ILLEGAL"), \
+    TOKENKIND(COMMENT, "COMMENT"), \
+\
+    /* Literals */ \
+    TOKENKIND(TOK___LITERALS_BEGIN, ""), \
+    TOKENKIND(IDENTIFIER, "IDENTIFIER"), \
+    TOKENKIND(INTEGER,    "INTEGER"), \
+    TOKENKIND(BIN_INT,    "BIN_INT"), \
+    TOKENKIND(HEX_INT,    "HEX_INT"), \
+    TOKENKIND(IMAG,       "IMAG"), \
+    TOKENKIND(FLOAT,      "FLOAT"), \
+    TOKENKIND(RUNE,       "RUNE"), \
+    TOKENKIND(STRING,     "STRING"), \
+    /*TOKENKIND(TRIPLE_STRING, "TRIPLE_STRING"), \*/ \
+    TOKENKIND(TRUE,       "TRUE"), \
+    TOKENKIND(FALSE,      "FALSE"), \
+    TOKENKIND(TOK___LITERALS_END, ""), \
+\
+    /* Operators */ \ 
+    TOKENKIND(TOK___OPERATORS_BEGIN, ""), \
+    TOKENKIND(PLUS,      "+"), \
+    TOKENKIND(MINUS,     "-"), \
+    TOKENKIND(MULT,      "*"), \
+    TOKENKIND(QUOTIENT,  "/"), \
+    TOKENKIND(MOD,       "%"), \
+    TOKENKIND(MOD_MOD,   "%%"), \
+    TOKENKIND(AND,       "&"), \
+    TOKENKIND(OR,        "|"), \
+    TOKENKIND(NOT,       "!"), \
+    TOKENKIND(XOR,       "^"), \
+    TOKENKIND(AND_NOT,   "&^"), \
+    TOKENKIND(AND_AND,   "&&"), \
+    TOKENKIND(OR_OR,     "||"), \
+    TOKENKIND(INCREMENT, "++"), \
+    TOKENKIND(DECREMENT, "--"), \
+    TOKENKIND(AT_SIGN,   "@"), \
+    TOKENKIND(HASH_SIGN, "#"), \
+    TOKENKIND(QUESTION,  "?"), \
+\   
+    /* Comparison Operators */ \
+TOKENKIND(TOK___COMP_OPERATORS_BEGIN, ""), \
+    TOKENKIND(GREATER_THAN,             ">"), \
+    TOKENKIND(LESS_THAN,                "<"), \
+    TOKENKIND(GREATER_THAN_OR_EQUAL_TO, ">="), \
+    TOKENKIND(LESS_THAN_OR_EQUAL_TO,    "<="), \
+    TOKENKIND(EQUALS_EQUALS,            "=="), \
+    TOKENKIND(NOT_EQUALS,               "!="), \
+TOKENKIND(TOK___COMP_OPERATORS_END, ""), \
+\
+    /* Comparison Operators */ \
+TOKENKIND(TOK___ASSIGNMENT_OPERATORS_BEGIN, ""), \
+    TOKENKIND(EQUALS,           "="), \
+    TOKENKIND(PLUS_EQUALS,      "+="), \
+    TOKENKIND(MINUS_EQUALS,     "-="), \
+    TOKENKIND(STAR_EQUALS,      "*="), \
+    TOKENKIND(DIVISION_EQUALS,  "/="), \
+    TOKENKIND(MOD_EQUALS,       "%="), \
+    TOKENKIND(AND_EQUALS,       "&="), \
+    TOKENKIND(OR_EQUALS,        "|="), \
+    TOKENKIND(XOR_EQUALS,       "^="), \
+    TOKENKIND(LBITSHIFT_EQUALS, "<<="), \
+    TOKENKIND(RBITSHIFT_EQUALS, ">>="), \
+    TOKENKIND(TILDA,            "~"), \
+TOKENKIND(TOK___ASSIGNMENT_OPERATORS_END, ""), \
+\
+    /* Arrows */ \
+TOKENKIND(TOK___ARROW_OPERATORS_BEGIN, ""), \
+    TOKENKIND(EQUALS_ARROW, "=>"), \
+    TOKENKIND(RARROW,       "->"), \
+    TOKENKIND(LARROW,       "<-"), \
+TOKENKIND(TOK___ARROW_OPERATORS_END, ""), \
+\   
+    /* Delimiters */ \
+TOKENKIND(TOK___DELIMITERS_OPERATORS_BEGIN, ""), \
+    TOKENKIND(LSQUAREBRACK, "["), \
+    TOKENKIND(RSQUAREBRACK, "]"), \
+    TOKENKIND(LBRACE,       "{"), \
+    TOKENKIND(RBRACE,       "}"), \
+    TOKENKIND(LPAREN,       "("), \
+    TOKENKIND(RPAREN,       ")"), \
+TOKENKIND(TOK___DELIMITERS_OPERATORS_END, ""), \
+\   
+    /* Colons */ \
+TOKENKIND(TOK___COLONS_OPERATORS_BEGIN, ""), \
+    TOKENKIND(COLON,     ":"), \
+    TOKENKIND(SEMICOLON, ";"), \
+    TOKENKIND(COMMA,     ","), \
+    TOKENKIND(DOT,       "."), \
+    TOKENKIND(DDOT,      ".."), \
+    TOKENKIND(ELLIPSIS,  "..."), \
+    TOKENKIND(BACKSLASH, "\\"), \
+TOKENKIND(TOK___COLONS_OPERATORS_END, ""), \
+\   
+    /* Bitshits */ \
+TOKENKIND(TOK___BITSHIFT_OPERATORS_BEGIN, ""), \
+    TOKENKIND(LBITSHIFT, "<<"), \
+    TOKENKIND(RBITSHIFT, ">>"), \
+TOKENKIND(TOK___BITSHIFT_OPERATORS_END, ""), \
+TOKENKIND(TOK___OPERATORS_END, ""), \
+\
+TOKENKIND(TOK___KEYWORDS_BEGIN, ""), \
+    TOKENKIND(BEGIN,     "begin"), \
+    TOKENKIND(BREAK,     "break"), \
+    TOKENKIND(CASE,      "case"), \
+    TOKENKIND(CAST,      "cast"), \
+    TOKENKIND(CATCH,     "catch"), \
+    TOKENKIND(CLASS,     "class"), \
+    TOKENKIND(CONST,     "const"), \
+    TOKENKIND(CONTINUE,  "continue"), \
+    TOKENKIND(DO,        "do"), \
+    /* TOKENKIND(DEF, "def"), */ \
+    TOKENKIND(DEFAULT,   "default"), \
+    TOKENKIND(ENUM,      "enum"), \
+    TOKENKIND(ELSE,      "else"), \
+    TOKENKIND(ELSEIF,    "elseif"), \
+    TOKENKIND(EXPORT,    "export"), \
+    TOKENKIND(FINALLY,   "finally"), \
+    TOKENKIND(FOR,       "for"), \
+    TOKENKIND(FUNC,      "func"), \
+    /* GLOBAL is not required tbh coz we follow a no-globals approach */ \
+    /* TOKENKIND(GLOBAL, "global"), */ \
+    TOKENKIND(IF,        "if"), \
+    TOKENKIND(IMPORT,    "import"), \
+    TOKENKIND(IN,        "in"), \
+    TOKENKIND(INCLUDE,   "include"), \
+    TOKENKIND(INLINE,    "inline"), \
+    TOKENKIND(ISA,       "isa"), \
+    TOKENKIND(MACRO,     "macro"), \
+    TOKENKIND(MAP,       "map"), \
+    TOKENKIND(MATCH,     "match"), /* similar to 'switch' in C++, Java and others */ \
+    TOKENKIND(MODULE,    "module"), \
+    TOKENKIND(MUTABLE,   "mutable"), \
+    /* TOKENKIND(NEW, "new"), */ /* if we go for a memory-safe approach like Rust */ \
+    TOKENKIND(NO_INLINE, "no_inline"), \
+    TOKENKIND(NOT_IN,    "not_in"), \
+    TOKENKIND(RANGE,     "range"), \
+    TOKENKIND(RETURN,    "return"), \
+    TOKENKIND(STRUCT,    "struct"), \
+    TOKENKIND(TRY,       "try"), \
+    TOKENKIND(TYPEOF,    "typeof"), \
+    TOKENKIND(USE,       "use"), /* aliasing purposes */ \
+    TOKENKIND(WHEN,      "when"), \
+    TOKENKIND(WHERE,     "where"), \
+    TOKENKIND(WHILE,     "while"), \
+    TOKENKIND(UNION,     "union"), \
+TOKENKIND(TOK___KEYWORDS_END, ""), \
+\ 
+    TOKENKIND(TOK_COUNT, "")
+
+
 typedef struct TokenNames {
     enum {
-        // Special (internal usage only)
-        TOK_ID, 
-        // Special Tokens
-        TOK_EOF,    // EOF
-        ILLEGAL,      
-        COMMENT,    // //
-        WHITESPACE, // '\n  \t'
-        IDENTIFIER, // foo, bar 
-        AT_SIGN,    // @
-        COMMA,      // ,
-        SEMICOLON,  // ;
-
-        // Keywords
-        KEYWORD, 
-        BEGIN, 
-        BREAK, 
-        CASE,
-        CATCH, 
-        CONST,
-        CONTINUE, 
-        DO, 
-        DEF,
-        DEFAULT, 
-        ELSE,
-        ELSEIF, 
-        EXPORT, 
-        FINALLY, 
-        FOR,
-        FUNC,
-        // GLOBAL // ==> not required tbh coz we follow a no-globals approach
-        IF,
-        IMPORT,
-        INCLUDE,
-        MACRO,
-        MATCH, // similar to 'switch' in C++, Java and others
-        MODULE,
-        MUTABLE,
-        // NEW // ==> if we go for a memory-safe approach like Rust
-        RANGE,
-        RETURN, 
-        RUNE, 
-        STRUCT, 
-        TRY, 
-        TYPE, 
-        USE,
-        WHERE, 
-        WHILE,
-
-        // Context parser
-        INVISIBLE_BRACKETS,
-        NOTHING,
-        WS, 
-        SEMICOLON_WS,
-        NEWLINE_WS,
-        EMPTY_WS, 
-
-        // Literals
-        LITERAL,        // general
-        INTEGER,        // 2
-        BIN_INT,        // 0b1
-        HEX_INT,        // 0x0
-        FLOAT,          // 5.3, 2.6e+3
-        STRING,         // "foo" or 'bar'
-        IMAG,           // 123.45i
-        TRIPLE_STRING,  // """ foobar \n """
-        CHAR,           // 'c'
-        TRUE, 
-        FALSE,
-
-        // Operators 
-        ADD,            // +
-        SUBTRACT,            // - 
-        MULTIPLICATION, // *
-        QUOTIENT,       // /
-        REMAINDER,      // %
-
-        AND,       // &
-        OR,        // |
-        NOT,       // !
-        XOR,       // ^
-        AND_NOT,   // &^
-        LAND,      // && 
-        LOR,       // || 
-        INCREMENT, // ++
-        DECREMENT, // --
-
-        // Comparison
-        GREATER,                  // > 
-        LESS,                     // <
-        GREATER_THAN,             // >=
-        GREATER_THAN_OR_EQUAL_TO, // ≥
-        LESS_THAN,                // <=
-        LESS_THAN_OR_EQUAL_TO,    // ≤
-        DOUBLEEQUALS,             // == 
-        NOT_EQUALS,               // !=
-        NOT_EQUAL_TO,             // ≠
-        IN,                       // in
-        ISA,                      // isa
-
-        // Delimiters
-        LBRACK,  // [
-        RBRACK,  // ]
-        LBRACE,  // {
-        RBRACE,  // }
-        LPAREN,  // (
-        RPAREN,  // )
-
-        // Assignments
-        EQUALS,           // = 
-        PLUS_EQUALS,      // +=
-        MINUS_EQUALS,     // -=
-        START_EQUALS,     // *=
-        OR_EQUALS,        // |=
-        DIVISION_EQUALS,  // ÷=
-        FWD_SLASH_EQUALS, // /=
-        REM_EQUALS,       // %=
-        LBITSHIFT_EQUALS, // <<=
-        RBITSHIFT_EQUALS, // >>=
-        AND_EQUALS,       // &=
-        APPROX,           // ~ 
-
-        // Colons
-        COLON,    // :
-        DOT,      // .
-        DDOT,     // ..
-        ELLIPSIS, // ...
-
-        // Bitshifts
-        LBITSHIFT, // << 
-        RBITSHIFT, // >> 
-
-        // Conditional
-        CONDITIONAL, // ? 
-
-        // Arrows
-        PAIR_ARROWS,                  // =>
-        ANON_FUNC,                    // -> 
-        // RIGHT_ARROW,         // -> // DEFINED AS ANON_FUNC
-        LEFT_ARROW,                   // <-
-        LEFTWARDS_ARROW,              // ←
-        RIGHTWARDS_ARROW,             // →
-        HALFWIDTH_LEFTWARDS_ARROW,    // ￩
-        HALFWIDTH_RIGHTWARDS_ARROW,   // ￫
-        LONG_LEFTWARDS_ARROW,         // ⟵
-        LONG_RIGHTWARDS_ARROW,        // ⟶ 
-
-        // Declaration (we might/might not use this)
-        DECLARATION, // :: 
-        
-        // Only to track the size of this enum 
-        SIZE_OF_ENUM, 
+        #define TOKENKIND(e, s) e
+            ALLTOKENS
+        #undef TOKENKIND
     } type; // enum
 
     char* value; 
 } Token; 
+
+
 
 
 Token* token_init(int type, char* value);
