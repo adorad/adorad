@@ -568,31 +568,31 @@ static inline bool isWhitespace(char c) {
 }
 
 static inline bool isUpper(char c) {
-    return (c>='A' && c<='Z');
+    return c>='A' && c<='Z';
 }
 
 static inline bool isLower(char c) {
-    return (c>='a' && c<='z');
+    return c>='a' && c<='z';
 }
 
 static inline bool isLetter(char c) {
-    return ((c >= 'a' && c <= 'z') || 
+    return  (c >= 'a' && c <= 'z') || 
             (c >= 'A' && c <= 'Z') || 
-            (c == '_') );
+            (c == '_') ;
 }
 
 static inline bool isDigit(char c) {
-    return ((c >= '0' && c <= '9'));
+    return c >= '0' && c <= '9';
 }
 
 static inline bool isHexDigit(char c) {
-    return (isDigit(c)                   ||
-            HAZEL_IS_BETWEEN(c, 'a', 'f' ||
+    return  isDigit(c)                    ||
+            HAZEL_IS_BETWEEN(c, 'a', 'f') ||
             HAZEL_IS_BETWEEN(c, 'A', 'F'); 
 }
 
 static inline bool isAlpha(char c) {
-    return (isUpper(c) || isLower(c));
+    return isUpper(c) || isLower(c);
 }
 
 static inline bool isAlphanumeric(char c) {
