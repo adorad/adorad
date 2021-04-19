@@ -37,9 +37,9 @@ $(VERBOSE).SILENT:
 
 # ======================== MISC VARIABLES ========================
 exec = hazel
-# sources = $(wildcard hazel/runtime/lexer/*.c hazel/runtime/tokens/*.c hazel/runtime/ast/*.c hazel/runtime/parser/*.c hazel/*.c )
-sources = $(wildcard hazel/hazel.c hazel/main.c )
-objects = $(sources:Hazel/.c=.o)
+sources = $(wildcard hazel/runtime/lexer/*.c hazel/runtime/tokens/*.c hazel/runtime/ast/*.c hazel/runtime/parser/*.c hazel/*.c )
+# sources = $(wildcard hazel/hazel.c hazel/main.c )
+objects = $(sources:hazel/.c=.o)
 flags = -g
 CC = gcc
 
@@ -64,7 +64,8 @@ run:
 .PHONY: run
 
 release:
-	echo $(CC) $(objects) $(flags) -o $(exec) -I .
+	echo $(objects)
+	$(CC) $(objects) $(flags) -I . -o $(exec)
 
 clean:
 	rm $(exec).exe
