@@ -385,6 +385,48 @@ typedef Int32 Rune;
 // #endif // __cplusplus 
 
 
+// Debug + Asserts  ==========================================
+
+// Some compilers support applying printf-style warnings to user functions.
+// #if defined(__clang__) || defined(__GNUC__)
+//     #define HAZEL_PRINT_ARGS(FMT)     __attribute__((format(printf, FMT, (FMT+1))))
+// #else
+//     #define HAZEL_PRINT_ARGS(FMT)
+// #endif
+
+// HAZEL_DEF void assert_handler(char const *prefix, char const *condition, char const *file, Int32 line, char const *msg, ...);
+// HAZEL_DEF ptrdiff_t HAZEL_PRINT_ERR    (char const* fmt, ...) HAZEL_PRINT_ARGS(1);
+// HAZEL_DEF ptrdiff_t HAZEL_PRINT_ERR_VA (char const *fmt, va_list va);
+
+// #ifndef HAZEL_ASSERT_MSG
+//     #define HAZEL_ASSERT_MSG(cond, msg, ...) do { \
+//         if (!(cond)) { \
+//             assert_handler("Assertion Failure", #cond, __FILE__, cast(Int64)__LINE__, msg, ##__VA_ARGS__); \
+//         } \
+//     } while (0)
+// #endif
+
+// void assert_handler(char const* prefix, char const* condition, char const* file, Int32 line, char const* msg, ...) {
+//     HAZEL_PRINT_ERR("%s(%d): %s: ", file, line, prefix);
+//     if (condition)
+//         HAZEL_PRINT_ERR( "`%s` ", condition);
+//     if (msg) {
+//         va_list va;
+//         va_start(va, msg);
+//         HAZEL_PRINT_ERR_VA(msg, va);
+//         va_end(va);
+//     }
+//     HAZEL_PRINT_ERR("\n");
+// }
+
+// #ifndef HAZEL_ASSERT
+//     #define HAZEL_ASSERT(cond)      HAZEL_ASSERT_MSG(cond, NULL)
+// #endif
+
+// #ifndef HAZEL_ASSERT_NOT_NULL
+//     #define HAZEL_ASSERT_NOT_NULL(ptr)      HAZEL_ASSERT_MSG((ptr) != NULL, #ptr " must not be NULL")
+// #endif
+
 // Inline 
 #ifdef __cplusplus
     #if defined(_MSC_VER) && _MSC_VER <= 1800 
