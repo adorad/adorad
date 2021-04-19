@@ -164,7 +164,7 @@ extern "C" {
             #define WIN32_MEAN_AND_LEAN 1
             #define VC_EXTRALEAN        1
         #endif
-        #include <windows.h>
+        // #include <windows.h>
         #undef NOMINMAX
 
         #if !defined(HAZEL_WINDOWS_H_INCLUDED)

@@ -38,6 +38,7 @@ typedef struct TokenNames {
         EXPORT, 
         FINALLY, 
         FOR,
+        FUNC,
         // GLOBAL // ==> not required tbh coz we follow a no-globals approach
         IF,
         IMPORT,
