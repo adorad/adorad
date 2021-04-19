@@ -75,6 +75,15 @@ extern "C" {
 #endif 
 
 
+// Defines ==========================================
+#ifndef HAZEL_DEF 
+    #ifdef HAZEL_STATIC
+        #define HAZEL_DEF static
+    #else 
+        #define HAZEL_DEF extern
+    #endif 
+#endif // HAZEL_DEF
+
 // CPUs ==========================================
 // HAZEL_CPU_...
 #if defined(_M_IX86) || defined(_M_X64) || defined(__i386__) || defined(__x86_64__)
@@ -446,48 +455,48 @@ typedef Int32 Rune;
 
 
 // Char Things ==========================================
-GB_DEF char gb_char_to_lower       (char c);
-GB_DEF char gb_char_to_upper       (char c);
-GB_DEF b32  gb_char_is_space       (char c);
-GB_DEF b32  gb_char_is_digit       (char c);
-GB_DEF b32  gb_char_is_hex_digit   (char c);
-GB_DEF b32  gb_char_is_alpha       (char c);
-GB_DEF b32  gb_char_is_alphanumeric(char c);
-GB_DEF i32  gb_digit_to_int        (char c);
-GB_DEF i32  gb_hex_digit_to_int    (char c);
+HAZEL_DEF char gb_char_to_lower       (char c);
+HAZEL_DEF char gb_char_to_upper       (char c);
+HAZEL_DEF b32  gb_char_is_space       (char c);
+HAZEL_DEF b32  gb_char_is_digit       (char c);
+HAZEL_DEF b32  gb_char_is_hex_digit   (char c);
+HAZEL_DEF b32  gb_char_is_alpha       (char c);
+HAZEL_DEF b32  gb_char_is_alphanumeric(char c);
+HAZEL_DEF i32  gb_digit_to_int        (char c);
+HAZEL_DEF i32  gb_hex_digit_to_int    (char c);
 
 // NOTE(bill): ASCII only
-GB_DEF void gb_str_to_lower(char *str);
-GB_DEF void gb_str_to_upper(char *str);
+HAZEL_DEF void gb_str_to_lower(char *str);
+HAZEL_DEF void gb_str_to_upper(char *str);
 
-GB_DEF isize gb_strlen (char const *str);
-GB_DEF isize gb_strnlen(char const *str, isize max_len);
-GB_DEF i32   gb_strcmp (char const *s1, char const *s2);
-GB_DEF i32   gb_strncmp(char const *s1, char const *s2, isize len);
-GB_DEF char *gb_strcpy (char *dest, char const *source);
-GB_DEF char *gb_strncpy(char *dest, char const *source, isize len);
-GB_DEF isize gb_strlcpy(char *dest, char const *source, isize len);
-GB_DEF char *gb_strrev (char *str); // NOTE(bill): ASCII only
+HAZEL_DEF isize gb_strlen (char const *str);
+HAZEL_DEF isize gb_strnlen(char const *str, isize max_len);
+HAZEL_DEF i32   gb_strcmp (char const *s1, char const *s2);
+HAZEL_DEF i32   gb_strncmp(char const *s1, char const *s2, isize len);
+HAZEL_DEF char *gb_strcpy (char *dest, char const *source);
+HAZEL_DEF char *gb_strncpy(char *dest, char const *source, isize len);
+HAZEL_DEF isize gb_strlcpy(char *dest, char const *source, isize len);
+HAZEL_DEF char *gb_strrev (char *str); // NOTE(bill): ASCII only
 
 // NOTE(bill): A less fucking crazy strtok!
-GB_DEF char const *gb_strtok(char *output, char const *src, char const *delimit);
+HAZEL_DEF char const *gb_strtok(char *output, char const *src, char const *delimit);
 
-GB_DEF b32 gb_str_has_prefix(char const *str, char const *prefix);
-GB_DEF b32 gb_str_has_suffix(char const *str, char const *suffix);
+HAZEL_DEF b32 gb_str_has_prefix(char const *str, char const *prefix);
+HAZEL_DEF b32 gb_str_has_suffix(char const *str, char const *suffix);
 
-GB_DEF char const *gb_char_first_occurence(char const *str, char c);
-GB_DEF char const *gb_char_last_occurence (char const *str, char c);
+HAZEL_DEF char const *gb_char_first_occurence(char const *str, char c);
+HAZEL_DEF char const *gb_char_last_occurence (char const *str, char c);
 
-GB_DEF void gb_str_concat(char *dest, isize dest_len,
+HAZEL_DEF void gb_str_concat(char *dest, isize dest_len,
                           char const *src_a, isize src_a_len,
                           char const *src_b, isize src_b_len);
 
-GB_DEF u64   gb_str_to_u64(char const *str, char **end_ptr, i32 base); // TODO(bill): Support more than just decimal and hexadecimal
-GB_DEF i64   gb_str_to_i64(char const *str, char **end_ptr, i32 base); // TODO(bill): Support more than just decimal and hexadecimal
-GB_DEF f32   gb_str_to_f32(char const *str, char **end_ptr);
-GB_DEF f64   gb_str_to_f64(char const *str, char **end_ptr);
-GB_DEF void  gb_i64_to_str(i64 value, char *string, i32 base);
-GB_DEF void  gb_u64_to_str(u64 value, char *string, i32 base);
+HAZEL_DEF u64   gb_str_to_u64(char const *str, char **end_ptr, i32 base); // TODO(bill): Support more than just decimal and hexadecimal
+HAZEL_DEF i64   gb_str_to_i64(char const *str, char **end_ptr, i32 base); // TODO(bill): Support more than just decimal and hexadecimal
+HAZEL_DEF f32   gb_str_to_f32(char const *str, char **end_ptr);
+HAZEL_DEF f64   gb_str_to_f64(char const *str, char **end_ptr);
+HAZEL_DEF void  gb_i64_to_str(i64 value, char *string, i32 base);
+HAZEL_DEF void  gb_u64_to_str(u64 value, char *string, i32 base);
 
 
 ////////////////////////////////////////////////////////////////
@@ -497,19 +506,19 @@ GB_DEF void  gb_u64_to_str(u64 value, char *string, i32 base);
 //
 
 // NOTE(bill): Does not check if utf-8 string is valid
-GB_DEF isize gb_utf8_strlen (u8 const *str);
-GB_DEF isize gb_utf8_strnlen(u8 const *str, isize max_len);
+HAZEL_DEF isize gb_utf8_strlen (u8 const *str);
+HAZEL_DEF isize gb_utf8_strnlen(u8 const *str, isize max_len);
 
 // NOTE(bill): Windows doesn't handle 8 bit filenames well ('cause Micro$hit)
-GB_DEF u16 *gb_utf8_to_ucs2    (u16 *buffer, isize len, u8 const *str);
-GB_DEF u8 * gb_ucs2_to_utf8    (u8 *buffer, isize len, u16 const *str);
-GB_DEF u16 *gb_utf8_to_ucs2_buf(u8 const *str);   // NOTE(bill): Uses locally persisting buffer
-GB_DEF u8 * gb_ucs2_to_utf8_buf(u16 const *str); // NOTE(bill): Uses locally persisting buffer
+HAZEL_DEF u16 *gb_utf8_to_ucs2    (u16 *buffer, isize len, u8 const *str);
+HAZEL_DEF u8 * gb_ucs2_to_utf8    (u8 *buffer, isize len, u16 const *str);
+HAZEL_DEF u16 *gb_utf8_to_ucs2_buf(u8 const *str);   // NOTE(bill): Uses locally persisting buffer
+HAZEL_DEF u8 * gb_ucs2_to_utf8_buf(u16 const *str); // NOTE(bill): Uses locally persisting buffer
 
 // NOTE(bill): Returns size of codepoint in bytes
-GB_DEF isize gb_utf8_decode        (u8 const *str, isize str_len, Rune *codepoint);
-GB_DEF isize gb_utf8_codepoint_size(u8 const *str, isize str_len);
-GB_DEF isize gb_utf8_encode_rune   (u8 buf[4], Rune r);
+HAZEL_DEF isize gb_utf8_decode        (u8 const *str, isize str_len, Rune *codepoint);
+HAZEL_DEF isize gb_utf8_codepoint_size(u8 const *str, isize str_len);
+HAZEL_DEF isize gb_utf8_encode_rune   (u8 buf[4], Rune r);
 
 
 // Memory ==========================================
@@ -522,10 +531,10 @@ GB_DEF isize gb_utf8_encode_rune   (u8 buf[4], Rune r);
 
 
 // Time ==========================================
-GB_DEF u64  gb_rdtsc       (void);
-GB_DEF f64  gb_time_now    (void); // NOTE(bill): This is only for relative time e.g. game loops
-GB_DEF u64  gb_utc_time_now(void); // NOTE(bill): Number of microseconds since 1601-01-01 UTC
-GB_DEF void gb_sleep_ms    (u32 ms);
+HAZEL_DEF u64  gb_rdtsc       (void);
+HAZEL_DEF f64  gb_time_now    (void); // NOTE(bill): This is only for relative time e.g. game loops
+HAZEL_DEF u64  gb_utc_time_now(void); // NOTE(bill): Number of microseconds since 1601-01-01 UTC
+HAZEL_DEF void gb_sleep_ms    (u32 ms);
 
 
 //
