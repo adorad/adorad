@@ -118,6 +118,15 @@ extern "C" {
 #endif // HAZEL_CPU_...
 
 
+#ifndef HAZEL_CHECK
+	#define HAZEL_CHECK3(cond, msg) typedef char static_assertion_##msg[(!!(cond))*2-1]
+	// NOTE(bill): Token pasting madness!!
+	#define HAZEL_CHECK2(cond, line) HAZEL_CHECK3(cond, static_assertion_at_line_##line)
+	#define HAZEL_CHECK1(cond, line) HAZEL_CHECK2(cond, line)
+	#define HAZEL_CHECK(cond)        HAZEL_CHECK1(cond, __LINE__)
+#endif
+
+
 // Headers ==========================================
 
 #if defined(_WIN32) && !defined(__MINGW32__)
@@ -248,6 +257,15 @@ extern "C" {
     typedef int64_t   Int64; 
 #endif // Hazel Basic Types 
 
+HAZEL_CHECK(sizeof(u8)  == sizeof(i8));
+HAZEL_CHECK(sizeof(u16) == sizeof(i16));
+HAZEL_CHECK(sizeof(u32) == sizeof(i32));
+HAZEL_CHECK(sizeof(u64) == sizeof(i64));
+
+HAZEL_CHECK(sizeof(u8)  == 1);
+HAZEL_CHECK(sizeof(u16) == 2);
+HAZEL_CHECK(sizeof(u32) == 4);
+HAZEL_CHECK(sizeof(u64) == 8);
 
 // More Useful Types 
 #define null     (void*)0
