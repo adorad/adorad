@@ -15,10 +15,10 @@ jobs:
       # - name: Download LLVM
       #   run: sudo apt-get install llvm
       - name: Build Hazel
-        run: make release
-      # - name: Odin run
+        run: make compile
+      # - name: Hazel run
       #   run: ./hazel run examples/demo/demo.hazel
-      # - name: Odin check
+      # - name: Hazel check
       #   run: ./hazel check examples/demo/demo.hazel -vet
 
   build_macOS:
@@ -33,9 +33,9 @@ jobs:
       #     echo "CPATH=$TMP_PATH" >> $GITHUB_ENV
       - name: Build Hazel
         run: make release
-      # - name: Odin run
+      # - name: Hazel run
       #   run: ./hazel run examples/demo/demo.hazel
-      # - name: Odin check
+      # - name: Hazel check
       #   run: ./hazel check examples/demo/demo.hazel -vet
 
   build_windows:
@@ -47,7 +47,7 @@ jobs:
       #   run: |
       #     cd bin
       #     $ProgressPreference = "SilentlyContinue";
-      #     Invoke-WebRequest -Uri https://github.com/odin-lang/Odin/releases/download/llvm-windows/llvm-binaries.zip -OutFile llvm-binaries.zip
+      #     Invoke-WebRequest -Uri https://github.com/odin-lang/Hazel/releases/download/llvm-windows/llvm-binaries.zip -OutFile llvm-binaries.zip
       #     7z x llvm-binaries.zip > $null
 
       - name: Build Hazel

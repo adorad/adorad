@@ -52,7 +52,7 @@ all :
 .PHONY: all 
 
 compile:
-	$(CC) $(objects) $(flags) -o $(exec) -I .
+	$(CC) $(objects) $(flags) -I . -o $(exec)
 .PHONY: compile
 
 echo:
