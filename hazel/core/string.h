@@ -36,28 +36,28 @@ CSTL_DEF inline void strToUpper(char* str);
 // CSTL_DEF char const* gb_char_first_occurence(char const* str, char c);
 // CSTL_DEF char const* gb_char_last_occurence (char const* str, char c);
 
-// CSTL_DEF void gb_str_concat(char* dest, ptrdiff_t dest_len,
-//                           char const* src_a, ptrdiff_t src_a_len,
-//                           char const* src_b, ptrdiff_t src_b_len);
+// CSTL_DEF void gb_str_concat(char* dest, Ll dest_len,
+//                           char const* src_a, Ll src_a_len,
+//                           char const* src_b, Ll src_b_len);
 
 
 
 // ////////////////////////////////////////////////////////////////
 // // UTF-8 Handling
 // // Does not check if utf-8 string is valid
-// CSTL_DEF ptrdiff_t gb_utf8_strlen (UInt8 const* str);
-// CSTL_DEF ptrdiff_t gb_utf8_strnlen(UInt8 const* str, ptrdiff_t max_len);
+// CSTL_DEF Ll gb_utf8_strlen (UInt8 const* str);
+// CSTL_DEF Ll gb_utf8_strnlen(UInt8 const* str, Ll max_len);
 
 // // NOTE(jasmcaus): Windows doesn't handle 8 bit filenames well ('cause Micro$hit)
-// CSTL_DEF UInt16 *gb_utf8_to_ucs2    (UInt16 *buffer, ptrdiff_t len, UInt8 const* str);
-// CSTL_DEF UInt8 * gb_ucs2_to_utf8    (UInt8 *buffer, ptrdiff_t len, UInt16 const* str);
+// CSTL_DEF UInt16 *gb_utf8_to_ucs2    (UInt16 *buffer, Ll len, UInt8 const* str);
+// CSTL_DEF UInt8 * gb_ucs2_to_utf8    (UInt8 *buffer, Ll len, UInt16 const* str);
 // CSTL_DEF UInt16 *gb_utf8_to_ucs2_buf(UInt8 const* str);   // NOTE(jasmcaus): Uses locally persisting buffer
 // CSTL_DEF UInt8 * gb_ucs2_to_utf8_buf(UInt16 const* str); // NOTE(jasmcaus): Uses locally persisting buffer
 
 // // NOTE(jasmcaus): Returns size of codepoint in bytes
-// CSTL_DEF ptrdiff_t gb_utf8_decode        (UInt8 const* str, ptrdiff_t str_len, Rune *codepoint);
-// CSTL_DEF ptrdiff_t gb_utf8_codepoint_size(UInt8 const* str, ptrdiff_t str_len);
-// CSTL_DEF ptrdiff_t gb_utf8_encode_rune   (UInt8 buf[4], Rune r);
+// CSTL_DEF Ll gb_utf8_decode        (UInt8 const* str, Ll str_len, Rune *codepoint);
+// CSTL_DEF Ll gb_utf8_codepoint_size(UInt8 const* str, Ll str_len);
+// CSTL_DEF Ll gb_utf8_encode_rune   (UInt8 buf[4], Rune r);
 
 
 //

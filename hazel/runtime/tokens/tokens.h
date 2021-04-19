@@ -172,8 +172,8 @@ typedef struct TokenNames {
     char* value; 
 } Token; 
 
-char* const TokenStrings[] = {
-    #define TOKENKIND(e, s)     { cast(UInt8*)s, cstl_sizeof(s)-1 }
+static char* const TokenStrings[] = {
+    #define TOKENKIND(e, s)     cast(UInt8*)s, cstl_sizeof(s)-1
         ALLTOKENS
     #undef TOKENKIND
 };

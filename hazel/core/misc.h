@@ -57,7 +57,7 @@ extern "C" {
 
 // A signed sizeof is more useful 
 #ifndef cstl_sizeof
-    #define cstl_sizeof(x)     (ptrdiff_t)(sizeof(x))
+    #define cstl_sizeof(x)     (Ll)(sizeof(x))
 #endif 
 
 // Statics!

@@ -142,6 +142,18 @@ typedef Int32 Rune;
     #endif //_WIN64
 #endif
 
+// The same thing as ptrdiff_t
+#ifndef _Ll_DEFINED
+    #define _Ll_DEFINED
+    #undef Ll
+
+    #ifdef _WIN64
+        typedef __int64 Ll;
+    #else
+        typedef int Ll;
+    #endif //_WIN64
+#endif
+
 // bool is a basic type in C++ and not C
 // We could just have used <stdbool.h> but I prefer this as it results in a smaller binary
 #ifndef __cplusplus
