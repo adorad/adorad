@@ -1,7 +1,7 @@
 #include <stdlib.h> 
 #include <string.h> 
 
-#include <hazel/runtime/tokens/tokens.h>
+#include <hazel/compiler/tokens/tokens.h>
 
 Token* token_init(int type, char* value) {
     Token* token = calloc(1, sizeof(Token));

@@ -1,4 +1,4 @@
-#include <hazel/runtime/tokens/tokens.h> 
+#include <hazel/compiler/tokens/tokens.h> 
 
 Token* token_init(int type, char* value) {
     Token* tok = calloc(1, sizeof(struct TokenNames)); 

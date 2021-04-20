@@ -37,7 +37,7 @@ $(VERBOSE).SILENT:
 
 # ======================== MISC VARIABLES ========================
 exec = hazel
-sources = $(wildcard hazel/runtime/lexer/*.c hazel/runtime/tokens/*.c hazel/runtime/ast/*.c hazel/runtime/parser/*.c hazel/*.c )
+sources = $(wildcard hazel/compiler/lexer/*.c hazel/compiler/tokens/*.c hazel/compiler/ast/*.c hazel/compiler/parser/*.c hazel/*.c )
 # sources = $(wildcard hazel/hazel.c hazel/main.c )
 objects = $(sources:hazel/.c=.o)
 flags = -g
@@ -91,17 +91,17 @@ testclean:
 .PHONY: testclean 
 
 regenerate-tokens:
-	# Regenerate hazel/runtime/tokens/token.h from tools/scripts/generate_tokens.py
+	# Regenerate hazel/compiler/tokens/token.h from tools/scripts/generate_tokens.py
 	python $(SRCDIR)/tools/scripts/generate_tokens.py token_header \
-		   $(SRCDIR)/hazel/runtime/grammar/Tokens                  \
-		   $(SRCDIR)/hazel/runtime/tokens/__token.h                \
+		   $(SRCDIR)/hazel/compiler/grammar/Tokens                  \
+		   $(SRCDIR)/hazel/compiler/tokens/__token.h                \
 
 	python $(SRCDIR)/tools/scripts/generate_tokens.py token_c      \
-		   $(SRCDIR)/hazel/runtime/grammar/Tokens                  \
-		   $(SRCDIR)/hazel/runtime/tokens/__token.c                \
+		   $(SRCDIR)/hazel/compiler/grammar/Tokens                  \
+		   $(SRCDIR)/hazel/compiler/tokens/__token.c                \
 
 	python $(SRCDIR)/tools/scripts/generate_tokens.py token_py     \
-		   $(SRCDIR)/hazel/runtime/grammar/Tokens                  \
-		   $(SRCDIR)/hazel/runtime/tokens/__token.py               \
+		   $(SRCDIR)/hazel/compiler/grammar/Tokens                  \
+		   $(SRCDIR)/hazel/compiler/tokens/__token.py               \
 .PHONY: regenerate-tokens
 

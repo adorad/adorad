@@ -1,7 +1,7 @@
 #include <string.h>
 #include <stdio.h> 
 
-#include <hazel/runtime/lexer/lexer.h>
+#include <hazel/compiler/lexer/lexer.h>
 
 // Create a new lexer
 Lexer* lexer_init(char* contents) {

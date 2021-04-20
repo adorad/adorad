@@ -4,7 +4,7 @@
 #include <hazel/core/hcore.h> 
 // #include <hazel/types/types.h> 
 
-#include <hazel/runtime/lexer/lexer.h>
-#include <hazel/runtime/tokens/tokens.h> 
-// #include <hazel/runtime/ast/ast.h>
-// #include <hazel/runtime/parser/parser.h> 
+#include <hazel/compiler/lexer/lexer.h>
+#include <hazel/compiler/tokens/tokens.h> 
+// #include <hazel/compiler/ast/ast.h>
+// #include <hazel/compiler/parser/parser.h> 
