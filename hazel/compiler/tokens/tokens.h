@@ -96,13 +96,13 @@ TOKENKIND(TOK___DELIMITERS_OPERATORS_END, ""), \
 \   
     /* Colons */ \
 TOKENKIND(TOK___COLONS_OPERATORS_BEGIN, ""), \
-    TOKENKIND(COLON,     ":"), \
-    TOKENKIND(SEMICOLON, ";"), \
-    TOKENKIND(COMMA,     ","), \
-    TOKENKIND(DOT,       "."), \
-    TOKENKIND(DDOT,      ".."), \
+    TOKENKIND(COLON,     ":"),   \
+    TOKENKIND(SEMICOLON, ";"),   \
+    TOKENKIND(COMMA,     ","),   \
+    TOKENKIND(DOT,       "."),   \
+    TOKENKIND(DDOT,      ".."),  \
     TOKENKIND(ELLIPSIS,  "..."), \
-    TOKENKIND(BACKSLASH, "\\"), \
+    TOKENKIND(BACKSLASH, "\\"),  \
 TOKENKIND(TOK___COLONS_OPERATORS_END, ""), \
 \   
     /* Bitshits */ \
@@ -113,64 +113,79 @@ TOKENKIND(TOK___BITSHIFT_OPERATORS_END, ""), \
 TOKENKIND(TOK___OPERATORS_END, ""), \
 \
 TOKENKIND(TOK___KEYWORDS_BEGIN, ""), \
-    TOKENKIND(BEGIN,     "begin"), \
-    TOKENKIND(BREAK,     "break"), \
-    TOKENKIND(CASE,      "case"), \
-    TOKENKIND(CAST,      "cast"), \
-    TOKENKIND(CATCH,     "catch"), \
-    TOKENKIND(CLASS,     "class"), \
-    TOKENKIND(CONST,     "const"), \
+    TOKENKIND(AS,        "as"),       \
+    TOKENKIND(BEGIN,     "begin"),    \
+    TOKENKIND(BREAK,     "break"),    \
+    TOKENKIND(CASE,      "case"),     \
+    TOKENKIND(CAST,      "cast"),     \
+    TOKENKIND(CATCH,     "catch"),    \
+    TOKENKIND(CLASS,     "class"),    \
+    TOKENKIND(CONST,     "const"),    \
     TOKENKIND(CONTINUE,  "continue"), \
-    TOKENKIND(DO,        "do"), \
-    /* TOKENKIND(DEF, "def"), */ \
-    TOKENKIND(DEFAULT,   "default"), \
-    TOKENKIND(ENUM,      "enum"), \
-    TOKENKIND(ELSE,      "else"), \
-    TOKENKIND(ELSEIF,    "elseif"), \
-    TOKENKIND(EXPORT,    "export"), \
-    TOKENKIND(FINALLY,   "finally"), \
-    TOKENKIND(FOR,       "for"), \
-    TOKENKIND(FUNC,      "func"), \
+    TOKENKIND(DO,        "do"),       \
+    /* TOKENKIND(DEF, "def"), */      \
+    TOKENKIND(DEFAULT,   "default"),  \
+    TOKENKIND(ENUM,      "enum"),     \
+    TOKENKIND(ELSE,      "else"),     \
+    TOKENKIND(ELSEIF,    "elseif"),   \
+    TOKENKIND(EXPORT,    "export"),   \
+    TOKENKIND(FINALLY,   "finally"),  \
+    TOKENKIND(FOR,       "for"),      \
+    TOKENKIND(FUNC,      "func"),     \
     /* GLOBAL is not required tbh coz we follow a no-globals approach */ \
-    /* TOKENKIND(GLOBAL, "global"), */ \
-    TOKENKIND(IF,        "if"), \
-    TOKENKIND(IMPORT,    "import"), \
-    TOKENKIND(IN,        "in"), \
-    TOKENKIND(INCLUDE,   "include"), \
-    TOKENKIND(INLINE,    "inline"), \
-    TOKENKIND(ISA,       "isa"), \
-    TOKENKIND(MACRO,     "macro"), \
-    TOKENKIND(MAP,       "map"), \
+    /* TOKENKIND(GLOBAL, "global"), */\
+    TOKENKIND(IF,        "if"),       \
+    TOKENKIND(IMPORT,    "import"),   \
+    TOKENKIND(IN,        "in"),       \
+    TOKENKIND(INCLUDE,   "include"),  \
+    TOKENKIND(INLINE,    "inline"),   \
+    TOKENKIND(ISA,       "isa"),      \
+    TOKENKIND(MACRO,     "macro"),    \
+    TOKENKIND(MAP,       "map"),      \
     TOKENKIND(MATCH,     "match"), /* similar to 'switch' in C++, Java and others */ \
-    TOKENKIND(MODULE,    "module"), \
-    TOKENKIND(MUTABLE,   "mutable"), \
+    TOKENKIND(MODULE,    "module"),   \
+    TOKENKIND(MUTABLE,   "mutable"),  \
     /* TOKENKIND(NEW, "new"), */ /* if we go for a memory-safe approach like Rust */ \
-    TOKENKIND(NO_INLINE, "no_inline"), \
-    TOKENKIND(NOT_IN,    "not_in"), \
-    TOKENKIND(RANGE,     "range"), \
-    TOKENKIND(RETURN,    "return"), \
-    TOKENKIND(STRUCT,    "struct"), \
-    TOKENKIND(TRY,       "try"), \
-    TOKENKIND(TYPEOF,    "typeof"), \
+    TOKENKIND(NO_INLINE, "no_inline"),\
+    TOKENKIND(NOT_IN,    "not_in"),   \
+    TOKENKIND(RANGE,     "range"),    \
+    TOKENKIND(RETURN,    "return"),   \
+    TOKENKIND(STRUCT,    "struct"),   \
+    TOKENKIND(TRY,       "try"),      \
+    TOKENKIND(TYPEOF,    "typeof"),   \
     TOKENKIND(USE,       "use"), /* aliasing purposes */ \
-    TOKENKIND(WHEN,      "when"), \
-    TOKENKIND(WHERE,     "where"), \
-    TOKENKIND(WHILE,     "while"), \
-    TOKENKIND(UNION,     "union"), \
+    TOKENKIND(WHEN,      "when"),     \
+    TOKENKIND(WHERE,     "where"),    \
+    TOKENKIND(WHILE,     "while"),    \
+    TOKENKIND(UNION,     "union"),    \
 TOKENKIND(TOK___KEYWORDS_END, ""), \
 \ 
     TOKENKIND(TOK_COUNT, "")
 
 
-typedef struct TokenNames {
-    enum {
-        #define TOKENKIND(e, s) e
-            ALLTOKENS
-        #undef TOKENKIND
-    } type; // enum
+typedef enum {
+    #define TOKENKIND(tok, str) tok
+        ALLTOKENS
+    #undef TOKENKIND
+} AllTokensEnum; 
 
-    char* value; 
+
+typedef struct TokenNames {
+    AllTokensEnum type; // Token Type
+    UInt32 line;        // Token Line Number (1-Based)
+    UInt32 column;      // Token Column Number (0-Based) 
+    UInt32 offset;      // Offset of the first character of the Token
+    UInt32 bytes;       // Token length (in bytes)
+    UInt32 tok_length;  // Token length (UTF-8)
+    UInt32 tok_fileid;  // Token file ID
+    const char* value;  // Token value (_not_ null-terminated)
 } Token; 
+
+#define NO_TOKEN            (Token){0,0,0,0,0,0,0,0,null}
+#define ILLEGAL_TOKEN       (Token){ILLEGAL,0,0,0,0,0,0,0,null}
+#define TOKEN_BYTES(_tok)   _tok.bytes
+#define TOKEN_VALUE(_tok)   _tok.value
+
 
 static char* const TokenStrings[] = {
     #define TOKENKIND(e, s)     cast(UInt8*)s, cstl_sizeof(s)-1
