@@ -7,11 +7,11 @@ extern "C" {
 
 // Debug + Asserts  ==========================================
 #ifndef CSTL_CHECK
-	#define CSTL_CHECK3(cond, msg) typedef char static_assertion_##msg[(!!(cond))*2-1]
-	// NOTE(jasmcaus): Token pasting madness!!
-	#define CSTL_CHECK2(cond, line) CSTL_CHECK3(cond, static_assertion_at_line_##line)
-	#define CSTL_CHECK1(cond, line) CSTL_CHECK2(cond, line)
-	#define CSTL_CHECK(cond)        CSTL_CHECK1(cond, __LINE__)
+    #define CSTL_CHECK3(cond, msg) typedef char static_assertion_##msg[(!!(cond))*2-1]
+    // NOTE(jasmcaus): Token pasting madness!!
+    #define CSTL_CHECK2(cond, line) CSTL_CHECK3(cond, static_assertion_at_line_##line)
+    #define CSTL_CHECK1(cond, line) CSTL_CHECK2(cond, line)
+    #define CSTL_CHECK(cond)        CSTL_CHECK1(cond, __LINE__)
 #endif
 
 
