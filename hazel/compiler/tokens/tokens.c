@@ -27,3 +27,67 @@ char* token_to_string(Token* token) {
 
     return str;
 }
+
+const char* token_toString(Token* token) {
+
+}
+
+bool token_isSpecial(Token token) {
+
+} 
+
+bool token_isLiteral(Token token) {
+
+} 
+
+bool token_isKeyword(Token token) {
+
+} 
+
+bool token_isOperator(Token token) {
+
+} 
+
+bool token_isComparisonOperator(Token token) {
+
+} 
+
+bool token_isAssignmentOperator(Token token) {
+
+} 
+
+bool token_isDelimiter(Token token) {
+
+} 
+
+bool token_isArrow(Token token) {
+
+} 
+
+bool token_isBitshift(Token token) {
+
+} 
+
+bool token_isColon(Token token) {
+
+} 
+
+inline bool token_isEOF(Token token) {
+
+} 
+
+inline bool token_isIllegal(Token token) {
+
+} 
+
+inline bool token_isMacro(Token token) {
+
+}
+
+inline bool token_isImport(Token token) {
+
+}
+
+inline bool token_isInclude(Token token) {
+
+}
