@@ -34,6 +34,7 @@ const char* token_toString(AllTokensEnum token) {
     switch(token) {
         // Special (internal usage only)
         case TOK_EOF: return "TOK_EOF";
+        case TOK_NULL: return "TOK_NULL";
         case ILLEGAL: return "ILLEGAL";
         case COMMENT: return "COMMENT";
 
@@ -58,7 +59,7 @@ const char* token_toString(AllTokensEnum token) {
         case MOD_MOD: return "%%";
         case AND: return "&";
         case OR: return "|";
-        case NOT: return "!";
+        case EXCLAMATION: return "!";
         case XOR: return "^";
         case AND_NOT: return "&^";
         case AND_AND: return "&&";
@@ -117,7 +118,7 @@ const char* token_toString(AllTokensEnum token) {
         case LBITSHIFT: return "<<";
         case RBITSHIFT: return ">>";
 
-            // Keywords
+        // Keywords
         case ANY: return "any";      
         case AS: return "as";      
         case BEGIN: return "begin";   
@@ -149,6 +150,7 @@ const char* token_toString(AllTokensEnum token) {
         case MODULE: return "module";  
         case MUTABLE: return "mutable"; 
         case NO_INLINE: return "no_inline"; 
+        case NOT: return "not";  
         case NOT_IN: return "not_in";  
         case RAISE: return "raise";   
         case RANGE: return "range";   
@@ -215,6 +217,10 @@ inline bool token_isEOF(AllTokensEnum token) {
     return token == TOK_EOF; 
 }
 
+inline bool token_isNULL(AllTokensEnum token) {
+    return token == TOK_NULL; 
+}
+
 inline bool token_isIllegal(AllTokensEnum token) {
     return token == ILLEGAL; 
 }
@@ -235,26 +241,60 @@ inline bool token_isSemiColon(AllTokensEnum token) {
     return token == SEMICOLON; 
 }
 
-inline bool token_isDeclStatement(AllTokensEnum token) {
-
-} 
-
 inline bool token_isJumpStatement(AllTokensEnum token) {
-
+    // Break (BREAK)
+    // Continue (CONTINUE)
+    // Return (RETURN)
+    return (token == BREAK || token == CONTINUE || token == RETURN); 
 } 
 
 inline bool token_isLoopStatement(AllTokensEnum token) {
-
+    // While (WHILE)
+    // For (FOR)
+    return (token == WHILE || token == FOR); 
 } 
 
 inline bool token_isFlowStatement(AllTokensEnum token) {
-
+    // If 
+    // Match 
+    return (token == IF || token == MATCH); 
 } 
 
 inline bool token_isMatchStatement(AllTokensEnum token) {
-
+    // Declarations used in match-case 
+    return (token == MATCH || token == CASE || token == DEFAULT); 
 } 
 
 inline bool token_isExpressionStatement(AllTokensEnum token) {
+    // Postfix Operations: isPrimaryExpressionStatement or module (for files)
+    // Unary Ops: PLUS, MINUS, EXCLAMATION, NOT
+    // RAISE 
+    return (isPrimaryExpressionStatement(token) == ANY || token == MODULE || token == PLUS || token == MINUS || 
+            token == EXCLAMATION || token == NOT || token == RAISE); 
+    
+} 
 
+inline bool token_isPrimaryExpressionStatement(AllTokensEnum token) {
+    // Literals (numbers, Strings)
+    // Booleans (TRUE, FALSE)
+    // IDENTIFIER
+    // 'null' 
+    // FUNC
+    // ILLEGAL
+    // '(' expression ')'
+    return (token == INTEGER || token == BIN_INT || token == HEX_INT || token == IMAG || 
+            token == FLOAT || token == RUNE || token == STRING || token == IDENTIFIER || 
+            token == TOK_NULL || token == FUNC || token == ILLEGAL || token == LPAREN || 
+            token == RPAREN); 
+}
+
+inline bool token_isDeclStatement(AllTokensEnum token) {
+    // Variable Declaration (with types + "Any") 
+    // Function Declaration (FUNC)
+    // Class/Struct Declaration (CLASS and STRUCT)
+    // Enum Declaration (ENUM)
+    // Module Declaration (MODULE)
+    // Empty Declaration (SEMICOLON)
+    return (token == ANY || token == FUNC || token == CLASS || token == STRUCT || 
+            token == ENUM || token == MODULE || token == SEMICOLON); 
 } 
