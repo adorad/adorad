@@ -208,6 +208,13 @@ void token_free(Token* token);
 
 const char* token_toString(AllTokensEnum token);
 
+inline bool token_isDeclStatement(AllTokensEnum token); 
+inline bool token_isJumpStatement(AllTokensEnum token); 
+inline bool token_isLoopStatement(AllTokensEnum token); 
+inline bool token_isFlowStatement(AllTokensEnum token); 
+inline bool token_isMatchStatement(AllTokensEnum token); 
+inline bool token_isExpressionStatement(AllTokensEnum token); 
+
 inline bool token_isSpecial(AllTokensEnum token); 
 inline bool token_isLiteral(AllTokensEnum token); 
 inline bool token_isKeyword(AllTokensEnum token); 
@@ -227,13 +234,6 @@ inline bool token_isMacro(AllTokensEnum token);
 inline bool token_isImport(AllTokensEnum token); 
 inline bool token_isInclude(AllTokensEnum token); 
 inline bool token_isSemiColon(AllTokensEnum token); 
-
-inline bool token_isDeclStatement(AllTokensEnum token); 
-inline bool token_isJumpStatement(AllTokensEnum token); 
-inline bool token_isLoopStatement(AllTokensEnum token); 
-inline bool token_isFlowStatement(AllTokensEnum token); 
-inline bool token_isMatchStatement(AllTokensEnum token); 
-inline bool token_isExpressionStatement(AllTokensEnum token); 
 
 
 #endif // HAZEL_TOKEN 
