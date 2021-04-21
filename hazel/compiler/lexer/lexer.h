@@ -7,7 +7,8 @@
 /*
     Hazel's Lexer is built in such a way that no (or negligible) memory allocations are necessary during usage. 
 
-    In order to be able to not allocate any memory during tokenization, STRINGs and NUMBERs are just sanity checked but _not_ converted - it is the responsibility of the Parser to perform the right conversion.
+    In order to be able to not allocate any memory during tokenization, STRINGs and NUMBERs are just sanity checked but _not_
+    converted - it is the responsibility of the Parser to perform the right conversion.
 
     In case of a scan error, ILLEGAL is returned and the error details can be extracted from the token itself.
 
