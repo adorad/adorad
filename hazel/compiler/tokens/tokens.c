@@ -159,6 +159,9 @@ const char* token_toString(AllTokensEnum token) {
         case WHILE: return "while";   
         case UNION: return "union";   
     }
+
+    // We should _NEVER_ reach here 
+    return "UNRECOGNIZED TOKEN"; 
 }
 
 bool token_isSpecial(Token token) {
