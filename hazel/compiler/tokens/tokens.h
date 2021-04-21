@@ -175,17 +175,17 @@ typedef enum {
     #define TOKENKIND(tok, str) tok
         ALLTOKENS
     #undef TOKENKIND
-} AllTokensEnum; 
+} TokensEnum; 
 
 
 typedef struct TokenNames {
-    AllTokensEnum type; // Token Type
-    UInt32 line;        // Token Line Number (1-Based)
-    UInt32 column;      // Token Column Number (0-Based) 
+    TokensEnum type; // Token Type
     UInt32 offset;      // Offset of the first character of the Token
     UInt32 bytes;       // Token length (in bytes)
+    UInt32 line_no;        // Token Line Number (1-Based)
+    UInt32 column_no;      // Token Column Number (0-Based) 
     UInt32 tok_length;  // Token length (UTF-8)
-    UInt32 tok_fileid;  // Token file ID
+    UInt32 file_id;  // Token file ID
     const char* value;  // Token value (_not_ null-terminated)
 } Token; 
 
@@ -206,34 +206,34 @@ Token* token_init(int type, char* value);
 Token* token_clone(Token* token);
 void token_free(Token* token);
 
-const char* token_toString(AllTokensEnum token);
+const char* token_toString(TokensEnum token);
 
-inline bool token_isDeclStatement(AllTokensEnum token); 
-inline bool token_isJumpStatement(AllTokensEnum token); 
-inline bool token_isLoopStatement(AllTokensEnum token); 
-inline bool token_isFlowStatement(AllTokensEnum token); 
-inline bool token_isMatchStatement(AllTokensEnum token); 
-inline bool token_isExpressionStatement(AllTokensEnum token); 
+inline bool token_isDeclStatement(TokensEnum token); 
+inline bool token_isJumpStatement(TokensEnum token); 
+inline bool token_isLoopStatement(TokensEnum token); 
+inline bool token_isFlowStatement(TokensEnum token); 
+inline bool token_isMatchStatement(TokensEnum token); 
+inline bool token_isExpressionStatement(TokensEnum token); 
 
-inline bool token_isSpecial(AllTokensEnum token); 
-inline bool token_isLiteral(AllTokensEnum token); 
-inline bool token_isKeyword(AllTokensEnum token); 
-inline bool token_isOperator(AllTokensEnum token); 
-inline bool token_isComparisonOperator(AllTokensEnum token); 
-inline bool token_isAssignmentOperator(AllTokensEnum token); 
-inline bool token_isDelimiter(AllTokensEnum token); 
-inline bool token_isArrow(AllTokensEnum token); 
-inline bool token_isBitshift(AllTokensEnum token); 
-inline bool token_isColon(AllTokensEnum token); 
+inline bool token_isSpecial(TokensEnum token); 
+inline bool token_isLiteral(TokensEnum token); 
+inline bool token_isKeyword(TokensEnum token); 
+inline bool token_isOperator(TokensEnum token); 
+inline bool token_isComparisonOperator(TokensEnum token); 
+inline bool token_isAssignmentOperator(TokensEnum token); 
+inline bool token_isDelimiter(TokensEnum token); 
+inline bool token_isArrow(TokensEnum token); 
+inline bool token_isBitshift(TokensEnum token); 
+inline bool token_isColon(TokensEnum token); 
 
-inline bool token_isIdentifier(AllTokensEnum token); 
-inline bool token_isEOF(AllTokensEnum token); 
-inline bool token_isNULL(AllTokensEnum token);
-inline bool token_isIllegal(AllTokensEnum token); 
-inline bool token_isMacro(AllTokensEnum token); 
-inline bool token_isImport(AllTokensEnum token); 
-inline bool token_isInclude(AllTokensEnum token); 
-inline bool token_isSemiColon(AllTokensEnum token); 
+inline bool token_isIdentifier(TokensEnum token); 
+inline bool token_isEOF(TokensEnum token); 
+inline bool token_isNULL(TokensEnum token);
+inline bool token_isIllegal(TokensEnum token); 
+inline bool token_isMacro(TokensEnum token); 
+inline bool token_isImport(TokensEnum token); 
+inline bool token_isInclude(TokensEnum token); 
+inline bool token_isSemiColon(TokensEnum token); 
 
 
 #endif // HAZEL_TOKEN 

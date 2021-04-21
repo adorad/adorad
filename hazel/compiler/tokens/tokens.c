@@ -30,7 +30,7 @@ char* token_to_string(Token* token) {
 
 // NOTE: 
 // Any changes made to this function _MUST_ reflect in the ALLTOKENS macro in <tokens.h> as well 
-const char* token_toString(AllTokensEnum token) {
+const char* token_toString(TokensEnum token) {
     switch(token) {
         // Special (internal usage only)
         case TOK_EOF: return "TOK_EOF";
@@ -169,31 +169,31 @@ const char* token_toString(AllTokensEnum token) {
 }
 
 
-inline bool token_isJumpStatement(AllTokensEnum token) {
+inline bool token_isJumpStatement(TokensEnum token) {
     // Break (BREAK)
     // Continue (CONTINUE)
     // Return (RETURN)
     return (token == BREAK || token == CONTINUE || token == RETURN); 
 } 
 
-inline bool token_isLoopStatement(AllTokensEnum token) {
+inline bool token_isLoopStatement(TokensEnum token) {
     // While (WHILE)
     // For (FOR)
     return (token == WHILE || token == FOR); 
 } 
 
-inline bool token_isFlowStatement(AllTokensEnum token) {
+inline bool token_isFlowStatement(TokensEnum token) {
     // If 
     // Match 
     return (token == IF || token == MATCH); 
 } 
 
-inline bool token_isMatchStatement(AllTokensEnum token) {
+inline bool token_isMatchStatement(TokensEnum token) {
     // Declarations used in match-case 
     return (token == MATCH || token == CASE || token == DEFAULT); 
 } 
 
-inline bool token_isExpressionStatement(AllTokensEnum token) {
+inline bool token_isExpressionStatement(TokensEnum token) {
     // Postfix Operations: isPrimaryExpressionStatement or module (for files)
     // Unary Ops: PLUS, MINUS, EXCLAMATION, NOT
     // RAISE 
@@ -202,7 +202,7 @@ inline bool token_isExpressionStatement(AllTokensEnum token) {
     
 } 
 
-inline bool token_isPrimaryExpressionStatement(AllTokensEnum token) {
+inline bool token_isPrimaryExpressionStatement(TokensEnum token) {
     // Literals (numbers, Strings)
     // Booleans (TRUE, FALSE)
     // IDENTIFIER
@@ -216,7 +216,7 @@ inline bool token_isPrimaryExpressionStatement(AllTokensEnum token) {
             token == RPAREN); 
 }
 
-inline bool token_isDeclStatement(AllTokensEnum token) {
+inline bool token_isDeclStatement(TokensEnum token) {
     // Variable Declaration (with types + "Any") 
     // Function Declaration (FUNC)
     // Class/Struct Declaration (CLASS and STRUCT)
@@ -228,74 +228,74 @@ inline bool token_isDeclStatement(AllTokensEnum token) {
 } 
 
 
-inline bool token_isSpecial(AllTokensEnum token) {
+inline bool token_isSpecial(TokensEnum token) {
     return (token == TOK_ID || token == TOK_EOF || token == ILLEGAL || token == COMMENT); 
 }
 
-inline bool token_isLiteral(AllTokensEnum token) {
+inline bool token_isLiteral(TokensEnum token) {
     return token > TOK___LITERALS_BEGIN && token < TOK___LITERALS_END; 
 }
 
-inline bool token_isKeyword(AllTokensEnum token) {
+inline bool token_isKeyword(TokensEnum token) {
     return token > TOK___KEYWORDS_BEGIN && token < TOK___KEYWORDS_END; 
 }
 
-inline bool token_isOperator(AllTokensEnum token) {
+inline bool token_isOperator(TokensEnum token) {
     return token > TOK___OPERATORS_BEGIN && token < TOK___OPERATORS_END; 
 }
 
-inline bool token_isComparisonOperator(AllTokensEnum token) {
+inline bool token_isComparisonOperator(TokensEnum token) {
     return token > TOK___COMP_OPERATORS_BEGIN && token < TOK___COMP_OPERATORS_END; 
 }
 
-inline bool token_isAssignmentOperator(AllTokensEnum token) {
+inline bool token_isAssignmentOperator(TokensEnum token) {
     return token > TOK___ASSIGNMENT_OPERATORS_BEGIN && token < TOK___ASSIGNMENT_OPERATORS_END; 
 }
 
-inline bool token_isDelimiter(AllTokensEnum token) {
+inline bool token_isDelimiter(TokensEnum token) {
     return token > TOK___DELIMITERS_OPERATORS_BEGIN && token < TOK___DELIMITERS_OPERATORS_END;
 }
 
-inline bool token_isArrow(AllTokensEnum token) {
+inline bool token_isArrow(TokensEnum token) {
     return token > TOK___ARROW_OPERATORS_BEGIN && token < TOK___ARROW_OPERATORS_END;
 }
 
-inline bool token_isBitshift(AllTokensEnum token) {
+inline bool token_isBitshift(TokensEnum token) {
     return token > TOK___BITSHIFT_OPERATORS_BEGIN && token < TOK___BITSHIFT_OPERATORS_END;
 }
 
-inline bool token_isColon(AllTokensEnum token) {
+inline bool token_isColon(TokensEnum token) {
     return token > TOK___COLONS_OPERATORS_BEGIN && token < TOK___COLONS_OPERATORS_END;
 }
 
-inline bool token_isIdentifier(AllTokensEnum token) {
+inline bool token_isIdentifier(TokensEnum token) {
     return token == IDENTIFIER; 
 }
 
-inline bool token_isEOF(AllTokensEnum token) {
+inline bool token_isEOF(TokensEnum token) {
     return token == TOK_EOF; 
 }
 
-inline bool token_isNULL(AllTokensEnum token) {
+inline bool token_isNULL(TokensEnum token) {
     return token == TOK_NULL; 
 }
 
-inline bool token_isIllegal(AllTokensEnum token) {
+inline bool token_isIllegal(TokensEnum token) {
     return token == ILLEGAL; 
 }
 
-inline bool token_isMacro(AllTokensEnum token) {
+inline bool token_isMacro(TokensEnum token) {
     return token == MACRO; 
 }
 
-inline bool token_isImport(AllTokensEnum token) {
+inline bool token_isImport(TokensEnum token) {
     return token == IMPORT; 
 }
 
-inline bool token_isInclude(AllTokensEnum token) {
+inline bool token_isInclude(TokensEnum token) {
     return token == INCLUDE; 
 }
 
-inline bool token_isSemiColon(AllTokensEnum token) {
+inline bool token_isSemiColon(TokensEnum token) {
     return token == SEMICOLON; 
 }
