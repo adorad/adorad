@@ -221,6 +221,7 @@ inline bool token_isIllegal(AllTokensEnum token);
 inline bool token_isMacro(AllTokensEnum token); 
 inline bool token_isImport(AllTokensEnum token); 
 inline bool token_isInclude(AllTokensEnum token); 
+inline bool token_isSemiColon(AllTokensEnum token); 
 
 
 // Use a custom type here: 

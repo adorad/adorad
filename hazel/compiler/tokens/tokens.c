@@ -229,3 +229,7 @@ inline bool token_isImport(AllTokensEnum token) {
 inline bool token_isInclude(AllTokensEnum token) {
     return token == INCLUDE; 
 }
+
+inline bool token_isSemiColon(AllTokensEnum token) {
+    return token == SEMICOLON; 
+}
