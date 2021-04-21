@@ -335,11 +335,16 @@ CSTL_DEF Int32 strnCmp(const char* str1, const char* str2, Ll n) {
 }
 
 CSTL_DEF char* strCopy(char *dest, const char* source) {
-
+    return memcpy(dest, source, strLen(source) + 1);
 }
 
-CSTL_DEF char* strnCopy(char *dest, const char* source, Ll len) {
+CSTL_DEF char* strnCopy(char *dest, const char* source, Ll n) {
+    size_t size = strnLen(source, n);
 
+    if (size != n)
+        memset (dest + size, nullchar, n - size);
+        
+    return memcpy(dest, source, size);
 }
 
 CSTL_DEF Ll strlCopy(char *dest, const char* source, Ll len) {
