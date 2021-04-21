@@ -10,6 +10,7 @@ docs/build/*
 build/*
 out/*
 test/*
+gb/*
 test.c
 test.h
 test.py
