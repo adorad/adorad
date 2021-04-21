@@ -205,7 +205,6 @@ inline bool token_isColon(AllTokensEnum token) {
     return token > TOK___COLONS_OPERATORS_BEGIN && token < TOK___COLONS_OPERATORS_END;
 }
 
-
 inline bool token_isIdentifier(AllTokensEnum token) {
     return token == IDENTIFIER; 
 }
@@ -233,3 +232,27 @@ inline bool token_isInclude(AllTokensEnum token) {
 inline bool token_isSemiColon(AllTokensEnum token) {
     return token == SEMICOLON; 
 }
+
+inline bool token_isDeclStatement(AllTokensEnum token) {
+
+} 
+
+inline bool token_isJumpStatement(AllTokensEnum token) {
+
+} 
+
+inline bool token_isLoopStatement(AllTokensEnum token) {
+
+} 
+
+inline bool token_isFlowStatement(AllTokensEnum token) {
+
+} 
+
+inline bool token_isMatchStatement(AllTokensEnum token) {
+
+} 
+
+inline bool token_isExpressionStatement(AllTokensEnum token) {
+
+} 

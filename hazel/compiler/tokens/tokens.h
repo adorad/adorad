@@ -223,6 +223,12 @@ inline bool token_isImport(AllTokensEnum token);
 inline bool token_isInclude(AllTokensEnum token); 
 inline bool token_isSemiColon(AllTokensEnum token); 
 
+inline bool token_isDeclStatement(AllTokensEnum token); 
+inline bool token_isJumpStatement(AllTokensEnum token); 
+inline bool token_isLoopStatement(AllTokensEnum token); 
+inline bool token_isFlowStatement(AllTokensEnum token); 
+inline bool token_isMatchStatement(AllTokensEnum token); 
+inline bool token_isExpressionStatement(AllTokensEnum token); 
 
 // Use a custom type here: 
 // Like a Dict{TokenNames, String} mapping
