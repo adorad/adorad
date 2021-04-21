@@ -2,7 +2,7 @@
 
 
 // Useful Functions used by the Lexer 
-inline bool isNewLine(Lexer* lexer, char c) {
+static inline bool isNewLine(Lexer* lexer, char c) {
     // Carriage Return: U+000D (UTF-8 in hex: 0D)
     // Line Feed: U+000A (UTF-8 in hex: 0A)
     // CR+LF: CR (U+000D) followed by LF (U+000A) (UTF-8 in hex: 0D0A)
@@ -36,31 +36,31 @@ inline bool isNewLine(Lexer* lexer, char c) {
     return false; 
 }
 
-inline bool isSlashComment(char c1, char c2) {
+static inline bool isSlashComment(char c1, char c2) {
     return (c1 == '/' && (c2 == '*' || c2 == '/'));
 }
 
-inline bool isHashComment(char c) {
+static inline bool isHashComment(char c) {
     return c == '#';
 }
 
-inline bool isSemicolon(char c) {
+static inline bool isSemicolon(char c) {
     return c == ';';
 }
 
-inline bool isString(char c) {
+static inline bool isString(char c) {
     return (c == '"' || c == '\'');
 }
 
-inline bool isMacro(char c) {
+static inline bool isMacro(char c) {
     return c == '@';
 }
 
-inline bool isIdentifier(char c) {
+static inline bool isIdentifier(char c) {
     return isAlpha(c) || isDigit(c) || c == '_'; 
 }
 
-inline bool isBuiltinOperator (int c) {
+static inline bool isBuiltinOperator (int c) {
     // Parenthesis
     // { } [ ] ( )
     // Punctuation

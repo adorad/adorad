@@ -55,7 +55,7 @@ typedef struct LexerStruct {
 #define TOKEN_RESET         lexer->token = NO_TOKEN; \
                             lexer->token.position = lexer->position \
                             lexer->token.value = lexer->buffer + lexer->offset; \
-                            lexer->token.line_no = lexer->line_no; \ 
+                            lexer->token.line_no = lexer->line_no; \
                             lexer->token.col_no = lexer->col_no;
 
 #define TOKEN_FINALIZE(__t)      lexer->token.type = __t; lexer->token.file_id = lexer->file_id
@@ -84,14 +84,14 @@ Token* lexer_collect_token_id(Lexer* lexer);
 
 char* lexer_collect_charstr(Lexer* lexer);
 
-inline bool isBuiltinOperator (int c);
-inline bool isIdentifier(char c);
-inline bool isNewLine(Lexer* lexer, char c);
-inline bool isSlashComment(char c1, char c2);
-inline bool isHashComment(char c);
-inline bool isSemicolon(char c);
-inline bool isString(char c);
-inline bool isMacro(char c);
+static inline bool isBuiltinOperator (int c);
+static inline bool isIdentifier(char c);
+static inline bool isNewLine(Lexer* lexer, char c);
+static inline bool isSlashComment(char c1, char c2);
+static inline bool isHashComment(char c);
+static inline bool isSemicolon(char c);
+static inline bool isString(char c);
+static inline bool isMacro(char c);
 
 
 #endif // _HAZEL_LEXER

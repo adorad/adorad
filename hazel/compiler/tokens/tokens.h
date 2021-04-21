@@ -208,32 +208,32 @@ void token_free(Token* token);
 
 const char* token_toString(TokensEnum token);
 
-inline bool token_isDeclStatement(TokensEnum token); 
-inline bool token_isJumpStatement(TokensEnum token); 
-inline bool token_isLoopStatement(TokensEnum token); 
-inline bool token_isFlowStatement(TokensEnum token); 
-inline bool token_isMatchStatement(TokensEnum token); 
-inline bool token_isExpressionStatement(TokensEnum token); 
+static inline bool token_isDeclStatement(TokensEnum token); 
+static inline bool token_isJumpStatement(TokensEnum token); 
+static inline bool token_isLoopStatement(TokensEnum token); 
+static inline bool token_isFlowStatement(TokensEnum token); 
+static inline bool token_isMatchStatement(TokensEnum token); 
+static inline bool token_isExpressionStatement(TokensEnum token); 
 
-inline bool token_isSpecial(TokensEnum token); 
-inline bool token_isLiteral(TokensEnum token); 
-inline bool token_isKeyword(TokensEnum token); 
-inline bool token_isOperator(TokensEnum token); 
-inline bool token_isComparisonOperator(TokensEnum token); 
-inline bool token_isAssignmentOperator(TokensEnum token); 
-inline bool token_isDelimiter(TokensEnum token); 
-inline bool token_isArrow(TokensEnum token); 
-inline bool token_isBitshift(TokensEnum token); 
-inline bool token_isColon(TokensEnum token); 
+static inline bool token_isSpecial(TokensEnum token); 
+static inline bool token_isLiteral(TokensEnum token); 
+static inline bool token_isKeyword(TokensEnum token); 
+static inline bool token_isOperator(TokensEnum token); 
+static inline bool token_isComparisonOperator(TokensEnum token); 
+static inline bool token_isAssignmentOperator(TokensEnum token); 
+static inline bool token_isDelimiter(TokensEnum token); 
+static inline bool token_isArrow(TokensEnum token); 
+static inline bool token_isBitshift(TokensEnum token); 
+static inline bool token_isColon(TokensEnum token); 
 
-inline bool token_isIdentifier(TokensEnum token); 
-inline bool token_isEOF(TokensEnum token); 
-inline bool token_isNULL(TokensEnum token);
-inline bool token_isIllegal(TokensEnum token); 
-inline bool token_isMacro(TokensEnum token); 
-inline bool token_isImport(TokensEnum token); 
-inline bool token_isInclude(TokensEnum token); 
-inline bool token_isSemiColon(TokensEnum token); 
+static inline bool token_isIdentifier(TokensEnum token); 
+static inline bool token_isEOF(TokensEnum token); 
+static inline bool token_isNULL(TokensEnum token);
+static inline bool token_isIllegal(TokensEnum token); 
+static inline bool token_isMacro(TokensEnum token); 
+static inline bool token_isImport(TokensEnum token); 
+static inline bool token_isInclude(TokensEnum token); 
+static inline bool token_isSemiColon(TokensEnum token); 
 
 
 #endif // HAZEL_TOKEN 

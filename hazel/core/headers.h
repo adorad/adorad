@@ -47,7 +47,7 @@ extern "C" {
     #endif
 
     #include <malloc.h> // NOTE(jasmcaus): _aligned_*()
-    #include <intrin.h>
+    // #include <intrin.h>
 
 #else
     #include <dlfcn.h>

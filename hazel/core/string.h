@@ -1,6 +1,7 @@
 #ifndef CSTL_STRING_H
 #define CSTL_STRING_H
 
+#include <hazel/core/memory.h>
 #include <hazel/core/misc.h>
 #include <hazel/core/types.h>
 
@@ -36,7 +37,7 @@ CSTL_DEF bool strHasSuffix(char const* str, char const* suffix);
 CSTL_DEF char const* charFirstOccurence(char const* str, char c);
 CSTL_DEF char const* charLastOccurence (char const* str, char c);
 
-CSTL_DEF void strcat(char* dest, Ll dest_len,
+CSTL_DEF void strCat(char* dest, Ll dest_len,
                      char const* src_a, Ll src_a_len,
                      char const* src_b, Ll src_b_len);
 
@@ -168,6 +169,62 @@ static inline void strToUpper(char* str) {
     }
 }
 
+CSTL_DEF Ll strLen(const char* str) {
+    const char* begin = str; 
+    const Ll* w; 
+
+    if(str == null) {
+        return 0;
+    }
+
+    while(cast(UIntptr)str % sizeof(Ull)) {
+        if(!*str)
+            return str - begin;
+        str++;
+    }
+
+    w = cast(const Ll*)str;
+    while(!CSTL__HAS_ZERO(*w)) {
+        w++;
+    }
+
+    str = cast(const Ll*)w; 
+    while(*str) {
+        str++;
+    }
+    return str - begin; 
+
+
+}
+
+CSTL_DEF Ll strnLen(const char* str, Ll max_len) {
+
+}
+
+CSTL_DEF Int32 strCmp(const char* str1, const char* str2) {
+
+}
+
+CSTL_DEF Int32 strnCmp(const char* str1, const char* str2, Ll len) {
+
+}
+
+CSTL_DEF char* strCopy(char *dest, const char* source) {
+
+}
+
+CSTL_DEF char* strnCopy(char *dest, const char* source, Ll len) {
+
+}
+
+CSTL_DEF Ll strlCopy(char *dest, const char* source, Ll len) {
+
+}
+
+CSTL_DEF char* strRev(char *str) {
+
+}
+
 CSTL_DEF const char* strTok(char* output, char const* src, char const* delimit) {
 
 }
@@ -188,45 +245,11 @@ CSTL_DEF char const* charLastOccurence (char const* str, char c) {
 
 }
 
-CSTL_DEF void strcat(char* dest, Ll dest_len,
+CSTL_DEF void strCat(char* dest, Ll dest_len,
                      char const* src_a, Ll src_a_len,
                      char const* src_b, Ll src_b_len) {
 
-                     }
-                     
-CSTL_DEF Ll    strLen(const char* str) {
-
 }
-
-CSTL_DEF Ll    strnLen(const char* str, Ll max_len) {
-
-}
-
-CSTL_DEF Int32 strCmp(const char* str1, const char* str2) {
-
-}
-
-CSTL_DEF Int32 strnCmp(const char* str1, const char* str2, Ll len) {
-
-}
-
-CSTL_DEF char* strCopy(char *dest, const char* source) {
-
-}
-
-CSTL_DEF char* strnCopy(char *dest, const char* source, Ll len) {
-
-}
-
-CSTL_DEF Ll    strlCopy(char *dest, const char* source, Ll len) {
-
-}
-
-CSTL_DEF char* strRev(char *str) {
-
-}
-
-
 
 #if defined(__cplusplus)
 }
