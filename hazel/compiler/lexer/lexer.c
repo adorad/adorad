@@ -96,6 +96,21 @@ void lexer_free(Lexer* lexer) {
     free(lexer);
 } 
 
+// Lexing Errors
+TokensEnum lexer_error(Lexer* lexer, const char* message) {
+    if(!LEXER_IS_EOF) {
+        INCREMENT_TOKENLENGTH;
+        INCREMENT_OFFSET; 
+        INCREMENT_POSITION;
+    }
+    TOKEN_FINALIZE(ILLEGAL);
+
+    lexer->token.value = (char*)message; 
+    lexer->token.bytes = (UInt32)strlen(message);
+    return ILLEGAL; 
+}
+
+
 // Get the next token from the Lexer
 Token* lexer_get_next_token(Lexer* lexer) {
     while(lexer->curr_char != nullchar && lexer->char_idx < lexer->buffer_length) {

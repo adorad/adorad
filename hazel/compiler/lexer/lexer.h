@@ -9,6 +9,8 @@
 
     In order to be able to not allocate any memory during tokenization, STRINGs and NUMBERs are just sanity checked but _not_ converted - it is the responsibility of the Parser to perform the right conversion.
 
+    In case of a scan error, ILLEGAL is returned and the error details can be extracted from the token itself.
+
     Reference: 
         1. ASCII Table: http://www.theasciicode.com.ar
 */
@@ -21,7 +23,7 @@ typedef struct LexerStruct {
     UInt32 offset;        // current buffer offset (in Bytes)
 
     char curr_char;   // current char 
-    TokensEnum token; // current token
+    Token token;      // current token
     UInt32 char_idx;  // the index of the token
     UInt32 line_no;   // the line number in the source where the token occured
     UInt32 col_no;    // the column number
@@ -31,8 +33,8 @@ typedef struct LexerStruct {
 // Useful Macros for the Lexer (might decide whether to put this in <lexer.h> at some later point in time)
 #define NEXT            lexer->buffer[lexer->offset++]; ++lexer->position; INCREMENT_COLUMN
 #define PEEK_CURR       (int)lexer->buffer[lexer->offset]
-#define PEEK_NEXT       (lexer->offset < lexer->length ? (int)lexer->buffer[lexer->offset+1] : 0 
-#define PEEK_NEXT2      (lexer->offset+1 < lexer->length ? (int)lexer->buffer[lexer->offset+2] : 0 
+#define PEEK_NEXT       (lexer->offset < lexer->buffer_length ? (int)lexer->buffer[lexer->offset+1] : 0 
+#define PEEK_NEXT2      (lexer->offset+1 < lexer->buffer_length ? (int)lexer->buffer[lexer->offset+2] : 0 
 
 #define INCREMENT_LINE     ++lexer->line_no; RESET_COLUMN
 #define INCREMENT_COLUMN   ++lexer->col_no; 
@@ -45,7 +47,7 @@ typedef struct LexerStruct {
 
 #define RESET_LINE      lexer->line_no = 1
 #define RESET_COLUMN    lexer->col_no  = 1
-#define LEXER_IS_EOF    lexer->offset >= lexer->length
+#define LEXER_IS_EOF    lexer->offset >= lexer->buffer_length
 
 // Useful Macros for Tokens (might decide whether to put this in <tokens.h> at some later point in time)
 #define TOKEN_RESET         lexer->token = NO_TOKEN; \
@@ -54,6 +56,7 @@ typedef struct LexerStruct {
                             lexer->token.line_no = lexer->line_no; \ 
                             lexer->token.col_no = lexer->col_no;
 
+#define TOKEN_FINALIZE(__t)      lexer->token.type = __t; lexer->token.file_id = lexer->file_id
 #define INCREMENT_TOKENBYTES   ++lexer->token.bytes
 #define DECREMENT_TOKENBYTES   --lexer->token.bytes
 #define INCREMENT_TOKENLENGTH  ++lexer->token.length
