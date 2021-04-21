@@ -117,6 +117,7 @@ TOKENKIND(TOK___OPERATORS_END, ""), \
 \
     /* Keywords */ \
 TOKENKIND(TOK___KEYWORDS_BEGIN, ""), \
+    TOKENKIND(ANY,       "any"),      \
     TOKENKIND(AS,        "as"),       \
     TOKENKIND(BEGIN,     "begin"),    \
     TOKENKIND(BREAK,     "break"),    \

@@ -118,6 +118,7 @@ const char* token_toString(AllTokensEnum token) {
         case RBITSHIFT: return ">>";
 
             // Keywords
+        case ANY: return "any";      
         case AS: return "as";      
         case BEGIN: return "begin";   
         case BREAK: return "break";   
