@@ -39,6 +39,8 @@ $(VERBOSE).SILENT:
 exec = hazel
 sources = $(wildcard hazel/compiler/lexer/*.c hazel/compiler/tokens/*.c hazel/compiler/ast/*.c hazel/compiler/parser/*.c hazel/*.c )
 objects = $(sources:hazel/.c=.o)
+
+# To disable warnings, use "-w"
 flags = -g -w
 CC = gcc
 
