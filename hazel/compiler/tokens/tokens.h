@@ -8,6 +8,9 @@
 // tokens (printing, predicates).
 
 // Set of lexical tokens in the Hazel Programming Language
+// 
+// NOTE: 
+// Any changes made to this function _MUST_ reflect in the token_toString() in <tokens.c> as well 
 #define ALLTOKENS \ 
     /* Special (internal usage only) */ \
     TOKENKIND(TOK_ID,  "TOK_ID"), \
@@ -199,7 +202,7 @@ Token* token_init(int type, char* value);
 Token* token_clone(Token* token);
 void token_free(Token* token);
 
-const char* token_toString(Token* token);
+const char* token_toString(AllTokensEnum token);
 
 bool token_isSpecial(Token token); 
 bool token_isLiteral(Token token); 
