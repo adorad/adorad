@@ -204,16 +204,16 @@ void token_free(Token* token);
 
 const char* token_toString(AllTokensEnum token);
 
-bool token_isSpecial(AllTokensEnum token); 
-bool token_isLiteral(AllTokensEnum token); 
-bool token_isKeyword(AllTokensEnum token); 
-bool token_isOperator(AllTokensEnum token); 
-bool token_isComparisonOperator(AllTokensEnum token); 
-bool token_isAssignmentOperator(AllTokensEnum token); 
-bool token_isDelimiter(AllTokensEnum token); 
-bool token_isArrow(AllTokensEnum token); 
-bool token_isBitshift(AllTokensEnum token); 
-bool token_isColon(AllTokensEnum token); 
+inline bool token_isSpecial(AllTokensEnum token); 
+inline bool token_isLiteral(AllTokensEnum token); 
+inline bool token_isKeyword(AllTokensEnum token); 
+inline bool token_isOperator(AllTokensEnum token); 
+inline bool token_isComparisonOperator(AllTokensEnum token); 
+inline bool token_isAssignmentOperator(AllTokensEnum token); 
+inline bool token_isDelimiter(AllTokensEnum token); 
+inline bool token_isArrow(AllTokensEnum token); 
+inline bool token_isBitshift(AllTokensEnum token); 
+inline bool token_isColon(AllTokensEnum token); 
 
 inline bool token_isIdentifier(AllTokensEnum token); 
 inline bool token_isEOF(AllTokensEnum token); 

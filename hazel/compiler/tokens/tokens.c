@@ -165,43 +165,43 @@ const char* token_toString(AllTokensEnum token) {
 }
 
 
-bool token_isSpecial(AllTokensEnum token) {
+inline bool token_isSpecial(AllTokensEnum token) {
     return (token == TOK_ID || token == TOK_EOF || token == ILLEGAL || token == COMMENT); 
 }
 
-bool token_isLiteral(AllTokensEnum token) {
+inline bool token_isLiteral(AllTokensEnum token) {
     return token > TOK___LITERALS_BEGIN && token < TOK___LITERALS_END; 
 }
 
-bool token_isKeyword(AllTokensEnum token) {
+inline bool token_isKeyword(AllTokensEnum token) {
     return token > TOK___KEYWORDS_BEGIN && token < TOK___KEYWORDS_END; 
 }
 
-bool token_isOperator(AllTokensEnum token) {
+inline bool token_isOperator(AllTokensEnum token) {
     return token > TOK___OPERATORS_BEGIN && token < TOK___OPERATORS_END; 
 }
 
-bool token_isComparisonOperator(AllTokensEnum token) {
+inline bool token_isComparisonOperator(AllTokensEnum token) {
     return token > TOK___COMP_OPERATORS_BEGIN && token < TOK___COMP_OPERATORS_END; 
 }
 
-bool token_isAssignmentOperator(AllTokensEnum token) {
+inline bool token_isAssignmentOperator(AllTokensEnum token) {
     return token > TOK___ASSIGNMENT_OPERATORS_BEGIN && token < TOK___ASSIGNMENT_OPERATORS_END; 
 }
 
-bool token_isDelimiter(AllTokensEnum token) {
+inline bool token_isDelimiter(AllTokensEnum token) {
     return token > TOK___DELIMITERS_OPERATORS_BEGIN && token < TOK___DELIMITERS_OPERATORS_END;
 }
 
-bool token_isArrow(AllTokensEnum token) {
+inline bool token_isArrow(AllTokensEnum token) {
     return token > TOK___ARROW_OPERATORS_BEGIN && token < TOK___ARROW_OPERATORS_END;
 }
 
-bool token_isBitshift(AllTokensEnum token) {
+inline bool token_isBitshift(AllTokensEnum token) {
     return token > TOK___BITSHIFT_OPERATORS_BEGIN && token < TOK___BITSHIFT_OPERATORS_END;
 }
 
-bool token_isColon(AllTokensEnum token) {
+inline bool token_isColon(AllTokensEnum token) {
     return token > TOK___COLONS_OPERATORS_BEGIN && token < TOK___COLONS_OPERATORS_END;
 }
 
