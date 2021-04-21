@@ -37,9 +37,7 @@ CSTL_DEF bool strHasSuffix(char const* str, char const* suffix);
 CSTL_DEF char const* charFirstOccurence(char const* str, char c);
 CSTL_DEF char const* charLastOccurence (char const* str, char c);
 
-CSTL_DEF void strCat(char* dest, Ll dest_len,
-                     char const* src_a, Ll src_a_len,
-                     char const* src_b, Ll src_b_len);
+CSTL_DEF char* strCat(char* dest, char* source);
 
 CSTL_DEF Ll    strLen(const char* str);
 CSTL_DEF Ll    strnLen(const char* str, Ll max_len);
@@ -300,10 +298,10 @@ CSTL_DEF char* strRev(char *str) {
 
 }
 
-CSTL_DEF void strCat(char* dest, Ll dest_len,
-                     char const* src_a, Ll src_a_len,
-                     char const* src_b, Ll src_b_len) {
-
+CSTL_DEF char* strCat(char* dest, char* source) {
+    // Append 'source' at the end of 'dest'
+    strCopy(dest + strLen(dest), source);
+    return dest;
 }
 
 #if defined(__cplusplus)
