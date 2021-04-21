@@ -28,6 +28,37 @@ typedef struct LexerStruct {
     UInt32 file_id;   // the file ID
 } Lexer; 
 
+// Useful Macros for the Lexer (might decide whether to put this in <lexer.h> at some later point in time)
+#define NEXT            lexer->buffer[lexer->offset++]; ++lexer->position; INCREMENT_COLUMN
+#define PEEK_CURR       (int)lexer->buffer[lexer->offset]
+#define PEEK_NEXT       (lexer->offset < lexer->length ? (int)lexer->buffer[lexer->offset+1] : 0 
+#define PEEK_NEXT2      (lexer->offset+1 < lexer->length ? (int)lexer->buffer[lexer->offset+2] : 0 
+
+#define INCREMENT_LINE     ++lexer->line_no; RESET_COLUMN
+#define INCREMENT_COLUMN   ++lexer->col_no; 
+#define DECREMENT_LINE     --lexer->line_no; RESET_COLUMN
+#define DECREMENT_COLUMN   --lexer->col_no; 
+#define INCREMENT_OFFSET   ++lexer->offset; INCREMENT_COLUMN
+#define DECREMENT_OFFSET   --lexer->offset; DECREMENT_COLUMN
+#define INCREMENT_POSITION ++lexer->offset;
+#define DECREMENT_POSITION --lexer->offset;
+
+#define RESET_LINE      lexer->line_no = 1
+#define RESET_COLUMN    lexer->col_no  = 1
+#define LEXER_IS_EOF    lexer->offset >= lexer->length
+
+// Useful Macros for Tokens (might decide whether to put this in <tokens.h> at some later point in time)
+#define TOKEN_RESET         lexer->token = NO_TOKEN; \
+                            lexer->token.position = lexer->position \
+                            lexer->token.value = lexer->buffer + lexer->offset; \
+                            lexer->token.line_no = lexer->line_no; \ 
+                            lexer->token.col_no = lexer->col_no;
+
+#define INCREMENT_TOKENBYTES   ++lexer->token.bytes
+#define DECREMENT_TOKENBYTES   --lexer->token.bytes
+#define INCREMENT_TOKENLENGTH  ++lexer->token.length
+#define DECREMENT_TOKENLENGTH  -- lexer->token.length
+
 
 Lexer* lexer_init(char* buffer); 
 void lexer_free(Lexer* lexer); 
@@ -47,5 +78,15 @@ Token* lexer_collect_digit(Lexer* lexer);
 Token* lexer_collect_token_id(Lexer* lexer); 
 
 char* lexer_collect_charstr(Lexer* lexer);
+
+inline bool isBuiltinOperator (int c);
+inline bool isIdentifier(char c);
+inline bool isNewLine(Lexer* lexer, char c);
+inline bool isSlashComment(char c1, char c2);
+inline bool isHashComment(char c);
+inline bool isSemicolon(char c);
+inline bool isString(char c);
+inline bool isMacro(char c);
+
 
 #endif // _HAZEL_LEXER

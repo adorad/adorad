@@ -3,28 +3,102 @@
 
 #include <hazel/compiler/lexer/lexer.h>
 
+
+// Useful Functions used by the Lexer 
+inline bool isNewLine(Lexer* lexer, char c) {
+    // Carriage Return: U+000D (UTF-8 in hex: 0D)
+    // Line Feed: U+000A (UTF-8 in hex: 0A)
+    // CR+LF: CR (U+000D) followed by LF (U+000A) (UTF-8 in hex: 0D0A)
+    // UTF-8 cases https://en.wikipedia.org/wiki/Newline#Unicode:
+    //      1. Next Line, U+0085 (UTF-8 in hex: C285)
+    //      2. Line Separator, U+2028 (UTF-8 in hex: E280A8)
+
+    // Line Feed 
+    if(c == 0x0A) return true; 
+
+    // CR+LF or CR
+    if(c == 0x0D) {
+        if(PEEK_CURR == 0x0A) { NEXT; }
+        return true; 
+    }
+
+    // Next Line
+    if((c == 0xC2) && (PEEK_CURR == 0x85)) {
+        NEXT; 
+        return true;
+    }
+    
+    // Line Separator
+    if((c == 0xE2) && (PEEK_CURR == 0x80) && (0xA8)) {
+        NEXT; 
+        NEXT; 
+        return true; 
+    }
+
+    // will add more at some point in the future 
+    return false; 
+}
+
+inline bool isSlashComment(char c1, char c2) {
+    return (c1 == '/' && (c2 == '*' || c2 == '/'));
+}
+
+inline bool isHashComment(char c) {
+    return c == '#';
+}
+
+inline bool isSemicolon(char c) {
+    return c == ';';
+}
+
+inline bool isString(char c) {
+    return (c == '"' || c == '\'');
+}
+
+inline bool isMacro(char c) {
+    return c == '@';
+}
+
+inline bool isIdentifier(char c) {
+    return isAlpha(c) || isDigit(c) || c == '_'; 
+}
+
+inline bool isBuiltinOperator (int c) {
+    // Parenthesis
+    // { } [ ] ( )
+    // Punctuation
+    // . ; : ? ,
+    // Operators
+    // + - * / < > ! = | & ^ % ~
+
+    return ((c == '+') || (c == '-') || (c == '*') || (c == '/') || (c == '<') || (c == '>') || (c == '!') || 
+            (c == '=') || (c == '|') || (c == '&') || (c == '^') || (c == '%') || (c == '~') || (c == '.') || 
+            (c == ';') || (c == ':') || (c == '?') || (c == ',') || (c == '{') || (c == '}') || (c == '[') || 
+            (c == ']') || (c == '(') || (c == ')') );
+}
+
 // Create a new lexer
-Lexer* lexer_init(char* contents) {
+Lexer* lexer_init(char* buffer) {
     Lexer* lexer = calloc(1, sizeof(Lexer)); 
-    lexer->contents = contents; 
-    lexer->contents_length = strlen(contents);
+    lexer->buffer = buffer; 
+    lexer->buffer_length = strlen(buffer);
 
     lexer->char_idx = 0;
     lexer->line_no = 1; 
-    lexer->curr_char = lexer->contents[0]; // lexer->contents[lexer->char_idx]
+    lexer->curr_char = lexer->buffer[0]; // lexer->buffer[lexer->char_idx]
 
     return lexer; 
 } 
 
 // Deallocate a lexer
 void lexer_free(Lexer* lexer) {
-    free(lexer->contents);
+    free(lexer->buffer);
     free(lexer);
 } 
 
 // Get the next token from the Lexer
 Token* lexer_get_next_token(Lexer* lexer) {
-    while(lexer->curr_char != nullchar && lexer->char_idx < lexer->contents_length) {
+    while(lexer->curr_char != nullchar && lexer->char_idx < lexer->buffer_length) {
         if(isWhitespace(lexer->curr_char))
             lexer_skip_whitespace(lexer);
 
