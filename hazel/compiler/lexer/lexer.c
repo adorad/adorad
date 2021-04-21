@@ -1,5 +1,11 @@
 #include <hazel/compiler/lexer/lexer.h>
 
+/*
+    Lexer:
+    In this phase, the source code is decomposed into its simplest "tokens". 
+
+    Newlines are converted to newline tokens
+*/
 
 // Useful Functions used by the Lexer 
 static inline bool isNewLine(Lexer* lexer, char c) {
