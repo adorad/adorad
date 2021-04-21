@@ -191,7 +191,9 @@ CSTL_DEF char const* charLastOccurence (char const* str, char c) {
 
 // The functions below are part of C's actual library. 
 // They're here as part of CSTL so that you don't have to include multiple header files (such as C's <string.h>)
-
+// 
+// Obtained from here: https://github.com/lattera/glibc/blob/master/string
+// 
 /* Copyright (C) 1991-2018 Free Software Foundation, Inc.
     This file is part of the GNU C Library.
     Written by Torbjorn Granlund (tege@sics.se),
@@ -343,7 +345,7 @@ CSTL_DEF char* strnCopy(char *dest, const char* source, Ll n) {
 
     if (size != n)
         memset (dest + size, nullchar, n - size);
-        
+
     return memcpy(dest, source, size);
 }
 
