@@ -164,62 +164,68 @@ const char* token_toString(AllTokensEnum token) {
     return "UNRECOGNIZED TOKEN"; 
 }
 
-bool token_isSpecial(Token token) {
 
-} 
-
-bool token_isLiteral(Token token) {
-
-} 
-
-bool token_isKeyword(Token token) {
-
-} 
-
-bool token_isOperator(Token token) {
-
-} 
-
-bool token_isComparisonOperator(Token token) {
-
-} 
-
-bool token_isAssignmentOperator(Token token) {
-
-} 
-
-bool token_isDelimiter(Token token) {
-
-} 
-
-bool token_isArrow(Token token) {
-
-} 
-
-bool token_isBitshift(Token token) {
-
-} 
-
-bool token_isColon(Token token) {
-
-} 
-
-inline bool token_isEOF(Token token) {
-
-} 
-
-inline bool token_isIllegal(Token token) {
-
-} 
-
-inline bool token_isMacro(Token token) {
-
+bool token_isSpecial(AllTokensEnum token) {
+    return (token == TOK_ID || token == TOK_EOF || token == ILLEGAL || token == COMMENT); 
 }
 
-inline bool token_isImport(Token token) {
-
+bool token_isLiteral(AllTokensEnum token) {
+    return token > TOK___LITERALS_BEGIN && token < TOK___LITERALS_END; 
 }
 
-inline bool token_isInclude(Token token) {
+bool token_isKeyword(AllTokensEnum token) {
+    return token > TOK___KEYWORDS_BEGIN && token < TOK___KEYWORDS_END; 
+}
 
+bool token_isOperator(AllTokensEnum token) {
+    return token > TOK___OPERATORS_BEGIN && token < TOK___OPERATORS_END; 
+}
+
+bool token_isComparisonOperator(AllTokensEnum token) {
+    return token > TOK___COMP_OPERATORS_BEGIN && token < TOK___COMP_OPERATORS_END; 
+}
+
+bool token_isAssignmentOperator(AllTokensEnum token) {
+    return token > TOK___ASSIGNMENT_OPERATORS_BEGIN && token < TOK___ASSIGNMENT_OPERATORS_END; 
+}
+
+bool token_isDelimiter(AllTokensEnum token) {
+    return token > TOK___DELIMITERS_OPERATORS_BEGIN && token < TOK___DELIMITERS_OPERATORS_END;
+}
+
+bool token_isArrow(AllTokensEnum token) {
+    return token > TOK___ARROW_OPERATORS_BEGIN && token < TOK___ARROW_OPERATORS_END;
+}
+
+bool token_isBitshift(AllTokensEnum token) {
+    return token > TOK___BITSHIFT_OPERATORS_BEGIN && token < TOK___BITSHIFT_OPERATORS_END;
+}
+
+bool token_isColon(AllTokensEnum token) {
+    return token > TOK___COLONS_OPERATORS_BEGIN && token < TOK___COLONS_OPERATORS_END;
+}
+
+
+inline bool token_isIdentifier(AllTokensEnum token) {
+    return token == IDENTIFIER; 
+}
+
+inline bool token_isEOF(AllTokensEnum token) {
+    return token == TOK_EOF; 
+}
+
+inline bool token_isIllegal(AllTokensEnum token) {
+    return token == ILLEGAL; 
+}
+
+inline bool token_isMacro(AllTokensEnum token) {
+    return token == MACRO; 
+}
+
+inline bool token_isImport(AllTokensEnum token) {
+    return token == IMPORT; 
+}
+
+inline bool token_isInclude(AllTokensEnum token) {
+    return token == INCLUDE; 
 }

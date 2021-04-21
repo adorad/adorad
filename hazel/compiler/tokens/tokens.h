@@ -108,7 +108,7 @@ TOKENKIND(TOK___COLONS_OPERATORS_BEGIN, ""), \
     TOKENKIND(BACKSLASH, "\\"),  \
 TOKENKIND(TOK___COLONS_OPERATORS_END, ""), \
 \   
-    /* Bitshits */ \
+    /* Bitshifts */ \
 TOKENKIND(TOK___BITSHIFT_OPERATORS_BEGIN, ""), \
     TOKENKIND(LBITSHIFT, "<<"), \
     TOKENKIND(RBITSHIFT, ">>"), \
@@ -204,22 +204,23 @@ void token_free(Token* token);
 
 const char* token_toString(AllTokensEnum token);
 
-bool token_isSpecial(Token token); 
-bool token_isLiteral(Token token); 
-bool token_isKeyword(Token token); 
-bool token_isOperator(Token token); 
-bool token_isComparisonOperator(Token token); 
-bool token_isAssignmentOperator(Token token); 
-bool token_isDelimiter(Token token); 
-bool token_isArrow(Token token); 
-bool token_isBitshift(Token token); 
-bool token_isColon(Token token); 
+bool token_isSpecial(AllTokensEnum token); 
+bool token_isLiteral(AllTokensEnum token); 
+bool token_isKeyword(AllTokensEnum token); 
+bool token_isOperator(AllTokensEnum token); 
+bool token_isComparisonOperator(AllTokensEnum token); 
+bool token_isAssignmentOperator(AllTokensEnum token); 
+bool token_isDelimiter(AllTokensEnum token); 
+bool token_isArrow(AllTokensEnum token); 
+bool token_isBitshift(AllTokensEnum token); 
+bool token_isColon(AllTokensEnum token); 
 
-inline bool token_isEOF(Token token); 
-inline bool token_isIllegal(Token token); 
-inline bool token_isMacro(Token token); 
-inline bool token_isImport(Token token); 
-inline bool token_isInclude(Token token); 
+inline bool token_isIdentifier(AllTokensEnum token); 
+inline bool token_isEOF(AllTokensEnum token); 
+inline bool token_isIllegal(AllTokensEnum token); 
+inline bool token_isMacro(AllTokensEnum token); 
+inline bool token_isImport(AllTokensEnum token); 
+inline bool token_isInclude(AllTokensEnum token); 
 
 
 // Use a custom type here: 
