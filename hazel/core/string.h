@@ -9,37 +9,45 @@ extern "C" {
 #endif
 
 // Char Things ==========================================
-CSTL_DEF inline char toLower        (char c);
-CSTL_DEF inline char toUpper        (char c);
+CSTL_DEF inline char toLower(char c);
+CSTL_DEF inline char toUpper(char c);
 CSTL_DEF inline bool isWhitespace   (char c);
-CSTL_DEF inline bool isLower        (char c);
-CSTL_DEF inline bool isUpper        (char c);
-CSTL_DEF inline bool isLetter       (char c);
-CSTL_DEF inline bool isDigit        (char c);
-CSTL_DEF inline bool isHexDigit     (char c);
-CSTL_DEF inline bool isAlpha        (char c);
-CSTL_DEF inline bool isAlphanumeric (char c);
-CSTL_DEF inline Int32  digitToInt        (char c);
-CSTL_DEF inline Int32  hexDigitToInt    (char c);
+CSTL_DEF inline bool isLower(char c);
+CSTL_DEF inline bool isUpper(char c);
+CSTL_DEF inline bool isLetter(char c);
+CSTL_DEF inline bool isDigit(char c);
+CSTL_DEF inline bool isHexDigit(char c);
+CSTL_DEF inline bool isAlpha(char c);
+CSTL_DEF inline bool isAlphanumeric(char c);
+CSTL_DEF inline Int32 digitToInt(char c);
+CSTL_DEF inline Int32 hexDigitToInt(char c);
 
 // ASCII only
 CSTL_DEF inline void strToLower(char* str);
 CSTL_DEF inline void strToUpper(char* str);
 
 
-// // NOTE(jasmcaus): A less fucking crazy strtok!
-// CSTL_DEF char const* gb_strtok(char* output, char const* src, char const* delimit);
+// A less fucking crazy strtok!
+CSTL_DEF const char* strTok(char* output, char const* src, char const* delimit);
 
-// CSTL_DEF bool gb_str_has_prefix(char const* str, char const* prefix);
-// CSTL_DEF bool gb_str_has_suffix(char const* str, char const* suffix);
+CSTL_DEF bool strHasPrefix(char const* str, char const* prefix);
+CSTL_DEF bool strHasSuffix(char const* str, char const* suffix);
 
-// CSTL_DEF char const* gb_char_first_occurence(char const* str, char c);
-// CSTL_DEF char const* gb_char_last_occurence (char const* str, char c);
+CSTL_DEF char const* charFirstOccurence(char const* str, char c);
+CSTL_DEF char const* charLastOccurence (char const* str, char c);
 
-// CSTL_DEF void gb_str_concat(char* dest, Ll dest_len,
-//                           char const* src_a, Ll src_a_len,
-//                           char const* src_b, Ll src_b_len);
+CSTL_DEF void strcat(char* dest, Ll dest_len,
+                     char const* src_a, Ll src_a_len,
+                     char const* src_b, Ll src_b_len);
 
+CSTL_DEF Ll    strLen(const char* str);
+CSTL_DEF Ll    strnLen(const char* str, Ll max_len);
+CSTL_DEF Int32 strCmp(const char* str1, const char* str2);
+CSTL_DEF Int32 strnCmp(const char* str1, const char* str2, Ll len);
+CSTL_DEF char* strCopy(char *dest, const char* source);
+CSTL_DEF char* strnCopy(char *dest, const char* source, Ll len);
+CSTL_DEF Ll    strlCopy(char *dest, const char* source, Ll len);
+CSTL_DEF char* strRev(char *str); //  ASCII only
 
 
 // ////////////////////////////////////////////////////////////////
@@ -159,6 +167,66 @@ static inline void strToUpper(char* str) {
         str++;
     }
 }
+
+CSTL_DEF const char* strTok(char* output, char const* src, char const* delimit) {
+
+}
+
+CSTL_DEF bool strHasPrefix(char const* str, char const* prefix) {
+
+}
+
+CSTL_DEF bool strHasSuffix(char const* str, char const* suffix) {
+
+}
+
+CSTL_DEF char const* charFirstOccurence(char const* str, char c) {
+
+}
+
+CSTL_DEF char const* charLastOccurence (char const* str, char c) {
+
+}
+
+CSTL_DEF void strcat(char* dest, Ll dest_len,
+                     char const* src_a, Ll src_a_len,
+                     char const* src_b, Ll src_b_len) {
+
+                     }
+                     
+CSTL_DEF Ll    strLen(const char* str) {
+
+}
+
+CSTL_DEF Ll    strnLen(const char* str, Ll max_len) {
+
+}
+
+CSTL_DEF Int32 strCmp(const char* str1, const char* str2) {
+
+}
+
+CSTL_DEF Int32 strnCmp(const char* str1, const char* str2, Ll len) {
+
+}
+
+CSTL_DEF char* strCopy(char *dest, const char* source) {
+
+}
+
+CSTL_DEF char* strnCopy(char *dest, const char* source, Ll len) {
+
+}
+
+CSTL_DEF Ll    strlCopy(char *dest, const char* source, Ll len) {
+
+}
+
+CSTL_DEF char* strRev(char *str) {
+
+}
+
+
 
 #if defined(__cplusplus)
 }

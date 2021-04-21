@@ -22,9 +22,9 @@ extern "C" {
 //     #define CSTL_PRINT_ARGS(FMT)
 // #endif
 
-// CSTL_DEF void assert_handler(char const *prefix, char const *condition, char const *file, Int32 line, char const *msg, ...);
+// CSTL_DEF void assert_handler(const char* prefix, const char* condition, const char* file, Int32 line, const char* msg, ...);
 // CSTL_DEF Ll CSTL_PRINT_ERR    (char const* fmt, ...) CSTL_PRINT_ARGS(1);
-// CSTL_DEF Ll CSTL_PRINT_ERR_VA (char const *fmt, va_list va);
+// CSTL_DEF Ll CSTL_PRINT_ERR_VA (const char* fmt, va_list va);
 
 // #ifndef CSTL_ASSERT_MSG
 //     #define CSTL_ASSERT_MSG(cond, msg, ...) do { \
