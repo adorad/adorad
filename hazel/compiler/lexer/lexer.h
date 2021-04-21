@@ -31,6 +31,7 @@ typedef struct LexerStruct {
     UInt32 file_id;   // the file ID
 } Lexer; 
 
+
 // Useful Macros for the Lexer (might decide whether to put this in <lexer.h> at some later point in time)
 #define NEXT            lexer->buffer[lexer->offset++]; ++lexer->position; INCREMENT_COLUMN
 #define PEEK_CURR       (int)lexer->buffer[lexer->offset]

@@ -1,6 +1,3 @@
-#include <string.h>
-#include <stdio.h> 
-
 #include <hazel/compiler/lexer/lexer.h>
 
 
