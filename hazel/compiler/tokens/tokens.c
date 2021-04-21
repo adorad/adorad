@@ -149,6 +149,7 @@ const char* token_toString(AllTokensEnum token) {
         case MUTABLE: return "mutable"; 
         case NO_INLINE: return "no_inline"; 
         case NOT_IN: return "not_in";  
+        case RAISE: return "raise";   
         case RANGE: return "range";   
         case RETURN: return "return";  
         case STRUCT: return "struct";  

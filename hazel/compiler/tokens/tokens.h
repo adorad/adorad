@@ -152,6 +152,7 @@ TOKENKIND(TOK___KEYWORDS_BEGIN, ""), \
     /* TOKENKIND(NEW, "new"), */ /* if we go for a memory-safe approach like Rust */ \
     TOKENKIND(NO_INLINE, "no_inline"),\
     TOKENKIND(NOT_IN,    "not_in"),   \
+    TOKENKIND(RAISE,     "raise"),    \
     TOKENKIND(RANGE,     "range"),    \
     TOKENKIND(RETURN,    "return"),   \
     TOKENKIND(STRUCT,    "struct"),   \
