@@ -24,9 +24,17 @@ static void lexer_error_at(char* filename, char* input, char* line_no,
     while(*end && !isNewLine(*end))
         end++; 
     
-    // Print the line 
-    int indent = fprint
+    // Print out the line.
+    int indent = fprintf(stderr, "%s:%d: ", filename, line_no);
+    fprintf(stderr, "%.*s\n", (int)(end - line), line);
 
+    // Show the error message.
+    int pos = display_width(line, loc - line) + indent;
+
+    fprintf(stderr, "%*s", pos, ""); // print pos spaces.
+    fprintf(stderr, "^ ");
+    vfprintf(stderr, fmt, ap);
+    fprintf(stderr, "\n");
 }
 
 
