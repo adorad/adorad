@@ -7,6 +7,29 @@
     Newlines are converted to newline tokens
 */
 
+// Handling Lexing Errors
+// Reports an error in the format: 
+// 
+// foobar.c:10: x = y + 1 
+//                  ^ <error message here>
+// Source: https://github.com/rui314/chibicc/blob/main/tokenize.c
+static void lexer_error_at(char* filename, char* input, char* line_no, 
+                           char* loc, char* fmt, va_list args) {
+    // Find a line containing 'loc'
+    char* line = loc; 
+    while(input < line && !isNewLine(line[-1])) 
+        line--; 
+    
+    char* end = loc; 
+    while(*end && !isNewLine(*end))
+        end++; 
+    
+    // Print the line 
+    int indent = fprint
+
+}
+
+
 // Useful Functions used by the Lexer 
 static inline bool isNewLine(Lexer* lexer, char c) {
     // Carriage Return: U+000D (UTF-8 in hex: 0D)
