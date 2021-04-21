@@ -56,10 +56,10 @@ CSTL_DEF char* strRev(char *str); //  ASCII only
 // CSTL_DEF Ll gb_utf8_strnlen(UInt8 const* str, Ll max_len);
 
 // // NOTE(jasmcaus): Windows doesn't handle 8 bit filenames well ('cause Micro$hit)
-// CSTL_DEF UInt16 *gb_utf8_to_ucs2    (UInt16 *buffer, Ll len, UInt8 const* str);
-// CSTL_DEF UInt8 * gb_ucs2_to_utf8    (UInt8 *buffer, Ll len, UInt16 const* str);
-// CSTL_DEF UInt16 *gb_utf8_to_ucs2_buf(UInt8 const* str);   // NOTE(jasmcaus): Uses locally persisting buffer
-// CSTL_DEF UInt8 * gb_ucs2_to_utf8_buf(UInt16 const* str); // NOTE(jasmcaus): Uses locally persisting buffer
+// CSTL_DEF UInt16 *gb_utf8_to_ucstr2    (UInt16 *buffer, Ll len, UInt8 const* str);
+// CSTL_DEF UInt8 * gb_ucstr2_to_utf8    (UInt8 *buffer, Ll len, UInt16 const* str);
+// CSTL_DEF UInt16 *gb_utf8_to_ucstr2_buf(UInt8 const* str);   // NOTE(jasmcaus): Uses locally persisting buffer
+// CSTL_DEF UInt8 * gb_ucstr2_to_utf8_buf(UInt16 const* str); // NOTE(jasmcaus): Uses locally persisting buffer
 
 // // NOTE(jasmcaus): Returns size of codepoint in bytes
 // CSTL_DEF Ll gb_utf8_decode        (UInt8 const* str, Ll str_len, Rune *codepoint);
@@ -218,7 +218,7 @@ CSTL_DEF Ll strLen(const char* str) {
     // Handle the first few characters by reading one character at a time.
     // Do this until CHAR_PTR is aligned on a longword boundary. 
     for (char_ptr = str; ((unsigned long int) char_ptr & (sizeof (longword) - 1)) != 0; ++char_ptr)
-        if (*char_ptr == '\0')
+        if (*char_ptr == nullchar)
         return char_ptr - str;
 
     // All these elucidatory comments refer to 4-byte longwords,
@@ -275,11 +275,63 @@ CSTL_DEF Ll strnLen(const char* str, Ll max_len) {
 }
 
 CSTL_DEF Int32 strCmp(const char* str1, const char* str2) {
+    // Compare S1 and S2, returning less than, equal to or greater than zero if 'str1' is lexicographically less than,
+    // equal to or greater than 'str2'
+    const unsigned char* str1 = (const unsigned char *)str1;
+    const unsigned char* str2 = (const unsigned char *)str2;
+    unsigned char c1, c2;
 
+    do {
+        c1 = (unsigned char) *str1++;
+        c2 = (unsigned char) *str2++;
+        
+        if (c1 == nullchar)
+            return c1 - c2;
+    } while (c1 == c2);
+
+    return c1 - c2;
 }
 
-CSTL_DEF Int32 strnCmp(const char* str1, const char* str2, Ll len) {
+CSTL_DEF Int32 strnCmp(const char* str1, const char* str2, Ll n) {
+    unsigned char c1 = nullchar;
+    unsigned char c2 = nullchar;
 
+    if (n >= 4) {
+        Ull n4 = n >> 2;
+
+        do {
+            c1 = (unsigned char) *str1++;
+            c2 = (unsigned char) *str2++;
+
+            if (c1 == nullchar || c1 != c2) return c1 - c2;
+
+            c1 = (unsigned char) *str1++;
+            c2 = (unsigned char) *str2++;
+            if (c1 == nullchar || c1 != c2) return c1 - c2;
+
+            c1 = (unsigned char) *str1++;
+            c2 = (unsigned char) *str2++;
+            if (c1 == nullchar || c1 != c2) return c1 - c2;
+
+            c1 = (unsigned char) *str1++;
+            c2 = (unsigned char) *str2++;
+            if (c1 == nullchar || c1 != c2) return c1 - c2;
+        } while (--n4 > 0);
+
+        n &= 3;
+    }
+
+    while (n > 0) {
+        c1 = (unsigned char) *str1++;
+        c2 = (unsigned char) *str2++;
+
+        if (c1 == nullchar || c1 != c2)
+            return c1 - c2;
+
+        n--;
+    }
+
+    return c1 - c2;
 }
 
 CSTL_DEF char* strCopy(char *dest, const char* source) {
