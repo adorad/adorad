@@ -22,4 +22,4 @@ jobs:
       run: sudo apt-get install sloccount
 
     - name: Check <50000 lines
-      run: sloccount hazel examples test; if [ $(sloccount hazel | sed -n 's/.*Total Physical Source Lines of Code (SLOC)[ ]*= \([^ ]*\).*/\1/p' | tr -d ',') -gt 50000 ]; then exit 1; fi
+      run: sloccount Hazel examples test; if [ $(sloccount hazel | sed -n 's/.*Total Physical Source Lines of Code (SLOC)[ ]*= \([^ ]*\).*/\1/p' | tr -d ',') -gt 50000 ]; then exit 1; fi
