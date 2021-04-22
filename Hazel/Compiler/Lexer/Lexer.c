@@ -104,8 +104,7 @@ void lexer_free(Lexer* lexer) {
 TokensEnum lexer_error(Lexer* lexer, const char* message) {
     if(!LEXER_IS_EOF) {
         INCREMENT_TOKENLENGTH;
-        INCREMENT_OFFSET; 
-        INCREMENT_POSITION;
+        INCREMENT_OFFSET_AND_POSITION;
     }
     TOKEN_FINALIZE(ILLEGAL);
 
@@ -155,23 +154,63 @@ void lexer_skip_block_comment(Lexer* lexer) {
 }
 
 
-Token* lexer_collect_string(Lexer* lexer) {
+Token* lexer_lex_string(Lexer* lexer) {
 
 } 
 
-Token* lexer_collect_char(Lexer* lexer) {
+Token* lexer_lex_operator(Lexer* lexer) {
+    TOKEN_RESET; 
+    INCREMENT_TOKENLENGTH; 
+
+    char curr = PEEK_CURR; 
+    char next = NEXT; 
+    int token = 0; 
+
+    switch(next) {
+        // '='
+        case '=':
+            // '=='
+            if(curr == '=') {
+                INCREMENT_OFFSET_AND_POSITION;
+                INCREMENT_TOKENLENGTH;
+
+                // 
+                // Uncomment the following ONLY if Hazel ends up supporting '==='
+                // curr = PEEK_CURR; 
+                // // '===' 
+                // if(curr == '=') {
+                //     INCREMENT_OFFSET_AND_POSITION;
+                //     INCREMENT_TOKENLENGTH;
+                //     token = EQUALS_EQUALS_EQUALS;
+                // } else {
+                //     token = EQUALS_EQUALS;
+                // }
+
+                token = EQUALS_EQUALS; 
+            } else {
+                token = EQUALS;
+            }
+            break; 
+        
+        // '+'
+        
+    }
 
 } 
 
-Token* lexer_collect_digit(Lexer* lexer) {
+Token* lexer_lex_char(Lexer* lexer) {
 
 } 
 
-Token* lexer_collect_token_id(Lexer* lexer) {
+Token* lexer_lex_digit(Lexer* lexer) {
+
+} 
+
+Token* lexer_lex_token_id(Lexer* lexer) {
 
 } 
 
 
-char* lexer_collect_charstr(Lexer* lexer) {
+char* lexer_lex_charstr(Lexer* lexer) {
 
 }

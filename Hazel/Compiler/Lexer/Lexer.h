@@ -52,9 +52,11 @@ typedef struct LexerStruct {
 #define INCREMENT_POSITION ++lexer->offset;
 #define DECREMENT_POSITION --lexer->offset;
 
+#define INCREMENT_OFFSET_AND_POSITION       INCREMENT_OFFSET; INCREMENT_POSITION
+
 // Useful Macros for Tokens
 #define TOKEN_RESET         lexer->token = NO_TOKEN; \
-                            lexer->token.position = lexer->position \
+                            lexer->token.position = lexer->position; \
                             lexer->token.value = lexer->buffer + lexer->offset; \
                             lexer->token.line_no = lexer->line_no; \
                             lexer->token.col_no = lexer->col_no;
@@ -79,12 +81,13 @@ void lexer_skip_whitespace(Lexer* lexer);
 void lexer_skip_inline_comment(Lexer* lexer);
 void lexer_skip_block_comment(Lexer* lexer);
 
-Token* lexer_collect_string(Lexer* lexer); 
-Token* lexer_collect_char(Lexer* lexer); 
-Token* lexer_collect_digit(Lexer* lexer); 
-Token* lexer_collect_token_id(Lexer* lexer); 
+Token* lexer_lex_string(Lexer* lexer); 
+Token* lexer_lex_operator(Lexer* lexer);
+Token* lexer_lex_char(Lexer* lexer); 
+Token* lexer_lex_digit(Lexer* lexer); 
+Token* lexer_lex_token_id(Lexer* lexer); 
 
-char* lexer_collect_charstr(Lexer* lexer);
+char* lexer_lex_charstr(Lexer* lexer);
 
 static inline bool isBuiltinOperator (int c);
 static inline bool isIdentifier(char c);
