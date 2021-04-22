@@ -1,8 +1,8 @@
 #ifndef CSTL_CLOCK_H
 #define CSTL_CLOCK_H
 
-#include <hazel/core/misc.h>
-#include <hazel/core/types.h>
+#include <Hazel/Core/Misc.h>
+#include <Hazel/Core/Types.h>
 
 #ifdef __cplusplus
 extern "C" {

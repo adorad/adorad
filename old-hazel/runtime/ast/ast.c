@@ -1,6 +1,6 @@
 #include <stdlib.h> 
 
-#include <hazel/core/hdef.h>
+#include <Hazel/Core/hdef.h>
 #include <hazel/runtime/ast/ast.h> 
 
 Ast* ast_init(int type) {

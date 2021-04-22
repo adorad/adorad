@@ -1,8 +1,8 @@
 #ifndef _HAZEL_LEXER
 #define _HAZEL_LEXER 
 
-#include <hazel/core/hcore.h> 
-#include <hazel/compiler/tokens/tokens.h>
+#include <Hazel/Core/HCore.h> 
+#include <Hazel/Compiler/Tokens/Tokens.h>
 
 /*
     Hazel's Lexer is built in such a way that no (or negligible) memory allocations are necessary during usage. 

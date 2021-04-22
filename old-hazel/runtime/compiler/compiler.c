@@ -126,22 +126,22 @@ defined(__MIPSEL) || defined(__MIPSEL__) || defined(_M_AMD64) || defined(_M_X64)
 #endif
 
 #ifdef __linux__
-    #include <sys/types.h>
+    #include <sys/Types.h>
     #include <sys/wait.h> // os__wait uses wait on nix
 #endif
 
 #ifdef __FreeBSD__
-    #include <sys/types.h>
+    #include <sys/Types.h>
     #include <sys/wait.h> // os__wait uses wait on nix
 #endif
 
 #ifdef __DragonFly__
-    #include <sys/types.h>
+    #include <sys/Types.h>
     #include <sys/wait.h> // os__wait uses wait on nix
 #endif
 
 #ifdef __OpenBSD__
-    #include <sys/types.h>
+    #include <sys/Types.h>
     #include <sys/resource.h>
     #include <sys/wait.h> // os__wait uses wait on nix
 #endif
@@ -151,7 +151,7 @@ defined(__MIPSEL) || defined(__MIPSEL__) || defined(_M_AMD64) || defined(_M_X64)
 #endif
 
 #ifdef __sun
-    #include <sys/types.h>
+    #include <sys/Types.h>
     #include <sys/wait.h> // os__wait uses wait on nix
 #endif
 

@@ -1,7 +1,7 @@
 #ifndef CSTL_HEADERS_H
 #define CSTL_HEADERS_H
 
-#include <hazel/core/os.h>
+#include <Hazel/Core/OS.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -68,7 +68,7 @@ extern "C" {
 
     #include <sys/stat.h>
     #include <sys/time.h>
-    #include <sys/types.h>
+    #include <sys/Types.h>
     #include <time.h>
     #include <unistd.h>
 
@@ -92,7 +92,7 @@ extern "C" {
     #include <sys/sysctl.h>
     #include <pthread_np.h>
     #include <sys/cpuset.h>
-    #include <sys/types.h>
+    #include <sys/Types.h>
     #include <sys/socket.h>
     #include <sys/uio.h>
 

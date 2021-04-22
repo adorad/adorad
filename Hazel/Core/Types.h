@@ -1,7 +1,7 @@
 #ifndef CSTL_TYPES_H
 #define CSTL_TYPES_H
 
-#include <hazel/core/debug.h>
+#include <Hazel/Core/debug.h>
 
 #ifdef __cplusplus
 extern "C" {

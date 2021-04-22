@@ -21,16 +21,16 @@ CREDITS
 	Written Jason Dsouza
 */
 
-#include <hazel/core/clock.h>
-#include <hazel/core/compilers.h>
-#include <hazel/core/cpus.h>
-#include <hazel/core/debug.h>
-#include <hazel/core/headers.h>
-#include <hazel/core/memory.h>
-#include <hazel/core/misc.h>
-#include <hazel/core/os.h>
-#include <hazel/core/string.h>
-#include <hazel/core/types.h>
+#include <Hazel/Core/Clock.h>
+#include <Hazel/Core/Compilers.h>
+#include <Hazel/Core/Cpus.h>
+#include <Hazel/Core/Debug.h>
+#include <Hazel/Core/Headers.h>
+#include <Hazel/Core/Memory.h>
+#include <Hazel/Core/Misc.h>
+#include <Hazel/Core/OS.h>
+#include <Hazel/Core/String.h>
+#include <Hazel/Core/Types.h>
 
 
 #endif // _CSTL_CORE_CSTL_H

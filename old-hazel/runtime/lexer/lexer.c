@@ -1,7 +1,7 @@
 #include <stdlib.h> 
 #include <string.h>
 
-#include <hazel/core/hdef.h>
+#include <Hazel/Core/hdef.h>
 #include <hazel/runtime/lexer/lexer.h> 
 #include <hazel/runtime/tokens/tokens.h> 
 

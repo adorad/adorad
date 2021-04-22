@@ -57,7 +57,7 @@ compile:
 .PHONY: compile
 
 echo:
-	echo Working!
+	echo All Engines are a go!
 .PHONY: echo 
 
 run:
@@ -65,7 +65,6 @@ run:
 .PHONY: run
 
 release:
-	echo $(objects)
 	$(CC) $(objects) $(flags) -I . -o $(exec)
 
 clean:
