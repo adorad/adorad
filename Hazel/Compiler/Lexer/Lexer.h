@@ -32,11 +32,16 @@ typedef struct LexerStruct {
 } Lexer; 
 
 
-// Useful Macros for the Lexer (might decide whether to put this in <lexer.h> at some later point in time)
-#define NEXT            lexer->buffer[lexer->offset++]; ++lexer->position; INCREMENT_COLUMN
+// Useful Macros for the Lexer 
+#define NEXT            lexer->buffer[lexer->offset++]; \
+                        ++lexer->position; INCREMENT_COLUMN
 #define PEEK_CURR       (int)lexer->buffer[lexer->offset]
 #define PEEK_NEXT       (lexer->offset < lexer->buffer_length ? (int)lexer->buffer[lexer->offset+1] : 0 
 #define PEEK_NEXT2      (lexer->offset+1 < lexer->buffer_length ? (int)lexer->buffer[lexer->offset+2] : 0 
+
+#define RESET_LINE      lexer->line_no = 1
+#define RESET_COLUMN    lexer->col_no  = 1
+#define LEXER_IS_EOF    lexer->offset >= lexer->buffer_length
 
 #define INCREMENT_LINE     ++lexer->line_no; RESET_COLUMN
 #define INCREMENT_COLUMN   ++lexer->col_no; 
@@ -47,18 +52,15 @@ typedef struct LexerStruct {
 #define INCREMENT_POSITION ++lexer->offset;
 #define DECREMENT_POSITION --lexer->offset;
 
-#define RESET_LINE      lexer->line_no = 1
-#define RESET_COLUMN    lexer->col_no  = 1
-#define LEXER_IS_EOF    lexer->offset >= lexer->buffer_length
-
-// Useful Macros for Tokens (might decide whether to put this in <tokens.h> at some later point in time)
+// Useful Macros for Tokens
 #define TOKEN_RESET         lexer->token = NO_TOKEN; \
                             lexer->token.position = lexer->position \
                             lexer->token.value = lexer->buffer + lexer->offset; \
                             lexer->token.line_no = lexer->line_no; \
                             lexer->token.col_no = lexer->col_no;
 
-#define TOKEN_FINALIZE(__t)      lexer->token.type = __t; lexer->token.file_id = lexer->file_id
+#define TOKEN_FINALIZE(__t)    lexer->token.type = __t; \
+                               lexer->token.file_id = lexer->file_id
 #define INCREMENT_TOKENBYTES   ++lexer->token.bytes
 #define DECREMENT_TOKENBYTES   --lexer->token.bytes
 #define INCREMENT_TOKENLENGTH  ++lexer->token.length
