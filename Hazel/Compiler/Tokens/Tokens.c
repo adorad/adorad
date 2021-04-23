@@ -134,6 +134,7 @@ const char* token_toString(TokensEnum token) {
         case ELSE: return "else";    
         case ELSEIF: return "elseif";  
         case EXPORT: return "export";  
+        case EXTERN: return "extern";  
         case FINALLY: return "finally"; 
         case FOR: return "for";     
         case FUNC: return "func";    
