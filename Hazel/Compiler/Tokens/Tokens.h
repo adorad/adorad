@@ -134,10 +134,12 @@ TOKENKIND(TOK___KEYWORDS_BEGIN, ""), \
     TOKENKIND(ENUM,      "enum"),     \
     TOKENKIND(ELSE,      "else"),     \
     TOKENKIND(ELSEIF,    "elseif"),   \
+    TOKENKIND(EXCEPT,    "except"),   \
     TOKENKIND(EXPORT,    "export"),   \
     TOKENKIND(EXTERN,    "extern"),   \
     TOKENKIND(FINALLY,   "finally"),  \
     TOKENKIND(FOR,       "for"),      \
+    TOKENKIND(FROM,      "from"),     \
     TOKENKIND(FUNC,      "func"),     \
     /* GLOBAL is not required tbh coz we follow a no-globals approach */ \
     /* TOKENKIND(GLOBAL, "global"), */\
@@ -150,18 +152,20 @@ TOKENKIND(TOK___KEYWORDS_BEGIN, ""), \
     TOKENKIND(MACRO,     "macro"),    \
     TOKENKIND(MAP,       "map"),      \
     TOKENKIND(MATCH,     "match"), /* similar to 'switch' in C++, Java and others */ \
+    TOKENKIND(MIXIN,     "mixin"),    \
     TOKENKIND(MODULE,    "module"),   \
     TOKENKIND(MUTABLE,   "mutable"),  \
     /* TOKENKIND(NEW, "new"), */ /* if we go for a memory-safe approach like Rust */ \
-    TOKENKIND(NO_INLINE, "no_inline"),\
+    TOKENKIND(NO_INLINE, "noinline"), \
     TOKENKIND(NOT,       "not"),      \
-    TOKENKIND(NOT_IN,    "not_in"),   \
+    TOKENKIND(NOT_IN,    "notin"),    \
     TOKENKIND(RAISE,     "raise"),    \
     TOKENKIND(RANGE,     "range"),    \
     TOKENKIND(RETURN,    "return"),   \
     TOKENKIND(STRUCT,    "struct"),   \
     TOKENKIND(TRY,       "try"),      \
     TOKENKIND(TUPLE,     "tuple"),    \
+    TOKENKIND(TYPE,      "type"),     \
     TOKENKIND(TYPEOF,    "typeof"),   \
     TOKENKIND(USE,       "use"), /* aliasing purposes */ \
     TOKENKIND(WHEN,      "when"),     \
