@@ -55,13 +55,6 @@ TOKENKIND(TOK___OPERATORS_BEGIN, ""), \
     TOKENKIND(QUOTIENT,    "/"),  \
     TOKENKIND(MOD,         "%"),  \
     TOKENKIND(MOD_MOD,     "%%"), \
-    TOKENKIND(AND,         "&"),  \
-    TOKENKIND(OR,          "|"),  \
-    TOKENKIND(EXCLAMATION, "!"),  \
-    TOKENKIND(XOR,         "^"),  \
-    TOKENKIND(AND_NOT,     "&^"), \
-    TOKENKIND(AND_AND,     "&&"), \
-    TOKENKIND(OR_OR,       "||"), \
     TOKENKIND(INCREMENT,   "++"), \
     TOKENKIND(DECREMENT,   "--"), \
     TOKENKIND(AT_SIGN,     "@"),  \
@@ -121,12 +114,19 @@ TOKENKIND(TOK___COLONS_OPERATORS_BEGIN, ""), \
     TOKENKIND(ELLIPSIS,  "..."), \
     TOKENKIND(BACKSLASH, "\\"),  \
 TOKENKIND(TOK___COLONS_OPERATORS_END, ""), \
-\   
-    /* Bitshifts */ \
-TOKENKIND(TOK___BITSHIFT_OPERATORS_BEGIN, ""), \
-    TOKENKIND(LBITSHIFT, "<<"), \
-    TOKENKIND(RBITSHIFT, ">>"), \
-TOKENKIND(TOK___BITSHIFT_OPERATORS_END, ""), \
+\
+    /* Bitwise Operators */ \
+TOKENKIND(TOK___BITWISE_OPERATORS_BEGIN, ""), \
+    TOKENKIND(LBITSHIFT,   "<<"), \
+    TOKENKIND(RBITSHIFT,   ">>"), \
+    TOKENKIND(AND,         "&"),  \
+    TOKENKIND(OR,          "|"),  \
+    TOKENKIND(EXCLAMATION, "!"),  \
+    TOKENKIND(XOR,         "^"),  \
+    TOKENKIND(AND_NOT,     "&^"), \
+    TOKENKIND(AND_AND,     "&&"), \
+    TOKENKIND(OR_OR,       "||"), \
+TOKENKIND(TOK___BITWISE_OPERATORS_END, ""), \
 TOKENKIND(TOK___OPERATORS_END, ""), \
 \
     /* Keywords */ \

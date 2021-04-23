@@ -41,11 +41,25 @@ const char* token_toString(TokensEnum token) {
         case IDENTIFIER: return "IDENTIFIER";
         case INTEGER: return "INTEGER";
         case BIN_INT: return "BIN_INT";
-        case HEX_INT: return "HEX_INT";
-        case IMAG: return "IMAG";
-        case FLOAT: return "FLOAT";
-        case RUNE: return "RUNE";
-        case STRING: return "STRING";
+        case HEX_INT: return "HEX_INT";        
+        case INT8_LIT: return "INT8_LIT";       
+        case INT16_LIT: return "INT16_LIT";      
+        case INT32_LIT: return "INT32_LIT";      
+        case INT64_LIT: return "INT64_LIT";      
+        case UINT_LIT: return "UINT_LIT";       
+        case UINT8_LIT: return "UINT8_LIT";      
+        case UINT16_LIT: return "UINT16_LIT";     
+        case UINT32_LIT: return "UINT32_LIT";     
+        case UINT64_LIT: return "UINT64_LIT";     
+        case FLOAT: return "FLOAT";          
+        case FLOAT32_LIT: return "FLOAT32_LIT";    
+        case FLOAT64_LIT: return "FLOAT64_LIT";    
+        case FLOAT128_LIT: return "FLOAT128_LIT";  
+        case IMAG: return "IMAG";         
+        case RUNE: return "RUNE";         
+        case STRING: return "STRING";       
+        case RAW_STRING: return "RAW_STRING";   
+        case TRIPLE_STRING: return "TRIPLE_STRING"; 
         case TRUE: return "TRUE";
         case FALSE: return "FALSE";
 
@@ -56,13 +70,6 @@ const char* token_toString(TokensEnum token) {
         case QUOTIENT: return "/";
         case MOD: return "%";
         case MOD_MOD: return "%%";
-        case AND: return "&";
-        case OR: return "|";
-        case EXCLAMATION: return "!";
-        case XOR: return "^";
-        case AND_NOT: return "&^";
-        case AND_AND: return "&&";
-        case OR_OR: return "||";
         case INCREMENT: return "++";
         case DECREMENT: return "--";
         case AT_SIGN: return "@";
@@ -113,9 +120,16 @@ const char* token_toString(TokensEnum token) {
         case ELLIPSIS: return "...";
         case BACKSLASH: return "\\"; 
 
-        // Bitshits
+        // Bitwise
         case LBITSHIFT: return "<<";
         case RBITSHIFT: return ">>";
+        case AND: return "&";
+        case OR: return "|";
+        case EXCLAMATION: return "!";
+        case XOR: return "^";
+        case AND_NOT: return "&^";
+        case AND_AND: return "&&";
+        case OR_OR: return "||";
 
         // Keywords
         case ANY: return "any";      
@@ -265,8 +279,8 @@ static inline bool token_isArrow(TokensEnum token) {
     return token > TOK___ARROW_OPERATORS_BEGIN && token < TOK___ARROW_OPERATORS_END;
 }
 
-static inline bool token_isBitshift(TokensEnum token) {
-    return token > TOK___BITSHIFT_OPERATORS_BEGIN && token < TOK___BITSHIFT_OPERATORS_END;
+static inline bool token_isBitwise(TokensEnum token) {
+    return token > TOK___BITWISE_OPERATORS_BEGIN && token < TOK___BITWISE_OPERATORS_END;
 }
 
 static inline bool token_isColon(TokensEnum token) {
