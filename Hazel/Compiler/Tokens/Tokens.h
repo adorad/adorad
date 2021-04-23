@@ -21,17 +21,30 @@
 \
     /* Literals */ \
 TOKENKIND(TOK___LITERALS_BEGIN, ""), \
-    TOKENKIND(IDENTIFIER, "IDENTIFIER"), \
-    TOKENKIND(INTEGER,    "INTEGER"),    \
-    TOKENKIND(BIN_INT,    "BIN_INT"),    \
-    TOKENKIND(HEX_INT,    "HEX_INT"),    \
-    TOKENKIND(IMAG,       "IMAG"),       \
-    TOKENKIND(FLOAT,      "FLOAT"),      \
-    TOKENKIND(RUNE,       "RUNE"),       \
-    TOKENKIND(STRING,     "STRING"),     \
-    /*TOKENKIND(TRIPLE_STRING, "TRIPLE_STRING"), \*/ \
-    TOKENKIND(TRUE,       "TRUE"),       \
-    TOKENKIND(FALSE,      "FALSE"),      \
+    TOKENKIND(IDENTIFIER,   "IDENTIFIER"),    \
+    TOKENKIND(INTEGER,      "INTEGER"),       \ 
+    TOKENKIND(BIN_INT,      "BIN_INT"),       \ 
+    TOKENKIND(HEX_INT,      "HEX_INT"),       \ 
+    TOKENKIND(INT8_LIT,     "INT8_LIT"),      \ 
+    TOKENKIND(INT16_LIT,    "INT16_LIT"),     \ 
+    TOKENKIND(INT32_LIT,    "INT32_LIT"),     \ 
+    TOKENKIND(INT64_LIT,    "INT64_LIT"),     \ 
+    TOKENKIND(UINT_LIT,     "UINT_LIT"),      \ 
+    TOKENKIND(UINT8_LIT,    "UINT8_LIT"),     \ 
+    TOKENKIND(UINT16_LIT,   "UINT16_LIT"),    \ 
+    TOKENKIND(UINT32_LIT,   "UINT32_LIT"),    \ 
+    TOKENKIND(UINT64_LIT,   "UINT64_LIT"),    \ 
+    TOKENKIND(FLOAT,        "FLOAT"),         \ 
+    TOKENKIND(FLOAT32_LIT,  "FLOAT32_LIT"),   \ 
+    TOKENKIND(FLOAT64_LIT,  "FLOAT64_LIT"),   \ 
+    TOKENKIND(FLOAT128_LIT, "FLOAT128_LIT"),  \
+    TOKENKIND(IMAG,          "IMAG"),         \
+    TOKENKIND(RUNE,          "RUNE"),         \
+    TOKENKIND(STRING,        "STRING"),       \
+    TOKENKIND(RAW_STRING,    "RAW_STRING"),   \
+    TOKENKIND(TRIPLE_STRING, "TRIPLE_STRING"), \
+    TOKENKIND(TRUE,          "TRUE"),         \
+    TOKENKIND(FALSE,         "FALSE"),        \
 TOKENKIND(TOK___LITERALS_END, ""), \
 \
     /* Operators */ \ 
