@@ -20,7 +20,7 @@
     TOKENKIND(COMMENT, "COMMENT"),  \
 \
     /* Literals */ \
-    TOKENKIND(TOK___LITERALS_BEGIN, ""), \
+TOKENKIND(TOK___LITERALS_BEGIN, ""), \
     TOKENKIND(IDENTIFIER, "IDENTIFIER"), \
     TOKENKIND(INTEGER,    "INTEGER"),    \
     TOKENKIND(BIN_INT,    "BIN_INT"),    \
@@ -32,10 +32,10 @@
     /*TOKENKIND(TRIPLE_STRING, "TRIPLE_STRING"), \*/ \
     TOKENKIND(TRUE,       "TRUE"),       \
     TOKENKIND(FALSE,      "FALSE"),      \
-    TOKENKIND(TOK___LITERALS_END, ""), \
+TOKENKIND(TOK___LITERALS_END, ""), \
 \
     /* Operators */ \ 
-    TOKENKIND(TOK___OPERATORS_BEGIN, ""), \
+TOKENKIND(TOK___OPERATORS_BEGIN, ""), \
     TOKENKIND(PLUS,        "+"),  \
     TOKENKIND(MINUS,       "-"),  \
     TOKENKIND(MULT,        "*"),  \
