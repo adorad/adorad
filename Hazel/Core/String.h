@@ -12,7 +12,7 @@ extern "C" {
 // Char Things ==========================================
 CSTL_DEF inline char toLower(char c);
 CSTL_DEF inline char toUpper(char c);
-CSTL_DEF inline bool isWhitespace   (char c);
+CSTL_DEF inline bool isWhitespace(char c);
 CSTL_DEF inline bool isLower(char c);
 CSTL_DEF inline bool isUpper(char c);
 CSTL_DEF inline bool isLetter(char c);
@@ -92,12 +92,8 @@ static inline char toUpper(char c) {
 }
 
 static inline bool isWhitespace(char c) {
-    if(c == ' '  ||
-       c == '\t' ||
-       c == '\n' ||
-       c == '\r' ||
-       c == '\f' ||
-       c == '\v')
+    if(c == ' '  || c == '\t' || c == '\n' || c == '\r' || 
+       c == '\f' || c == '\v')
        return true; 
     return false;
 }
