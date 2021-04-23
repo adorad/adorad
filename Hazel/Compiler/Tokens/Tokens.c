@@ -29,6 +29,7 @@ void token_free(Token* token) {
 
 // NOTE: 
 // Any changes made to this function _MUST_ reflect in the ALLTOKENS macro in <tokens.h> as well 
+// as well as in Syntax.toml (Hazel/Compiler/Syntax/Syntax.toml)
 const char* token_toString(TokenType token) {
     switch(token) {
         // Special (internal usage only)
