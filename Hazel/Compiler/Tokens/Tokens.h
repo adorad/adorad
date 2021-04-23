@@ -13,7 +13,7 @@
 // Any changes made to this function _MUST_ reflect in the token_toString() in <tokens.c> as well 
 #define ALLTOKENS \ 
     /* Special (internal usage only) */ \
-    TOKENKIND(TOK_ID,  "TOK_ID"),   \
+    TOKENKIND(TOK_ID = 0,  "TOK_ID"),   \
     TOKENKIND(TOK_EOF, "TOK_EOF"),  \
     TOKENKIND(TOK_NULL,"TOK_NULL"), \
     TOKENKIND(ILLEGAL, "ILLEGAL"),  \
@@ -192,7 +192,7 @@ TOKENKIND(TOK___KEYWORDS_END, ""), \
 
 
 typedef enum {
-    #define TOKENKIND(tok, str) tok
+    #define TOKENKIND(tok, str)     tok
         ALLTOKENS
     #undef TOKENKIND
 } TokenType; 

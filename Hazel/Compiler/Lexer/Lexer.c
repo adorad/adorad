@@ -121,10 +121,10 @@ Token* lexer_get_next_token(Lexer* lexer) {
             lexer_skip_whitespace(lexer);
 
         if(isDigit(lexer->curr_char)) 
-            lexer_collect_digit(lexer);
+            lexer_lex_digit(lexer);
         
         if(isAlphanumeric(lexer->curr_char)) 
-            lexer_collect_token_id(lexer);
+            lexer_lex_token_id(lexer);
     }
 } 
 

@@ -14,7 +14,7 @@ gb/*
 test.c
 test.h
 test.py
-g.bat 
+hazeloutput.txt
 
 # PyPi 
 dist/*

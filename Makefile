@@ -15,7 +15,7 @@
 #
 # See the section "Build instructions" in the README file for more instructions.
 
-.PHONY : all run clean
+.PHONY : all echo compile run clean emitoutput release test testclean 
 
 # ======================== VARIABLES SET BY CONFIGURE ========================
 VERSION    = @VERSION@
@@ -37,8 +37,9 @@ $(VERBOSE).SILENT:
 
 # ======================== MISC VARIABLES ========================
 exec = hazel
-sources = $(wildcard hazel/compiler/lexer/*.c hazel/compiler/tokens/*.c hazel/compiler/ast/*.c hazel/compiler/parser/*.c hazel/*.c )
-objects = $(sources:hazel/.c=.o)
+emitout = hazeloutput.txt
+sources = $(wildcard Hazel/Compiler/Lexer/*.c Hazel/Compiler/Tokens/*.c Hazel/Compiler/Ast/*.c Hazel/Compiler/Parser/*.c Hazel/*.c )
+objects = $(sources:Hazel/.c=.o)
 
 # To disable warnings, use "-w"
 flags = -g -w
@@ -51,6 +52,13 @@ all :
 	echo ----------------------------------------
 	$(exec)
 .PHONY: all 
+
+emitoutput :
+	$(CC) -E Hazel/Compiler/Tokens/Tokens.c $(flags) -o $(emitout) -I .
+	echo Output saved to `hazeloutput.txt`
+	echo ----------------------------------------
+	echo ----------------------------------------
+.PHONY: emitoutput 
 
 compile:
 	$(CC) $(objects) $(flags) -I . -o $(exec)
