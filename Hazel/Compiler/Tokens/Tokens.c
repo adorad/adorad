@@ -130,7 +130,7 @@ const char* token_toString(TokensEnum token) {
         case DDOT: return ".."; 
         case ELLIPSIS: return "...";
         case BACKSLASH: return "\\"; 
-        
+
         // Keywords
         case ANY: return "any";      
         case AS: return "as";      
@@ -143,6 +143,7 @@ const char* token_toString(TokensEnum token) {
         case CONST: return "const";   
         case CONTINUE: return "continue";
         case DO: return "do";      
+        case DECL: return "decl"; 
         case DEFAULT: return "default"; 
         case ENUM: return "enum";    
         case ELSE: return "else";    
