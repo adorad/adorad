@@ -16,9 +16,12 @@
         1. ASCII Table: http://www.theasciicode.com.ar
 */
 
-
+/*
+    Lexical Analysis happens as follows:
+        At each token, the lexing engine 
+*/
 typedef struct LexerStruct {
-    char* buffer;         // buffer
+    char* buffer;         // the Lexical buffer
     UInt32 position;      // current buffer position (in characters)
     UInt32 buffer_length; // current buffer length (in Bytes)
     UInt32 offset;        // current buffer offset (in Bytes)
@@ -27,7 +30,7 @@ typedef struct LexerStruct {
 
     char curr_char;   // current char 
     Token token;      // current token
-    UInt32 char_idx;  // the index of the token
+    // UInt32 char_idx;  // the index of the token
     UInt32 line_no;   // the line number in the source where the token occured
     UInt32 col_no;    // the column number
     UInt32 fname;     // the file name
