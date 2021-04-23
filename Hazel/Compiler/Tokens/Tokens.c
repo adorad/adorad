@@ -111,15 +111,6 @@ const char* token_toString(TokensEnum token) {
         case LPAREN: return "(";
         case RPAREN: return ")";
 
-        // Colons
-        case COLON: return ":";  
-        case SEMICOLON: return ";";  
-        case COMMA: return ":";  
-        case DOT: return ".";  
-        case DDOT: return ".."; 
-        case ELLIPSIS: return "...";
-        case BACKSLASH: return "\\"; 
-
         // Bitwise
         case LBITSHIFT: return "<<";
         case RBITSHIFT: return ">>";
@@ -131,6 +122,15 @@ const char* token_toString(TokensEnum token) {
         case AND_AND: return "&&";
         case OR_OR: return "||";
 
+        // Separators
+        case COLON: return ":";  
+        case SEMICOLON: return ";";  
+        case COMMA: return ":";  
+        case DOT: return ".";  
+        case DDOT: return ".."; 
+        case ELLIPSIS: return "...";
+        case BACKSLASH: return "\\"; 
+        
         // Keywords
         case ANY: return "any";      
         case AS: return "as";      
@@ -283,8 +283,8 @@ static inline bool token_isBitwise(TokensEnum token) {
     return token > TOK___BITWISE_OPERATORS_BEGIN && token < TOK___BITWISE_OPERATORS_END;
 }
 
-static inline bool token_isColon(TokensEnum token) {
-    return token > TOK___COLONS_OPERATORS_BEGIN && token < TOK___COLONS_OPERATORS_END;
+static inline bool token_isSeparator(TokensEnum token) {
+    return token > TOK___SEPARATORS_BEGIN && token < TOK___SEPARATORS_END;
 }
 
 static inline bool token_isIdentifier(TokensEnum token) {

@@ -104,17 +104,6 @@ TOKENKIND(TOK___DELIMITERS_OPERATORS_BEGIN, ""), \
     TOKENKIND(RPAREN,       ")"), \
 TOKENKIND(TOK___DELIMITERS_OPERATORS_END, ""), \
 \   
-    /* Colons */ \
-TOKENKIND(TOK___COLONS_OPERATORS_BEGIN, ""), \
-    TOKENKIND(COLON,     ":"),   \
-    TOKENKIND(SEMICOLON, ";"),   \
-    TOKENKIND(COMMA,     ","),   \
-    TOKENKIND(DOT,       "."),   \
-    TOKENKIND(DDOT,      ".."),  \
-    TOKENKIND(ELLIPSIS,  "..."), \
-    TOKENKIND(BACKSLASH, "\\"),  \
-TOKENKIND(TOK___COLONS_OPERATORS_END, ""), \
-\
     /* Bitwise Operators */ \
 TOKENKIND(TOK___BITWISE_OPERATORS_BEGIN, ""), \
     TOKENKIND(LBITSHIFT,   "<<"), \
@@ -128,6 +117,17 @@ TOKENKIND(TOK___BITWISE_OPERATORS_BEGIN, ""), \
     TOKENKIND(OR_OR,       "||"), \
 TOKENKIND(TOK___BITWISE_OPERATORS_END, ""), \
 TOKENKIND(TOK___OPERATORS_END, ""), \
+\
+    /* Separators */ \
+TOKENKIND(TOK___SEPARATORS_BEGIN, ""), \
+    TOKENKIND(COLON,     ":"),   \
+    TOKENKIND(SEMICOLON, ";"),   \
+    TOKENKIND(COMMA,     ","),   \
+    TOKENKIND(DOT,       "."),   \
+    TOKENKIND(DDOT,      ".."),  \
+    TOKENKIND(ELLIPSIS,  "..."), \
+    TOKENKIND(BACKSLASH, "\\"),  \
+TOKENKIND(TOK___SEPARATORS_END, ""), \
 \
     /* Keywords */ \
 TOKENKIND(TOK___KEYWORDS_BEGIN, ""), \
