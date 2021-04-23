@@ -199,14 +199,14 @@ typedef enum {
 
 
 typedef struct TokenNames {
-    TokenType type; // Token Type
+    TokenType type;     // Token Type
     UInt32 offset;      // Offset of the first character of the Token
     UInt32 bytes;       // Token length (in bytes)
     UInt32 position;    // Current position
     UInt32 line_no;     // Token Line Number (1-Based)
-    UInt32 col_no;   // Token Column Number (0-Based) 
+    UInt32 col_no;      // Token Column Number (0-Based) 
     UInt32 length;      // Token length (UTF-8)
-    UInt32 file_id;     // Token file ID
+    UInt32 fname;       // the file name
     const char* value;  // Token value (_not_ null-terminated)
 } Token; 
 

@@ -22,13 +22,15 @@ typedef struct LexerStruct {
     UInt32 position;      // current buffer position (in characters)
     UInt32 buffer_length; // current buffer length (in Bytes)
     UInt32 offset;        // current buffer offset (in Bytes)
+                          // offset of the beginning of the line (no. of chars b/w the beginning of the Lexical Buffer
+                          // and the beginning of the line)
 
     char curr_char;   // current char 
     Token token;      // current token
     UInt32 char_idx;  // the index of the token
     UInt32 line_no;   // the line number in the source where the token occured
     UInt32 col_no;    // the column number
-    UInt32 file_id;   // the file ID
+    UInt32 fname;     // the file name
 } Lexer; 
 
 
@@ -62,7 +64,7 @@ typedef struct LexerStruct {
                             lexer->token.col_no = lexer->col_no;
 
 #define TOKEN_FINALIZE(__t)    lexer->token.type = __t; \
-                               lexer->token.file_id = lexer->file_id
+                               lexer->token.fname = lexer->fname
 #define INCREMENT_TOKENBYTES   ++lexer->token.bytes
 #define DECREMENT_TOKENBYTES   --lexer->token.bytes
 #define INCREMENT_TOKENLENGTH  ++lexer->token.length
