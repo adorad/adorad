@@ -101,7 +101,7 @@ void lexer_free(Lexer* lexer) {
 } 
 
 // Lexing Errors
-TokensEnum lexer_error(Lexer* lexer, const char* message) {
+TokenType lexer_error(Lexer* lexer, const char* message) {
     if(!LEXER_IS_EOF) {
         INCREMENT_TOKENLENGTH;
         INCREMENT_OFFSET_AND_POSITION;

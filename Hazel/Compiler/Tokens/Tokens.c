@@ -20,16 +20,16 @@ void token_free(Token* token) {
     free(token);
 }
 
-char* token_to_string(Token* token) {
-    char* str = calloc(strlen(token->value)+1, sizeof(char));
-    strcpy(str, token->value);
+// char* token_to_string(Token* token) {
+//     char* str = calloc(strlen(token->value)+1, sizeof(char));
+//     strcpy(str, token->value);
 
-    return str;
-}
+//     return str;
+// }
 
 // NOTE: 
 // Any changes made to this function _MUST_ reflect in the ALLTOKENS macro in <tokens.h> as well 
-const char* token_toString(TokensEnum token) {
+const char* token_toString(TokenType token) {
     switch(token) {
         // Special (internal usage only)
         case TOK_EOF: return "TOK_EOF";
@@ -189,31 +189,31 @@ const char* token_toString(TokensEnum token) {
 }
 
 
-static inline bool token_isJumpStatement(TokensEnum token) {
+static inline bool token_isJumpStatement(TokenType token) {
     // Break (BREAK)
     // Continue (CONTINUE)
     // Return (RETURN)
     return (token == BREAK || token == CONTINUE || token == RETURN); 
 } 
 
-static inline bool token_isLoopStatement(TokensEnum token) {
+static inline bool token_isLoopStatement(TokenType token) {
     // While (WHILE)
     // For (FOR)
     return (token == WHILE || token == FOR); 
 } 
 
-static inline bool token_isFlowStatement(TokensEnum token) {
+static inline bool token_isFlowStatement(TokenType token) {
     // If 
     // Match 
     return (token == IF || token == MATCH); 
 } 
 
-static inline bool token_isMatchStatement(TokensEnum token) {
+static inline bool token_isMatchStatement(TokenType token) {
     // Declarations used in match-case 
     return (token == MATCH || token == CASE || token == DEFAULT); 
 } 
 
-static inline bool token_isExpressionStatement(TokensEnum token) {
+static inline bool token_isExpressionStatement(TokenType token) {
     // Postfix Operations: isPrimaryExpressionStatement or module (for files)
     // Unary Ops: PLUS, MINUS, EXCLAMATION, NOT
     // RAISE 
@@ -222,7 +222,7 @@ static inline bool token_isExpressionStatement(TokensEnum token) {
     
 } 
 
-static inline bool token_isPrimaryExpressionStatement(TokensEnum token) {
+static inline bool token_isPrimaryExpressionStatement(TokenType token) {
     // Literals (numbers, Strings)
     // Booleans (TRUE, FALSE)
     // IDENTIFIER
@@ -236,7 +236,7 @@ static inline bool token_isPrimaryExpressionStatement(TokensEnum token) {
             token == RPAREN); 
 }
 
-static inline bool token_isDeclStatement(TokensEnum token) {
+static inline bool token_isDeclStatement(TokenType token) {
     // Variable Declaration (with types + "Any") 
     // Function Declaration (FUNC)
     // Class/Struct Declaration (CLASS and STRUCT)
@@ -248,74 +248,74 @@ static inline bool token_isDeclStatement(TokensEnum token) {
 } 
 
 
-static inline bool token_isSpecial(TokensEnum token) {
+static inline bool token_isSpecial(TokenType token) {
     return (token == TOK_ID || token == TOK_EOF || token == ILLEGAL || token == COMMENT); 
 }
 
-static inline bool token_isLiteral(TokensEnum token) {
+static inline bool token_isLiteral(TokenType token) {
     return token > TOK___LITERALS_BEGIN && token < TOK___LITERALS_END; 
 }
 
-static inline bool token_isKeyword(TokensEnum token) {
+static inline bool token_isKeyword(TokenType token) {
     return token > TOK___KEYWORDS_BEGIN && token < TOK___KEYWORDS_END; 
 }
 
-static inline bool token_isOperator(TokensEnum token) {
+static inline bool token_isOperator(TokenType token) {
     return token > TOK___OPERATORS_BEGIN && token < TOK___OPERATORS_END; 
 }
 
-static inline bool token_isComparisonOperator(TokensEnum token) {
+static inline bool token_isComparisonOperator(TokenType token) {
     return token > TOK___COMP_OPERATORS_BEGIN && token < TOK___COMP_OPERATORS_END; 
 }
 
-static inline bool token_isAssignmentOperator(TokensEnum token) {
+static inline bool token_isAssignmentOperator(TokenType token) {
     return token > TOK___ASSIGNMENT_OPERATORS_BEGIN && token < TOK___ASSIGNMENT_OPERATORS_END; 
 }
 
-static inline bool token_isDelimiter(TokensEnum token) {
+static inline bool token_isDelimiter(TokenType token) {
     return token > TOK___DELIMITERS_OPERATORS_BEGIN && token < TOK___DELIMITERS_OPERATORS_END;
 }
 
-static inline bool token_isArrow(TokensEnum token) {
+static inline bool token_isArrow(TokenType token) {
     return token > TOK___ARROW_OPERATORS_BEGIN && token < TOK___ARROW_OPERATORS_END;
 }
 
-static inline bool token_isBitwise(TokensEnum token) {
+static inline bool token_isBitwise(TokenType token) {
     return token > TOK___BITWISE_OPERATORS_BEGIN && token < TOK___BITWISE_OPERATORS_END;
 }
 
-static inline bool token_isSeparator(TokensEnum token) {
+static inline bool token_isSeparator(TokenType token) {
     return token > TOK___SEPARATORS_BEGIN && token < TOK___SEPARATORS_END;
 }
 
-static inline bool token_isIdentifier(TokensEnum token) {
+static inline bool token_isIdentifier(TokenType token) {
     return token == IDENTIFIER; 
 }
 
-static inline bool token_isEOF(TokensEnum token) {
+static inline bool token_isEOF(TokenType token) {
     return token == TOK_EOF; 
 }
 
-static inline bool token_isNULL(TokensEnum token) {
+static inline bool token_isNULL(TokenType token) {
     return token == TOK_NULL; 
 }
 
-static inline bool token_isIllegal(TokensEnum token) {
+static inline bool token_isIllegal(TokenType token) {
     return token == ILLEGAL; 
 }
 
-static inline bool token_isMacro(TokensEnum token) {
+static inline bool token_isMacro(TokenType token) {
     return token == MACRO; 
 }
 
-static inline bool token_isImport(TokensEnum token) {
+static inline bool token_isImport(TokenType token) {
     return token == IMPORT; 
 }
 
-static inline bool token_isInclude(TokensEnum token) {
+static inline bool token_isInclude(TokenType token) {
     return token == INCLUDE; 
 }
 
-static inline bool token_isSemiColon(TokensEnum token) {
+static inline bool token_isSemiColon(TokenType token) {
     return token == SEMICOLON; 
 }
