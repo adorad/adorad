@@ -47,7 +47,7 @@ CC = gcc
 
 all :
 	$(CC) $(objects) $(flags) -o $(exec) -I .
-	echo Compiled Hazel 
+	echo Compiled Hazel!
 	echo ----------------------------------------
 	echo ----------------------------------------
 	$(exec)
