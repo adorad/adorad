@@ -74,7 +74,7 @@ typedef struct LexerStruct {
 #define DECREMENT_TOKENLENGTH  -- lexer->token.length
 
 
-Lexer* lexer_init(char* buffer); 
+// Lexer* lexer_init(const char* buffer); 
 void lexer_free(Lexer* lexer); 
 
 Token* lexer_get_next_token(Lexer* lexer); 
