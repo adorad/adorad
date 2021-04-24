@@ -59,10 +59,12 @@ static inline bool isString(char c) {
     return (c == '"' || c == '\'');
 }
 
+// Returns true if [c] is the beginning of a Macro (In Hazel, macros begin with the `@` sign)
 static inline bool isMacro(char c) {
     return c == '@';
 }
 
+// Returns true if [c] is a valid (non-initial) identifier
 static inline bool isIdentifier(char c) {
     return isAlpha(c) || isDigit(c) || c == '_'; 
 }
@@ -87,7 +89,7 @@ Lexer* lexer_init(char* buffer) {
     lexer->buffer = buffer; 
     lexer->buffer_length = strlen(buffer);
 
-    lexer->char_idx = 0;
+    // lexer->char_idx = 0;
     lexer->line_no = 1; 
     lexer->curr_char = lexer->buffer[0]; // lexer->buffer[lexer->char_idx]
 
@@ -115,18 +117,18 @@ TokenType lexer_error(Lexer* lexer, const char* message) {
 
 
 // Get the next token from the Lexer
-Token* lexer_get_next_token(Lexer* lexer) {
-    while(lexer->curr_char != nullchar && lexer->char_idx < lexer->buffer_length) {
-        if(isWhitespace(lexer->curr_char))
-            lexer_skip_whitespace(lexer);
+// Token* lexer_get_next_token(Lexer* lexer) {
+//     while(lexer->curr_char != nullchar && lexer->char_idx < lexer->buffer_length) {
+//         if(isWhitespace(lexer->curr_char))
+//             lexer_skip_whitespace(lexer);
 
-        if(isDigit(lexer->curr_char)) 
-            lexer_lex_digit(lexer);
+//         if(isDigit(lexer->curr_char)) 
+//             lexer_lex_digit(lexer);
         
-        if(isAlphanumeric(lexer->curr_char)) 
-            lexer_lex_token_id(lexer);
-    }
-} 
+//         if(isAlphanumeric(lexer->curr_char)) 
+//             lexer_lex_token_id(lexer);
+//     }
+// } 
 
 Token* lexer_advance_with_token(Lexer* lexer, int type) {
 
