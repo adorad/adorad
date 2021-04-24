@@ -38,7 +38,7 @@ $(VERBOSE).SILENT:
 # ======================== MISC VARIABLES ========================
 exec = hazel
 emitout = hazeloutput.txt
-sources = $(wildcard Hazel/Compiler/Lexer/*.c Hazel/Compiler/Tokens/*.c Hazel/Compiler/Ast/*.c Hazel/Compiler/Parser/*.c Hazel/*.c )
+sources = $(wildcard Hazel/Compiler/IO/*.c Hazel/Compiler/Lexer/*.c Hazel/Compiler/Tokens/*.c Hazel/Compiler/Ast/*.c Hazel/Compiler/Parser/*.c Hazel/*.c )
 objects = $(sources:Hazel/.c=.o)
 
 # To disable warnings, use "-w"
@@ -53,9 +53,10 @@ all :
 	$(exec)
 .PHONY: all 
 
-emitoutputpath :
-	echo $(CC) -E  $(flags) -o $(emitout) -I .
-.PHONY: emitoutputpath 
+emitoutput :
+	$(CC) -E Hazel/main.c $(flags) -o $(emitout) -I .
+	echo Saved to $(emitout) ...
+.PHONY: emitoutput 
 
 emitsources :
 	echo Sources: $(objects)
@@ -99,18 +100,18 @@ testclean:
 	rm test.exe
 .PHONY: testclean 
 
-regenerate-tokens:
-	# Regenerate hazel/compiler/tokens/token.h from tools/scripts/generate_tokens.py
-	python $(SRCDIR)/tools/scripts/generate_tokens.py token_header \
-		   $(SRCDIR)/hazel/compiler/grammar/Tokens                  \
-		   $(SRCDIR)/hazel/compiler/tokens/__token.h                \
+# regenerate-tokens:
+# 	# Regenerate hazel/compiler/tokens/token.h from tools/scripts/generate_tokens.py
+# 	python $(SRCDIR)/tools/scripts/generate_tokens.py token_header \
+# 		   $(SRCDIR)/hazel/compiler/grammar/Tokens                  \
+# 		   $(SRCDIR)/hazel/compiler/tokens/__token.h                \
 
-	python $(SRCDIR)/tools/scripts/generate_tokens.py token_c      \
-		   $(SRCDIR)/hazel/compiler/grammar/Tokens                  \
-		   $(SRCDIR)/hazel/compiler/tokens/__token.c                \
+# 	python $(SRCDIR)/tools/scripts/generate_tokens.py token_c      \
+# 		   $(SRCDIR)/hazel/compiler/grammar/Tokens                  \
+# 		   $(SRCDIR)/hazel/compiler/tokens/__token.c                \
 
-	python $(SRCDIR)/tools/scripts/generate_tokens.py token_py     \
-		   $(SRCDIR)/hazel/compiler/grammar/Tokens                  \
-		   $(SRCDIR)/hazel/compiler/tokens/__token.py               \
-.PHONY: regenerate-tokens
+# 	python $(SRCDIR)/tools/scripts/generate_tokens.py token_py     \
+# 		   $(SRCDIR)/hazel/compiler/grammar/Tokens                  \
+# 		   $(SRCDIR)/hazel/compiler/tokens/__token.py               \
+# .PHONY: regenerate-tokens
 
