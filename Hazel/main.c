@@ -3,7 +3,14 @@
 #include <Hazel/Hazel.h>
 
 int main() {
-    char* buffer = readFile("Hazel/Hazel.h");
-    printf("WE ARE DONE HERE!");
-    printf(buffer);
+    // Lexer* lexer = lexer_init(
+    //     "var name = \"John\" \n"
+    //     "print(name)\n"
+    // ); 
+
+    // Parser* parser = parser_init(lexer);
+    // Ast* root = parser_parse(parser);
+
+    // printf("%d\n", root->type);
+    // printf("%d\n", root->compound_size);
 }
