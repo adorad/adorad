@@ -15,6 +15,7 @@ test.c
 test.h
 test.py
 hazeloutput.txt
+HazelCommentDesign.txt
 
 # PyPi 
 dist/*

@@ -15,7 +15,7 @@
 #
 # See the section "Build instructions" in the README file for more instructions.
 
-.PHONY : all echo compile run clean emitoutput release test testclean 
+.PHONY : all echo compile run clean emitsources emitoutput release test testclean 
 
 # ======================== VARIABLES SET BY CONFIGURE ========================
 VERSION    = @VERSION@
@@ -53,12 +53,13 @@ all :
 	$(exec)
 .PHONY: all 
 
-emitoutput :
-	$(CC) -E Hazel/Compiler/Tokens/Tokens.c $(flags) -o $(emitout) -I .
-	echo Output saved to `hazeloutput.txt`
-	echo ----------------------------------------
-	echo ----------------------------------------
-.PHONY: emitoutput 
+emitoutputpath :
+	echo $(CC) -E  $(flags) -o $(emitout) -I .
+.PHONY: emitoutputpath 
+
+emitsources :
+	echo Sources: $(objects)
+.PHONY: emitsources 
 
 compile:
 	$(CC) $(objects) $(flags) -I . -o $(exec)
