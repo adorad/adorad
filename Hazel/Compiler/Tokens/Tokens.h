@@ -226,7 +226,7 @@ static char* const TokenStrings[] = {
 
 Token* token_init(int type, char* value);
 Token* token_clone(Token* token);
-void token_free(Token* token);
+void token_destroy(Token* token);
 
 const char* token_toString(TokenType token);
 
