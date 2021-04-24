@@ -10,7 +10,7 @@
 // Set of lexical tokens in the Hazel Programming Language
 // 
 // NOTE: 
-// Any changes made to this function _MUST_ reflect in the token_toString() (in <tokens.c>)
+// Any changes made to this function _MUST_ reflect in the token_toString() (in <Tokens.c>)
 // as well as in Syntax.toml (Hazel/Compiler/Syntax/Syntax.toml)
 #define ALLTOKENS \ 
     /* Special (internal usage only) */ \

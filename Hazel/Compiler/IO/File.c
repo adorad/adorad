@@ -5,28 +5,27 @@
 
 // Read the contents of <fname> 
 char* readFile(const char* fname) {
-    char* buffer = 0; 
-    long length = 0; 
-    FILE* file = fopen(fname, 'rb'); 
+    FILE* file = fopen(fname, "rb"); 
     
     if(!file) { 
-        fprintf(stderr, "ERROR READING FILE %s", file);
+        printf("Could not open file: <%s>\n", fname);
         exit(2);
     }
 
     // Get the length of the input buffer
     fseek(file, 0, SEEK_END); 
-    length = ftell(file); 
+    long buf_length = ftell(file); 
     fseek(file, 0, SEEK_SET);
 
-    buffer = (char*)malloc(sizeof(char) * (length + 1) );
-
-    if(buffer) {
-        fread(buffer, 1, length, file); 
+    char* buffer = (char*)malloc(sizeof(char) * (buf_length + 1) );
+    if(!buffer) {
+        printf("Could not allocate memory for buffer for file at %s\n", fname);
+		exit(1);
     }
 
+    fread(buffer, 1, buf_length, file); 
+    buffer[buf_length] = nullchar; // null char 
     fclose(file); 
-    buffer[length] = nullchar; // null char 
 
     return buffer;
 }

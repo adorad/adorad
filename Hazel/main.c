@@ -1,19 +1,22 @@
 #include <stdio.h> 
+#include <string.h>
 #include <Hazel/Hazel.h>
 
 int main(int argc, char* argv[]) {
-    // bool interactive_mode = false; 
-    // if(argc < 2) {
-    //     interactive_mode = true; 
-    //     while(interactive_mode) {
-    //         char* str = getStdIn("> "); 
-    //         Lexer* lexer = lexer_init(str); 
-    //     }
+    // // Example: 
+    // // To compile a Hazel source file:
+    // // >> hazel -c hello.hzl
+    // if(argc<3) {
+    //     printf("Too few arguments"); 
+    //     return 1;
     // }
-    
-    char* buffer = readFile("Hazel.h"); 
-    if(buffer) {
-        printf("BUFFER AVAILABLE");
-    }
-    free(buffer);
+
+    // if(strcmp(argv[1], "-c") == 0) {
+    //     char* source = readFile(argv[2]);
+    // }
+    char* source = readFile("Hazel/Hazel.h");
+    printf(source);
+    free(source);
+
+    return 0; 
 }
