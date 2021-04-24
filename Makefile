@@ -15,7 +15,7 @@
 #
 # See the section "Build instructions" in the README file for more instructions.
 
-.PHONY : all echo compile run clean emitsources emitoutput release test testclean 
+.PHONY : all echo compile run clean emitsources emitcmd emitoutput release test testclean 
 
 # ======================== VARIABLES SET BY CONFIGURE ========================
 VERSION    = @VERSION@
@@ -52,6 +52,10 @@ all :
 	echo ----------------------------------------
 	$(exec)
 .PHONY: all 
+
+emitcmd :
+	echo $(CC) $(objects) $(flags) -o $(exec) -I .
+.PHONY: emitcmd 
 
 emitoutput :
 	$(CC) -E Hazel/main.c $(flags) -o $(emitout) -I .

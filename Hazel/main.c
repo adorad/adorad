@@ -1,10 +1,8 @@
 #include <stdio.h> 
-
 #include <Hazel/Hazel.h>
 
-int main(int argc, char* arv[]) {
-    bool interactive_mode = false; 
-
+int main(int argc, char* argv[]) {
+    // bool interactive_mode = false; 
     // if(argc < 2) {
     //     interactive_mode = true; 
     //     while(interactive_mode) {
@@ -13,5 +11,9 @@ int main(int argc, char* arv[]) {
     //     }
     // }
     
-
+    char* buffer = readFile("Hazel.h"); 
+    if(buffer) {
+        printf("BUFFER AVAILABLE");
+    }
+    free(buffer);
 }
