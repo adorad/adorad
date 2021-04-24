@@ -14,7 +14,7 @@ int main(int argc, char* argv[]) {
     // if(strcmp(argv[1], "-c") == 0) {
     //     char* source = readFile(argv[2]);
     // }
-    char* source = readFile("test/demo_lexer.hzl");
+    char* source = readFile("test/LexerDemo.hzl");
     printf(source);
     free(source);
 
