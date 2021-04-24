@@ -1,0 +1,3 @@
+func input(Int in) -> Bool {
+    print("Hello World");
+}
