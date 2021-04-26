@@ -56,8 +56,8 @@ extern "C" {
 #endif 
 
 // A signed sizeof is more useful 
-#ifndef cstl_sizeof
-    #define cstl_sizeof(x)     (Ll)(sizeof(x))
+#ifndef CSTL_SIZEOF
+    #define CSTL_SIZEOF(x)     (Ll)(sizeof(x))
 #endif 
 
 // Statics!
@@ -68,6 +68,24 @@ extern "C" {
     #define CSTL_LOCALPERSIST static // Local Persisting Variables  
 #endif 
 
+// Execute power operations
+long power(long x, long y) {
+    int total; 
+    
+    if(y == 0) return 1; 
+    else if(y == 1) return x; 
+    else if(y == -1) return 1/x; 
+    else if(y > 0) {
+        total = x; 
+        total *= power(x, y-1); 
+    } 
+    else {
+        total = 1/x; 
+        total *= power(x, y+1); 
+    }
+    
+    return total; 
+}
 
 // Some fun with macros ==========================================
 #ifndef CSTL_MAX
