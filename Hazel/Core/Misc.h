@@ -5,6 +5,7 @@
 extern "C" {
 #endif
 
+
 // Defines 
 #ifndef CSTL_DEF 
     #ifdef CSTL_EXTERN
@@ -40,6 +41,7 @@ extern "C" {
     #endif 
 #endif 
 
+
 // No Inline 
 #ifndef no_inline
     #if defined(_MSC_VER)
@@ -55,10 +57,12 @@ extern "C" {
     #define cast(Type)  (Type)
 #endif 
 
+
 // A signed sizeof is more useful 
 #ifndef CSTL_SIZEOF
     #define CSTL_SIZEOF(x)     (Ll)(sizeof(x))
 #endif 
+
 
 // Statics!
 // static means 3-4 different things in C/C++!!
@@ -67,6 +71,7 @@ extern "C" {
     #define CSTL_INTERNAL     static // Internal Linkage
     #define CSTL_LOCALPERSIST static // Local Persisting Variables  
 #endif 
+
 
 // Execute power operations
 long power(long x, long y) {
@@ -83,9 +88,10 @@ long power(long x, long y) {
         total = 1/x; 
         total *= power(x, y+1); 
     }
-    
+
     return total; 
 }
+
 
 // Some fun with macros ==========================================
 #ifndef CSTL_MAX
