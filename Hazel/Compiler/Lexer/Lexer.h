@@ -26,7 +26,7 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
     In case of a scan error, ILLEGAL is returned and the error details can be extracted from the token itself.
 
     Reference: 
-        1. ASCII Table: http://www.theasciicode.com.ar
+        1. ASCII Table: http://www.theasciicode.com.ar 
 */
 
 /*
@@ -34,19 +34,19 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
         At each token, the lexing engine 
 */
 typedef struct LexerStruct {
-    char* buffer;         // the Lexical buffer
-    UInt32 position;      // current buffer position (in characters)
-    UInt32 buffer_length; // current buffer length (in Bytes)
-    UInt32 offset;        // current buffer offset (in Bytes)
-                          // offset of the beginning of the line (no. of chars b/w the beginning of the Lexical Buffer
-                          // and the beginning of the line)
+    char* buffer;           // the Lexical buffer
+    UInt32 position;        // current buffer position (in characters)
+    UInt32 buffer_capacity; // current buffer capacity (in Bytes)
+    UInt32 offset;          // current buffer offset (in Bytes)
+                            // offset of the beginning of the line (no. of chars b/w the beginning of the Lexical Buffer
+                            // and the beginning of the line)
 
-    char curr_char;   // current char 
-    Token token;      // current token
-    // UInt32 char_idx;  // the index of the token
-    UInt32 line_no;   // the line number in the source where the token occured
-    UInt32 col_no;    // the column number
-    UInt32 fname;     // the file name
+    char curr_char;         // current char 
+    Token token;            // current token
+    // UInt32 char_idx;        // the index of the token
+    UInt32 line_no;         // the line number in the source where the token occured
+    UInt32 col_no;          // the column number
+    UInt32 fname;           // the file name
 } Lexer; 
 
 
@@ -54,12 +54,12 @@ typedef struct LexerStruct {
 #define NEXT            lexer->buffer[lexer->offset++]; \
                         ++lexer->position; INCREMENT_COLUMN
 #define PEEK_CURR       (int)lexer->buffer[lexer->offset]
-#define PEEK_NEXT       (lexer->offset < lexer->buffer_length ? (int)lexer->buffer[lexer->offset+1] : 0 
-#define PEEK_NEXT2      (lexer->offset+1 < lexer->buffer_length ? (int)lexer->buffer[lexer->offset+2] : 0 
+#define PEEK_NEXT       (lexer->offset < lexer->buffer_capacity ? (int)lexer->buffer[lexer->offset+1] : 0 
+#define PEEK_NEXT2      (lexer->offset+1 < lexer->buffer_capacity ? (int)lexer->buffer[lexer->offset+2] : 0 
 
 #define RESET_LINE      lexer->line_no = 1
 #define RESET_COLUMN    lexer->col_no  = 1
-#define LEXER_IS_EOF    lexer->offset >= lexer->buffer_length
+#define LEXER_IS_EOF    lexer->offset >= lexer->buffer_capacity
 
 #define INCREMENT_LINE     ++lexer->line_no; RESET_COLUMN
 #define INCREMENT_COLUMN   ++lexer->col_no; 

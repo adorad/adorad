@@ -23,8 +23,6 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 /*
  * INSPIRATION: https://github.com/JHG777000/marshmallow/blob/master/src/marshmallow_parser.c
  * INSPIRATION: https://github.com/k-mrm/maxc/blob/master/src/compiler/lexer.c
- * GOTO dev/C/test_buffer.c
- * INSPIRTATION: https://github.com/JHG777000/marshmallow/blob/master/src/marshmallow_parser.c 
 
 */
 
@@ -89,7 +87,7 @@ static inline bool isIdentifier(char c) {
     return isAlpha(c) || isDigit(c) || c == '_'; 
 }
 
-static inline bool isBuiltinOperator (char c) {
+static inline bool isBuiltinOperator(char c) {
     // Parenthesis
     // { } [ ] ( )
     // Punctuation
@@ -107,7 +105,7 @@ static inline bool isBuiltinOperator (char c) {
 // Lexer* lexer_init(const char* buffer) {
 //     Lexer* lexer = calloc(1, sizeof(Lexer)); 
 //     lexer->buffer = buffer; 
-//     lexer->buffer_length = strlen(buffer);
+//     lexer->buffer_capacity = strlen(buffer);
 
 //     // lexer->char_idx = 0;
 //     lexer->line_no = 1; 
@@ -138,7 +136,7 @@ TokenType lexer_error(Lexer* lexer, const char* message) {
 
 // Get the next token from the Lexer
 // Token* lexer_get_next_token(Lexer* lexer) {
-//     while(lexer->curr_char != nullchar && lexer->char_idx < lexer->buffer_length) {
+//     while(lexer->curr_char != nullchar && lexer->char_idx < lexer->buffer_capacity) {
 //         if(isWhitespace(lexer->curr_char))
 //             lexer_skip_whitespace(lexer);
 
