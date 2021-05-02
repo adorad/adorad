@@ -40,20 +40,20 @@ static inline bool isNewLine(Lexer* lexer, char c) {
 
     // CR+LF or CR
     if(c == 0x0D) {
-        if(PEEK_CURR == 0x0A) { NEXT; }
+        if(LEXER_PEEK_CURR == 0x0A) { LEXER_NEXT; }
         return true; 
     }
 
     // Next Line
-    if((c == 0xC2) && (PEEK_CURR == 0x85)) {
-        NEXT; 
+    if((c == 0xC2) && (LEXER_PEEK_CURR == 0x85)) {
+        LEXER_NEXT; 
         return true;
     }
     
     // Line Separator
-    if((c == 0xE2) && (PEEK_CURR == 0x80) && (0xA8)) {
-        NEXT; 
-        NEXT; 
+    if((c == 0xE2) && (LEXER_PEEK_CURR == 0x80) && (0xA8)) {
+        LEXER_NEXT; 
+        LEXER_NEXT; 
         return true; 
     }
 
@@ -123,8 +123,8 @@ void lexer_free(Lexer* lexer) {
 // Lexing Errors
 TokenType lexer_error(Lexer* lexer, const char* message) {
     if(!LEXER_IS_EOF) {
-        INCREMENT_TOKENLENGTH;
-        INCREMENT_OFFSET_AND_POSITION;
+        TOKEN_INCREMENT_TOKENLENGTH;
+        LEXER_INCREMENT_OFFSET_AND_POSITION;
     }
     TOKEN_FINALIZE(ILLEGAL);
 
@@ -180,10 +180,10 @@ Token* lexer_lex_string(Lexer* lexer) {
 
 Token* lexer_lex_operator(Lexer* lexer) {
     TOKEN_RESET; 
-    INCREMENT_TOKENLENGTH; 
+    TOKEN_INCREMENT_TOKENLENGTH; 
 
-    char curr = PEEK_CURR; 
-    char next = NEXT; 
+    char curr = LEXER_PEEK_CURR; 
+    char next = LEXER_NEXT; 
     int token = 0; 
 
     switch(next) {
@@ -191,12 +191,12 @@ Token* lexer_lex_operator(Lexer* lexer) {
         case '=':
             // '=='
             if(curr == '=') {
-                INCREMENT_OFFSET_AND_POSITION;
-                INCREMENT_TOKENLENGTH;
+                LEXER_INCREMENT_OFFSET_AND_POSITION;
+                TOKEN_INCREMENT_TOKENLENGTH;
 
                 // 
                 // Uncomment the following ONLY if Hazel ends up supporting '==='
-                // curr = PEEK_CURR; 
+                // curr = LEXER_PEEK_CURR; 
                 // // '===' 
                 // if(curr == '=') {
                 //     INCREMENT_OFFSET_AND_POSITION;

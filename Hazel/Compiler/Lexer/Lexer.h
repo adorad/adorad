@@ -56,7 +56,7 @@ typedef struct LexerStruct {
         LEXER_PEEKs _do not_ increment anything - it offers an easy way to safely view an element in the buffer
 */
 #define LEXER_NEXT            lexer->buffer[lexer->offset++]; \
-                              ++lexer->position; INCREMENT_COLUMN
+                              ++lexer->position; LEXER_INCREMENT_COLUMN
 #define LEXER_PEEK_CURR       (int)lexer->buffer[lexer->offset]
 #define LEXER_PEEK_NEXT       (lexer->offset < lexer->buffer_capacity ? (int)lexer->buffer[lexer->offset+1] : 0 
 #define LEXER_PEEK_NEXT2      (lexer->offset+1 < lexer->buffer_capacity ? (int)lexer->buffer[lexer->offset+2] : 0 
@@ -65,16 +65,16 @@ typedef struct LexerStruct {
 #define LEXER_RESET_COLUMN    lexer->col_no  = 1
 #define LEXER_IS_EOF          lexer->offset >= lexer->buffer_capacity
 
-#define LEXER_INCREMENT_LINE     ++lexer->line_no; RESET_COLUMN
+#define LEXER_INCREMENT_LINE     ++lexer->line_no; LEXER_RESET_COLUMN
 #define LEXER_INCREMENT_COLUMN   ++lexer->col_no; 
-#define LEXER_DECREMENT_LINE     --lexer->line_no; RESET_COLUMN
+#define LEXER_DECREMENT_LINE     --lexer->line_no; LEXER_RESET_COLUMN
 #define LEXER_DECREMENT_COLUMN   --lexer->col_no; 
-#define LEXER_INCREMENT_OFFSET   ++lexer->offset; INCREMENT_COLUMN
-#define LEXER_DECREMENT_OFFSET   --lexer->offset; DECREMENT_COLUMN
+#define LEXER_INCREMENT_OFFSET   ++lexer->offset; LEXER_INCREMENT_COLUMN
+#define LEXER_DECREMENT_OFFSET   --lexer->offset; LEXER_DECREMENT_COLUMN
 #define LEXER_INCREMENT_POSITION ++lexer->offset;
 #define LEXER_DECREMENT_POSITION --lexer->offset;
 
-#define LEXER_INCREMENT_OFFSET_AND_POSITION       INCREMENT_OFFSET; INCREMENT_POSITION
+#define LEXER_INCREMENT_OFFSET_AND_POSITION       LEXER_INCREMENT_OFFSET; LEXER_INCREMENT_POSITION
 
 // Useful Macros for Tokens
 #define TOKEN_RESET         lexer->token = NO_TOKEN; \
