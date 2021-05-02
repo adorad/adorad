@@ -1,3 +1,8 @@
+# Inspiration
+1. https://github.com/Encryptr/O-plus-plus
+2. https://github.com/artagnon/rhine
+3. https://github.com/vczh/tinymoe
+
 # The Hazel Language Design 
 
 We use this resource: https://gist.github.com/hawkw/9213690

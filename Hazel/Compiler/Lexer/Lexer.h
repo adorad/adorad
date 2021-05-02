@@ -1,3 +1,16 @@
+/*
+_ _    _           ______   _______        
+| |  | |    /\    /___  /   |  ____|| |    
+| |__| |   /  \      / /    | |__   | |       Hazel - The Fast, Expressive & Elegant Programming Language
+|  __  |  / /\ \    / /     |  __|  | |       Languages: C, C++, and Assembly
+| |  | | / ____ \  / /___   | |____ | |____   https://github.com/HazelLang/Hazel/
+|_|_ |_|/_/    \_\/_______\ |______|_\______|
+
+Licensed under the MIT License <http://opensource.org/licenses/MIT>
+SPDX-License-Identifier: MIT
+Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
+*/
+
 #ifndef _HAZEL_LEXER
 #define _HAZEL_LEXER 
 
@@ -94,7 +107,7 @@ Token* lexer_lex_token_id(Lexer* lexer);
 
 char* lexer_lex_charstr(Lexer* lexer);
 
-static inline bool isBuiltinOperator (int c);
+static inline bool isBuiltinOperator(char c);
 static inline bool isIdentifier(char c);
 static inline bool isNewLine(Lexer* lexer, char c);
 static inline bool isSlashComment(char c1, char c2);

@@ -1,3 +1,16 @@
+/*
+_ _    _           ______   _______        
+| |  | |    /\    /___  /   |  ____|| |    
+| |__| |   /  \      / /    | |__   | |       Hazel - The Fast, Expressive & Elegant Programming Language
+|  __  |  / /\ \    / /     |  __|  | |       Languages: C, C++, and Assembly
+| |  | | / ____ \  / /___   | |____ | |____   https://github.com/HazelLang/Hazel/
+|_|_ |_|/_/    \_\/_______\ |______|_\______|
+
+Licensed under the MIT License <http://opensource.org/licenses/MIT>
+SPDX-License-Identifier: MIT
+Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
+*/
+
 #include <Hazel/Compiler/Lexer/Lexer.h>
 
 /*
@@ -7,6 +20,13 @@
     Newlines are converted to newline tokens
 */
 
+/*
+ * INSPIRATION: https://github.com/JHG777000/marshmallow/blob/master/src/marshmallow_parser.c
+ * INSPIRATION: https://github.com/k-mrm/maxc/blob/master/src/compiler/lexer.c
+ * GOTO dev/C/test_buffer.c
+ * INSPIRTATION: https://github.com/JHG777000/marshmallow/blob/master/src/marshmallow_parser.c 
+
+*/
 
 // Useful Functions used by the Lexer 
 static inline bool isNewLine(Lexer* lexer, char c) {
@@ -69,7 +89,7 @@ static inline bool isIdentifier(char c) {
     return isAlpha(c) || isDigit(c) || c == '_'; 
 }
 
-static inline bool isBuiltinOperator (int c) {
+static inline bool isBuiltinOperator (char c) {
     // Parenthesis
     // { } [ ] ( )
     // Punctuation
