@@ -89,6 +89,9 @@ clean:
 # For test.c (internal usage only)
 test:
 	$(CC) test.c $(flags) -o test -I .
+	echo Compiled Test!
+	echo -------------------
+	echo -------------------
 	test 
 .PHONY: test 
 
