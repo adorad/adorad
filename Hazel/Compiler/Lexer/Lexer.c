@@ -560,7 +560,7 @@ Token* lexer_lex_separator(Lexer* lexer){
     }
 
     TOKEN_FINALIZE(token);
-    LEXER_DEBUG("Found operator: %s", token_toString(token));
+    LEXER_DEBUG("Found separator: %s", token_toString(token));
     return token; 
 }
 
