@@ -186,8 +186,9 @@ Token* lexer_lex_operator(Lexer* lexer) {
     TOKEN_RESET; 
     TOKEN_INCREMENT_TOKENLENGTH; 
 
-    char curr = LEXER_PEEK_CURR; 
+    // Do not change the decleration order of _next_ and _curr_
     char next = LEXER_NEXT; 
+    char curr = LEXER_PEEK_CURR; 
     int token = 0; 
 
     switch(next) {
