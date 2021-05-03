@@ -97,6 +97,7 @@ void lexer_free(Lexer* lexer);
 Token* lexer_get_next_token(Lexer* lexer); 
 Token* lexer_advance_with_token(Lexer* lexer, int type); 
 
+Lexer* lexer_init(const char* buffer, char* fname);
 void lexer_advance(Lexer* lexer); 
 void lexer_expect_char(Lexer* lexer, char c);
 void lexer_skip_whitespace(Lexer* lexer); 

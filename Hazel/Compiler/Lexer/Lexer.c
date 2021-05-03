@@ -116,6 +116,7 @@ Lexer* lexer_init(const char* buffer, char* fname) {
     lexer->offset = 0; 
     lexer->line_no = 1; 
     lexer->col_no = 0; 
+    lexer->fname = fname; 
     // lexer->curr_char = lexer->buffer[0]; // lexer->buffer[lexer->char_idx]
 
     return lexer; 
@@ -502,7 +503,7 @@ Token* lexer_lex_operator(Lexer* lexer) {
     }
 
     TOKEN_FINALIZE(token);
-    LEXER_DEBUG("Found operator: %s", token_toString(token));
+    // LEXER_DEBUG("Found operator: %s", token_toString(token));
     return token; 
 } 
 
@@ -563,7 +564,7 @@ Token* lexer_lex_separator(Lexer* lexer) {
     }
 
     TOKEN_FINALIZE(token);
-    LEXER_DEBUG("Found separator: %s", token_toString(token));
+    // LEXER_DEBUG("Found separator: %s", token_toString(token));
     return token; 
 }
 
@@ -613,7 +614,7 @@ Token* lexer_lex_delimiter(Lexer* lexer) {
     }
 
     TOKEN_FINALIZE(token);
-    LEXER_DEBUG("Found delimiter: %s", token_toString(token));
+    // LEXER_DEBUG("Found delimiter: %s", token_toString(token));
     return token; 
 }
 

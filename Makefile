@@ -38,7 +38,7 @@ $(VERBOSE).SILENT:
 # ======================== MISC VARIABLES ========================
 exec = hazel
 emitout = hazeloutput.txt
-sources = $(wildcard Hazel/Compiler/IO/*.c Hazel/Compiler/Lexer/*.c Hazel/Compiler/Tokens/*.c Hazel/Compiler/Ast/*.c Hazel/Compiler/Parser/*.c Hazel/*.c )
+sources = $(wildcard Hazel/Compiler/IO/*.c Hazel/Compiler/Lexer/*.c Hazel/Compiler/Tokens/*.c Hazel/Compiler/File/*.c Hazel/Compiler/Ast/*.c Hazel/Compiler/Parser/*.c Hazel/*.c )
 objects = $(sources:Hazel/.c=.o)
 
 # To disable warnings, use "-w"

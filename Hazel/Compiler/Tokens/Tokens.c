@@ -80,11 +80,11 @@ const char* token_toString(TokenType token) {
         case PLUS: return "+";
         case MINUS: return "-";
         case MULT: return "*";
-        case QUOTIENT: return "/";
+        case SLASH: return "/";
         case MOD: return "%";
         case MOD_MOD: return "%%";
-        case INCREMENT: return "++";
-        case DECREMENT: return "--";
+        case PLUS_PLUS: return "++";
+        case MINUS_MINUS: return "--";
         case AT_SIGN: return "@";
         case HASH_SIGN: return "#";
         case QUESTION: return "?";
@@ -95,14 +95,14 @@ const char* token_toString(TokenType token) {
         case GREATER_THAN_OR_EQUAL_TO: return ">=";
         case LESS_THAN_OR_EQUAL_TO: return "<=";
         case EQUALS_EQUALS: return "==";
-        case NOT_EQUALS: return "!=";
+        case EXCLAMATION_EQUALS: return "!=";
 
         // Assignment Operators
         case EQUALS: return "=";
         case PLUS_EQUALS: return "+=";
         case MINUS_EQUALS: return "-=";
-        case STAR_EQUALS: return "*=";
-        case DIVISION_EQUALS: return "/=";
+        case MULT_EQUALS: return "*=";
+        case SLASH_EQUALS: return "/=";
         case MOD_EQUALS: return "%=";
         case AND_EQUALS: return "&=";
         case OR_EQUALS: return "|=";
