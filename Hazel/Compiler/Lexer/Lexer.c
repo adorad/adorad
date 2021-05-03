@@ -564,6 +564,7 @@ Token* lexer_lex_separator(Lexer* lexer){
     return token; 
 }
 
+
 Token* lexer_lex_delimiter(Lexer* lexer){
     TOKEN_RESET; 
     TOKEN_INCREMENT_TOKENLENGTH; 
@@ -612,6 +613,7 @@ Token* lexer_lex_delimiter(Lexer* lexer){
     LEXER_DEBUG("Found delimiter: %s", token_toString(token));
     return token; 
 }
+
 
 Token* lexer_lex_keywords(Lexer* lexer){
     
