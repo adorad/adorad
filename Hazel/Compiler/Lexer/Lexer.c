@@ -565,7 +565,52 @@ Token* lexer_lex_separator(Lexer* lexer){
 }
 
 Token* lexer_lex_delimiter(Lexer* lexer){
-    
+    TOKEN_RESET; 
+    TOKEN_INCREMENT_TOKENLENGTH; 
+
+    // Do not change the decleration order of _next_ and _curr_
+    char next = LEXER_NEXT; 
+    char curr = LEXER_PEEK_CURR; 
+    int token = 0; 
+
+    switch(next) {        
+        // '['
+        case '[':
+            token = LSQUAREBRACK;
+            break; 
+        
+        // ']'
+        case ';':
+            token = RSQUAREBRACK;
+            break; 
+        
+        // '{'
+        case '{':
+            token = LBRACE;
+            break; 
+
+        // '}'
+        case '}':
+            token = RBRACE;
+            break; 
+        
+        // '('
+        case '(':
+            token = LPAREN;
+            break; 
+        
+        // ')'
+        case ')':
+            token = RPAREN;
+            break; 
+        
+        default: 
+            printf("LEXER ERROR - UNRECOGNIZED TOKEN");
+    }
+
+    TOKEN_FINALIZE(token);
+    LEXER_DEBUG("Found delimiter: %s", token_toString(token));
+    return token; 
 }
 
 Token* lexer_lex_keywords(Lexer* lexer){
