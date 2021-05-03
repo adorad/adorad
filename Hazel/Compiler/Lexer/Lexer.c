@@ -106,17 +106,20 @@ static inline bool isBuiltinOperator(char c) {
 }
 
 // Create a new lexer
-// Lexer* lexer_init(const char* buffer) {
-//     Lexer* lexer = calloc(1, sizeof(Lexer)); 
-//     lexer->buffer = buffer; 
-//     lexer->buffer_capacity = strlen(buffer);
+Lexer* lexer_init(const char* buffer, char* fname) {
+    Lexer* lexer = calloc(1, sizeof(Lexer));
+    if(!lexer) 
+        return null; 
+    
+    lexer->buffer = buffer; 
+    lexer->buffer_capacity = strlen(buffer);
+    lexer->offset = 0; 
+    lexer->line_no = 1; 
+    lexer->col_no = 0; 
+    // lexer->curr_char = lexer->buffer[0]; // lexer->buffer[lexer->char_idx]
 
-//     // lexer->char_idx = 0;
-//     lexer->line_no = 1; 
-//     lexer->curr_char = lexer->buffer[0]; // lexer->buffer[lexer->char_idx]
-
-//     return lexer; 
-// } 
+    return lexer; 
+} 
 
 // Deallocate a lexer
 void lexer_free(Lexer* lexer) {
