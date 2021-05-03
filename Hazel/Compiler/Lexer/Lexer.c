@@ -186,7 +186,7 @@ Token* lexer_lex_operator(Lexer* lexer) {
     TOKEN_RESET; 
     TOKEN_INCREMENT_TOKENLENGTH; 
 
-    // Do not change the decleration order of _next_ and _curr_
+    // Do not change the declaration order of _next_ and _curr_
     char next = LEXER_NEXT; 
     char curr = LEXER_PEEK_CURR; 
     int token = 0; 
@@ -504,11 +504,11 @@ Token* lexer_lex_operator(Lexer* lexer) {
 } 
 
 
-Token* lexer_lex_separator(Lexer* lexer){
+Token* lexer_lex_separator(Lexer* lexer) {
     TOKEN_RESET; 
     TOKEN_INCREMENT_TOKENLENGTH; 
 
-    // Do not change the decleration order of _next_ and _curr_
+    // Do not change the declaration order of _next_ and _curr_
     char next = LEXER_NEXT; 
     char curr = LEXER_PEEK_CURR; 
     int token = 0; 
@@ -565,11 +565,11 @@ Token* lexer_lex_separator(Lexer* lexer){
 }
 
 
-Token* lexer_lex_delimiter(Lexer* lexer){
+Token* lexer_lex_delimiter(Lexer* lexer) {
     TOKEN_RESET; 
     TOKEN_INCREMENT_TOKENLENGTH; 
 
-    // Do not change the decleration order of _next_ and _curr_
+    // Do not change the declaration order of _next_ and _curr_
     char next = LEXER_NEXT; 
     char curr = LEXER_PEEK_CURR; 
     int token = 0; 
@@ -615,7 +615,22 @@ Token* lexer_lex_delimiter(Lexer* lexer){
 }
 
 
-Token* lexer_lex_keywords(Lexer* lexer){
+Token* lexer_lex_macro(Lexer* lexer) {
+    TOKEN_RESET; 
+    TOKEN_INCREMENT_TOKENLENGTH; 
+    int token = 0;
+
+    char curr = LEXER_PEEK_CURR; 
+    if(curr == '@') {
+        token = MACRO;
+    }
+
+    TOKEN_FINALIZE(token);
+    return token;
+}
+
+
+Token* lexer_lex_keywords(Lexer* lexer) {
     
 }
 
