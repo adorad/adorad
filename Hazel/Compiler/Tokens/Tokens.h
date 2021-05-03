@@ -66,11 +66,13 @@ TOKENKIND(TOK___OPERATORS_BEGIN, ""), \
     TOKENKIND(PLUS,        "+"),  \
     TOKENKIND(MINUS,       "-"),  \
     TOKENKIND(MULT,        "*"),  \
-    TOKENKIND(QUOTIENT,    "/"),  \
+    TOKENKIND(SLASH,       "/"),  \
     TOKENKIND(MOD,         "%"),  \
     TOKENKIND(MOD_MOD,     "%%"), \
-    TOKENKIND(INCREMENT,   "++"), \
-    TOKENKIND(DECREMENT,   "--"), \
+    TOKENKIND(PLUS_PLUS,   "++"), \
+    TOKENKIND(MINUS_MINUS, "--"), \
+    TOKENKIND(MULT_MULT,   "**"), \
+    TOKENKIND(SLASH_SLASH, "//"), \
     TOKENKIND(AT_SIGN,     "@"),  \
     TOKENKIND(HASH_SIGN,   "#"),  \
     TOKENKIND(QUESTION,    "?"),  \
@@ -90,8 +92,8 @@ TOKENKIND(TOK___ASSIGNMENT_OPERATORS_BEGIN, ""), \
     TOKENKIND(EQUALS,           "="),   \
     TOKENKIND(PLUS_EQUALS,      "+="),  \
     TOKENKIND(MINUS_EQUALS,     "-="),  \
-    TOKENKIND(STAR_EQUALS,      "*="),  \
-    TOKENKIND(DIVISION_EQUALS,  "/="),  \
+    TOKENKIND(MULT_EQUALS,      "*="),  \
+    TOKENKIND(SLASH_EQUALS,     "/="),  \
     TOKENKIND(MOD_EQUALS,       "%="),  \
     TOKENKIND(AND_EQUALS,       "&="),  \
     TOKENKIND(OR_EQUALS,        "|="),  \

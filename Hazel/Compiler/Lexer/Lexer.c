@@ -218,14 +218,15 @@ Token* lexer_lex_operator(Lexer* lexer) {
         
         // '+'
         case '+':
+            // The following might be removed at some point. 
+            // '++' serves no purpose for us since we don't support pointer arithmetic
             // 
-            // Uncomment the following ONLY if Hazel ends up supporting '++'
-            // // '++'
-            // if(curr == '+') {
-            //     LEXER_INCREMENT_OFFSET;
-            //     TOKEN_INCREMENT_TOKENLENGTH;
-            //     token = PLUS_PLUS;
-            // }
+            // '++'
+            if(curr == '+') {
+                LEXER_INCREMENT_OFFSET;
+                TOKEN_INCREMENT_TOKENLENGTH;
+                token = PLUS_PLUS;
+            }
 
             // '+='
             if(curr == '=') {
@@ -240,14 +241,15 @@ Token* lexer_lex_operator(Lexer* lexer) {
         
         // '-'
         case '-':
+            // The following might be removed at some point. 
+            // '--' serves no purpose for us since we don't support pointer arithmetic
             // 
-            // Uncomment the following ONLY if Hazel ends up supporting '--'
-            // // '--'
-            // if(curr == '-') {
-            //     LEXER_INCREMENT_OFFSET;
-            //     TOKEN_INCREMENT_TOKENLENGTH;
-            //     token = MINUS_MINUS;
-            // }
+            // '--'
+            if(curr == '-') {
+                LEXER_INCREMENT_OFFSET;
+                TOKEN_INCREMENT_TOKENLENGTH;
+                token = MINUS_MINUS;
+            }
 
             // '-='
             if(curr == '=') {
@@ -260,9 +262,128 @@ Token* lexer_lex_operator(Lexer* lexer) {
             }
             break; 
 
+        // '*'
         case '*':
-            
+            // '**'
+            if(curr == '*') {
+                LEXER_INCREMENT_OFFSET;
+                TOKEN_INCREMENT_TOKENLENGTH;
+                token = MULT_MULT;
+            }
 
+            // '*='
+            if(curr == '=') {
+                LEXER_INCREMENT_OFFSET; 
+                TOKEN_INCREMENT_TOKENLENGTH;
+
+                token = MULT_EQUALS;
+            } else {
+                token = MULT;
+            }
+            break;
+        
+        // '/'
+        case '/':
+            // '//'
+            if(curr == '/') {
+                LEXER_INCREMENT_OFFSET;
+                TOKEN_INCREMENT_TOKENLENGTH;
+                token = SLASH_SLASH;
+            }
+
+            // '/='
+            if(curr == '=') {
+                LEXER_INCREMENT_OFFSET; 
+                TOKEN_INCREMENT_TOKENLENGTH;
+
+                token = SLASH_EQUALS;
+            } else {
+                token = SLASH;
+            }
+            break;
+        
+        // '%'
+        case '%':
+            // '%%'
+            if(curr == '%') {
+                LEXER_INCREMENT_OFFSET;
+                TOKEN_INCREMENT_TOKENLENGTH;
+                token = MOD_MOD;
+            }
+
+            // '%='
+            if(curr == '=') {
+                LEXER_INCREMENT_OFFSET; 
+                TOKEN_INCREMENT_TOKENLENGTH;
+
+                token = MOD_EQUALS;
+            } else {
+                token = MOD;
+            }
+            break;
+        
+        // '<'
+        case '<':
+            // '<='
+            if(curr == '=') {
+                LEXER_INCREMENT_OFFSET; 
+                TOKEN_INCREMENT_TOKENLENGTH;
+
+                token = LESS_THAN_OR_EQUAL_TO;
+            }
+
+            // '<<'
+            else if(curr == '<') {
+                LEXER_INCREMENT_OFFSET;
+                TOKEN_INCREMENT_TOKENLENGTH;
+
+                // '<<='
+                curr = LEXER_PEEK_CURR;
+                if(curr == '=') {
+                    LEXER_INCREMENT_OFFSET;
+                    TOKEN_INCREMENT_TOKENLENGTH;
+                    token = LBITSHIFT_EQUALS;
+                } else {
+                    token = LBITSHIFT;
+                }
+            } else {
+                token = LESS_THAN;
+            }
+            break;
+        
+        // '>'
+        case '>':
+            // '>='
+            if(curr == '=') {
+                LEXER_INCREMENT_OFFSET; 
+                TOKEN_INCREMENT_TOKENLENGTH;
+
+                token = GREATER_THAN_OR_EQUAL_TO;
+            } 
+
+            // '>>'
+            else if(curr == '>') {
+                LEXER_INCREMENT_OFFSET;
+                TOKEN_INCREMENT_TOKENLENGTH;
+
+                // '>>='
+                curr = LEXER_PEEK_CURR;
+                if(curr == '=') {
+                    LEXER_INCREMENT_OFFSET;
+                    TOKEN_INCREMENT_TOKENLENGTH;
+                    token = RBITSHIFT_EQUALS;
+                } else {
+                    token = RBITSHIFT;
+                }
+            } else {
+                token = GREATER_THAN;
+            }
+            break;
+        
+
+        
+        
+        
 
         
     }
