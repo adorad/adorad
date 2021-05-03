@@ -37,16 +37,16 @@ typedef struct LexerStruct {
     char* buffer;           // the Lexical buffer
     UInt32 position;        // current buffer position (in characters)
     UInt32 buffer_capacity; // current buffer capacity (in Bytes)
-    UInt32 offset;          // current buffer offset (in Bytes)
+    UInt32 offset;          // current buffer offset (in Bytes) 
                             // offset of the beginning of the line (no. of chars b/w the beginning of the Lexical Buffer
                             // and the beginning of the line)
+                            // Sometimes called the buffer position
 
-    char curr_char;         // current char 
     Token token;            // current token
     // UInt32 char_idx;        // the index of the token
     UInt32 line_no;         // the line number in the source where the token occured
     UInt32 col_no;          // the column number
-    UInt32 fname;           // the file name
+    char* fname;            // the file name
 } Lexer; 
 
 
@@ -56,7 +56,7 @@ typedef struct LexerStruct {
         LEXER_PEEKs _do not_ increment anything - it offers an easy way to safely view an element in the buffer
 */
 #define LEXER_NEXT            lexer->buffer[lexer->offset++]; \
-                              ++lexer->position; LEXER_INCREMENT_COLUMN
+                              LEXER_INCREMENT_COLUMN
 #define LEXER_PEEK_CURR       (int)lexer->buffer[lexer->offset]
 #define LEXER_PEEK_NEXT       (lexer->offset < lexer->buffer_capacity ? (int)lexer->buffer[lexer->offset+1] : 0 
 #define LEXER_PEEK_NEXT2      (lexer->offset+1 < lexer->buffer_capacity ? (int)lexer->buffer[lexer->offset+2] : 0 
@@ -71,10 +71,10 @@ typedef struct LexerStruct {
 #define LEXER_DECREMENT_COLUMN   --lexer->col_no; 
 #define LEXER_INCREMENT_OFFSET   ++lexer->offset; LEXER_INCREMENT_COLUMN
 #define LEXER_DECREMENT_OFFSET   --lexer->offset; LEXER_DECREMENT_COLUMN
-#define LEXER_INCREMENT_POSITION ++lexer->offset;
-#define LEXER_DECREMENT_POSITION --lexer->offset;
+// #define LEXER_INCREMENT_POSITION ++lexer->position;
+// #define LEXER_DECREMENT_POSITION --lexer->position;
 
-#define LEXER_INCREMENT_OFFSET_AND_POSITION       LEXER_INCREMENT_OFFSET; LEXER_INCREMENT_POSITION
+// #define LEXER_INCREMENT_OFFSET_AND_POSITION       LEXER_INCREMENT_OFFSET; LEXER_INCREMENT_POSITION
 
 // Useful Macros for Tokens
 #define TOKEN_RESET         lexer->token = NO_TOKEN; \
@@ -116,6 +116,7 @@ static inline bool isIdentifier(char c);
 static inline bool isNewLine(Lexer* lexer, char c);
 static inline bool isSlashComment(char c1, char c2);
 static inline bool isHashComment(char c);
+static inline bool isComment(char c1, char c2);
 static inline bool isSemicolon(char c);
 static inline bool isString(char c);
 static inline bool isMacro(char c);

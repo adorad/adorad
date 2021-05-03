@@ -69,6 +69,10 @@ static inline bool isHashComment(char c) {
     return c == '#';
 }
 
+static inline bool isComment(char c1, char c2) {
+    return isSlashComment(c1, c2) || isHashComment(c1) || isHashComment(c2);
+}
+
 static inline bool isSemicolon(char c) {
     return c == ';';
 }
@@ -191,7 +195,7 @@ Token* lexer_lex_operator(Lexer* lexer) {
         case '=':
             // '=='
             if(curr == '=') {
-                LEXER_INCREMENT_OFFSET_AND_POSITION;
+                LEXER_INCREMENT_OFFSET;
                 TOKEN_INCREMENT_TOKENLENGTH;
 
                 // 
@@ -199,7 +203,7 @@ Token* lexer_lex_operator(Lexer* lexer) {
                 // curr = LEXER_PEEK_CURR; 
                 // // '===' 
                 // if(curr == '=') {
-                //     INCREMENT_OFFSET_AND_POSITION;
+                //     INCREMENT_OFFSET;
                 //     INCREMENT_TOKENLENGTH;
                 //     token = EQUALS_EQUALS_EQUALS;
                 // } else {
@@ -213,6 +217,53 @@ Token* lexer_lex_operator(Lexer* lexer) {
             break; 
         
         // '+'
+        case '+':
+            // 
+            // Uncomment the following ONLY if Hazel ends up supporting '++'
+            // // '++'
+            // if(curr == '+') {
+            //     LEXER_INCREMENT_OFFSET;
+            //     TOKEN_INCREMENT_TOKENLENGTH;
+            //     token = PLUS_PLUS;
+            // }
+
+            // '+='
+            if(curr == '=') {
+                LEXER_INCREMENT_OFFSET; 
+                TOKEN_INCREMENT_TOKENLENGTH;
+
+                token = PLUS_EQUALS;
+            } else {
+                token = PLUS;
+            }
+            break; 
+        
+        // '-'
+        case '-':
+            // 
+            // Uncomment the following ONLY if Hazel ends up supporting '--'
+            // // '--'
+            // if(curr == '-') {
+            //     LEXER_INCREMENT_OFFSET;
+            //     TOKEN_INCREMENT_TOKENLENGTH;
+            //     token = MINUS_MINUS;
+            // }
+
+            // '-='
+            if(curr == '=') {
+                LEXER_INCREMENT_OFFSET; 
+                TOKEN_INCREMENT_TOKENLENGTH;
+
+                token = MINUS_EQUALS;
+            } else {
+                token = MINUS;
+            }
+            break; 
+
+        case '*':
+            
+
+
         
     }
 
