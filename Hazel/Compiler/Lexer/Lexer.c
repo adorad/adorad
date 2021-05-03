@@ -503,6 +503,7 @@ Token* lexer_lex_operator(Lexer* lexer) {
     return token; 
 } 
 
+
 Token* lexer_lex_separator(Lexer* lexer){
     TOKEN_RESET; 
     TOKEN_INCREMENT_TOKENLENGTH; 
@@ -513,18 +514,46 @@ Token* lexer_lex_separator(Lexer* lexer){
     int token = 0; 
 
     switch(next) {
-        // '='
-        case '=':            
-            // '=>'
-            if(curr == '>') {
+        // '.'
+        case '.':
+            // '..'
+            if(curr == '.') {
                 LEXER_INCREMENT_OFFSET;
                 TOKEN_INCREMENT_TOKENLENGTH;
-                token = EQUALS_ARROW;
+
+                // '...'
+                curr = LEXER_PEEK_CURR;
+                if(curr == '.') {
+                    LEXER_INCREMENT_OFFSET;
+                    TOKEN_INCREMENT_TOKENLENGTH;
+                    token = ELLIPSIS;
+                } else {
+                    token = DDOT;
+                }
             } else {
-                token = EQUALS;
+                token = DOT;
             }
+            break;  
+        
+        // ':'
+        case ':':
+            token = COLON;
             break; 
         
+        // ':'
+        case ';':
+            token = SEMICOLON;
+            break; 
+        
+        // ','
+        case ',':
+            token = COMMA;
+            break; 
+
+        // '\\'
+        case '\\':
+            token = BACKSLASH;
+            break; 
         
         default: 
             printf("LEXER ERROR - UNRECOGNIZED TOKEN");
