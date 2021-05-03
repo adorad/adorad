@@ -478,17 +478,28 @@ Token* lexer_lex_operator(Lexer* lexer) {
             } else {
                 token = GREATER_THAN;
             }
+            break;  
+        
+        // '~'
+        case '~':
+            // '~='
+            if(curr == '=') {
+                LEXER_INCREMENT_OFFSET; 
+                TOKEN_INCREMENT_TOKENLENGTH;
+
+                token = TILDA_EQUALS;
+            } else {
+                token = TILDA;
+            }
             break;
         
-
-
-        
-        
-        
-
-        
+        default: 
+            printf("LEXER ERROR - UNRECOGNIZED TOKEN");
     }
 
+    TOKEN_FINALIZE(token);
+    LEXER_DEBUG("Found operator: %s", token_toString(token));
+    return token; 
 } 
 
 Token* lexer_lex_char(Lexer* lexer) {
