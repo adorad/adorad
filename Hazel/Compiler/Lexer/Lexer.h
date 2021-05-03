@@ -105,6 +105,9 @@ void lexer_skip_block_comment(Lexer* lexer);
 
 Token* lexer_lex_string(Lexer* lexer); 
 Token* lexer_lex_operator(Lexer* lexer);
+Token* lexer_lex_separator(Lexer* lexer);
+Token* lexer_lex_delimiter(Lexer* lexer);
+Token* lexer_lex_keywords(Lexer* lexer);
 Token* lexer_lex_char(Lexer* lexer); 
 Token* lexer_lex_digit(Lexer* lexer); 
 Token* lexer_lex_token_id(Lexer* lexer); 

@@ -502,6 +502,47 @@ Token* lexer_lex_operator(Lexer* lexer) {
     return token; 
 } 
 
+Token* lexer_lex_separator(Lexer* lexer){
+    TOKEN_RESET; 
+    TOKEN_INCREMENT_TOKENLENGTH; 
+
+    // Do not change the decleration order of _next_ and _curr_
+    char next = LEXER_NEXT; 
+    char curr = LEXER_PEEK_CURR; 
+    int token = 0; 
+
+    switch(next) {
+        // '='
+        case '=':            
+            // '=>'
+            if(curr == '>') {
+                LEXER_INCREMENT_OFFSET;
+                TOKEN_INCREMENT_TOKENLENGTH;
+                token = EQUALS_ARROW;
+            } else {
+                token = EQUALS;
+            }
+            break; 
+        
+        
+        default: 
+            printf("LEXER ERROR - UNRECOGNIZED TOKEN");
+    }
+
+    TOKEN_FINALIZE(token);
+    LEXER_DEBUG("Found operator: %s", token_toString(token));
+    return token; 
+}
+
+Token* lexer_lex_delimiter(Lexer* lexer){
+    
+}
+
+Token* lexer_lex_keywords(Lexer* lexer){
+    
+}
+
+
 Token* lexer_lex_char(Lexer* lexer) {
 
 } 
