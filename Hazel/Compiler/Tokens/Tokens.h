@@ -220,7 +220,7 @@ typedef struct TokenNames {
     UInt32 line_no;     // Token Line Number (1-Based)
     UInt32 col_no;      // Token Column Number (0-Based) 
     UInt32 length;      // Token length (UTF-8)
-    UInt32 fname;       // the file name
+    char* fname;       // the file name
     const char* value;  // Token value (_not_ null-terminated)
 } Token; 
 
