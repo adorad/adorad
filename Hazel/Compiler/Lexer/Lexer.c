@@ -128,7 +128,7 @@ void lexer_free(Lexer* lexer) {
 TokenType lexer_error(Lexer* lexer, const char* message) {
     if(!LEXER_IS_EOF) {
         TOKEN_INCREMENT_TOKENLENGTH;
-        LEXER_INCREMENT_OFFSET_AND_POSITION;
+        LEXER_INCREMENT_OFFSET;
     }
     TOKEN_FINALIZE(ILLEGAL);
 
@@ -211,6 +211,13 @@ Token* lexer_lex_operator(Lexer* lexer) {
                 // }
 
                 token = EQUALS_EQUALS; 
+            } 
+            
+            // '=>'
+            if(curr == '>') {
+                LEXER_INCREMENT_OFFSET;
+                TOKEN_INCREMENT_TOKENLENGTH;
+                token = EQUALS_ARROW;
             } else {
                 token = EQUALS;
             }
@@ -249,6 +256,13 @@ Token* lexer_lex_operator(Lexer* lexer) {
                 LEXER_INCREMENT_OFFSET;
                 TOKEN_INCREMENT_TOKENLENGTH;
                 token = MINUS_MINUS;
+            }
+
+            // '->'
+            if(curr == '>') {
+                LEXER_INCREMENT_OFFSET;
+                TOKEN_INCREMENT_TOKENLENGTH;
+                token = RARROW;
             }
 
             // '-='
@@ -302,6 +316,19 @@ Token* lexer_lex_operator(Lexer* lexer) {
             }
             break;
         
+        // '!'
+        case '!':
+            // '!='
+            if(curr == '=') {
+                LEXER_INCREMENT_OFFSET; 
+                TOKEN_INCREMENT_TOKENLENGTH;
+
+                token = EXCLAMATION_EQUALS;
+            } else {
+                token = EXCLAMATION;
+            }
+            break;
+        
         // '%'
         case '%':
             // '%%'
@@ -322,6 +349,71 @@ Token* lexer_lex_operator(Lexer* lexer) {
             }
             break;
         
+        // '&'
+        case '&':
+            // '&&'
+            if(curr == '&') {
+                LEXER_INCREMENT_OFFSET;
+                TOKEN_INCREMENT_TOKENLENGTH;
+                token = AND_AND;
+            }
+
+            // '&^'
+            if(curr == '^') {
+                LEXER_INCREMENT_OFFSET;
+                TOKEN_INCREMENT_TOKENLENGTH;
+                token = AND_NOT;
+            }
+
+            // '&='
+            if(curr == '=') {
+                LEXER_INCREMENT_OFFSET; 
+                TOKEN_INCREMENT_TOKENLENGTH;
+
+                token = AND_EQUALS;
+            } else {
+                token = AND;
+            }
+            break;
+        
+        // '|'
+        case '|':
+            // '||'
+            if(curr == '|') {
+                LEXER_INCREMENT_OFFSET;
+                TOKEN_INCREMENT_TOKENLENGTH;
+                token = OR_OR;
+            }
+
+            // '|='
+            if(curr == '=') {
+                LEXER_INCREMENT_OFFSET; 
+                TOKEN_INCREMENT_TOKENLENGTH;
+
+                token = OR_EQUALS;
+            } else {
+                token = OR;
+            }
+            break;
+        
+        // '^'
+        case '^':
+            // '^='
+            if(curr == '=') {
+                LEXER_INCREMENT_OFFSET; 
+                TOKEN_INCREMENT_TOKENLENGTH;
+
+                token = XOR_EQUALS;
+            } else {
+                token = XOR;
+            }
+            break;
+        
+        // '?'
+        case '?':
+            token = QUESTION;
+            break;
+
         // '<'
         case '<':
             // '<='
@@ -330,6 +422,14 @@ Token* lexer_lex_operator(Lexer* lexer) {
                 TOKEN_INCREMENT_TOKENLENGTH;
 
                 token = LESS_THAN_OR_EQUAL_TO;
+            }
+
+            // '<-'
+            else if(curr == '-') {
+                LEXER_INCREMENT_OFFSET; 
+                TOKEN_INCREMENT_TOKENLENGTH;
+
+                token = LARROW;
             }
 
             // '<<'
@@ -380,6 +480,7 @@ Token* lexer_lex_operator(Lexer* lexer) {
             }
             break;
         
+
 
         
         

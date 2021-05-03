@@ -84,7 +84,7 @@ TOKENKIND(TOK___COMP_OPERATORS_BEGIN, ""), \
     TOKENKIND(GREATER_THAN_OR_EQUAL_TO, ">="), \
     TOKENKIND(LESS_THAN_OR_EQUAL_TO,    "<="), \
     TOKENKIND(EQUALS_EQUALS,            "=="), \
-    TOKENKIND(NOT_EQUALS,               "!="), \
+    TOKENKIND(EXCLAMATION_EQUALS,       "!="), \
 TOKENKIND(TOK___COMP_OPERATORS_END, ""), \
 \
     /* Assignment Operators */ \
