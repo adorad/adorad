@@ -553,6 +553,6 @@ protected:
     std::string fname;  // the file name
     std::string value;  // Token value
     friend class Lexer;
-};
+}; // class Token
 
 #endif // HAZEL_TOKEN
