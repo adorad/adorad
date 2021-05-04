@@ -43,7 +43,7 @@ objects = $(sources:Hazel/.c=.o)
 
 # To disable warnings, use "-w"
 flags = -g -w
-CC = gcc
+CC = g++
 
 all :
 	$(CC) $(objects) $(flags) -o $(exec) -I .

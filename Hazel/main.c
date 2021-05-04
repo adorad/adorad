@@ -1,5 +1,3 @@
-#include <stdio.h> 
-#include <string.h>
 #include <Hazel/Hazel.h>
 
 int main(int argc, char* argv[]) {
@@ -12,13 +10,13 @@ int main(int argc, char* argv[]) {
     // }
 
     // if(strcmp(argv[1], "compile") == 0) {
-    Lexer* lexer = calloc(1, sizeof(Lexer)); 
-	char* buffer = readFile("test/LexerDemo.hzl");
-	lexer_init(buffer, "jfjf"); 
+    // Lexer* lexer = calloc(1, sizeof(Lexer)); 
+	// char* buffer = readFile("test/LexerDemo.hzl");
+	// lexer_init(buffer, "jfjf"); 
     
-    // Delete when done 
-    lexer_free(lexer); 
-    free(buffer);
+    // // Delete when done 
+    // lexer_free(lexer); 
+    // free(buffer);
     // char* source = readFile("test/LexerDemo.hzl");
     // printf(source);
     // free(source);

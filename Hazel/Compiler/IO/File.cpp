@@ -11,8 +11,9 @@ SPDX-License-Identifier: MIT
 Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 */
 
-#include <stdio.h>
-#include <Hazel/Core/HCore.h>>
+#include <cstdio>
+#include <cstdlib>
+#include <Hazel/Core/HCore.h>
 #include <Hazel/Compiler/IO/File.h>
 
 
@@ -22,7 +23,7 @@ char* readFile(const char* fname) {
     
     if(!file) { 
         printf("Could not open file: <%s>\n", fname);
-        exit(2);
+        std::abort(2);
     }
 
     // Get the length of the input buffer
