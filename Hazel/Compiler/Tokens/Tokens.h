@@ -27,6 +27,7 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 // as well as in Syntax.toml (Hazel/Compiler/Syntax/Syntax.toml)
 #define ALLTOKENS \ 
     /* Special (internal usage only) */ \
+    TOKENKIND(TOK_ABSOLUTE_NULL = 0,  ""),   \
     TOKENKIND(TOK_ID = 0,  "TOK_ID"),   \
     TOKENKIND(TOK_EOF, "TOK_EOF"),  \
     TOKENKIND(TOK_NULL,"TOK_NULL"), \
@@ -217,7 +218,7 @@ class Token {
 public:
     // Default constructor (create a NO_TOKEN instance)
     Token() {
-        this->type = TOK_NULL; 
+        this->type = TOK_ABSOLUTE_NULL; 
         this->offset = 0; 
         this->tok_bytes = 0; 
         this->line_no = 0;
@@ -227,6 +228,7 @@ public:
         this->value = "";
     }
 
+    // Get an illegal token
     Token illegal_tok() {
         this->type = ILLEGAL; 
         this->offset = 0; 
@@ -380,6 +382,7 @@ public:
     static inline bool isSemiColon(TokenType token) {
         return token == SEMICOLON; 
     }
+
     // Convert a Token to its respective String representation
     std::string toString() {
         switch(this->type) {
@@ -549,6 +552,7 @@ protected:
     UInt32 tok_length;  // Token length (UTF-8)
     std::string fname;  // the file name
     std::string value;  // Token value
+    friend class Lexer;
 };
 
 #endif // HAZEL_TOKEN

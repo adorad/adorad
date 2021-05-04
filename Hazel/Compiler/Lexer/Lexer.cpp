@@ -107,15 +107,14 @@ static inline bool isBuiltinOperator(char c) {
 
 
 // Lexing Errors
-TokenType lexer_error(Lexer* lexer, const char* message) {
+TokenType lexer_error(Lexer* lexer, std::string message) {
     if(!lexer->is_EOF()) {
-        TOKEN_INCREMENT_TOKENLENGTH;
+        lexer->increment_tok_length();
         lexer->increment_offset();
     }
-    TOKEN_FINALIZE(ILLEGAL);
-
-    lexer->token.value = (char*)message; 
-    lexer->token.bytes = (UInt32)strlen(message);
+    lexer->finalize_token(ILLEGAL);
+    lexer->set_token_value(message);
+    lexer->set_token_bytes(message.length());
     return ILLEGAL; 
 }
 
@@ -165,13 +164,13 @@ Token* lexer_lex_string(Lexer* lexer) {
 } 
 
 Token* lexer_lex_operator(Lexer* lexer) {
-    TOKEN_RESET; 
-    TOKEN_INCREMENT_TOKENLENGTH; 
+    lexer->reset_token(); 
+    lexer->increment_tok_length(); 
 
     // Do not change the declaration order of _next_ and _curr_
     char next = lexer->next(); 
     char curr = lexer->peek_curr(); 
-    int token = 0; 
+    TokenType token = TOK_ABSOLUTE_NULL; 
 
     switch(next) {
         // '='
@@ -179,7 +178,7 @@ Token* lexer_lex_operator(Lexer* lexer) {
             // '=='
             if(curr == '=') {
                 lexer->increment_offset();
-                TOKEN_INCREMENT_TOKENLENGTH;
+                lexer->increment_tok_length();
 
                 // 
                 // Uncomment the following ONLY if Hazel ends up supporting '==='
@@ -199,7 +198,7 @@ Token* lexer_lex_operator(Lexer* lexer) {
             // '=>'
             if(curr == '>') {
                 lexer->increment_offset();
-                TOKEN_INCREMENT_TOKENLENGTH;
+                lexer->increment_tok_length();
                 token = EQUALS_ARROW;
             } else {
                 token = EQUALS;
@@ -214,14 +213,14 @@ Token* lexer_lex_operator(Lexer* lexer) {
             // '++'
             if(curr == '+') {
                 lexer->increment_offset();
-                TOKEN_INCREMENT_TOKENLENGTH;
+                lexer->increment_tok_length();
                 token = PLUS_PLUS;
             }
 
             // '+='
             if(curr == '=') {
                 lexer->increment_offset(); 
-                TOKEN_INCREMENT_TOKENLENGTH;
+                lexer->increment_tok_length();
 
                 token = PLUS_EQUALS;
             } else {
@@ -237,21 +236,21 @@ Token* lexer_lex_operator(Lexer* lexer) {
             // '--'
             if(curr == '-') {
                 lexer->increment_offset();
-                TOKEN_INCREMENT_TOKENLENGTH;
+                lexer->increment_tok_length();
                 token = MINUS_MINUS;
             }
 
             // '->'
             if(curr == '>') {
                 lexer->increment_offset();
-                TOKEN_INCREMENT_TOKENLENGTH;
+                lexer->increment_tok_length();
                 token = RARROW;
             }
 
             // '-='
             if(curr == '=') {
                 lexer->increment_offset(); 
-                TOKEN_INCREMENT_TOKENLENGTH;
+                lexer->increment_tok_length();
 
                 token = MINUS_EQUALS;
             } else {
@@ -264,14 +263,14 @@ Token* lexer_lex_operator(Lexer* lexer) {
             // '**'
             if(curr == '*') {
                 lexer->increment_offset();
-                TOKEN_INCREMENT_TOKENLENGTH;
+                lexer->increment_tok_length();
                 token = MULT_MULT;
             }
 
             // '*='
             if(curr == '=') {
                 lexer->increment_offset(); 
-                TOKEN_INCREMENT_TOKENLENGTH;
+                lexer->increment_tok_length();
 
                 token = MULT_EQUALS;
             } else {
@@ -284,14 +283,14 @@ Token* lexer_lex_operator(Lexer* lexer) {
             // '//'
             if(curr == '/') {
                 lexer->increment_offset();
-                TOKEN_INCREMENT_TOKENLENGTH;
+                lexer->increment_tok_length();
                 token = SLASH_SLASH;
             }
 
             // '/='
             if(curr == '=') {
                 lexer->increment_offset(); 
-                TOKEN_INCREMENT_TOKENLENGTH;
+                lexer->increment_tok_length();
 
                 token = SLASH_EQUALS;
             } else {
@@ -304,7 +303,7 @@ Token* lexer_lex_operator(Lexer* lexer) {
             // '!='
             if(curr == '=') {
                 lexer->increment_offset(); 
-                TOKEN_INCREMENT_TOKENLENGTH;
+                lexer->increment_tok_length();
 
                 token = EXCLAMATION_EQUALS;
             } else {
@@ -317,14 +316,14 @@ Token* lexer_lex_operator(Lexer* lexer) {
             // '%%'
             if(curr == '%') {
                 lexer->increment_offset();
-                TOKEN_INCREMENT_TOKENLENGTH;
+                lexer->increment_tok_length();
                 token = MOD_MOD;
             }
 
             // '%='
             if(curr == '=') {
                 lexer->increment_offset(); 
-                TOKEN_INCREMENT_TOKENLENGTH;
+                lexer->increment_tok_length();
 
                 token = MOD_EQUALS;
             } else {
@@ -337,21 +336,21 @@ Token* lexer_lex_operator(Lexer* lexer) {
             // '&&'
             if(curr == '&') {
                 lexer->increment_offset();
-                TOKEN_INCREMENT_TOKENLENGTH;
+                lexer->increment_tok_length();
                 token = AND_AND;
             }
 
             // '&^'
             if(curr == '^') {
                 lexer->increment_offset();
-                TOKEN_INCREMENT_TOKENLENGTH;
+                lexer->increment_tok_length();
                 token = AND_NOT;
             }
 
             // '&='
             if(curr == '=') {
                 lexer->increment_offset(); 
-                TOKEN_INCREMENT_TOKENLENGTH;
+                lexer->increment_tok_length();
 
                 token = AND_EQUALS;
             } else {
@@ -364,14 +363,14 @@ Token* lexer_lex_operator(Lexer* lexer) {
             // '||'
             if(curr == '|') {
                 lexer->increment_offset();
-                TOKEN_INCREMENT_TOKENLENGTH;
+                lexer->increment_tok_length();
                 token = OR_OR;
             }
 
             // '|='
             if(curr == '=') {
                 lexer->increment_offset(); 
-                TOKEN_INCREMENT_TOKENLENGTH;
+                lexer->increment_tok_length();
 
                 token = OR_EQUALS;
             } else {
@@ -384,7 +383,7 @@ Token* lexer_lex_operator(Lexer* lexer) {
             // '^='
             if(curr == '=') {
                 lexer->increment_offset(); 
-                TOKEN_INCREMENT_TOKENLENGTH;
+                lexer->increment_tok_length();
 
                 token = XOR_EQUALS;
             } else {
@@ -402,7 +401,7 @@ Token* lexer_lex_operator(Lexer* lexer) {
             // '<='
             if(curr == '=') {
                 lexer->increment_offset(); 
-                TOKEN_INCREMENT_TOKENLENGTH;
+                lexer->increment_tok_length();
 
                 token = LESS_THAN_OR_EQUAL_TO;
             }
@@ -410,7 +409,7 @@ Token* lexer_lex_operator(Lexer* lexer) {
             // '<-'
             else if(curr == '-') {
                 lexer->increment_offset(); 
-                TOKEN_INCREMENT_TOKENLENGTH;
+                lexer->increment_tok_length();
 
                 token = LARROW;
             }
@@ -418,13 +417,13 @@ Token* lexer_lex_operator(Lexer* lexer) {
             // '<<'
             else if(curr == '<') {
                 lexer->increment_offset();
-                TOKEN_INCREMENT_TOKENLENGTH;
+                lexer->increment_tok_length();
 
                 // '<<='
                 curr = lexer->peek_curr();
                 if(curr == '=') {
                     lexer->increment_offset();
-                    TOKEN_INCREMENT_TOKENLENGTH;
+                    lexer->increment_tok_length();
                     token = LBITSHIFT_EQUALS;
                 } else {
                     token = LBITSHIFT;
@@ -439,7 +438,7 @@ Token* lexer_lex_operator(Lexer* lexer) {
             // '>='
             if(curr == '=') {
                 lexer->increment_offset(); 
-                TOKEN_INCREMENT_TOKENLENGTH;
+                lexer->increment_tok_length();
 
                 token = GREATER_THAN_OR_EQUAL_TO;
             } 
@@ -447,13 +446,13 @@ Token* lexer_lex_operator(Lexer* lexer) {
             // '>>'
             else if(curr == '>') {
                 lexer->increment_offset();
-                TOKEN_INCREMENT_TOKENLENGTH;
+                lexer->increment_tok_length();
 
                 // '>>='
                 curr = lexer->peek_curr();
                 if(curr == '=') {
                     lexer->increment_offset();
-                    TOKEN_INCREMENT_TOKENLENGTH;
+                    lexer->increment_tok_length();
                     token = RBITSHIFT_EQUALS;
                 } else {
                     token = RBITSHIFT;
@@ -468,7 +467,7 @@ Token* lexer_lex_operator(Lexer* lexer) {
             // '~='
             if(curr == '=') {
                 lexer->increment_offset(); 
-                TOKEN_INCREMENT_TOKENLENGTH;
+                lexer->increment_tok_length();
 
                 token = TILDA_EQUALS;
             } else {
@@ -480,20 +479,20 @@ Token* lexer_lex_operator(Lexer* lexer) {
             printf("LEXER ERROR - UNRECOGNIZED TOKEN");
     }
 
-    TOKEN_FINALIZE(token);
+    lexer->finalize_token(token);
     // LEXER_DEBUG("Found operator: %s", token_toString(token));
     return token; 
 } 
 
 
 Token* lexer_lex_separator(Lexer* lexer) {
-    TOKEN_RESET; 
-    TOKEN_INCREMENT_TOKENLENGTH; 
+    lexer->reset_token(); 
+    lexer->increment_tok_length(); 
 
     // Do not change the declaration order of _next_ and _curr_
     char next = lexer->next(); 
     char curr = lexer->peek_curr(); 
-    int token = 0; 
+    TokenType token = TOK_ABSOLUTE_NULL; 
 
     switch(next) {
         // '.'
@@ -501,13 +500,13 @@ Token* lexer_lex_separator(Lexer* lexer) {
             // '..'
             if(curr == '.') {
                 lexer->increment_offset();
-                TOKEN_INCREMENT_TOKENLENGTH;
+                lexer->increment_tok_length();
 
                 // '...'
                 curr = lexer->peek_curr();
                 if(curr == '.') {
                     lexer->increment_offset();
-                    TOKEN_INCREMENT_TOKENLENGTH;
+                    lexer->increment_tok_length();
                     token = ELLIPSIS;
                 } else {
                     token = DDOT;
@@ -541,15 +540,15 @@ Token* lexer_lex_separator(Lexer* lexer) {
             printf("LEXER ERROR - UNRECOGNIZED TOKEN");
     }
 
-    TOKEN_FINALIZE(token);
+    lexer->finalize_token(token);
     // LEXER_DEBUG("Found separator: %s", token_toString(token));
     return token; 
 }
 
 
 Token* lexer_lex_delimiter(Lexer* lexer) {
-    TOKEN_RESET; 
-    TOKEN_INCREMENT_TOKENLENGTH; 
+    lexer->reset_token(); 
+    lexer->increment_tok_length(); 
 
     // Do not change the declaration order of _next_ and _curr_
     char next = lexer->next(); 
@@ -591,23 +590,23 @@ Token* lexer_lex_delimiter(Lexer* lexer) {
             printf("LEXER ERROR - UNRECOGNIZED TOKEN");
     }
 
-    TOKEN_FINALIZE(token);
+    lexer->finalize_token(token);
     // LEXER_DEBUG("Found delimiter: %s", token_toString(token));
     return token; 
 }
 
 
 Token* lexer_lex_macro(Lexer* lexer) {
-    TOKEN_RESET; 
-    TOKEN_INCREMENT_TOKENLENGTH; 
-    int token = 0;
+    lexer->reset_token(); 
+    lexer->increment_tok_length(); 
+    TokenType token = TOK_ABSOLUTE_NULL;
 
     char curr = lexer->peek_curr(); 
     if(curr == '@') {
         token = MACRO;
     }
 
-    TOKEN_FINALIZE(token);
+    lexer->finalize_token(token);
     return token;
 }
 

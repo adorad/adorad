@@ -102,6 +102,16 @@ public:
         this->token.fname = this->fname;
     }
 
+    // Set token value 
+    inline void set_token_value(std::string value) {
+        this->token.value = value; 
+    }
+
+    // Set token bytes 
+    inline void set_token_bytes(UInt32 bytes) {
+        this->token.tok_bytes = bytes; 
+    }
+
     // Increment Token Bytes
     inline void increment_tok_bytes() {
         ++this->token.tok_bytes;
