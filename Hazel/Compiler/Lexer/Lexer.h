@@ -52,14 +52,14 @@ public:
     }
 
     // Lexer next() increments the buffer offset and essentially _advances_ to the next element in the buffer
-    char next() {
+    inline char next() {
         ++this->col_no;
         return (char)this->buffer[this->offset++];
     }
 
     // Lexer peek() allows you to "look ahead" `n` characters in the Lexical buffer
     // It _does not_ increment the buffer offset 
-    char peek(int n) {
+    inline char peek(int n) {
         if(this->offset + (n-1) < this->buffer_capacity) {
             return (char)this->buffer[this->offset + n];
         } else {
@@ -68,55 +68,90 @@ public:
     }
 
     // Lexer peek_curr() returns the current element in the Lexical Buffer
-    char peek_curr() {
+    inline char peek_curr() {
         return (char)this->buffer[this->offset];
     }
 
     // Check if the current Lexer state is at EOF
-    bool is_EOF() {
+    inline bool is_EOF() {
         return this->offset >= this->buffer_capacity;
     }
 
     // Reset the line
-    void reset_line() {
+    inline void reset_line() {
         this->line_no = 0;
     }
 
     // Reset the column number 
-    void reset_column() {
+    inline void reset_column() {
         this->col_no = 0; 
     }
 
+    // Reset a Lexer Token
+    inline void reset_token() {
+        this->token = Token();
+        // TODO(jasmcaus): Verify this is accurate
+        this->token.value = this->buffer[this->offset]; 
+        this->token.line_no = this->line_no;
+        this->token.col_no = this->col_no;
+    }
+
+    // Finalize a Token
+    inline void finalize_token(TokenType __tok) {
+        this->token.type = __tok; 
+        this->token.fname = this->fname;
+    }
+
+    // Increment Token Bytes
+    inline void increment_tok_bytes() {
+        ++this->token.tok_bytes;
+    }
+
+    // Decrement Token Bytes
+    inline void decrement_tok_bytes() {
+        --this->token.tok_bytes;
+    }
+
+    // Increment Token Length
+    inline void increment_tok_length() {
+        ++this->token.tok_length;
+    }
+
+    // Decrement Token Length
+    inline void decrement_tok_length() {
+        --this->token.tok_length;
+    }
+
     // Increment the line number
-    void increment_line() {
+    inline void increment_line() {
         ++this->line_no; 
         this->reset_column();
     }
 
     // Decrement the line_no
-    void decrement_line() {
+    inline void decrement_line() {
         --this->line_no; 
         this->reset_column();
     }
 
     // Increment the column number
-    void increment_column() {
+    inline void increment_column() {
         ++this->col_no; 
     }
 
     // Decrement the col_no
-    void decrement_column() {
+    inline void decrement_column() {
         --this->col_no; 
     }
 
     // Increment the Lexical Buffer offset
-    void increment_offset() {
+    inline void increment_offset() {
         ++this->offset; 
         this->increment_column();
     }
 
     // Decrement the Lexical Buffer offset
-    void decrement_offset() {
+    inline void decrement_offset() {
         --this->offset; 
         this->decrement_column();
     }
