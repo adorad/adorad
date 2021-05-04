@@ -42,7 +42,7 @@ sources = $(wildcard Hazel/Compiler/IO/*.c Hazel/Compiler/Lexer/*.c Hazel/Compil
 objects = $(sources:Hazel/.c=.o)
 
 # To disable warnings, use "-w"
-flags = -g -w
+flags = -g -w -std=c++17
 CC = g++
 
 all :
