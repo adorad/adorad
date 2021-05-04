@@ -5,7 +5,6 @@ _ _    _           ______   _______
 |  __  |  / /\ \    / /     |  __|  | |       Languages: C, C++, and Assembly
 | |  | | / ____ \  / /___   | |____ | |____   https://github.com/HazelLang/Hazel/
 |_|_ |_|/_/    \_\/_______\ |______|_\______|
-
 Licensed under the MIT License <http://opensource.org/licenses/MIT>
 SPDX-License-Identifier: MIT
 Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
@@ -19,12 +18,9 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 
 /*
     Hazel's Lexer is built in such a way that no (or negligible) memory allocations are necessary during usage. 
-
     In order to be able to not allocate any memory during tokenization, STRINGs and NUMBERs are just sanity checked but _not_
     converted - it is the responsibility of the Parser to perform the right conversion.
-
     In case of a scan error, ILLEGAL is returned and the error details can be extracted from the token itself.
-
     Reference: 
         1. ASCII Table: http://www.theasciicode.com.ar 
 */
