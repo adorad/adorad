@@ -15,7 +15,7 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #define HAZEL_TYPES_H 
 
 // Data Types used in the Hazel Programming Language
-typedef enum Hazel_Types {
+typedef enum {
     HAZEL_TYPE_Any, 
     HAZEL_TYPE_Null, 
     HAZEL_TYPE_Bool, 
