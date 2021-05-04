@@ -168,7 +168,7 @@ public:
 
 
 protected:
-    std::string buffer;           // the Lexical buffer
+    std::string buffer;     // the Lexical buffer
     UInt32 position;        // current buffer position (in characters)
     UInt32 buffer_capacity; // current buffer capacity (in Bytes)
     UInt32 offset;          // current buffer offset (in Bytes) 
@@ -177,10 +177,9 @@ protected:
                             // Sometimes called the buffer position
 
     Token token;            // current token
-    // UInt32 char_idx;        // the index of the token
     UInt32 line_no;         // the line number in the source where the token occured
     UInt32 col_no;          // the column number
-    std::string fname;            // the file name
+    std::string fname;      // the file name
 }; // class Lexer
 
 
