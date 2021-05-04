@@ -10,10 +10,11 @@ Licensed under the MIT License <http://opensource.org/licenses/MIT>
 SPDX-License-Identifier: MIT
 Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 */
-
 #ifndef _HAZEL_LEXER
 #define _HAZEL_LEXER 
 
+#include <string>
+#include <Hazel/Compiler/Lexer/Lexer.h>
 #include <Hazel/Core/HCore.h> 
 #include <Hazel/Compiler/Tokens/Tokens.h>
 
@@ -28,13 +29,101 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
     Reference: 
         1. ASCII Table: http://www.theasciicode.com.ar 
 */
+class Lexer {
+public:
+    // Default constructor 
+    Lexer() {
+        this->buffer = null; 
+        this->buffer_capacity = -1;
+        this->offset = 0; 
+        this->col_no = 0; 
+        this->line_no = 0; 
+        this->fname = null; 
+    }
 
-/*
-    Lexical Analysis happens as follows:
-        At each token, the lexing engine 
-*/
-typedef struct LexerStruct {
-    char* buffer;           // the Lexical buffer
+    // Constructor 
+    Lexer(std::string buffer, std::string fname) {
+        this->buffer = buffer; 
+        this->buffer_capacity = buffer.length();
+        this->offset = 0; 
+        this->col_no = 0; 
+        this->line_no = 0; 
+        this->fname = fname; 
+    }
+
+    // Lexer next() increments the buffer offset and essentially _advances_ to the next element in the buffer
+    char next() {
+        ++this->col_no;
+        return (char)this->buffer[this->offset++];
+    }
+
+    // Lexer peek() allows you to "look ahead" `n` characters in the Lexical buffer
+    // It _does not_ increment the buffer offset 
+    char peek(int n) {
+        if(this->offset + (n-1) < this->buffer_capacity) {
+            return (char)this->buffer[this->offset + n];
+        } else {
+            return 0;
+        }
+    }
+
+    // Lexer peek_curr() returns the current element in the Lexical Buffer
+    char peek_curr() {
+        return (char)this->buffer[this->offset];
+    }
+
+    // Check if the current Lexer state is at EOF
+    bool is_EOF() {
+        return this->offset >= this->buffer_capacity;
+    }
+
+    // Reset the line
+    void reset_line() {
+        this->line_no = 0;
+    }
+
+    // Reset the column number 
+    void reset_column() {
+        this->col_no = 0; 
+    }
+
+    // Increment the line number
+    void increment_line() {
+        ++this->line_no; 
+        this->reset_column();
+    }
+
+    // Decrement the line_no
+    void decrement_line() {
+        --this->line_no; 
+        this->reset_column();
+    }
+
+    // Increment the column number
+    void increment_column() {
+        ++this->col_no; 
+    }
+
+    // Decrement the col_no
+    void decrement_column() {
+        --this->col_no; 
+    }
+
+    // Increment the Lexical Buffer offset
+    void increment_offset() {
+        ++this->offset; 
+        this->increment_column();
+    }
+
+    // Decrement the Lexical Buffer offset
+    void decrement_offset() {
+        --this->offset; 
+        this->decrement_column();
+    }
+
+
+protected:
+    std::string buffer;           // the Lexical buffer
     UInt32 position;        // current buffer position (in characters)
     UInt32 buffer_capacity; // current buffer capacity (in Bytes)
     UInt32 offset;          // current buffer offset (in Bytes) 
@@ -46,53 +135,10 @@ typedef struct LexerStruct {
     // UInt32 char_idx;        // the index of the token
     UInt32 line_no;         // the line number in the source where the token occured
     UInt32 col_no;          // the column number
-    char* fname;            // the file name
-} Lexer; 
+    std::string fname;            // the file name
+}; // class Lexer
 
 
-/* Useful Macros for the Lexer 
-    Quick note: 
-        LEXER_NEXT increments the buffer offset and buffer position
-        LEXER_PEEKs _do not_ increment anything - it offers an easy way to safely view an element in the buffer
-*/
-#define LEXER_NEXT            lexer->buffer[lexer->offset++]; \
-                              LEXER_INCREMENT_COLUMN
-#define LEXER_PEEK_CURR       (int)lexer->buffer[lexer->offset]
-#define LEXER_PEEK_NEXT       (lexer->offset < lexer->buffer_capacity ? (int)lexer->buffer[lexer->offset+1] : 0 
-#define LEXER_PEEK_NEXT2      (lexer->offset+1 < lexer->buffer_capacity ? (int)lexer->buffer[lexer->offset+2] : 0 
-
-#define LEXER_RESET_LINE      lexer->line_no = 1
-#define LEXER_RESET_COLUMN    lexer->col_no  = 1
-#define LEXER_IS_EOF          lexer->offset >= lexer->buffer_capacity
-
-#define LEXER_INCREMENT_LINE     ++lexer->line_no; LEXER_RESET_COLUMN
-#define LEXER_INCREMENT_COLUMN   ++lexer->col_no; 
-#define LEXER_DECREMENT_LINE     --lexer->line_no; LEXER_RESET_COLUMN
-#define LEXER_DECREMENT_COLUMN   --lexer->col_no; 
-#define LEXER_INCREMENT_OFFSET   ++lexer->offset; LEXER_INCREMENT_COLUMN
-#define LEXER_DECREMENT_OFFSET   --lexer->offset; LEXER_DECREMENT_COLUMN
-// #define LEXER_INCREMENT_POSITION ++lexer->position;
-// #define LEXER_DECREMENT_POSITION --lexer->position;
-
-// #define LEXER_INCREMENT_OFFSET_AND_POSITION       LEXER_INCREMENT_OFFSET; LEXER_INCREMENT_POSITION
-
-// Useful Macros for Tokens
-#define TOKEN_RESET         lexer->token = NO_TOKEN; \
-                            lexer->token.position = lexer->position; \
-                            lexer->token.value = lexer->buffer + lexer->offset; \
-                            lexer->token.line_no = lexer->line_no; \
-                            lexer->token.col_no = lexer->col_no;
-
-#define TOKEN_FINALIZE(__t)          lexer->token.type = __t; \
-                                     lexer->token.fname = lexer->fname
-#define TOKEN_INCREMENT_TOKENBYTES   ++lexer->token.bytes
-#define TOKEN_DECREMENT_TOKENBYTES   --lexer->token.bytes
-#define TOKEN_INCREMENT_TOKENLENGTH  ++lexer->token.length
-#define TOKEN_DECREMENT_TOKENLENGTH  -- lexer->token.length
-
-
-// Lexer* lexer_init(const char* buffer); 
-void lexer_free(Lexer* lexer); 
 
 Token* lexer_get_next_token(Lexer* lexer); 
 Token* lexer_advance_with_token(Lexer* lexer, int type); 
