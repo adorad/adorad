@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 project(HazelMain CXX C)
 
+# message("Root Dir: CMAKE_SOURCE_DIR = ${CMAKE_SOURCE_DIR}")
+# message("Root Dir: CMAKE_CURRENT_SOURCE_DIR = ${CMAKE_CURRENT_SOURCE_DIR}")
+
+# add_subdirectory(Hazel)
 # ------ Disable CMAKE_INSTALL_MESSAGE  ------
 set(CMAKE_INSTALL_MESSAGE NEVER)
 
@@ -59,7 +63,7 @@ endif()
 if(NOT MSVC)
     # Optimizations
     if(CMAKE_BUILD_TYPE STREQUAL "Release")
-        string(APPEND CMAKE_CXX_FLAGS " -O2")
+        string(APPEND CMAKE_CXX_FLAGS " -O2 -fPIC")
     endif()
     string(APPEND CMAKE_CXX_FLAGS " -Wall")
     string(APPEND CMAKE_CXX_FLAGS " -Wextra")

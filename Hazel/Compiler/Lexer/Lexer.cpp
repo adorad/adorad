@@ -133,35 +133,35 @@ TokenType lexer_error(Lexer* lexer, std::string message) {
 //     }
 // } 
 
-Token* lexer_advance_with_token(Lexer* lexer, int type) {
+// Token* lexer_advance_with_token(Lexer* lexer, int type) {
 
-} 
-
-
-void lexer_advance(Lexer* lexer) {
-
-} 
-
-void lexer_expect_char(Lexer* lexer, char c) {
-
-}
-
-void lexer_skip_whitespace(Lexer* lexer) {
-
-} 
-
-void lexer_skip_inline_comment(Lexer* lexer) {
-
-}
-
-void lexer_skip_block_comment(Lexer* lexer) {
-
-}
+// } 
 
 
-Token* lexer_lex_string(Lexer* lexer) {
+// void lexer_advance(Lexer* lexer) {
 
-} 
+// } 
+
+// void lexer_expect_char(Lexer* lexer, char c) {
+
+// }
+
+// void lexer_skip_whitespace(Lexer* lexer) {
+
+// } 
+
+// void lexer_skip_inline_comment(Lexer* lexer) {
+
+// }
+
+// void lexer_skip_block_comment(Lexer* lexer) {
+
+// }
+
+
+// Token* lexer_lex_string(Lexer* lexer) {
+
+// } 
 
 Token* lexer_lex_operator(Lexer* lexer) {
     lexer->reset_token(); 
@@ -611,24 +611,24 @@ Token* lexer_lex_macro(Lexer* lexer) {
 }
 
 
-Token* lexer_lex_keywords(Lexer* lexer) {
+// Token* lexer_lex_keywords(Lexer* lexer) {
     
-}
+// }
 
 
-Token* lexer_lex_char(Lexer* lexer) {
+// Token* lexer_lex_char(Lexer* lexer) {
 
-} 
+// } 
 
-Token* lexer_lex_digit(Lexer* lexer) {
+// Token* lexer_lex_digit(Lexer* lexer) {
 
-} 
+// } 
 
-Token* lexer_lex_token_id(Lexer* lexer) {
+// Token* lexer_lex_token_id(Lexer* lexer) {
 
-} 
+// } 
 
 
-char* lexer_lex_charstr(Lexer* lexer) {
+// char* lexer_lex_charstr(Lexer* lexer) {
 
-}
+// }
