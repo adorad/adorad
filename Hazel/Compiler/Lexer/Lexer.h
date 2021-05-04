@@ -33,12 +33,12 @@ class Lexer {
 public:
     // Default constructor 
     Lexer() {
-        this->buffer = null; 
+        this->buffer = ""; 
         this->buffer_capacity = -1;
         this->offset = 0; 
         this->col_no = 0; 
         this->line_no = 0; 
-        this->fname = null; 
+        this->fname = ""; 
     }
 
     // Constructor 
