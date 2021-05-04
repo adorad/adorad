@@ -229,63 +229,59 @@ public:
     }
 
     // Get an illegal token
-    Token illegal_tok() {
-        this->type = ILLEGAL; 
-        this->offset = 0; 
-        this->tok_bytes = 0; 
-        this->line_no = 0;
-        this->col_no = 0; 
-        this->tok_length = 0; 
-        this->fname = "";
-        this->value = "";
+    Token* illegal_tok() {
+        Token* token; 
+        token->type = ILLEGAL; 
+        return token;
     }
 
     // Clone a Token
-    Token clone(Token* other) {
-        this->type = other->type; 
-        this->offset = other->offset; 
-        this->tok_bytes = other->tok_bytes; 
-        this->line_no = other->line_no;
-        this->col_no = other->col_no; 
-        this->tok_length = other->tok_length; 
-        this->fname = other->fname;
-        this->value = other->value;
+    Token* clone(Token& other) {
+        Token* token; 
+        token->type = other.type; 
+        token->offset = other.offset; 
+        token->tok_bytes = other.tok_bytes; 
+        token->line_no = other.line_no;
+        token->col_no = other.col_no; 
+        token->tok_length = other.tok_length; 
+        token->fname = other.fname;
+        token->value = other.value;
+        return token;
     }
 
-    static inline bool isJumpStatement(TokenType token) {
+    inline bool isJumpStatement(TokenType token) {
         // Break (BREAK)
         // Continue (CONTINUE)
         // Return (RETURN)
         return (token == BREAK || token == CONTINUE || token == RETURN); 
     } 
 
-    static inline bool isLoopStatement(TokenType token) {
+    inline bool isLoopStatement(TokenType token) {
         // While (WHILE)
         // For (FOR)
         return (token == WHILE || token == FOR); 
     } 
 
-    static inline bool isFlowStatement(TokenType token) {
+    inline bool isFlowStatement(TokenType token) {
         // If 
         // Match 
         return (token == IF || token == MATCH); 
     } 
 
-    static inline bool isMatchStatement(TokenType token) {
+    inline bool isMatchStatement(TokenType token) {
         // Declarations used in match-case 
         return (token == MATCH || token == CASE || token == DEFAULT); 
     } 
 
-    static inline bool isExpressionStatement(TokenType token) {
+    inline bool isExpressionStatement(TokenType token) {
         // Postfix Operations: isPrimaryExpressionStatement or module (for files)
         // Unary Ops: PLUS, MINUS, EXCLAMATION, NOT
         // RAISE 
-        return (isPrimaryExpressionStatement(token) == ANY || token == MODULE || token == PLUS || token == MINUS || 
+        return (isPrimaryExpressionStatement(token) || token == MODULE || token == PLUS || token == MINUS || 
                 token == EXCLAMATION || token == NOT || token == RAISE); 
-        
     } 
 
-    static inline bool isPrimaryExpressionStatement(TokenType token) {
+    inline bool isPrimaryExpressionStatement(TokenType token) {
         // Literals (numbers, Strings)
         // Booleans (TRUE, FALSE)
         // IDENTIFIER
@@ -299,7 +295,7 @@ public:
                 token == RPAREN); 
     }
 
-    static inline bool isDeclStatement(TokenType token) {
+    inline bool isDeclStatement(TokenType token) {
         // Variable Declaration (with types + "Any") 
         // Function Declaration (FUNC)
         // Class/Struct Declaration (CLASS and STRUCT)
@@ -311,75 +307,75 @@ public:
     } 
 
 
-    static inline bool isSpecial(TokenType token) {
+    inline bool isSpecial(TokenType token) {
         return (token == TOK_ID || token == TOK_EOF || token == ILLEGAL || token == COMMENT); 
     }
 
-    static inline bool isLiteral(TokenType token) {
+    inline bool isLiteral(TokenType token) {
         return token > TOK___LITERALS_BEGIN && token < TOK___LITERALS_END; 
     }
 
-    static inline bool isKeyword(TokenType token) {
+    inline bool isKeyword(TokenType token) {
         return token > TOK___KEYWORDS_BEGIN && token < TOK___KEYWORDS_END; 
     }
 
-    static inline bool isOperator(TokenType token) {
+    inline bool isOperator(TokenType token) {
         return token > TOK___OPERATORS_BEGIN && token < TOK___OPERATORS_END; 
     }
 
-    static inline bool isComparisonOperator(TokenType token) {
+    inline bool isComparisonOperator(TokenType token) {
         return token > TOK___COMP_OPERATORS_BEGIN && token < TOK___COMP_OPERATORS_END; 
     }
 
-    static inline bool isAssignmentOperator(TokenType token) {
+    inline bool isAssignmentOperator(TokenType token) {
         return token > TOK___ASSIGNMENT_OPERATORS_BEGIN && token < TOK___ASSIGNMENT_OPERATORS_END; 
     }
 
-    static inline bool isDelimiter(TokenType token) {
+    inline bool isDelimiter(TokenType token) {
         return token > TOK___DELIMITERS_OPERATORS_BEGIN && token < TOK___DELIMITERS_OPERATORS_END;
     }
 
-    static inline bool isArrow(TokenType token) {
+    inline bool isArrow(TokenType token) {
         return token > TOK___ARROW_OPERATORS_BEGIN && token < TOK___ARROW_OPERATORS_END;
     }
 
-    static inline bool isBitwise(TokenType token) {
+    inline bool isBitwise(TokenType token) {
         return token > TOK___BITWISE_OPERATORS_BEGIN && token < TOK___BITWISE_OPERATORS_END;
     }
 
-    static inline bool isSeparator(TokenType token) {
+    inline bool isSeparator(TokenType token) {
         return token > TOK___SEPARATORS_BEGIN && token < TOK___SEPARATORS_END;
     }
 
-    static inline bool isIdentifier(TokenType token) {
+    inline bool isIdentifier(TokenType token) {
         return token == IDENTIFIER; 
     }
 
-    static inline bool isEOF(TokenType token) {
+    inline bool isEOF(TokenType token) {
         return token == TOK_EOF; 
     }
 
-    static inline bool isNULL(TokenType token) {
+    inline bool isNULL(TokenType token) {
         return token == TOK_NULL; 
     }
 
-    static inline bool isIllegal(TokenType token) {
+    inline bool isIllegal(TokenType token) {
         return token == ILLEGAL; 
     }
 
-    static inline bool isMacro(TokenType token) {
+    inline bool isMacro(TokenType token) {
         return token == MACRO; 
     }
 
-    static inline bool isImport(TokenType token) {
+    inline bool isImport(TokenType token) {
         return token == IMPORT; 
     }
 
-    static inline bool isInclude(TokenType token) {
+    inline bool isInclude(TokenType token) {
         return token == INCLUDE; 
     }
 
-    static inline bool isSemiColon(TokenType token) {
+    inline bool isSemiColon(TokenType token) {
         return token == SEMICOLON; 
     }
 

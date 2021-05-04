@@ -1,6 +1,6 @@
 #include <Hazel/Hazel.h>
 
-int main(int argc, char* argv[]) {
+int main() {
     // Example: 
     // To compile a Hazel source file:
     // >> hazel compile hello.hzl

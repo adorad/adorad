@@ -177,25 +177,25 @@ static inline void strToUpper(char* str) {
 }
 
 
-CSTL_DEF const char* strTok(char* output, char const* src, char const* delimit) {
+// CSTL_DEF const char* strTok(char* output, char const* src, char const* delimit) {
 
-}
+// }
 
-CSTL_DEF bool strHasPrefix(char const* str, char const* prefix) {
+// CSTL_DEF bool strHasPrefix(char const* str, char const* prefix) {
 
-}
+// }
 
-CSTL_DEF bool strHasSuffix(char const* str, char const* suffix) {
+// CSTL_DEF bool strHasSuffix(char const* str, char const* suffix) {
 
-}
+// }
 
-CSTL_DEF char const* charFirstOccurence(char const* str, char c) {
+// CSTL_DEF char const* charFirstOccurence(char const* str, char c) {
 
-}
+// }
 
-CSTL_DEF char const* charLastOccurence (char const* str, char c) {
+// CSTL_DEF char const* charLastOccurence (char const* str, char c) {
 
-}
+// }
 
 
 // // The functions below are part of C's actual library. 

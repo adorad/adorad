@@ -38,8 +38,8 @@ $(VERBOSE).SILENT:
 # ======================== MISC VARIABLES ========================
 exec = hazel
 emitout = hazeloutput.txt
-sources = $(wildcard Hazel/Compiler/IO/*.c Hazel/Compiler/Lexer/*.c Hazel/Compiler/Tokens/*.c Hazel/Compiler/File/*.c Hazel/Compiler/Ast/*.c Hazel/Compiler/Parser/*.c Hazel/*.c )
-objects = $(sources:Hazel/.c=.o)
+sources = $(wildcard Hazel/Compiler/IO/*.cpp Hazel/Compiler/Lexer/*.cpp Hazel/Compiler/Tokens/*.cpp Hazel/Compiler/File/*.cpp Hazel/Compiler/Ast/*.cpp Hazel/Compiler/Parser/*.cpp Hazel/*.cpp )
+objects = $(sources:Hazel/.cpp=.o)
 
 # To disable warnings, use "-w"
 flags = -g -w -std=c++17
@@ -58,7 +58,7 @@ emitcmd :
 .PHONY: emitcmd 
 
 emitoutput :
-	$(CC) -E Hazel/main.c $(flags) -o $(emitout) -I .
+	$(CC) -E Hazel/main.cpp $(flags) -o $(emitout) -I .
 	echo Saved to $(emitout) ...
 .PHONY: emitoutput 
 
@@ -86,9 +86,9 @@ clean:
 .PHONY: clean
 
 
-# For test.c (internal usage only)
+# For test.cpp (internal usage only)
 test:
-	$(CC) test.c $(flags) -o test -I .
+	$(CC) test.cpp $(flags) -o test -I .
 	echo Compiled Test!
 	echo -------------------
 	echo -------------------
@@ -96,7 +96,7 @@ test:
 .PHONY: test 
 
 testcompile:
-	$(CC) test.c $(flags) -o test -I .
+	$(CC) test.cpp $(flags) -o test -I .
 .PHONY: testcompile 
 
 testrun:
@@ -115,7 +115,7 @@ testclean:
 
 # 	python $(SRCDIR)/tools/scripts/generate_tokens.py token_c      \
 # 		   $(SRCDIR)/hazel/compiler/grammar/Tokens                  \
-# 		   $(SRCDIR)/hazel/compiler/tokens/__token.c                \
+# 		   $(SRCDIR)/hazel/compiler/tokens/__token.cpp                \
 
 # 	python $(SRCDIR)/tools/scripts/generate_tokens.py token_py     \
 # 		   $(SRCDIR)/hazel/compiler/grammar/Tokens                  \

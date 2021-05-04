@@ -28,46 +28,6 @@ extern "C" {
 #endif
 
 
-// Some compilers support applying printf-style warnings to user functions.
-// #if defined(__clang__) || defined(__GNUC__)
-//     #define CSTL_PRINT_ARGS(FMT)     __attribute__((format(printf, FMT, (FMT+1))))
-// #else
-//     #define CSTL_PRINT_ARGS(FMT)
-// #endif
-
-// CSTL_DEF void assert_handler(const char* prefix, const char* condition, const char* file, Int32 line, const char* msg, ...);
-// CSTL_DEF Ll CSTL_PRINT_ERR    (char const* fmt, ...) CSTL_PRINT_ARGS(1);
-// CSTL_DEF Ll CSTL_PRINT_ERR_VA (const char* fmt, va_list va);
-
-// #ifndef CSTL_ASSERT_MSG
-//     #define CSTL_ASSERT_MSG(cond, msg, ...) do { \
-//         if (!(cond)) { \
-//             assert_handler("Assertion Failure", #cond, __FILE__, cast(Int64)__LINE__, msg, ##__VA_ARGS__); \
-//         } \
-//     } while (0)
-// #endif
-
-// void assert_handler(char const* prefix, char const* condition, char const* file, Int32 line, char const* msg, ...) {
-//     CSTL_PRINT_ERR("%s(%d): %s: ", file, line, prefix);
-//     if (condition)
-//         CSTL_PRINT_ERR( "`%s` ", condition);
-//     if (msg) {
-//         va_list va;
-//         va_start(va, msg);
-//         CSTL_PRINT_ERR_VA(msg, va);
-//         va_end(va);
-//     }
-//     CSTL_PRINT_ERR("\n");
-// }
-
-// #ifndef CSTL_ASSERT
-//     #define CSTL_ASSERT(cond)      CSTL_ASSERT_MSG(cond, NULL)
-// #endif
-
-// #ifndef CSTL_ASSERT_NOT_NULL
-//     #define CSTL_ASSERT_NOT_NULL(ptr)      CSTL_ASSERT_MSG((ptr) != NULL, #ptr " must not be NULL")
-// #endif
-
 #if defined(__cplusplus)
 }
 #endif

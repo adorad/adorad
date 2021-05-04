@@ -23,7 +23,7 @@ char* readFile(const char* fname) {
     
     if(!file) { 
         printf("Could not open file: <%s>\n", fname);
-        std::abort(2);
+        // std::abort(2);
     }
 
     // Get the length of the input buffer
