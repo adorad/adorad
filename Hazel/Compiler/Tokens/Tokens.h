@@ -218,14 +218,7 @@ class Token {
 public:
     // Default constructor (create a NO_TOKEN instance)
     Token() {
-        this->type = TOK_ABSOLUTE_NULL; 
-        this->offset = 0; 
-        this->tok_bytes = 0; 
-        this->line_no = 0;
-        this->col_no = 0; 
-        this->tok_length = 0; 
-        this->fname = "";
-        this->value = "";
+        reset_();
     }
 
     // Copy constructor 
@@ -294,7 +287,7 @@ public:
         // Postfix Operations: isPrimaryExpressionStatement or module (for files)
         // Unary Ops: PLUS, MINUS, EXCLAMATION, NOT
         // RAISE 
-        return (isPrimaryExpressionStatement(this->type) || this->type == MODULE || this->type == PLUS || 
+        return (isPrimaryExpressionStatement() || this->type == MODULE || this->type == PLUS || 
                 this->type == MINUS || this->type == EXCLAMATION || this->type == NOT || this->type == RAISE); 
     } 
 
@@ -333,7 +326,7 @@ public:
     }
 
     bool isKeyword() {
-        return tbis->type > TOK___KEYWORDS_BEGIN && tbis->type < TOK___KEYWORDS_END; 
+        return this->type > TOK___KEYWORDS_BEGIN && tbis->type < TOK___KEYWORDS_END; 
     }
 
     bool isOperator() {
@@ -553,6 +546,18 @@ public:
             // We should _never_reach here
             default: return "ILLEGAL";
         }
+    }
+
+    // Reset the Token
+    void reset_() {
+        this->type = TOK_ABSOLUTE_NULL; 
+        this->offset = 0; 
+        this->tok_bytes = 0; 
+        this->line_no = 0;
+        this->col_no = 0; 
+        this->tok_length = 0; 
+        this->fname = "";
+        this->value = "";
     }
 
 protected:

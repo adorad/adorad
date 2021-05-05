@@ -119,19 +119,19 @@ TokenType lexer_error(Lexer* lexer, std::string message) {
 }
 
 
-// Get the next token from the Lexer
-Token* lexer_get_next_token(Lexer* lexer) {
-    while(lexer->curr_char != nullchar && lexer->char_idx < lexer->buffer_capacity) {
-        if(isWhitespace(lexer->curr_char))
-            lexer_skip_whitespace(lexer);
+// // Get the next token from the Lexer
+// Token* lexer_get_next_token(Lexer* lexer) {
+//     while(lexer->curr_char != nullchar && lexer->char_idx < lexer->buffer_capacity) {
+//         if(isWhitespace(lexer->curr_char))
+//             lexer_skip_whitespace(lexer);
 
-        if(isDigit(lexer->curr_char)) 
-            lexer_lex_digit(lexer);
+//         if(isDigit(lexer->curr_char)) 
+//             lexer_lex_digit(lexer);
         
-        if(isAlphanumeric(lexer->curr_char)) 
-            lexer_lex_token_id(lexer);
-    }
-} 
+//         if(isAlphanumeric(lexer->curr_char)) 
+//             lexer_lex_token_id(lexer);
+//     }
+// } 
 
 // Token* lexer_advance_with_token(Lexer* lexer, int type) {
 
@@ -476,7 +476,9 @@ TokenType lexer_lex_operator(Lexer* lexer) {
             break;
         
         default: 
-            printf("LEXER ERROR - UNRECOGNIZED TOKEN");
+            // printf("LexerError -> Unrecognized Token (%c)", next);
+            printf("LexerError -> Unrecognized Token");
+            abort();
     }
 
     lexer->finalize_token(token);
@@ -515,29 +517,14 @@ TokenType lexer_lex_separator(Lexer* lexer) {
                 token = DOT;
             }
             break;  
-        
-        // ':'
-        case ':':
-            token = COLON;
-            break; 
-        
-        // ':'
-        case ';':
-            token = SEMICOLON;
-            break; 
-        
-        // ','
-        case ',':
-            token = COMMA;
-            break; 
-
-        // '\\'
-        case '\\':
-            token = BACKSLASH;
-            break; 
-        
+    
+        case ':': token = COLON; break; 
+        case ';': token = SEMICOLON; break; 
+        case ',': token = COMMA; break; 
+        case '\\': token = BACKSLASH; break; 
         default: 
-            printf("LEXER ERROR - UNRECOGNIZED TOKEN");
+            printf("LexerError -> Unrecognized Token");
+            abort();
     }
 
     lexer->finalize_token(token);
@@ -553,7 +540,7 @@ TokenType lexer_lex_delimiter(Lexer* lexer) {
     // Do not change the declaration order of _next_ and _curr_
     char next = lexer->next(); 
     char curr = lexer->peek_curr(); 
-    TokenType token = 0; 
+    TokenType token = TOK_ABSOLUTE_NULL; 
 
     switch(next) {       
         case '[': token = LSQUAREBRACK; break; 
@@ -562,7 +549,9 @@ TokenType lexer_lex_delimiter(Lexer* lexer) {
         case '}': token = RBRACE; break; 
         case '(': token = LPAREN; break; 
         case ')': token = RPAREN; break; 
-        default:  printf("LEXER ERROR - UNRECOGNIZED TOKEN");
+        default:  
+            printf("LexerError -> Unrecognized Token"); 
+            abort();
         
     lexer->finalize_token(token);
     // LEXER_DEBUG("Found delimiter: %s", token_toString(token));

@@ -34,12 +34,7 @@ class Lexer {
 public:
     // Default constructor 
     Lexer() {
-        this->buffer = ""; 
-        this->buffer_capacity = -1;
-        this->offset = 0; 
-        this->col_no = 0; 
-        this->line_no = 0; 
-        this->fname = ""; 
+        reset_();
     }
 
     // Constructor 
@@ -184,6 +179,16 @@ public:
     void reset_buffer() {
         this->buffer = ""; 
         this->buffer_capacity = 0;
+    }
+
+    // Reset the Lexer state
+    void reset_() {
+        this->buffer = ""; 
+        this->buffer_capacity = 0;
+        this->offset = 0; 
+        this->col_no = 0; 
+        this->line_no = 0; 
+        this->fname = ""; 
     }
 
 
