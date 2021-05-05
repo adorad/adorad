@@ -49,7 +49,7 @@ public:
 
     // Lexer next() increments the buffer offset and essentially _advances_ to the next element in the buffer
     inline char next() {
-        ++this->__location.colno;
+        this->increment_colno();
         return (char)this->buffer[this->offset++];
     }
 

@@ -34,12 +34,12 @@ inline bool Lexer::is_EOF() {
 
 // Reset the line
 void Lexer::reset_lineno() {
-	this->__location.lineno = 0;
+	this->__location.set_lineno(0);
 }
 
 // Reset the column number 
 void Lexer::reset_colno() {
-	this->__location.colno = 0; 
+	this->__location.set_colno(0);
 }
 
 // Reset a Lexer Token
@@ -53,7 +53,8 @@ void Lexer::reset_token() {
 // Finalize a Token
 void Lexer::finalize_token(TokenType __tok) {
 	this->token.type = __tok; 
-	this->token.__location.fname = this->__location.fname;
+	this->token.__location.set_fname(this->__location.__fname);
+    
 }
 
 // Extract a Token 
@@ -98,24 +99,24 @@ void Lexer::decrement_tok_length() {
 
 // Increment the line number
 void Lexer::increment_lineno() {
-	++this->__location.lineno; 
+	++this->__location.__lineno; 
 	this->reset_colno();
 }
 
 // Decrement the lineno
 void Lexer::decrement_lineno() {
-	--this->__location.lineno; 
+	--this->__location.__lineno; 
 	this->reset_colno();
 }
 
 // Increment the column number
 void Lexer::increment_colno() {
-	++this->__location.colno; 
+	++this->__location.__colno; 
 }
 
 // Decrement the colno
 void Lexer::decrement_colno() {
-	--this->__location.colno; 
+	--this->__location.__colno; 
 }
 
 // Increment the Lexical Buffer offset
