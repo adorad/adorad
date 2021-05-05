@@ -29,7 +29,7 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
     /* Special (internal usage only) */ \
     TOKENKIND(TOK_ILLEGAL = 0,  ""),   \
     TOKENKIND(TOK_ID = 0,  "TOK_ID"),   \
-    TOKENKIND(TOK_EOF, "TOK_EOF"),  \
+    TOKENKIND(TOK_EOF, "TOK_EOF"),  /* End of Input */ \
     TOKENKIND(TOK_NULL,"TOK_NULL"), \
     TOKENKIND(COMMENT, "COMMENT"),  \
 \
@@ -63,6 +63,7 @@ TOKENKIND(TOK___LITERALS_END, ""), \
 \
     /* Operators */ \
 TOKENKIND(TOK___OPERATORS_BEGIN, ""), \
+    TOKENKIND(OPERATOR,    ""), /* Token Classification*/ \
     TOKENKIND(PLUS,        "+"),  \
     TOKENKIND(MINUS,       "-"),  \
     TOKENKIND(MULT,        "*"),  \
@@ -147,7 +148,8 @@ TOKENKIND(TOK___SEPARATORS_BEGIN, ""), \
 TOKENKIND(TOK___SEPARATORS_END, ""), \
 \
     /* Keywords */ \
-TOKENKIND(TOK___KEYWORDS_BEGIN, ""), \
+TOKENKIND(TOK___KEYWORDS_BEGIN, ""),  \
+    TOKENKIND(KEYWORD,    ""), /* Token Classification*/ \
     TOKENKIND(ANY,       "any"),      \
     TOKENKIND(AS,        "as"),       \
     TOKENKIND(BEGIN,     "begin"),    \
