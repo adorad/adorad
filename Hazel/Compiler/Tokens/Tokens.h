@@ -239,8 +239,8 @@ public:
         this->offset = other.offset; 
         this->tok_bytes = other.tok_bytes; 
         this->tok_length = other.tok_length; 
-        this->__location = other.__location;
-        this->__value = other.__value;
+        this->location_ = other.location_;
+        this->value_ = other.value_;
     }
 
     // Make a token for an invalid value
@@ -264,8 +264,8 @@ public:
         token.offset = other.offset; 
         token.tok_bytes = other.tok_bytes; 
         token.tok_length = other.tok_length; 
-        token.__value = other.__value;
-        token.__location = other.__location;
+        token.value_ = other.value_;
+        token.location_ = other.location_;
         return token;
     }
 
@@ -279,14 +279,14 @@ public:
         return this->type;
     }
 
-    // Get the __location of the token
+    // Get the location_ of the token
     Location location() {
-        return this->__location;
+        return this->location_;
     }
 
     // Get the token value 
     std::string value() {
-        return this->__value;
+        return this->value_;
     }
 
     // Print the Token for debugging
@@ -300,8 +300,8 @@ public:
         this->offset = 0; 
         this->tok_bytes = 0; 
         this->tok_length = 0; 
-        this->__value = "";
-        this->__location.reset_();
+        this->value_ = "";
+        this->location_.reset_();
     }
 
     Token& operator=(const Token&);
@@ -337,8 +337,8 @@ public:
     UInt32 offset;      // Offset of the first character of the Token
     UInt32 tok_bytes;   // Token length (in bytes)
     UInt32 tok_length;  // Token length (UTF-8)
-    std::string __value;  // Token value
-    Location __location;  // Location of the source file
+    std::string value_;  // Token value
+    Location location_;  // Location of the source file
     friend class Lexer;
 }; // class Token
 

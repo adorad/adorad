@@ -43,12 +43,12 @@ public:
         this->buffer = buffer; 
         this->buffer_capacity = buffer.length();
         this->offset = 0; 
-        this->__location.reset_();
+        this->location_.reset_();
     }
 
     // Lexer next() increments the buffer offset and essentially _advances_ to the next element in the buffer
     inline char next() {
-        ++this->__location.colno;
+        ++this->location_.colno;
         return (char)this->buffer[this->offset++];
     }
 
@@ -99,7 +99,7 @@ protected:
                             // Sometimes called the buffer position
 
     Token token;            // current token
-    Location __location;    // Location of the source code
+    Location location_;    // Location of the source code
 }; // class Lexer
 
 
