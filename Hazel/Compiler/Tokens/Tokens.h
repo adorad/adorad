@@ -16,11 +16,12 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 
 #include <string>
 #include <Hazel/Core/HCore.h> 
+#include <Hazel/Compiler/Lexer/Location.h>
 
 // token.h defines constants representing the lexical tokens of the Hazel programming language and basic operations on 
 // tokens (printing, predicates).
 
-// Set of lexical tokens in the Hazel Programming Language
+// Set of lexical tokens understood by the Compiler
 // 
 // NOTE: 
 // Any changes made to this function _MUST_ reflect in the toString() (in <Tokens.c>)
@@ -227,12 +228,12 @@ public:
         this->type = other.type; 
         this->offset = other.offset; 
         this->tok_bytes = other.tok_bytes; 
-        this->line_no = other.line_no;
-        this->col_no = other.col_no; 
         this->tok_length = other.tok_length; 
-        this->fname = other.fname;
+        this->location = other.location;
         this->value = other.value;
     }
+
+    Token& operator=(const Token&);
 
     // Get an illegal token
     Token* illegal_tok() {
@@ -247,11 +248,9 @@ public:
         token->type = other.type; 
         token->offset = other.offset; 
         token->tok_bytes = other.tok_bytes; 
-        token->line_no = other.line_no;
-        token->col_no = other.col_no; 
         token->tok_length = other.tok_length; 
-        token->fname = other.fname;
         token->value = other.value;
+        token->location = other.location;
         return token;
     }
 
@@ -554,22 +553,18 @@ public:
         this->type = TOK_ILLEGAL; 
         this->offset = 0; 
         this->tok_bytes = 0; 
-        this->line_no = 0;
-        this->col_no = 0; 
         this->tok_length = 0; 
-        this->fname = "";
         this->value = "";
+        this->location.reset_();
     }
 
 protected:
     TokenType type;     // Token Type
     UInt32 offset;      // Offset of the first character of the Token
     UInt32 tok_bytes;   // Token length (in bytes)
-    UInt32 line_no;     // Token Line Number (1-Based)
-    UInt32 col_no;      // Token Column Number (0-Based) 
     UInt32 tok_length;  // Token length (UTF-8)
-    std::string fname;  // the file name
     std::string value;  // Token value
+    Location location;  // Location of the source file
     friend class Lexer;
 }; // class Token
 

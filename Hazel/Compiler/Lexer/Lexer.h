@@ -16,6 +16,7 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #include <string>
 #include <optional>
 #include <Hazel/Compiler/Lexer/Lexer.h>
+#include <Hazel/Compiler/Lexer/Location.h>
 #include <Hazel/Core/HCore.h> 
 #include <Hazel/Compiler/Tokens/Tokens.h>
 
@@ -42,14 +43,14 @@ public:
         this->buffer = buffer; 
         this->buffer_capacity = buffer.length();
         this->offset = 0; 
-        this->col_no = 0; 
-        this->line_no = 0; 
-        this->fname = fname; 
+        this->location.colno = 0; 
+        this->location.lineno = 0; 
+        this->location.fname = fname; 
     }
 
     // Lexer next() increments the buffer offset and essentially _advances_ to the next element in the buffer
     inline char next() {
-        ++this->col_no;
+        ++this->location.colno;
         return (char)this->buffer[this->offset++];
     }
 
@@ -74,28 +75,27 @@ public:
     }
 
     // Reset the line
-    void reset_line() {
-        this->line_no = 0;
+    void reset_lineno() {
+        this->location.lineno = 0;
     }
 
     // Reset the column number 
-    void reset_column() {
-        this->col_no = 0; 
+    void reset_colno() {
+        this->location.colno = 0; 
     }
 
     // Reset a Lexer Token
     void reset_token() {
-        this->token = Token();
+        this->token.reset_();
         // TODO(jasmcaus): Verify this is accurate
         this->token.value = this->buffer[this->offset]; 
-        this->token.line_no = this->line_no;
-        this->token.col_no = this->col_no;
+        this->token.location = this->location;
     }
 
     // Finalize a Token
     void finalize_token(TokenType __tok) {
         this->token.type = __tok; 
-        this->token.fname = this->fname;
+        this->token.location.fname = this->location.fname;
     }
 
     // Extract a Token 
@@ -139,37 +139,37 @@ public:
     }
 
     // Increment the line number
-    void increment_line() {
-        ++this->line_no; 
-        this->reset_column();
+    void increment_lineno() {
+        ++this->location.lineno; 
+        this->reset_colno();
     }
 
-    // Decrement the line_no
-    void decrement_line() {
-        --this->line_no; 
-        this->reset_column();
+    // Decrement the lineno
+    void decrement_lineno() {
+        --this->location.lineno; 
+        this->reset_colno();
     }
 
     // Increment the column number
-    void increment_column() {
-        ++this->col_no; 
+    void increment_colno() {
+        ++this->location.colno; 
     }
 
-    // Decrement the col_no
-    void decrement_column() {
-        --this->col_no; 
+    // Decrement the colno
+    void decrement_colno() {
+        --this->location.colno; 
     }
 
     // Increment the Lexical Buffer offset
     void increment_offset() {
         ++this->offset; 
-        this->increment_column();
+        this->increment_colno();
     }
 
     // Decrement the Lexical Buffer offset
     void decrement_offset() {
         --this->offset; 
-        this->decrement_column();
+        this->decrement_colno();
     }
 
     // Reset the buffer 
@@ -183,15 +183,14 @@ public:
         this->buffer = ""; 
         this->buffer_capacity = 0;
         this->offset = 0; 
-        this->col_no = 0; 
-        this->line_no = 0; 
-        this->fname = ""; 
+        this->location.colno = 0; 
+        this->location.lineno = 0; 
+        this->location.fname = ""; 
     }
 
 
 protected:
     std::string buffer;     // the Lexical buffer
-    UInt32 position;        // current buffer position (in characters)
     UInt32 buffer_capacity; // current buffer capacity (in Bytes)
     UInt32 offset;          // current buffer offset (in Bytes) 
                             // offset of the beginning of the line (no. of chars b/w the beginning of the Lexical Buffer
@@ -199,9 +198,7 @@ protected:
                             // Sometimes called the buffer position
 
     Token token;            // current token
-    UInt32 line_no;         // the line number in the source where the token occured
-    UInt32 col_no;          // the column number
-    std::string fname;      // the file name
+    Location location;      // Location of the source code
 }; // class Lexer
 
 
@@ -209,8 +206,8 @@ protected:
 // Options are used as bits in a bitmask
 // These set of values are intended to be the same as the Hazel Compiler
 typedef enum {
-    COMPILER_NOINLINE = 1 << 0; // Do not inline
-    COMPILER_NOTINHEAP = 1 << 1; // Type not in heap
+    COMPILER_NOINLINE = 1 << 0, // Do not inline
+    COMPILER_NOTINHEAP = 1 << 1, // Type not in heap
 } CompilerPragmas;
 
 

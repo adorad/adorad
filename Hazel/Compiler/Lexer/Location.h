@@ -11,7 +11,7 @@ SPDX-License-Identifier: MIT
 Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 */
 #ifndef _HAZEL_LEXER_LOCATION
-#define _HAZEL_LEXER _LOCATION
+#define _HAZEL_LEXER_LOCATION
 
 #include <string> 
 #include <Hazel/Core/HCore.h>
@@ -23,6 +23,21 @@ public:
     UInt32 lineno;          // the line number in the source where the token occured
     UInt32 colno;           // the column number
     std::string fname;      // the file name
+
+    Location& operator=(const Location& other) {
+        this->colno = other.colno;
+        this->lineno = other.lineno;
+        this->fname = other.fname;
+    }
+
+private:
+    void reset_() {
+        this->lineno = 0; 
+        this->colno = 0; 
+        this->fname = "";
+    }
+    friend class Lexer;
+    friend class Token;
 };
 
-#endif // _HAZEL_LEXER _LOCATION
+#endif // _HAZEL_LEXER_LOCATION
