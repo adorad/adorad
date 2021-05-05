@@ -20,14 +20,11 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 // Includes the colno, lineno, fname...
 struct Location {
 public:
-    UInt32 lineno;          // the line number in the source where the token occured
-    UInt32 colno;           // the column number
-    std::string fname;      // the file name
-
     Location& operator=(const Location& other) {
         this->colno = other.colno;
         this->lineno = other.lineno;
         this->fname = other.fname;
+        return *this;
     }
 
 private:
@@ -36,6 +33,9 @@ private:
         this->colno = 0; 
         this->fname = "";
     }
+    UInt32 lineno;          // the line number in the source where the token occured
+    UInt32 colno;           // the column number
+    std::string fname;      // the file name
     friend class Lexer;
     friend class Token;
 };

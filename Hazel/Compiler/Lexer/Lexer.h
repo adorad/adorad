@@ -43,14 +43,12 @@ public:
         this->buffer = buffer; 
         this->buffer_capacity = buffer.length();
         this->offset = 0; 
-        this->location.colno = 0; 
-        this->location.lineno = 0; 
-        this->location.fname = fname; 
+        this->__location.reset_();
     }
 
     // Lexer next() increments the buffer offset and essentially _advances_ to the next element in the buffer
     inline char next() {
-        ++this->location.colno;
+        ++this->__location.colno;
         return (char)this->buffer[this->offset++];
     }
 
@@ -76,26 +74,26 @@ public:
 
     // Reset the line
     void reset_lineno() {
-        this->location.lineno = 0;
+        this->__location.lineno = 0;
     }
 
     // Reset the column number 
     void reset_colno() {
-        this->location.colno = 0; 
+        this->__location.colno = 0; 
     }
 
     // Reset a Lexer Token
     void reset_token() {
         this->token.reset_();
         // TODO(jasmcaus): Verify this is accurate
-        this->token.value = this->buffer[this->offset]; 
-        this->token.location = this->location;
+        this->token.__value = this->buffer[this->offset]; 
+        this->token.__location = this->__location;
     }
 
     // Finalize a Token
     void finalize_token(TokenType __tok) {
         this->token.type = __tok; 
-        this->token.location.fname = this->location.fname;
+        this->token.__location.fname = this->__location.fname;
     }
 
     // Extract a Token 
@@ -110,7 +108,7 @@ public:
 
     // Set token value 
     void set_token_value(std::string value) {
-        this->token.value = value; 
+        this->token.__value = value; 
     }
 
     // Set token bytes 
@@ -140,24 +138,24 @@ public:
 
     // Increment the line number
     void increment_lineno() {
-        ++this->location.lineno; 
+        ++this->__location.lineno; 
         this->reset_colno();
     }
 
     // Decrement the lineno
     void decrement_lineno() {
-        --this->location.lineno; 
+        --this->__location.lineno; 
         this->reset_colno();
     }
 
     // Increment the column number
     void increment_colno() {
-        ++this->location.colno; 
+        ++this->__location.colno; 
     }
 
     // Decrement the colno
     void decrement_colno() {
-        --this->location.colno; 
+        --this->__location.colno; 
     }
 
     // Increment the Lexical Buffer offset
@@ -183,7 +181,7 @@ public:
         this->buffer = ""; 
         this->buffer_capacity = 0;
         this->offset = 0; 
-        this->location.reset_();
+        this->__location.reset_();
     }
 
 
@@ -196,7 +194,7 @@ protected:
                             // Sometimes called the buffer position
 
     Token token;            // current token
-    Location location;      // Location of the source code
+    Location __location;      // Location of the source code
 }; // class Lexer
 
 

@@ -15,6 +15,7 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #define _HAZEL_TOKEN 
 
 #include <string>
+#include <iostream>
 #include <Hazel/Core/HCore.h> 
 #include <Hazel/Compiler/Lexer/Location.h>
 
@@ -232,11 +233,9 @@ public:
         this->offset = other.offset; 
         this->tok_bytes = other.tok_bytes; 
         this->tok_length = other.tok_length; 
-        this->location = other.location;
-        this->value = other.value;
+        this->__location = other.__location;
+        this->__value = other.__value;
     }
-
-    Token& operator=(const Token&);
 
     // Make a token for an invalid value
     Token make_illegal_tok() {
@@ -252,24 +251,6 @@ public:
         return token;
     }
 
-    // Make a token representing the end of file
-    Token make_identifier_tok(const std::string& value, Location location) {
-        Token token; 
-        token.type = IDENTIFIER; 
-        token.value = value;
-        token.location = location;
-        return token;
-    }
-
-    // Make a token representing the end of file
-    Token make_operator_tok(TokenType op, Location location) {
-        Token token; 
-        CSTL_CHECK(isOperator(op));
-        token.type = op; 
-        token.location = location;
-        return token;
-    }
-
     // Clone a Token
     Token clone(Token& other) {
         Token token; 
@@ -277,8 +258,8 @@ public:
         token.offset = other.offset; 
         token.tok_bytes = other.tok_bytes; 
         token.tok_length = other.tok_length; 
-        token.value = other.value;
-        token.location = other.location;
+        token.__value = other.__value;
+        token.__location = other.__location;
         return token;
     }
 
@@ -292,293 +273,19 @@ public:
         return this->type;
     }
 
-    // Convert a Token to its respective String representation
-    std::string toString() {
-        switch(this->type) {
-            // Special (internal usage only)
-            case TOK_EOF: return "TOK_EOF";
-            case TOK_NULL: return "TOK_NULL";
-            case TOK_ILLEGAL: return "ILLEGAL";
-            case COMMENT: return "COMMENT";
-
-            // Literals
-            case IDENTIFIER: return "IDENTIFIER";
-            case INTEGER: return "INTEGER";
-            case BIN_INT: return "BIN_INT";
-            case HEX_INT: return "HEX_INT";        
-            case INT8_LIT: return "INT8_LIT";       
-            case INT16_LIT: return "INT16_LIT";      
-            case INT32_LIT: return "INT32_LIT";      
-            case INT64_LIT: return "INT64_LIT";      
-            case UINT_LIT: return "UINT_LIT";       
-            case UINT8_LIT: return "UINT8_LIT";      
-            case UINT16_LIT: return "UINT16_LIT";     
-            case UINT32_LIT: return "UINT32_LIT";     
-            case UINT64_LIT: return "UINT64_LIT";     
-            case FLOAT: return "FLOAT";          
-            case FLOAT32_LIT: return "FLOAT32_LIT";    
-            case FLOAT64_LIT: return "FLOAT64_LIT";    
-            case FLOAT128_LIT: return "FLOAT128_LIT";  
-            case IMAG: return "IMAG";         
-            case RUNE: return "RUNE";         
-            case STRING: return "STRING";       
-            case RAW_STRING: return "RAW_STRING";   
-            case TRIPLE_STRING: return "TRIPLE_STRING"; 
-            case TRUE: return "TRUE";
-            case FALSE: return "FALSE";
-
-            // Operators 
-            case PLUS: return "+";
-            case MINUS: return "-";
-            case MULT: return "*";
-            case SLASH: return "/";
-            case MOD: return "%";
-            case MOD_MOD: return "%%";
-            case PLUS_PLUS: return "++";
-            case MINUS_MINUS: return "--";
-            case AT_SIGN: return "@";
-            case HASH_SIGN: return "#";
-            case QUESTION: return "?";
-
-            // Comparison Operators
-            case GREATER_THAN: return ">";
-            case LESS_THAN: return "<";
-            case GREATER_THAN_OR_EQUAL_TO: return ">=";
-            case LESS_THAN_OR_EQUAL_TO: return "<=";
-            case EQUALS_EQUALS: return "==";
-            case EXCLAMATION_EQUALS: return "!=";
-
-            // Assignment Operators
-            case EQUALS: return "=";
-            case PLUS_EQUALS: return "+=";
-            case MINUS_EQUALS: return "-=";
-            case MULT_EQUALS: return "*=";
-            case SLASH_EQUALS: return "/=";
-            case MOD_EQUALS: return "%=";
-            case AND_EQUALS: return "&=";
-            case OR_EQUALS: return "|=";
-            case XOR_EQUALS: return "^=";
-            case LBITSHIFT_EQUALS: return "<<=";
-            case RBITSHIFT_EQUALS: return ">>=";
-            case TILDA: return "~";
-
-            // Arrows
-            case EQUALS_ARROW: return "=>";
-            case RARROW: return "->";
-            case LARROW: return "<-";
-
-            // Delimiters
-            case LSQUAREBRACK: return "[";
-            case RSQUAREBRACK: return "]";
-            case LBRACE: return "{";
-            case RBRACE: return "}";
-            case LPAREN: return "(";
-            case RPAREN: return ")";
-
-            // Bitwise
-            case LBITSHIFT: return "<<";
-            case RBITSHIFT: return ">>";
-            case AND: return "&";
-            case OR: return "|";
-            case EXCLAMATION: return "!";
-            case XOR: return "^";
-            case AND_NOT: return "&^";
-            case AND_AND: return "&&";
-            case OR_OR: return "||";
-
-            // Separators
-            case COLON: return ":";  
-            case SEMICOLON: return ";";  
-            case COMMA: return ":";  
-            case DOT: return ".";  
-            case DDOT: return ".."; 
-            case ELLIPSIS: return "...";
-            case BACKSLASH: return "\\"; 
-
-            // Keywords
-            case ANY: return "any";      
-            case AS: return "as";      
-            case BEGIN: return "begin";   
-            case BREAK: return "break";   
-            case CASE: return "case";    
-            case CAST: return "cast";    
-            case CATCH: return "catch";   
-            case CLASS: return "class";   
-            case CONST: return "const";   
-            case CONTINUE: return "continue";
-            case DO: return "do";      
-            case DECL: return "decl"; 
-            case DEFAULT: return "default"; 
-            case ENUM: return "enum";    
-            case ELSE: return "else";    
-            case ELSEIF: return "elseif";  
-            case EXCEPT: return "except";  
-            case EXPORT: return "export";  
-            case EXTERN: return "extern";  
-            case FINALLY: return "finally"; 
-            case FOR: return "for";     
-            case FROM: return "from";     
-            case FUNC: return "func";    
-            case IF: return "if";      
-            case IMPORT: return "import";  
-            case IN: return "in";      
-            case INCLUDE: return "include"; 
-            case INLINE: return "inline";  
-            case ISA: return "isa";     
-            case MACRO: return "macro";   
-            case MAP: return "map";     
-            case MATCH: return "match"; 
-            case MIXIN: return "mixin"; 
-            case MODULE: return "module";  
-            case MUTABLE: return "mutable"; 
-            case NO_INLINE: return "noinline"; 
-            case NOT: return "not";  
-            case NOT_IN: return "notin";  
-            case RAISE: return "raise";   
-            case RANGE: return "range";   
-            case RETURN: return "return";  
-            case STRUCT: return "struct";  
-            case TRY: return "try";     
-            case TUPLE: return "tuple";     
-            case TYPE: return "type";     
-            case TYPEOF: return "typeof";  
-            case WHEN: return "when";    
-            case WHERE: return "where";   
-            case WHILE: return "while";   
-            case UNION: return "union";  
-            // We should _never_ reach here
-            default: return "ILLEGAL";
-        }
+    // Get the __location of the token
+    Location location() {
+        return this->__location;
     }
 
-    bool isJumpStatement() {
-        // Break (BREAK)
-        // Continue (CONTINUE)
-        // Return (RETURN)
-        return (this->type == BREAK || this->type == CONTINUE || this->type == RETURN); 
-    } 
-
-    bool isLoopStatement() {
-        // While (WHILE)
-        // For (FOR)
-        return (this->type == WHILE || this->type == FOR); 
-    } 
-
-    bool isFlowStatement() {
-        // If 
-        // Match 
-        return (this->type == IF || this->type == MATCH); 
-    } 
-
-    bool isMatchStatement() {
-        // Declarations used in match-case 
-        return (this->type == MATCH || this->type == CASE || this->type == DEFAULT); 
-    } 
-
-    bool isExpressionStatement() {
-        // Postfix Operations: isPrimaryExpressionStatement or module (for files)
-        // Unary Ops: PLUS, MINUS, EXCLAMATION, NOT
-        // RAISE 
-        return (isPrimaryExpressionStatement(this->type) || this->type == MODULE || this->type == PLUS || 
-                this->type == MINUS || this->type == EXCLAMATION || this->type == NOT || this->type == RAISE); 
-    } 
-
-    bool isPrimaryExpressionStatement() {
-        // Literals (numbers, Strings)
-        // Booleans (TRUE, FALSE)
-        // IDENTIFIER
-        // 'null' 
-        // FUNC
-        // ILLEGAL
-        // '(' expression ')'
-        return (this->type == INTEGER || this->type == BIN_INT || this->type == HEX_INT || this->type == IMAG || 
-                this->type == FLOAT || this->type == RUNE || this->type == STRING || this->type == IDENTIFIER || 
-                this->type == TOK_NULL || this->type == FUNC || this->type == TOK_ILLEGAL || this->type == LPAREN || 
-                this->type == RPAREN); 
+    // Get the token value 
+    std::string value() {
+        return this->__value;
     }
 
-    bool isDeclStatement() {
-        // Variable Declaration (with types + "Any") 
-        // Function Declaration (FUNC)
-        // Class/Struct Declaration (CLASS and STRUCT)
-        // Enum Declaration (ENUM)
-        // Module Declaration (MODULE)
-        // Empty Declaration (SEMICOLON)
-        return (this->type == ANY || this->type == FUNC || this->type == CLASS || this->type == STRUCT || 
-                this->type == ENUM || this->type == MODULE || this->type == SEMICOLON); 
-    } 
-
-
-    bool isSpecial() {
-        return (this->type == TOK_ID || this->type == TOK_EOF || this->type == TOK_ILLEGAL || this->type == COMMENT); 
-    }
-
-    bool isLiteral() {
-        return this->type > TOK___LITERALS_BEGIN && this->type < TOK___LITERALS_END; 
-    }
-
-    bool isKeyword() {
-        return this->type > TOK___KEYWORDS_BEGIN && this->type < TOK___KEYWORDS_END; 
-    }
-
-    bool isOperator() {
-        return this->type > TOK___OPERATORS_BEGIN && this->type < TOK___OPERATORS_END; 
-    }
-
-    bool isComparisonOperator() {
-        return this->type > TOK___COMP_OPERATORS_BEGIN && this->type < TOK___COMP_OPERATORS_END; 
-    }
-
-    bool isAssignmentOperator() {
-        return this->type > TOK___ASSIGNMENT_OPERATORS_BEGIN && this->type < TOK___ASSIGNMENT_OPERATORS_END; 
-    }
-
-    bool isDelimiter() {
-        return this->type > TOK___DELIMITERS_OPERATORS_BEGIN && this->type < TOK___DELIMITERS_OPERATORS_END;
-    }
-
-    bool isArrow() {
-        return this->type > TOK___ARROW_OPERATORS_BEGIN && this->type < TOK___ARROW_OPERATORS_END;
-    }
-
-    bool isBitwise() {
-        return this->type > TOK___BITWISE_OPERATORS_BEGIN && this->type < TOK___BITWISE_OPERATORS_END;
-    }
-
-    bool isSeparator() {
-        return this->type > TOK___SEPARATORS_BEGIN && this->type < TOK___SEPARATORS_END;
-    }
-
-    bool isIdentifier() {
-        return this->type == IDENTIFIER; 
-    }
-
-    bool isEOF() {
-        return this->type == TOK_EOF; 
-    }
-
-    bool isNULL() {
-        return this->type == TOK_NULL; 
-    }
-
-    bool isIllegal() {
-        return this->type == TOK_ILLEGAL; 
-    }
-
-    bool isMacro() {
-        return this->type == MACRO; 
-    }
-
-    bool isImport() {
-        return this->type == IMPORT; 
-    }
-
-    bool isInclude() {
-        return this->type == INCLUDE; 
-    }
-
-    bool isSemiColon() {
-        return this->type == SEMICOLON; 
+    // Print the Token for debugging
+    void print() {
+        std::cout << "DEBUG! CURRENT TOKEN  = \"" << toString() << "\"\n";
     }
 
     // Reset the Token
@@ -587,17 +294,45 @@ public:
         this->offset = 0; 
         this->tok_bytes = 0; 
         this->tok_length = 0; 
-        this->value = "";
-        this->location.reset_();
+        this->__value = "";
+        this->__location.reset_();
     }
+
+    Token& operator=(const Token&);
+    std::string toString();
+    bool isJumpStatement();
+    bool isLoopStatement();
+    bool isFlowStatement();
+    bool isMatchStatement();
+    bool isExpressionStatement();
+    bool isPrimaryExpressionStatement();
+    bool isDeclStatement();
+    bool isSpecial() ;
+    bool isLiteral();
+    bool isKeyword();
+    bool isOperator();
+    bool isComparisonOperator();
+    bool isAssignmentOperator();
+    bool isDelimiter();
+    bool isArrow();
+    bool isBitwise();
+    bool isSeparator();
+    bool isIdentifier();
+    bool isEOF();
+    bool isNULL();
+    bool isIllegal();
+    bool isMacro();
+    bool isImport();
+    bool isInclude();
+    bool isSemiColon();
 
 public:
     TokenType type;     // Token Type
     UInt32 offset;      // Offset of the first character of the Token
     UInt32 tok_bytes;   // Token length (in bytes)
     UInt32 tok_length;  // Token length (UTF-8)
-    std::string value;  // Token value
-    Location location;  // Location of the source file
+    std::string __value;  // Token value
+    Location __location;  // Location of the source file
     friend class Lexer;
 }; // class Token
 
