@@ -227,6 +227,12 @@ public:
         reset_();
     }
 
+    // Make a token from a TokenType
+    Token(const TokenType __tok_type) {
+        reset_();
+        this->type = __tok_type;
+    }
+
     // Copy constructor 
     Token(const Token& other) {
         this->type = other.type; 

@@ -27,6 +27,123 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 */
 
 // Useful Functions used by the Lexer 
+// Check if the current Lexer state is at EOF
+inline bool Lexer::is_EOF() {
+	return this->offset >= this->buffer_capacity;
+}
+
+// Reset the line
+void Lexer::reset_lineno() {
+	this->__location.lineno = 0;
+}
+
+// Reset the column number 
+void Lexer::reset_colno() {
+	this->__location.colno = 0; 
+}
+
+// Reset a Lexer Token
+void Lexer::reset_token() {
+	this->token.reset_();
+	// TODO(jasmcaus): Verify this is accurate
+	this->token.__value = this->buffer[this->offset]; 
+	this->token.__location = this->__location;
+}
+
+// Finalize a Token
+void Lexer::finalize_token(TokenType __tok) {
+	this->token.type = __tok; 
+	this->token.__location.fname = this->__location.fname;
+}
+
+// Extract a Token 
+inline Token Lexer::extract_token() {
+	return this->token;
+}
+
+// Set token type
+void Lexer::set_token(TokenType tok_type) {
+	this->token.type = tok_type; 
+}
+
+// Set token value 
+void Lexer::set_token_value(std::string value) {
+	this->token.__value = value; 
+}
+
+// Set token bytes 
+void Lexer::set_token_bytes(UInt32 bytes) {
+	this->token.tok_bytes = bytes; 
+}
+
+// Increment Token Bytes
+void Lexer::increment_tok_bytes() {
+	++this->token.tok_bytes;
+}
+
+// Decrement Token Bytes
+void Lexer::decrement_tok_bytes() {
+	--this->token.tok_bytes;
+}
+
+// Increment Token Length
+void Lexer::increment_tok_length() {
+	++this->token.tok_length;
+}
+
+// Decrement Token Length
+void Lexer::decrement_tok_length() {
+	--this->token.tok_length;
+}
+
+// Increment the line number
+void Lexer::increment_lineno() {
+	++this->__location.lineno; 
+	this->reset_colno();
+}
+
+// Decrement the lineno
+void Lexer::decrement_lineno() {
+	--this->__location.lineno; 
+	this->reset_colno();
+}
+
+// Increment the column number
+void Lexer::increment_colno() {
+	++this->__location.colno; 
+}
+
+// Decrement the colno
+void Lexer::decrement_colno() {
+	--this->__location.colno; 
+}
+
+// Increment the Lexical Buffer offset
+void Lexer::increment_offset() {
+	++this->offset; 
+	this->increment_colno();
+}
+
+// Decrement the Lexical Buffer offset
+void Lexer::decrement_offset() {
+	--this->offset; 
+	this->decrement_colno();
+}
+
+// Reset the buffer 
+void Lexer::reset_buffer() {
+	this->buffer = ""; 
+	this->buffer_capacity = 0;
+}
+
+// Reset the Lexer state
+void Lexer::reset_() {
+	this->buffer = ""; 
+	this->buffer_capacity = 0;
+	this->offset = 0; 
+	this->__location.reset_();
+}
+
 // static inline bool isNewLine(Lexer* lexer, char c) {
 //     // Carriage Return: U+000D (UTF-8 in hex: 0D)
 //     // Line Feed: U+000A (UTF-8 in hex: 0A)
@@ -61,35 +178,17 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 //     return false; 
 // }
 
-static inline bool isSlashComment(char c1, char c2) {
-    return (c1 == '/' && (c2 == '*' || c2 == '/'));
-}
-
-static inline bool isHashComment(char c) {
-    return c == '#';
-}
-
-static inline bool isComment(char c1, char c2) {
+static inline bool isComment(char c1, char c2) { 
     return isSlashComment(c1, c2) || isHashComment(c1) || isHashComment(c2);
 }
-
-static inline bool isSemicolon(char c) {
-    return c == ';';
-}
-
-static inline bool isString(char c) {
-    return (c == '"' || c == '\'');
-}
-
+static inline bool isSlashComment(char c1, char c2) { return (c1 == '/' && (c2 == '*' || c2 == '/')); }
+static inline bool isHashComment(char c) { return c == '#';}
+static inline bool isSemicolon(char c) { return c == ';'; }
+static inline bool isString(char c) { return (c == '"' || c == '\'');}
 // Returns true if [c] is the beginning of a Macro (In Hazel, macros begin with the `@` sign)
-static inline bool isMacro(char c) {
-    return c == '@';
-}
-
+static inline bool isMacro(char c) { return c == '@';}
 // Returns true if [c] is a valid (non-initial) identifier
-static inline bool isIdentifier(char c) {
-    return isAlpha(c) || isDigit(c) || c == '_'; 
-}
+static inline bool isIdentifier(char c) { return isAlpha(c) || isDigit(c) || c == '_'; }
 
 static inline bool isBuiltinOperator(char c) {
     // Parenthesis
@@ -98,7 +197,6 @@ static inline bool isBuiltinOperator(char c) {
     // . ; : ? ,
     // Operators
     // + - * / < > ! = | & ^ % ~
-
     return ((c == '+') || (c == '-') || (c == '*') || (c == '/') || (c == '<') || (c == '>') || (c == '!') || 
             (c == '=') || (c == '|') || (c == '&') || (c == '^') || (c == '%') || (c == '~') || (c == '.') || 
             (c == ';') || (c == ':') || (c == '?') || (c == ',') || (c == '{') || (c == '}') || (c == '[') || 
@@ -131,36 +229,6 @@ TokenType lexer_error(Lexer* lexer, std::string message) {
 //         if(isAlphanumeric(lexer->curr_char)) 
 //             lexer_lex_token_id(lexer);
 //     }
-// } 
-
-// Token* lexer_advance_with_token(Lexer* lexer, int type) {
-
-// } 
-
-
-// void lexer_advance(Lexer* lexer) {
-
-// } 
-
-// void lexer_expect_char(Lexer* lexer, char c) {
-
-// }
-
-// void lexer_skip_whitespace(Lexer* lexer) {
-
-// } 
-
-// void lexer_skip_inline_comment(Lexer* lexer) {
-
-// }
-
-// void lexer_skip_block_comment(Lexer* lexer) {
-
-// }
-
-
-// TokenType lexer_lex_string(Lexer* lexer) {
-
 // } 
 
 TokenType lexer_lex_operator(Lexer* lexer) {

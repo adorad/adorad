@@ -43,8 +43,9 @@ sources = $(wildcard Hazel/Compiler/IO/*.cpp Hazel/Compiler/Lexer/*.cpp Hazel/Co
 objects = $(sources:Hazel/.cpp=.o)
 
 # To disable warnings, use "-w"
-flags = -g -w -std=c++17
+flags = -g -w -std=c++17 -Wall -Wextra -Werror=return-type -Wno-unknown-pragmas -Wno-sign-compare -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -Wno-unused-result -Wno-unused-local-typedefs -Wno-strict-overflow -Wno-strict-aliasing -Wno-error=deprecated-declarations 
 CC = g++
+
 
 all :
 	$(CC) $(objects) $(flags) -o $(exec) -I .
@@ -58,27 +59,14 @@ emitcmd :
 	echo $(CC) $(objects) $(flags) -o $(exec) -I .
 .PHONY: emitcmd 
 
-emittestcmd:
-	echo $(CC) test.cpp $(flags) -o test -I .
-.PHONY: emittestcmd
-
 emitoutput :
 	$(CC) -E Hazel/main.cpp $(flags) -o $(emitout) -I .
 	echo Saved to $(emitout) ...
 .PHONY: emitoutput 
 
-emittestoutput :
-	$(CC) -E test.cpp $(flags) -o $(emittestout) -I .
-	echo Saved to $(emittestout) ...
-.PHONY: emittestoutput 
-
 emitsources :
 	echo Sources: $(objects)
 .PHONY: emitsources 
-
-compile:
-	$(CC) $(objects) $(flags) -I . -o $(exec)
-.PHONY: compile
 
 echo:
 	echo All Engines are a go!
@@ -88,15 +76,49 @@ run:
 	$(exec)
 .PHONY: run
 
-release:
-	$(CC) $(objects) $(flags) -I . -o $(exec)
-
 clean:
 	rm $(exec).exe
 .PHONY: clean
 
 
-# For test.cpp (internal usage only)
+# ---------- CMAKE STUFF --------
+TARGET = Hazel
+SOURCE_DIR = .
+BUILD_DIR = build
+GENERATOR = "MinGW Makefiles" 
+
+# PROCESS:
+## 1. CMake Exec (generate the build files)
+## 2. Run CMake Makefile
+## 3. Run CXX compiled executable
+
+cmake:
+	cmake -s $(SOURCE_DIR) -B $(BUILD_DIR) -G $(GENERATOR)
+	cd $(BUILD_DIR) && $(MAKE) && \
+	echo --------------------------------------------
+	echo --------------------------------------------
+	cd $(BUILD_DIR) && $(TARGET)
+.PHONY: cmake 
+
+# Generate the CMake MinGW Makefiles
+cmakeexec: 
+	cmake -s $(SOURCE_DIR) -B $(BUILD_DIR) -G $(GENERATOR)
+.PHONY: cmakeexec
+
+cmakemake:
+	cd $(BUILD_DIR) && $(MAKE)
+.PHONY: cmakemake
+
+run:
+	cd $(BUILD_DIR) && $(TARGET)
+.PHONY: run
+
+clean: 
+	rmdir /Q /S $(BUILD_DIR) && mkdir $(BUILD_DIR)
+.PHONY: clean
+
+
+# ------------Minor Testing only -----------
 test:
 	$(CC) test.cpp $(flags) -o test -I .
 	echo Compiled Test!
@@ -104,6 +126,15 @@ test:
 	echo -------------------
 	test 
 .PHONY: test 
+
+emittestcmd:
+	echo $(CC) test.cpp $(flags) -o test -I .
+.PHONY: emittestcmd
+
+emittestoutput :
+	$(CC) -E test.cpp $(flags) -o $(emittestout) -I .
+	echo Saved to $(emittestout) ...
+.PHONY: emittestoutput 
 
 testclean:
 	rm test.exe
@@ -123,4 +154,3 @@ testclean:
 # 		   $(SRCDIR)/hazel/compiler/grammar/Tokens                  \
 # 		   $(SRCDIR)/hazel/compiler/tokens/__token.py               \
 # .PHONY: regenerate-tokens
-

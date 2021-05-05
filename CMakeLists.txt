@@ -96,3 +96,6 @@ endif()
 
 # ------ Main Build ------
 add_subdirectory(Hazel)
+
+include_directories(${CMAKE_SOURCE_DIR})
+add_executable(HazelMain Hazel/main.cpp)
