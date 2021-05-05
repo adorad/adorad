@@ -58,9 +58,9 @@ emitcmd :
 	echo $(CC) $(objects) $(flags) -o $(exec) -I .
 .PHONY: emitcmd 
 
-emitcmdtest:
-	$(CC) test.cpp $(flags) -o test -I .
-.PHONY: emitcmdtest
+emittestcmd:
+	echo $(CC) test.cpp $(flags) -o test -I .
+.PHONY: emittestcmd
 
 emitoutput :
 	$(CC) -E Hazel/main.cpp $(flags) -o $(emitout) -I .
