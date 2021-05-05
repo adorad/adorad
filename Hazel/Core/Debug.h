@@ -20,11 +20,11 @@ extern "C" {
 
 // Debug + Asserts  ==========================================
 #ifndef CSTL_DEBUG_ASSERT
-    #define CSTL_DEBUG_ASSERT3(cond, msg) typedef char static_assertion_##msg[(!!(cond))*2-1]
+    #define CSTL_DEBUG_ASSERT3(cond, msg)       typedef char static_assertion_##msg[(!!(cond))*2-1]
     // NOTE(jasmcaus): Token pasting madness!!
-    #define CSTL_DEBUG_ASSERT2(cond, line) CSTL_DEBUG_ASSERT3(cond, static_assertion_at_line_##line)
-    #define CSTL_DEBUG_ASSERT1(cond, line) CSTL_DEBUG_ASSERT2(cond, line)
-    #define CSTL_DEBUG_ASSERT(cond)        CSTL_DEBUG_ASSERT1(cond, __LINE__)
+    #define CSTL_DEBUG_ASSERT2(cond, line)      CSTL_DEBUG_ASSERT3(cond, static_assertion_at_line_##line)
+    #define CSTL_DEBUG_ASSERT1(cond, line)      CSTL_DEBUG_ASSERT2(cond, line)
+    #define CSTL_DEBUG_ASSERT(cond)             CSTL_DEBUG_ASSERT1(cond, __LINE__)
 #endif
 
 
