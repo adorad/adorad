@@ -235,22 +235,46 @@ public:
 
     Token& operator=(const Token&);
 
-    // Get an illegal token
-    Token* illegal_tok() {
-        Token* token; 
-        token->type = TOK_ILLEGAL; 
+    // Make a token for an invalid value
+    Token make_illegal_tok() {
+        Token token; 
+        token.type = TOK_ILLEGAL; 
+        return token;
+    }
+
+    // Make a token representing the end of file
+    Token make_eof_tok() {
+        Token token; 
+        token.type = TOK_EOF; 
+        return token;
+    }
+
+    // Make a token representing the end of file
+    Token make_identifier_tok(const std::string& value, Location location) {
+        Token token; 
+        token.type = IDENTIFIER; 
+        token.value = value;
+        token.location = location;
+        return token;
+    }
+
+    // Make a token representing the end of file
+    Token make_operator_tok(TokenType op, Location location) {
+        Token token; 
+        if(isOp
+        token.type = op; 
         return token;
     }
 
     // Clone a Token
-    Token* clone(Token& other) {
-        Token* token; 
-        token->type = other.type; 
-        token->offset = other.offset; 
-        token->tok_bytes = other.tok_bytes; 
-        token->tok_length = other.tok_length; 
-        token->value = other.value;
-        token->location = other.location;
+    Token clone(Token& other) {
+        Token token; 
+        token.type = other.type; 
+        token.offset = other.offset; 
+        token.tok_bytes = other.tok_bytes; 
+        token.tok_length = other.tok_length; 
+        token.value = other.value;
+        token.location = other.location;
         return token;
     }
 
@@ -259,134 +283,9 @@ public:
         this->type = tok_type;
     }
 
-    bool isJumpStatement() {
-        // Break (BREAK)
-        // Continue (CONTINUE)
-        // Return (RETURN)
-        return (this->type == BREAK || this->type == CONTINUE || this->type == RETURN); 
-    } 
-
-    bool isLoopStatement() {
-        // While (WHILE)
-        // For (FOR)
-        return (this->type == WHILE || this->type == FOR); 
-    } 
-
-    bool isFlowStatement() {
-        // If 
-        // Match 
-        return (this->type == IF || this->type == MATCH); 
-    } 
-
-    bool isMatchStatement() {
-        // Declarations used in match-case 
-        return (this->type == MATCH || this->type == CASE || this->type == DEFAULT); 
-    } 
-
-    bool isExpressionStatement() {
-        // Postfix Operations: isPrimaryExpressionStatement or module (for files)
-        // Unary Ops: PLUS, MINUS, EXCLAMATION, NOT
-        // RAISE 
-        return (isPrimaryExpressionStatement() || this->type == MODULE || this->type == PLUS || 
-                this->type == MINUS || this->type == EXCLAMATION || this->type == NOT || this->type == RAISE); 
-    } 
-
-    bool isPrimaryExpressionStatement() {
-        // Literals (numbers, Strings)
-        // Booleans (TRUE, FALSE)
-        // IDENTIFIER
-        // 'null' 
-        // FUNC
-        // ILLEGAL
-        // '(' expression ')'
-        return (this->type == INTEGER || this->type == BIN_INT || this->type == HEX_INT || this->type == IMAG || 
-                this->type == FLOAT || this->type == RUNE || this->type == STRING || this->type == IDENTIFIER || 
-                this->type == TOK_NULL || this->type == FUNC || this->type == TOK_ILLEGAL || this->type == LPAREN || 
-                this->type == RPAREN); 
-    }
-
-    bool isDeclStatement() {
-        // Variable Declaration (with types + "Any") 
-        // Function Declaration (FUNC)
-        // Class/Struct Declaration (CLASS and STRUCT)
-        // Enum Declaration (ENUM)
-        // Module Declaration (MODULE)
-        // Empty Declaration (SEMICOLON)
-        return (this->type == ANY || this->type == FUNC || this->type == CLASS || this->type == STRUCT || 
-                this->type == ENUM || this->type == MODULE || this->type == SEMICOLON); 
-    } 
-
-
-    bool isSpecial() {
-        return (this->type == TOK_ID || this->type == TOK_EOF || this->type == TOK_ILLEGAL || this->type == COMMENT); 
-    }
-
-    bool isLiteral() {
-        return this->type > TOK___LITERALS_BEGIN && this->type < TOK___LITERALS_END; 
-    }
-
-    bool isKeyword() {
-        return this->type > TOK___KEYWORDS_BEGIN && this->type < TOK___KEYWORDS_END; 
-    }
-
-    bool isOperator() {
-        return this->type > TOK___OPERATORS_BEGIN && this->type < TOK___OPERATORS_END; 
-    }
-
-    bool isComparisonOperator() {
-        return this->type > TOK___COMP_OPERATORS_BEGIN && this->type < TOK___COMP_OPERATORS_END; 
-    }
-
-    bool isAssignmentOperator() {
-        return this->type > TOK___ASSIGNMENT_OPERATORS_BEGIN && this->type < TOK___ASSIGNMENT_OPERATORS_END; 
-    }
-
-    bool isDelimiter() {
-        return this->type > TOK___DELIMITERS_OPERATORS_BEGIN && this->type < TOK___DELIMITERS_OPERATORS_END;
-    }
-
-    bool isArrow() {
-        return this->type > TOK___ARROW_OPERATORS_BEGIN && this->type < TOK___ARROW_OPERATORS_END;
-    }
-
-    bool isBitwise() {
-        return this->type > TOK___BITWISE_OPERATORS_BEGIN && this->type < TOK___BITWISE_OPERATORS_END;
-    }
-
-    bool isSeparator() {
-        return this->type > TOK___SEPARATORS_BEGIN && this->type < TOK___SEPARATORS_END;
-    }
-
-    bool isIdentifier() {
-        return this->type == IDENTIFIER; 
-    }
-
-    bool isEOF() {
-        return this->type == TOK_EOF; 
-    }
-
-    bool isNULL() {
-        return this->type == TOK_NULL; 
-    }
-
-    bool isIllegal() {
-        return this->type == TOK_ILLEGAL; 
-    }
-
-    bool isMacro() {
-        return this->type == MACRO; 
-    }
-
-    bool isImport() {
-        return this->type == IMPORT; 
-    }
-
-    bool isInclude() {
-        return this->type == INCLUDE; 
-    }
-
-    bool isSemiColon() {
-        return this->type == SEMICOLON; 
+    // Get token type 
+    TokenType get_tok_type() {
+        return this->type;
     }
 
     // Convert a Token to its respective String representation
@@ -543,7 +442,7 @@ public:
             case WHERE: return "where";   
             case WHILE: return "while";   
             case UNION: return "union";  
-            // We should _never_reach here
+            // We should _never_ reach here
             default: return "ILLEGAL";
         }
     }

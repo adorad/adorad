@@ -38,6 +38,7 @@ $(VERBOSE).SILENT:
 # ======================== MISC VARIABLES ========================
 exec = hazel
 emitout = hazeloutput.txt
+emittestout = hazeltestoutput.txt
 sources = $(wildcard Hazel/Compiler/IO/*.cpp Hazel/Compiler/Lexer/*.cpp Hazel/Compiler/Tokens/*.cpp Hazel/Compiler/File/*.cpp Hazel/Compiler/Ast/*.cpp Hazel/Compiler/Parser/*.cpp Hazel/*.cpp )
 objects = $(sources:Hazel/.cpp=.o)
 
@@ -57,10 +58,19 @@ emitcmd :
 	echo $(CC) $(objects) $(flags) -o $(exec) -I .
 .PHONY: emitcmd 
 
+emitcmdtest:
+	$(CC) test.cpp $(flags) -o test -I .
+.PHONY: emitcmdtest
+
 emitoutput :
 	$(CC) -E Hazel/main.cpp $(flags) -o $(emitout) -I .
 	echo Saved to $(emitout) ...
 .PHONY: emitoutput 
+
+emittestoutput :
+	$(CC) -E test.cpp $(flags) -o $(emittestout) -I .
+	echo Saved to $(emittestout) ...
+.PHONY: emittestoutput 
 
 emitsources :
 	echo Sources: $(objects)
@@ -94,14 +104,6 @@ test:
 	echo -------------------
 	test 
 .PHONY: test 
-
-testcompile:
-	$(CC) test.cpp $(flags) -o test -I .
-.PHONY: testcompile 
-
-testrun:
-	test
-.PHONY: testrun 
 
 testclean:
 	rm test.exe
