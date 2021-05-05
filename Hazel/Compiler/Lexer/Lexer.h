@@ -79,17 +79,17 @@ public:
     }
 
     // Reset the line
-    inline void reset_line() {
+    void reset_line() {
         this->line_no = 0;
     }
 
     // Reset the column number 
-    inline void reset_column() {
+    void reset_column() {
         this->col_no = 0; 
     }
 
     // Reset a Lexer Token
-    inline void reset_token() {
+    void reset_token() {
         this->token = Token();
         // TODO(jasmcaus): Verify this is accurate
         this->token.value = this->buffer[this->offset]; 
@@ -98,7 +98,7 @@ public:
     }
 
     // Finalize a Token
-    inline void finalize_token(TokenType __tok) {
+    void finalize_token(TokenType __tok) {
         this->token.type = __tok; 
         this->token.fname = this->fname;
     }
@@ -112,72 +112,78 @@ public:
     }
 
     // Set token 
-    inline void set_token(TokenType token) {
+    void set_token(TokenType token) {
         this->token = token; 
     }
 
     // Set token value 
-    inline void set_token_value(std::string value) {
+    void set_token_value(std::string value) {
         this->token.value = value; 
     }
 
     // Set token bytes 
-    inline void set_token_bytes(UInt32 bytes) {
+    void set_token_bytes(UInt32 bytes) {
         this->token.tok_bytes = bytes; 
     }
 
     // Increment Token Bytes
-    inline void increment_tok_bytes() {
+    void increment_tok_bytes() {
         ++this->token.tok_bytes;
     }
 
     // Decrement Token Bytes
-    inline void decrement_tok_bytes() {
+    void decrement_tok_bytes() {
         --this->token.tok_bytes;
     }
 
     // Increment Token Length
-    inline void increment_tok_length() {
+    void increment_tok_length() {
         ++this->token.tok_length;
     }
 
     // Decrement Token Length
-    inline void decrement_tok_length() {
+    void decrement_tok_length() {
         --this->token.tok_length;
     }
 
     // Increment the line number
-    inline void increment_line() {
+    void increment_line() {
         ++this->line_no; 
         this->reset_column();
     }
 
     // Decrement the line_no
-    inline void decrement_line() {
+    void decrement_line() {
         --this->line_no; 
         this->reset_column();
     }
 
     // Increment the column number
-    inline void increment_column() {
+    void increment_column() {
         ++this->col_no; 
     }
 
     // Decrement the col_no
-    inline void decrement_column() {
+    void decrement_column() {
         --this->col_no; 
     }
 
     // Increment the Lexical Buffer offset
-    inline void increment_offset() {
+    void increment_offset() {
         ++this->offset; 
         this->increment_column();
     }
 
     // Decrement the Lexical Buffer offset
-    inline void decrement_offset() {
+    void decrement_offset() {
         --this->offset; 
         this->decrement_column();
+    }
+
+    // Reset the buffer 
+    void reset_buffer() {
+        this->buffer = ""; 
+        this->buffer_capacity = 0;
     }
 
 
