@@ -34,6 +34,10 @@ CREDITS
 	Written Jason Dsouza
 */
 
+#ifndef CSTL_USING_CUSTOM_GENERATED_MACROS
+    #include <Hazel/Core/CMake_Macros.h>
+#endif // CSTL_USING_CUSTOM_GENERATED_MACROS
+
 #include <Hazel/Core/Clock.h>
 #include <Hazel/Core/Compilers.h>
 #include <Hazel/Core/Cpus.h>
@@ -44,6 +48,5 @@ CREDITS
 #include <Hazel/Core/OS.h>
 #include <Hazel/Core/String.h>
 #include <Hazel/Core/Types.h>
-
 
 #endif // _CSTL_CORE_CSTL_H
