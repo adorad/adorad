@@ -48,36 +48,36 @@ CC = g++
 
 
 all :
-    $(CC) $(objects) $(flags) -o $(exec) -I .
-    echo Compiled Hazel!
-    echo ----------------------------------------
-    echo ----------------------------------------
-    $(exec)
+	$(CC) $(objects) $(flags) -o $(exec) -I .
+	echo Compiled Hazel!
+	echo ----------------------------------------
+	echo ----------------------------------------
+	$(exec)
 .PHONY: all 
 
 emitcmd :
-    echo $(CC) $(objects) $(flags) -o $(exec) -I .
+	echo $(CC) $(objects) $(flags) -o $(exec) -I .
 .PHONY: emitcmd 
 
 emitoutput :
-    $(CC) -E Hazel/main.cpp $(flags) -o $(emitout) -I .
-    echo Saved to $(emitout) ...
+	$(CC) -E Hazel/main.cpp $(flags) -o $(emitout) -I .
+	echo Saved to $(emitout) ...
 .PHONY: emitoutput 
 
 emitsources :
-    echo Sources: $(objects)
+	echo Sources: $(objects)
 .PHONY: emitsources 
 
 echo:
-    echo All Engines are a go!
+	echo All Engines are a go!
 .PHONY: echo 
 
 run:
-    $(exec)
+	$(exec)
 .PHONY: run
 
 clean:
-    rm $(exec).exe
+	rm $(exec).exe
 .PHONY: clean
 
 
@@ -85,6 +85,7 @@ clean:
 TARGET = Hazel
 SOURCE_DIR = .
 BUILD_DIR = build
+RUN_DIR = build/bin
 GENERATOR = "MinGW Makefiles" 
 
 # PROCESS:
@@ -93,51 +94,53 @@ GENERATOR = "MinGW Makefiles"
 ## 3. Run CXX compiled executable
 
 cmake:
-    cmake -s $(SOURCE_DIR) -B $(BUILD_DIR) -G $(GENERATOR)
-    cd $(BUILD_DIR) && $(MAKE) && \
-    echo --------------------------------------------
-    echo --------------------------------------------
-    cd $(BUILD_DIR) && $(TARGET)
+	cmake -S $(SOURCE_DIR) -B $(BUILD_DIR) -G $(GENERATOR)
+	echo --------------------------------------------
+	echo --------------------------------------------
+	cd $(BUILD_DIR) && $(MAKE) && \
+	echo --------------------------------------------
+	echo --------------------------------------------
+	cd $(RUN_DIR) && $(TARGET)
 .PHONY: cmake 
 
 # Generate the CMake MinGW Makefiles
 cmakeexec: 
-    cmake -s $(SOURCE_DIR) -B $(BUILD_DIR) -G $(GENERATOR)
+	cmake -S $(SOURCE_DIR) -B $(BUILD_DIR) -G $(GENERATOR)
 .PHONY: cmakeexec
 
 cmakemake:
-    cd $(BUILD_DIR) && $(MAKE)
+	cd $(BUILD_DIR) && $(MAKE)
 .PHONY: cmakemake
 
-run:
-    cd $(BUILD_DIR) && $(TARGET)
-.PHONY: run
+cmakerun:
+	cd $(RUN_DIR) && $(TARGET)
+.PHONY: cmakerun
 
-clean: 
-    rmdir /Q /S $(BUILD_DIR) && mkdir $(BUILD_DIR)
-.PHONY: clean
+cmakeclean: 
+	rmdir /Q /S $(BUILD_DIR) && mkdir $(BUILD_DIR)
+.PHONY: cmakeclean
 
 
 # ------------Minor Testing only -----------
 test:
-    $(CC) test.cpp $(flags) -o test -I .
-    echo Compiled Test!
-    echo -------------------
-    echo -------------------
-    test 
+	$(CC) test.cpp $(flags) -o test -I .
+	echo Compiled Test!
+	echo -------------------
+	echo -------------------
+	test 
 .PHONY: test 
 
 emittestcmd:
-    echo $(CC) test.cpp $(flags) -o test -I .
+	echo $(CC) test.cpp $(flags) -o test -I .
 .PHONY: emittestcmd
 
 emittestoutput :
-    $(CC) -E test.cpp $(flags) -o $(emittestout) -I .
-    echo Saved to $(emittestout) ...
+	$(CC) -E test.cpp $(flags) -o $(emittestout) -I .
+	echo Saved to $(emittestout) ...
 .PHONY: emittestoutput 
 
 testclean:
-    rm test.exe
+	rm test.exe
 .PHONY: testclean 
 
 # regenerate-tokens:

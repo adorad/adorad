@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
-project(HazelMain CXX C)
+project(Hazel CXX C)
 
 # message("Root Dir: CMAKE_SOURCE_DIR = ${CMAKE_SOURCE_DIR}")
 # message("Root Dir: CMAKE_CURRENT_SOURCE_DIR = ${CMAKE_CURRENT_SOURCE_DIR}")
@@ -98,4 +98,4 @@ endif()
 add_subdirectory(Hazel)
 
 include_directories(${CMAKE_SOURCE_DIR})
-add_executable(HazelMain Hazel/main.cpp)
+add_executable(Hazel Hazel/main.cpp)

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
-project(Hazel CXX)
+project(HazelMain CXX)
 
 # message("Sub1 Dir: CMAKE_SOURCE_DIR = ${CMAKE_SOURCE_DIR}")
 # message("Sub1 Dir: CMAKE_CURRENT_SOURCE_DIR = ${CMAKE_CURRENT_SOURCE_DIR}")
@@ -30,22 +30,22 @@ file(GLOB HAZEL_SOURCES
 file(GLOB_RECURSE HAZEL_ALL_TEST_FILES ../test/*.cpp)
 file(GLOB_RECURSE HAZEL_HEADERS *.h)
 
-add_library(Hazel ${HAZEL_SOURCES} ${HAZEL_HEADERS})
+add_library(HazelMain ${HAZEL_SOURCES} ${HAZEL_HEADERS})
 
 # Enable hidden visibility if compiler supports it.
 if(${COMPILER_SUPPORTS_HIDDEN_VISIBILITY})
-    target_compile_options(Hazel PRIVATE "-fvisibility=hidden")
+    target_compile_options(HazelMain PRIVATE "-fvisibility=hidden")
 endif()
 
 target_include_directories(
-    Hazel PUBLIC 
+    HazelMain PUBLIC 
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../>
     $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}>
     $<INSTALL_INTERFACE:include>
 )
 
 # Installation
-install(TARGETS Hazel DESTINATION lib)
+install(TARGETS HazelMain DESTINATION lib)
 install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
         DESTINATION include
         FILES_MATCHING PATTERN "*.h"
