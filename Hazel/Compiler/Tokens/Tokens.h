@@ -27,11 +27,10 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 // as well as in Syntax.toml (Hazel/Compiler/Syntax/Syntax.toml)
 #define ALLTOKENS \
     /* Special (internal usage only) */ \
-    TOKENKIND(TOK_ABSOLUTE_NULL = 0,  ""),   \
+    TOKENKIND(TOK_ILLEGAL = 0,  ""),   \
     TOKENKIND(TOK_ID = 0,  "TOK_ID"),   \
     TOKENKIND(TOK_EOF, "TOK_EOF"),  \
     TOKENKIND(TOK_NULL,"TOK_NULL"), \
-    TOKENKIND(ILLEGAL, "ILLEGAL"),  \
     TOKENKIND(COMMENT, "COMMENT"),  \
 \
     /* Literals */ \
@@ -236,7 +235,7 @@ public:
     // Get an illegal token
     Token* illegal_tok() {
         Token* token; 
-        token->type = ILLEGAL; 
+        token->type = TOK_ILLEGAL; 
         return token;
     }
 
@@ -301,7 +300,7 @@ public:
         // '(' expression ')'
         return (this->type == INTEGER || this->type == BIN_INT || this->type == HEX_INT || this->type == IMAG || 
                 this->type == FLOAT || this->type == RUNE || this->type == STRING || this->type == IDENTIFIER || 
-                this->type == TOK_NULL || this->type == FUNC || this->type == ILLEGAL || this->type == LPAREN || 
+                this->type == TOK_NULL || this->type == FUNC || this->type == TOK_ILLEGAL || this->type == LPAREN || 
                 this->type == RPAREN); 
     }
 
@@ -318,7 +317,7 @@ public:
 
 
     bool isSpecial() {
-        return (this->type == TOK_ID || this->type == TOK_EOF || this->type == ILLEGAL || this->type == COMMENT); 
+        return (this->type == TOK_ID || this->type == TOK_EOF || this->type == TOK_ILLEGAL || this->type == COMMENT); 
     }
 
     bool isLiteral() {
@@ -326,7 +325,7 @@ public:
     }
 
     bool isKeyword() {
-        return this->type > TOK___KEYWORDS_BEGIN && tbis->type < TOK___KEYWORDS_END; 
+        return this->type > TOK___KEYWORDS_BEGIN && this->type < TOK___KEYWORDS_END; 
     }
 
     bool isOperator() {
@@ -370,7 +369,7 @@ public:
     }
 
     bool isIllegal() {
-        return this->type == ILLEGAL; 
+        return this->type == TOK_ILLEGAL; 
     }
 
     bool isMacro() {
@@ -395,7 +394,7 @@ public:
             // Special (internal usage only)
             case TOK_EOF: return "TOK_EOF";
             case TOK_NULL: return "TOK_NULL";
-            case ILLEGAL: return "ILLEGAL";
+            case TOK_ILLEGAL: return "ILLEGAL";
             case COMMENT: return "COMMENT";
 
             // Literals
@@ -550,7 +549,7 @@ public:
 
     // Reset the Token
     void reset_() {
-        this->type = TOK_ABSOLUTE_NULL; 
+        this->type = TOK_ILLEGAL; 
         this->offset = 0; 
         this->tok_bytes = 0; 
         this->line_no = 0;

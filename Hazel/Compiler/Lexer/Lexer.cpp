@@ -27,39 +27,39 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 */
 
 // Useful Functions used by the Lexer 
-static inline bool isNewLine(Lexer* lexer, char c) {
-    // Carriage Return: U+000D (UTF-8 in hex: 0D)
-    // Line Feed: U+000A (UTF-8 in hex: 0A)
-    // CR+LF: CR (U+000D) followed by LF (U+000A) (UTF-8 in hex: 0D0A)
-    // UTF-8 cases https://en.wikipedia.org/wiki/Newline#Unicode:
-    //      1. Next Line, U+0085 (UTF-8 in hex: C285)
-    //      2. Line Separator, U+2028 (UTF-8 in hex: E280A8)
+// static inline bool isNewLine(Lexer* lexer, char c) {
+//     // Carriage Return: U+000D (UTF-8 in hex: 0D)
+//     // Line Feed: U+000A (UTF-8 in hex: 0A)
+//     // CR+LF: CR (U+000D) followed by LF (U+000A) (UTF-8 in hex: 0D0A)
+//     // UTF-8 cases https://en.wikipedia.org/wiki/Newline#Unicode:
+//     //      1. Next Line, U+0085 (UTF-8 in hex: C285)
+//     //      2. Line Separator, U+2028 (UTF-8 in hex: E280A8)
 
-    // Line Feed 
-    if(c == 0x0A) return true; 
+//     // Line Feed 
+//     if(c == 0x0A) return true; 
 
-    // CR+LF or CR
-    if(c == 0x0D) {
-        if(lexer->peek_curr() == 0x0A) { lexer->next(); }
-        return true; 
-    }
+//     // CR+LF or CR
+//     if(c == 0x0D) {
+//         if(lexer->peek_curr() == 0x0A) { lexer->next(); }
+//         return true; 
+//     }
 
-    // Next Line
-    if((c == 0xC2) && (lexer->peek_curr() == 0x85)) {
-        lexer->next(); 
-        return true;
-    }
+//     // Next Line
+//     if((c == 0xC2) && (lexer->peek_curr() == 0x85)) {
+//         lexer->next(); 
+//         return true;
+//     }
     
-    // Line Separator
-    if((c == 0xE2) && (lexer->peek_curr() == 0x80) && (0xA8)) {
-        lexer->next(); 
-        lexer->next(); 
-        return true; 
-    }
+//     // Line Separator
+//     if((c == 0xE2) && (lexer->peek_curr() == 0x80) && (0xA8)) {
+//         lexer->next(); 
+//         lexer->next(); 
+//         return true; 
+//     }
 
-    // will add more at some point in the future 
-    return false; 
-}
+//     // will add more at some point in the future 
+//     return false; 
+// }
 
 static inline bool isSlashComment(char c1, char c2) {
     return (c1 == '/' && (c2 == '*' || c2 == '/'));
@@ -112,10 +112,10 @@ TokenType lexer_error(Lexer* lexer, std::string message) {
         lexer->increment_tok_length();
         lexer->increment_offset();
     }
-    lexer->finalize_token(ILLEGAL);
+    lexer->finalize_token(TOK_ILLEGAL);
     lexer->set_token_value(message);
     lexer->set_token_bytes(message.length());
-    return ILLEGAL; 
+    return TOK_ILLEGAL; 
 }
 
 
@@ -170,7 +170,7 @@ TokenType lexer_lex_operator(Lexer* lexer) {
     // Do not change the declaration order of _next_ and _curr_
     char next = lexer->next(); 
     char curr = lexer->peek_curr(); 
-    TokenType token = TOK_ABSOLUTE_NULL; 
+    TokenType token = TOK_ILLEGAL; 
 
     switch(next) {
         // '='
@@ -494,7 +494,7 @@ TokenType lexer_lex_separator(Lexer* lexer) {
     // Do not change the declaration order of _next_ and _curr_
     char next = lexer->next(); 
     char curr = lexer->peek_curr(); 
-    TokenType token = TOK_ABSOLUTE_NULL; 
+    TokenType token = TOK_ILLEGAL; 
 
     switch(next) {
         // '.'
@@ -540,7 +540,7 @@ TokenType lexer_lex_delimiter(Lexer* lexer) {
     // Do not change the declaration order of _next_ and _curr_
     char next = lexer->next(); 
     char curr = lexer->peek_curr(); 
-    TokenType token = TOK_ABSOLUTE_NULL; 
+    TokenType token = TOK_ILLEGAL; 
 
     switch(next) {       
         case '[': token = LSQUAREBRACK; break; 
@@ -552,6 +552,7 @@ TokenType lexer_lex_delimiter(Lexer* lexer) {
         default:  
             printf("LexerError -> Unrecognized Token"); 
             abort();
+    }
         
     lexer->finalize_token(token);
     // LEXER_DEBUG("Found delimiter: %s", token_toString(token));
@@ -562,12 +563,11 @@ TokenType lexer_lex_delimiter(Lexer* lexer) {
 TokenType lexer_lex_macro(Lexer* lexer) {
     lexer->reset_token(); 
     lexer->increment_tok_length(); 
-    TokenType token = TOK_ABSOLUTE_NULL;
+    TokenType token = TOK_ILLEGAL;
 
     char curr = lexer->peek_curr(); 
-    if(curr == '@') {
+    if(curr == '@')
         token = MACRO;
-    }
 
     lexer->finalize_token(token);
     return token;

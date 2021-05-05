@@ -100,15 +100,12 @@ public:
 
     // Extract a Token 
     inline Token extract_token() {
-        Token token; // Creates a default token 
-        if(tok_type)
-            token.set_token_type(tok_type);
-        return token;
+        return this->token;
     }
 
-    // Set token 
-    void set_token(TokenType token) {
-        this->token = token; 
+    // Set token type
+    void set_token(TokenType tok_type) {
+        this->token.type = tok_type; 
     }
 
     // Set token value 
@@ -207,6 +204,14 @@ protected:
     std::string fname;      // the file name
 }; // class Lexer
 
+
+// A List of Compiler Pragmas recorded for functions. 
+// Options are used as bits in a bitmask
+// These set of values are intended to be the same as the Hazel Compiler
+typedef enum {
+    COMPILER_NOINLINE = 1 << 0; // Do not inline
+    COMPILER_NOTINHEAP = 1 << 1; // Type not in heap
+} CompilerPragmas;
 
 
 Token* lexer_get_next_token(Lexer* lexer); 
