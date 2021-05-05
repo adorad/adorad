@@ -9,7 +9,7 @@ python/build/*
 docs/build/*
 build/*
 out/*
-test.c
+test.cpp
 test.h
 test.py
 hazeloutput.txt
