@@ -99,44 +99,28 @@ public:
     }
 
     // Extract a Token 
-    inline Token extract_token() {
-        return this->token;
-    }
+    inline Token extract_token() { return this->token; }
 
     // Set token type
-    void set_token(TokenType tok_type) {
-        this->token.type = tok_type; 
-    }
+    void set_token(TokenType tok_type) { this->token.type = tok_type;  }
 
     // Set token value 
-    void set_token_value(std::string value) {
-        this->token.value = value; 
-    }
+    void set_token_value(std::string value) { this->token.value = value;  }
 
     // Set token bytes 
-    void set_token_bytes(UInt32 bytes) {
-        this->token.tok_bytes = bytes; 
-    }
+    void set_token_bytes(UInt32 bytes) { this->token.tok_bytes = bytes;  }
 
     // Increment Token Bytes
-    void increment_tok_bytes() {
-        ++this->token.tok_bytes;
-    }
+    void increment_tok_bytes() { ++this->token.tok_bytes; }
 
     // Decrement Token Bytes
-    void decrement_tok_bytes() {
-        --this->token.tok_bytes;
-    }
+    void decrement_tok_bytes() { --this->token.tok_bytes; }
 
     // Increment Token Length
-    void increment_tok_length() {
-        ++this->token.tok_length;
-    }
+    void increment_tok_length() { ++this->token.tok_length; }
 
     // Decrement Token Length
-    void decrement_tok_length() {
-        --this->token.tok_length;
-    }
+    void decrement_tok_length() { --this->token.tok_length; }
 
     // Increment the line number
     void increment_lineno() {
