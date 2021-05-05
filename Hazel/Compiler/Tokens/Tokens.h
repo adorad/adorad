@@ -239,8 +239,8 @@ public:
         this->offset = other.offset; 
         this->tok_bytes = other.tok_bytes; 
         this->tok_length = other.tok_length; 
-        this->location_ = other.location_;
-        this->value_ = other.value_;
+        this->__location = other.__location;
+        this->__value = other.__value;
     }
 
     // Make a token for an invalid value
@@ -264,30 +264,19 @@ public:
         token.offset = other.offset; 
         token.tok_bytes = other.tok_bytes; 
         token.tok_length = other.tok_length; 
-        token.value_ = other.value_;
-        token.location_ = other.location_;
+        token.__value = other.__value;
+        token.__location = other.__location;
         return token;
     }
 
     // Set a token type 
-    void set_token_type(TokenType tok_type) {
-        this->type = tok_type;
-    }
-
+    void set_tok_type(TokenType tok_type) { this->type = tok_type; }
     // Get token type 
-    TokenType get_tok_type() {
-        return this->type;
-    }
-
-    // Get the location_ of the token
-    Location location() {
-        return this->location_;
-    }
-
+    TokenType tok_type() { return this->type; }
+    // Returns the location of the token
+    Location location() { return this->__location; }
     // Get the token value 
-    std::string value() {
-        return this->value_;
-    }
+    std::string value() { return this->__value; }
 
     // Print the Token for debugging
     void print() {
@@ -300,8 +289,8 @@ public:
         this->offset = 0; 
         this->tok_bytes = 0; 
         this->tok_length = 0; 
-        this->value_ = "";
-        this->location_.reset_();
+        this->__value = "";
+        this->__location.reset_();
     }
 
     Token& operator=(const Token&);
@@ -337,8 +326,8 @@ public:
     UInt32 offset;      // Offset of the first character of the Token
     UInt32 tok_bytes;   // Token length (in bytes)
     UInt32 tok_length;  // Token length (UTF-8)
-    std::string value_;  // Token value
-    Location location_;  // Location of the source file
+    std::string __value;  // Token value
+    Location __location;  // Location of the source file
     friend class Lexer;
 }; // class Token
 

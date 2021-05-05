@@ -43,12 +43,13 @@ public:
         this->buffer = buffer; 
         this->buffer_capacity = buffer.length();
         this->offset = 0; 
-        this->location_.reset_();
+        this->__location.reset_();
+        this->__location.set_fname(fname);
     }
 
     // Lexer next() increments the buffer offset and essentially _advances_ to the next element in the buffer
     inline char next() {
-        ++this->location_.colno;
+        ++this->__location.colno;
         return (char)this->buffer[this->offset++];
     }
 
@@ -68,14 +69,8 @@ public:
     }
 
     inline bool is_EOF();
-    void reset_lineno();
-    void reset_colno();
-    void reset_token();
     void finalize_token(TokenType __tok);
-    inline Token extract_token();
-    void set_token(TokenType tok_type);
-    void set_token_value(std::string value);
-    void set_token_bytes(UInt32 bytes);
+
     void increment_tok_bytes();
     void decrement_tok_bytes();
     void increment_tok_length();
@@ -86,6 +81,16 @@ public:
     void decrement_colno();
     void increment_offset();
     void decrement_offset();
+
+    void set_token(TokenType tok_type);
+    void set_token_value(std::string value);
+    void set_token_bytes(UInt32 bytes);
+    inline Token extract_token();
+
+    // Resets
+    void reset_lineno();
+    void reset_colno();
+    void reset_token();
     void reset_buffer();
     void reset_();
 
@@ -99,7 +104,7 @@ protected:
                             // Sometimes called the buffer position
 
     Token token;            // current token
-    Location location_;    // Location of the source code
+    Location __location;    // Location of the source code
 }; // class Lexer
 
 

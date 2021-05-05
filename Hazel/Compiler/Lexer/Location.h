@@ -21,21 +21,30 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 struct Location {
 public:
     Location& operator=(const Location& other) {
-        this->colno = other.colno;
-        this->lineno = other.lineno;
-        this->fname = other.fname;
+        this->__colno = other.__colno;
+        this->__lineno = other.__lineno;
+        this->__fname = other.__fname;
         return *this;
     }
 
+    inline void set_lineno(UInt32 lineno) { this->__lineno = lineno; }
+    inline void set_colno(UInt32 colno) { this->__colno = colno; }
+    inline void set_fname(const std::string& fname) { this->__fname = fname; }
+    inline UInt32 lineno() { return this->__lineno; }
+    inline UInt32 colno() { return this->__colno; }
+    inline std::string fname() { return this->__fname; }
+
 private:
+    // This is private because we restrict what can potentially reset a Location state
     void reset_() {
-        this->lineno = 0; 
-        this->colno = 0; 
-        this->fname = "";
+        this->__lineno = 0; 
+        this->__colno = 0; 
+        this->__fname = "";
     }
-    UInt32 lineno;          // the line number in the source where the token occured
-    UInt32 colno;           // the column number
-    std::string fname;      // the file name
+
+    UInt32 __lineno;          // the line number in the source where the token occured
+    UInt32 __colno;           // the column number
+    std::string __fname;      // the file name
     friend class Lexer;
     friend class Token;
 };

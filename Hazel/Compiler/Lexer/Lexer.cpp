@@ -34,26 +34,26 @@ inline bool Lexer::is_EOF() {
 
 // Reset the line
 void Lexer::reset_lineno() {
-	this->location_.lineno = 0;
+	this->__location.lineno = 0;
 }
 
 // Reset the column number 
 void Lexer::reset_colno() {
-	this->location_.colno = 0; 
+	this->__location.colno = 0; 
 }
 
 // Reset a Lexer Token
 void Lexer::reset_token() {
 	this->token.reset_();
 	// TODO(jasmcaus): Verify this is accurate
-	this->token.value_ = this->buffer[this->offset]; 
-	this->token.location_ = this->location_;
+	this->token.__value = this->buffer[this->offset]; 
+	this->token.__location = this->__location;
 }
 
 // Finalize a Token
 void Lexer::finalize_token(TokenType __tok) {
 	this->token.type = __tok; 
-	this->token.location_.fname = this->location_.fname;
+	this->token.__location.fname = this->__location.fname;
 }
 
 // Extract a Token 
@@ -68,7 +68,7 @@ void Lexer::set_token(TokenType tok_type) {
 
 // Set token value 
 void Lexer::set_token_value(std::string value) {
-	this->token.value_ = value; 
+	this->token.__value = value; 
 }
 
 // Set token bytes 
@@ -98,24 +98,24 @@ void Lexer::decrement_tok_length() {
 
 // Increment the line number
 void Lexer::increment_lineno() {
-	++this->location_.lineno; 
+	++this->__location.lineno; 
 	this->reset_colno();
 }
 
 // Decrement the lineno
 void Lexer::decrement_lineno() {
-	--this->location_.lineno; 
+	--this->__location.lineno; 
 	this->reset_colno();
 }
 
 // Increment the column number
 void Lexer::increment_colno() {
-	++this->location_.colno; 
+	++this->__location.colno; 
 }
 
 // Decrement the colno
 void Lexer::decrement_colno() {
-	--this->location_.colno; 
+	--this->__location.colno; 
 }
 
 // Increment the Lexical Buffer offset
@@ -141,7 +141,7 @@ void Lexer::reset_() {
 	this->buffer = ""; 
 	this->buffer_capacity = 0;
 	this->offset = 0; 
-	this->location_.reset_();
+	this->__location.reset_();
 }
 
 // static inline bool isNewLine(Lexer* lexer, char c) {
