@@ -159,11 +159,11 @@ Token* lexer_get_next_token(Lexer* lexer) {
 // }
 
 
-// Token* lexer_lex_string(Lexer* lexer) {
+// TokenType lexer_lex_string(Lexer* lexer) {
 
 // } 
 
-Token* lexer_lex_operator(Lexer* lexer) {
+TokenType lexer_lex_operator(Lexer* lexer) {
     lexer->reset_token(); 
     lexer->increment_tok_length(); 
 
@@ -485,7 +485,7 @@ Token* lexer_lex_operator(Lexer* lexer) {
 } 
 
 
-Token* lexer_lex_separator(Lexer* lexer) {
+TokenType lexer_lex_separator(Lexer* lexer) {
     lexer->reset_token(); 
     lexer->increment_tok_length(); 
 
@@ -546,14 +546,14 @@ Token* lexer_lex_separator(Lexer* lexer) {
 }
 
 
-Token* lexer_lex_delimiter(Lexer* lexer) {
+TokenType lexer_lex_delimiter(Lexer* lexer) {
     lexer->reset_token(); 
     lexer->increment_tok_length(); 
 
     // Do not change the declaration order of _next_ and _curr_
     char next = lexer->next(); 
     char curr = lexer->peek_curr(); 
-    int token = 0; 
+    TokenType token = 0; 
 
     switch(next) {       
         case '[': token = LSQUAREBRACK; break; 
@@ -570,7 +570,7 @@ Token* lexer_lex_delimiter(Lexer* lexer) {
 }
 
 
-Token* lexer_lex_macro(Lexer* lexer) {
+TokenType lexer_lex_macro(Lexer* lexer) {
     lexer->reset_token(); 
     lexer->increment_tok_length(); 
     TokenType token = TOK_ABSOLUTE_NULL;
@@ -585,20 +585,20 @@ Token* lexer_lex_macro(Lexer* lexer) {
 }
 
 
-// Token* lexer_lex_keywords(Lexer* lexer) {
+// TokenType lexer_lex_keywords(Lexer* lexer) {
     
 // }
 
 
-// Token* lexer_lex_char(Lexer* lexer) {
+// TokenType lexer_lex_char(Lexer* lexer) {
 
 // } 
 
-// Token* lexer_lex_digit(Lexer* lexer) {
+// TokenType lexer_lex_digit(Lexer* lexer) {
 
 // } 
 
-// Token* lexer_lex_token_id(Lexer* lexer) {
+// TokenType lexer_lex_token_id(Lexer* lexer) {
 
 // } 
 

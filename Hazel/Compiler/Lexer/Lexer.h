@@ -14,6 +14,7 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #define _HAZEL_LEXER 
 
 #include <string>
+#include <optional>
 #include <Hazel/Compiler/Lexer/Lexer.h>
 #include <Hazel/Core/HCore.h> 
 #include <Hazel/Compiler/Tokens/Tokens.h>
@@ -100,6 +101,19 @@ public:
     inline void finalize_token(TokenType __tok) {
         this->token.type = __tok; 
         this->token.fname = this->fname;
+    }
+
+    // Extract a Token 
+    inline Token extract_token() {
+        Token token; // Creates a default token 
+        if(tok_type)
+            token.set_token_type(tok_type);
+        return token;
+    }
+
+    // Set token 
+    inline void set_token(TokenType token) {
+        this->token = token; 
     }
 
     // Set token value 
@@ -194,15 +208,15 @@ void lexer_skip_whitespace(Lexer* lexer);
 void lexer_skip_inline_comment(Lexer* lexer);
 void lexer_skip_block_comment(Lexer* lexer);
 
-Token* lexer_lex_string(Lexer* lexer); 
-Token* lexer_lex_operator(Lexer* lexer);
-Token* lexer_lex_separator(Lexer* lexer);
-Token* lexer_lex_delimiter(Lexer* lexer);
-Token* lexer_lex_macro(Lexer* lexer);
-Token* lexer_lex_keywords(Lexer* lexer);
-Token* lexer_lex_char(Lexer* lexer); 
-Token* lexer_lex_digit(Lexer* lexer); 
-Token* lexer_lex_token_id(Lexer* lexer); 
+TokenType lexer_lex_string(Lexer* lexer); 
+TokenType lexer_lex_operator(Lexer* lexer);
+TokenType lexer_lex_separator(Lexer* lexer);
+TokenType lexer_lex_delimiter(Lexer* lexer);
+TokenType lexer_lex_macro(Lexer* lexer);
+TokenType lexer_lex_keywords(Lexer* lexer);
+TokenType lexer_lex_char(Lexer* lexer); 
+TokenType lexer_lex_digit(Lexer* lexer); 
+TokenType lexer_lex_token_id(Lexer* lexer); 
 
 char* lexer_lex_charstr(Lexer* lexer);
 

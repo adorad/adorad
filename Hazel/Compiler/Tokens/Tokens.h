@@ -25,7 +25,7 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 // NOTE: 
 // Any changes made to this function _MUST_ reflect in the toString() (in <Tokens.c>)
 // as well as in Syntax.toml (Hazel/Compiler/Syntax/Syntax.toml)
-#define ALLTOKENS \ 
+#define ALLTOKENS \
     /* Special (internal usage only) */ \
     TOKENKIND(TOK_ABSOLUTE_NULL = 0,  ""),   \
     TOKENKIND(TOK_ID = 0,  "TOK_ID"),   \
@@ -37,21 +37,21 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
     /* Literals */ \
 TOKENKIND(TOK___LITERALS_BEGIN, ""), \
     TOKENKIND(IDENTIFIER,   "IDENTIFIER"),    \
-    TOKENKIND(INTEGER,      "INTEGER"),       \ 
-    TOKENKIND(BIN_INT,      "BIN_INT"),       \ 
-    TOKENKIND(HEX_INT,      "HEX_INT"),       \ 
-    TOKENKIND(INT8_LIT,     "INT8_LIT"),      \ 
-    TOKENKIND(INT16_LIT,    "INT16_LIT"),     \ 
-    TOKENKIND(INT32_LIT,    "INT32_LIT"),     \ 
-    TOKENKIND(INT64_LIT,    "INT64_LIT"),     \ 
-    TOKENKIND(UINT_LIT,     "UINT_LIT"),      \ 
-    TOKENKIND(UINT8_LIT,    "UINT8_LIT"),     \ 
-    TOKENKIND(UINT16_LIT,   "UINT16_LIT"),    \ 
-    TOKENKIND(UINT32_LIT,   "UINT32_LIT"),    \ 
-    TOKENKIND(UINT64_LIT,   "UINT64_LIT"),    \ 
-    TOKENKIND(FLOAT,        "FLOAT"),         \ 
-    TOKENKIND(FLOAT32_LIT,  "FLOAT32_LIT"),   \ 
-    TOKENKIND(FLOAT64_LIT,  "FLOAT64_LIT"),   \ 
+    TOKENKIND(INTEGER,      "INTEGER"),       \
+    TOKENKIND(BIN_INT,      "BIN_INT"),       \
+    TOKENKIND(HEX_INT,      "HEX_INT"),       \
+    TOKENKIND(INT8_LIT,     "INT8_LIT"),      \
+    TOKENKIND(INT16_LIT,    "INT16_LIT"),     \
+    TOKENKIND(INT32_LIT,    "INT32_LIT"),     \
+    TOKENKIND(INT64_LIT,    "INT64_LIT"),     \
+    TOKENKIND(UINT_LIT,     "UINT_LIT"),      \
+    TOKENKIND(UINT8_LIT,    "UINT8_LIT"),     \
+    TOKENKIND(UINT16_LIT,   "UINT16_LIT"),    \
+    TOKENKIND(UINT32_LIT,   "UINT32_LIT"),    \
+    TOKENKIND(UINT64_LIT,   "UINT64_LIT"),    \
+    TOKENKIND(FLOAT,        "FLOAT"),         \
+    TOKENKIND(FLOAT32_LIT,  "FLOAT32_LIT"),   \
+    TOKENKIND(FLOAT64_LIT,  "FLOAT64_LIT"),   \
     TOKENKIND(FLOAT128_LIT, "FLOAT128_LIT"),  \
     TOKENKIND(IMAG,          "IMAG"),         \
     TOKENKIND(RUNE,          "RUNE"),         \
@@ -62,7 +62,7 @@ TOKENKIND(TOK___LITERALS_BEGIN, ""), \
     TOKENKIND(FALSE,         "FALSE"),        \
 TOKENKIND(TOK___LITERALS_END, ""), \
 \
-    /* Operators */ \ 
+    /* Operators */ \
 TOKENKIND(TOK___OPERATORS_BEGIN, ""), \
     TOKENKIND(PLUS,        "+"),  \
     TOKENKIND(MINUS,       "-"),  \
@@ -77,7 +77,7 @@ TOKENKIND(TOK___OPERATORS_BEGIN, ""), \
     TOKENKIND(AT_SIGN,     "@"),  \
     TOKENKIND(HASH_SIGN,   "#"),  \
     TOKENKIND(QUESTION,    "?"),  \
-\   
+\
     /* Comparison Operators */ \
 TOKENKIND(TOK___COMP_OPERATORS_BEGIN, ""), \
     TOKENKIND(GREATER_THAN,             ">"),  \
@@ -111,7 +111,7 @@ TOKENKIND(TOK___ARROW_OPERATORS_BEGIN, ""), \
     TOKENKIND(RARROW,       "->"), \
     TOKENKIND(LARROW,       "<-"), \
 TOKENKIND(TOK___ARROW_OPERATORS_END, ""), \
-\   
+\
     /* Delimiters */ \
 TOKENKIND(TOK___DELIMITERS_OPERATORS_BEGIN, ""), \
     TOKENKIND(LSQUAREBRACK, "["), \
@@ -121,7 +121,7 @@ TOKENKIND(TOK___DELIMITERS_OPERATORS_BEGIN, ""), \
     TOKENKIND(LPAREN,       "("), \
     TOKENKIND(RPAREN,       ")"), \
 TOKENKIND(TOK___DELIMITERS_OPERATORS_END, ""), \
-\   
+\
     /* Bitwise Operators */ \
 TOKENKIND(TOK___BITWISE_OPERATORS_BEGIN, ""), \
     TOKENKIND(LBITSHIFT,   "<<"), \
@@ -205,7 +205,7 @@ TOKENKIND(TOK___KEYWORDS_BEGIN, ""), \
     TOKENKIND(WHILE,     "while"),    \
     TOKENKIND(UNION,     "union"),    \
 TOKENKIND(TOK___KEYWORDS_END, ""), \
-\ 
+\
     TOKENKIND(TOK_COUNT, "")
 
 typedef enum {
@@ -226,6 +226,18 @@ public:
         this->tok_length = 0; 
         this->fname = "";
         this->value = "";
+    }
+
+    // Copy constructor 
+    Token(const Token& other) {
+        this->type = other.type; 
+        this->offset = other.offset; 
+        this->tok_bytes = other.tok_bytes; 
+        this->line_no = other.line_no;
+        this->col_no = other.col_no; 
+        this->tok_length = other.tok_length; 
+        this->fname = other.fname;
+        this->value = other.value;
     }
 
     // Get an illegal token
@@ -249,39 +261,44 @@ public:
         return token;
     }
 
-    inline bool isJumpStatement(TokenType token) {
+    // Set a token type 
+    void set_token_type(TokenType tok_type) {
+        this->type = tok_type;
+    }
+
+    bool isJumpStatement() {
         // Break (BREAK)
         // Continue (CONTINUE)
         // Return (RETURN)
-        return (token == BREAK || token == CONTINUE || token == RETURN); 
+        return (this->type == BREAK || this->type == CONTINUE || this->type == RETURN); 
     } 
 
-    inline bool isLoopStatement(TokenType token) {
+    bool isLoopStatement() {
         // While (WHILE)
         // For (FOR)
-        return (token == WHILE || token == FOR); 
+        return (this->type == WHILE || this->type == FOR); 
     } 
 
-    inline bool isFlowStatement(TokenType token) {
+    bool isFlowStatement() {
         // If 
         // Match 
-        return (token == IF || token == MATCH); 
+        return (this->type == IF || this->type == MATCH); 
     } 
 
-    inline bool isMatchStatement(TokenType token) {
+    bool isMatchStatement() {
         // Declarations used in match-case 
-        return (token == MATCH || token == CASE || token == DEFAULT); 
+        return (this->type == MATCH || this->type == CASE || this->type == DEFAULT); 
     } 
 
-    inline bool isExpressionStatement(TokenType token) {
+    bool isExpressionStatement() {
         // Postfix Operations: isPrimaryExpressionStatement or module (for files)
         // Unary Ops: PLUS, MINUS, EXCLAMATION, NOT
         // RAISE 
-        return (isPrimaryExpressionStatement(token) || token == MODULE || token == PLUS || token == MINUS || 
-                token == EXCLAMATION || token == NOT || token == RAISE); 
+        return (isPrimaryExpressionStatement(this->type) || this->type == MODULE || this->type == PLUS || 
+                this->type == MINUS || this->type == EXCLAMATION || this->type == NOT || this->type == RAISE); 
     } 
 
-    inline bool isPrimaryExpressionStatement(TokenType token) {
+    bool isPrimaryExpressionStatement() {
         // Literals (numbers, Strings)
         // Booleans (TRUE, FALSE)
         // IDENTIFIER
@@ -289,94 +306,94 @@ public:
         // FUNC
         // ILLEGAL
         // '(' expression ')'
-        return (token == INTEGER || token == BIN_INT || token == HEX_INT || token == IMAG || 
-                token == FLOAT || token == RUNE || token == STRING || token == IDENTIFIER || 
-                token == TOK_NULL || token == FUNC || token == ILLEGAL || token == LPAREN || 
-                token == RPAREN); 
+        return (this->type == INTEGER || this->type == BIN_INT || this->type == HEX_INT || this->type == IMAG || 
+                this->type == FLOAT || this->type == RUNE || this->type == STRING || this->type == IDENTIFIER || 
+                this->type == TOK_NULL || this->type == FUNC || this->type == ILLEGAL || this->type == LPAREN || 
+                this->type == RPAREN); 
     }
 
-    inline bool isDeclStatement(TokenType token) {
+    bool isDeclStatement() {
         // Variable Declaration (with types + "Any") 
         // Function Declaration (FUNC)
         // Class/Struct Declaration (CLASS and STRUCT)
         // Enum Declaration (ENUM)
         // Module Declaration (MODULE)
         // Empty Declaration (SEMICOLON)
-        return (token == ANY || token == FUNC || token == CLASS || token == STRUCT || 
-                token == ENUM || token == MODULE || token == SEMICOLON); 
+        return (this->type == ANY || this->type == FUNC || this->type == CLASS || this->type == STRUCT || 
+                this->type == ENUM || this->type == MODULE || this->type == SEMICOLON); 
     } 
 
 
-    inline bool isSpecial(TokenType token) {
-        return (token == TOK_ID || token == TOK_EOF || token == ILLEGAL || token == COMMENT); 
+    bool isSpecial() {
+        return (this->type == TOK_ID || this->type == TOK_EOF || this->type == ILLEGAL || this->type == COMMENT); 
     }
 
-    inline bool isLiteral(TokenType token) {
-        return token > TOK___LITERALS_BEGIN && token < TOK___LITERALS_END; 
+    bool isLiteral() {
+        return this->type > TOK___LITERALS_BEGIN && this->type < TOK___LITERALS_END; 
     }
 
-    inline bool isKeyword(TokenType token) {
-        return token > TOK___KEYWORDS_BEGIN && token < TOK___KEYWORDS_END; 
+    bool isKeyword() {
+        return tbis->type > TOK___KEYWORDS_BEGIN && tbis->type < TOK___KEYWORDS_END; 
     }
 
-    inline bool isOperator(TokenType token) {
-        return token > TOK___OPERATORS_BEGIN && token < TOK___OPERATORS_END; 
+    bool isOperator() {
+        return this->type > TOK___OPERATORS_BEGIN && this->type < TOK___OPERATORS_END; 
     }
 
-    inline bool isComparisonOperator(TokenType token) {
-        return token > TOK___COMP_OPERATORS_BEGIN && token < TOK___COMP_OPERATORS_END; 
+    bool isComparisonOperator() {
+        return this->type > TOK___COMP_OPERATORS_BEGIN && this->type < TOK___COMP_OPERATORS_END; 
     }
 
-    inline bool isAssignmentOperator(TokenType token) {
-        return token > TOK___ASSIGNMENT_OPERATORS_BEGIN && token < TOK___ASSIGNMENT_OPERATORS_END; 
+    bool isAssignmentOperator() {
+        return this->type > TOK___ASSIGNMENT_OPERATORS_BEGIN && this->type < TOK___ASSIGNMENT_OPERATORS_END; 
     }
 
-    inline bool isDelimiter(TokenType token) {
-        return token > TOK___DELIMITERS_OPERATORS_BEGIN && token < TOK___DELIMITERS_OPERATORS_END;
+    bool isDelimiter() {
+        return this->type > TOK___DELIMITERS_OPERATORS_BEGIN && this->type < TOK___DELIMITERS_OPERATORS_END;
     }
 
-    inline bool isArrow(TokenType token) {
-        return token > TOK___ARROW_OPERATORS_BEGIN && token < TOK___ARROW_OPERATORS_END;
+    bool isArrow() {
+        return this->type > TOK___ARROW_OPERATORS_BEGIN && this->type < TOK___ARROW_OPERATORS_END;
     }
 
-    inline bool isBitwise(TokenType token) {
-        return token > TOK___BITWISE_OPERATORS_BEGIN && token < TOK___BITWISE_OPERATORS_END;
+    bool isBitwise() {
+        return this->type > TOK___BITWISE_OPERATORS_BEGIN && this->type < TOK___BITWISE_OPERATORS_END;
     }
 
-    inline bool isSeparator(TokenType token) {
-        return token > TOK___SEPARATORS_BEGIN && token < TOK___SEPARATORS_END;
+    bool isSeparator() {
+        return this->type > TOK___SEPARATORS_BEGIN && this->type < TOK___SEPARATORS_END;
     }
 
-    inline bool isIdentifier(TokenType token) {
-        return token == IDENTIFIER; 
+    bool isIdentifier() {
+        return this->type == IDENTIFIER; 
     }
 
-    inline bool isEOF(TokenType token) {
-        return token == TOK_EOF; 
+    bool isEOF() {
+        return this->type == TOK_EOF; 
     }
 
-    inline bool isNULL(TokenType token) {
-        return token == TOK_NULL; 
+    bool isNULL() {
+        return this->type == TOK_NULL; 
     }
 
-    inline bool isIllegal(TokenType token) {
-        return token == ILLEGAL; 
+    bool isIllegal() {
+        return this->type == ILLEGAL; 
     }
 
-    inline bool isMacro(TokenType token) {
-        return token == MACRO; 
+    bool isMacro() {
+        return this->type == MACRO; 
     }
 
-    inline bool isImport(TokenType token) {
-        return token == IMPORT; 
+    bool isImport() {
+        return this->type == IMPORT; 
     }
 
-    inline bool isInclude(TokenType token) {
-        return token == INCLUDE; 
+    bool isInclude() {
+        return this->type == INCLUDE; 
     }
 
-    inline bool isSemiColon(TokenType token) {
-        return token == SEMICOLON; 
+    bool isSemiColon() {
+        return this->type == SEMICOLON; 
     }
 
     // Convert a Token to its respective String representation
@@ -532,11 +549,10 @@ public:
             case WHEN: return "when";    
             case WHERE: return "where";   
             case WHILE: return "while";   
-            case UNION: return "union";   
+            case UNION: return "union";  
+            // We should _never_reach here
+            default: return "ILLEGAL";
         }
-
-        // We should _NEVER_ reach here 
-        return "ILLEGAL"; 
     }
 
 protected:
