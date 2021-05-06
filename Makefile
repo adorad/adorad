@@ -39,7 +39,7 @@ $(VERBOSE).SILENT:
 exec = hazel
 emitout = hazeloutput.txt
 emittestout = hazeltestoutput.txt
-sources = $(wildcard Hazel/Compiler/IO/*.cpp Hazel/Compiler/Lexer/*.cpp Hazel/Compiler/Tokens/*.cpp Hazel/Compiler/File/*.cpp Hazel/Compiler/Ast/*.cpp Hazel/Compiler/Parser/*.cpp Hazel/*.cpp )
+sources = $(wildcard Hazel/Compiler/Lexer/*.cpp Hazel/Compiler/Tokens/*.cpp Hazel/*.cpp )
 objects = $(sources:Hazel/.cpp=.o)
 
 # To disable warnings, use "-w"
@@ -54,6 +54,10 @@ all :
 	echo ----------------------------------------
 	$(exec)
 .PHONY: all 
+
+objects:
+	echo $(sources)
+.PHONY: objects 
 
 emitcmd :
 	echo $(CC) $(objects) $(flags) -o $(exec) -I .

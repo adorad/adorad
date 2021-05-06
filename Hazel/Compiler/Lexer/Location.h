@@ -15,7 +15,7 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 
 #include <string> 
 
-#include <Hazel/Core/HCore.h>
+#include <Hazel/Core/Types.h>
 
 namespace Hazel {
 

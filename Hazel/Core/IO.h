@@ -11,8 +11,8 @@ SPDX-License-Identifier: MIT
 Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 */
 
-#ifndef HAZEL_IO_H
-#define HAZEL_IO_H
+#ifndef _CSTL_IO_H
+#define _CSTL_IO_H
 
 #ifdef __cplusplus
 
@@ -24,21 +24,25 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 namespace Hazel {
 
 // Read file contents
-std::string read_File(const std::string& fname) {
-    std::ifstream stream(fname); 
-	std::string buffer; 
+// std::string read_File(const std::string& fname) {
+//     std::ifstream stream(fname); 
+// 	std::string buffer; 
 
-    if(!stream) {
-        std::cout << "Coud not open file: " << fname << "\n";
-        std::abort();
-    }
+//     if(!stream) {
+//         std::cout << "Coud not open file: " << fname << "\n";
+//         std::abort();
+//     }
 
-    std::ostringstream ss;
-    ss << stream.rdbuf();
-    buffer = ss.str();
-    stream.close();
+//     std::ostringstream ss;
+//     ss << stream.rdbuf();
+//     buffer = ss.str();
+//     stream.close();
 
-    return buffer;
+//     return buffer;
+// }
+
+int hello_world(const int x) {
+    std::cout << x ;
 }
 
 } // namespace Hazel
@@ -76,4 +80,4 @@ char* readFile(const char* fname) {
 
 #endif // __cplusplus 
 
-#endif // HAZEL_IO_H
+#endif // _CSTL_IO_H

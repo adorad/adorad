@@ -16,7 +16,8 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 
 #include <string>
 #include <iostream>
-#include <Hazel/Core/HCore.h> 
+
+#include <Hazel/Core/Types.h> 
 #include <Hazel/Compiler/Lexer/Location.h>
 
 namespace Hazel {

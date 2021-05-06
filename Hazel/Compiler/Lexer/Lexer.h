@@ -13,12 +13,15 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #ifndef _HAZEL_LEXER
 #define _HAZEL_LEXER 
 
+
 #include <string>
 #include <optional>
 #include <Hazel/Compiler/Lexer/Lexer.h>
 #include <Hazel/Compiler/Lexer/Location.h>
-#include <Hazel/Core/HCore.h> 
 #include <Hazel/Compiler/Tokens/Tokens.h>
+#include <Hazel/Core/Types.h> 
+#include <Hazel/Core/String.h> 
+
 
 namespace Hazel {
 /*
