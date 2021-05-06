@@ -17,7 +17,7 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 
 #include <Hazel/Core/HCore.h>
 
-namespace {
+namespace Hazel {
 
 // Location holds information about a location in a source file
 // Includes the colno, lineno, fname...
