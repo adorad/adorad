@@ -11,13 +11,40 @@ SPDX-License-Identifier: MIT
 Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 */
 
+#ifndef HAZEL_IO_H
+#define HAZEL_IO_H
+
+#ifdef __cplusplus
+
+#include <fstream>
+#include <sstream>
+#include <string> 
+#include <iostream>
+
+// Read file contents
+std::string readFile(const std::string& fname) {
+    std::ifstream stream(fname); 
+	std::string buffer; 
+
+    if(!stream) {
+        std::cout << "Coud not open file: " << fname << "\n";
+        std::abort();
+    }
+
+    std::ostringstream ss;
+    ss << stream.rdbuf();
+    buffer = ss.str();
+    stream.close();
+
+    return buffer;
+}
+
+#else 
+
 #include <cstdio>
 #include <cstdlib>
-#include <Hazel/Core/HCore.h>
-#include <Hazel/Compiler/IO/File.h>
 
-
-// Read the contents of <fname> 
+// C-version
 char* readFile(const char* fname) {
     FILE* file = fopen(fname, "rb"); 
     
@@ -43,3 +70,6 @@ char* readFile(const char* fname) {
 
     return buffer;
 }
+#endif // __cplusplus 
+
+#endif // HAZEL_IO_H

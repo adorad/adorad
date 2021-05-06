@@ -42,7 +42,9 @@ CREDITS
 #include <Hazel/Core/Compilers.h>
 #include <Hazel/Core/Cpus.h>
 #include <Hazel/Core/Debug.h>
+#include <Hazel/Core/Exception.h>
 #include <Hazel/Core/Headers.h>
+#include <Hazel/Core/IO.h>
 #include <Hazel/Core/Memory.h>
 #include <Hazel/Core/Misc.h>
 #include <Hazel/Core/OS.h>
