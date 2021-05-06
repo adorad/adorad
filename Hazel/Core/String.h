@@ -14,63 +14,18 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #ifndef CSTL_STRING_H
 #define CSTL_STRING_H
 
-#include <Hazel/Core/memory.h>
-#include <Hazel/Core/misc.h>
+#include <Hazel/Core/Memory.h>
+#include <Hazel/Core/Misc.h>
 #include <Hazel/Core/Types.h>
 
 namespace cstl {
 
 // Char Things ==========================================
-CSTL_DEF inline char toLower(char c);
-CSTL_DEF inline char toUpper(char c);
-CSTL_DEF inline bool isWhitespace(char c);
-CSTL_DEF inline bool isLower(char c);
-CSTL_DEF inline bool isUpper(char c);
-CSTL_DEF inline bool isLetter(char c);
-CSTL_DEF inline bool isDigit(char c);
-CSTL_DEF inline bool isHexDigit(char c);
-CSTL_DEF inline bool isAlpha(char c);
-CSTL_DEF inline bool isAlphanumeric(char c);
-CSTL_DEF inline Int32 digitToInt(char c);
-CSTL_DEF inline Int32 hexDigitToInt(char c);
-
-// ASCII only
-CSTL_DEF inline void strToLower(char* str);
-CSTL_DEF inline void strToUpper(char* str);
-
-
-// A less fucking crazy strtok!
-CSTL_DEF const char* strTok(char* output, char const* src, char const* delimit);
-
-CSTL_DEF bool strHasPrefix(char const* str, char const* prefix);
-CSTL_DEF bool strHasSuffix(char const* str, char const* suffix);
-
-CSTL_DEF char const* charFirstOccurence(char const* str, char c);
-CSTL_DEF char const* charLastOccurence (char const* str, char c);
-
-CSTL_DEF char* strCat(char* dest, char* source);
-
-CSTL_DEF Ll    strLen(const char* str);
-CSTL_DEF Ll    strnLen(const char* str, Ll max_len);
-CSTL_DEF Int32 strCmp(const char* str1, const char* str2);
-CSTL_DEF Int32 strnCmp(const char* str1, const char* str2, Ll len);
-CSTL_DEF char* strCopy(char *dest, const char* source);
-CSTL_DEF char* strnCopy(char *dest, const char* source, Ll len);
-CSTL_DEF Ll    strlCopy(char *dest, const char* source, Ll len);
-CSTL_DEF char* strRev(char *str); //  ASCII only
-
-
-//
-//
-//
-//
-//
-// Implementation
-//
-//
-//
-//
-//
+static inline bool isUpper(char c) { return c>='A' && c<='Z'; }
+static inline bool isLower(char c) { return c>='a' && c<='z'; }
+static inline bool isDigit(char c) { return c >= '0' && c <= '9'; }
+static inline bool isAlpha(char c) { return isUpper(c) || isLower(c); }
+static inline bool isAlphanumeric(char c) { return isAlpha(c) || isDigit(c); }
 
 static inline char toLower(char c) {
     if(c >= 'A' && c <= 'Z') 
@@ -91,41 +46,19 @@ static inline bool isWhitespace(char c) {
     return false;
 }
 
-static inline bool isUpper(char c) {
-    return c>='A' && c<='Z';
-}
-
-static inline bool isLower(char c) {
-    return c>='a' && c<='z';
-}
-
 static inline bool isLetter(char c) {
     return  (c >= 'a' && c <= 'z') || 
             (c >= 'A' && c <= 'Z') || 
             (c == '_') ;
 }
 
-static inline bool isDigit(char c) {
-    return c >= '0' && c <= '9';
-}
-
 static inline bool isHexDigit(char c) {
-    return  isDigit(c)                    ||
+    return  isDigit(c)                   ||
             CSTL_IS_BETWEEN(c, 'a', 'f') ||
             CSTL_IS_BETWEEN(c, 'A', 'F'); 
 }
 
-static inline bool isAlpha(char c) {
-    return isUpper(c) || isLower(c);
-}
-
-static inline bool isAlphanumeric(char c) {
-    return isAlpha(c) || isDigit(c);
-}
-
-static inline Int32 digitToInt(char c) {
-    return isDigit(c) ? c-'0' : c-'W';
-}
+static inline Int32 digitToInt(char c) { return isDigit(c) ? c-'0' : c-'W'; }
 
 static inline Int32 hexDigitToInt(char c) {
     if(isDigit(c))
@@ -249,7 +182,7 @@ namespace detail {
 // Convert a list of string-like arguments into a single string. 
 template<typename... Args>
 inline decltype(auto) str(const Args&... args) {
-    return detail::str_wrapper<typename 
+    return detail::_str_wrapper<typename 
         detail::CanonicalizeStrTypes<Args>::type...>::call(args...);
 }
 
@@ -282,6 +215,16 @@ struct SourceLocation {
 //     License along with the GNU C Library; if not, see
 //     <http://www.gnu.org/licenses/>.  
 // */
+
+// CSTL_DEF char* strCat(char* dest, char* source);
+// CSTL_DEF Ll    strLen(const char* str);
+// CSTL_DEF Ll    strnLen(const char* str, Ll max_len);
+// CSTL_DEF Int32 strCmp(const char* str1, const char* str2);
+// CSTL_DEF Int32 strnCmp(const char* str1, const char* str2, Ll len);
+// CSTL_DEF char* strCopy(char *dest, const char* source);
+// CSTL_DEF char* strnCopy(char *dest, const char* source, Ll len);
+// CSTL_DEF Ll    strlCopy(char *dest, const char* source, Ll len);
+// CSTL_DEF char* strRev(char *str); //  ASCII only
 
 // CSTL_DEF Ll strLen(const char* str) {
 //     const char* char_ptr;
