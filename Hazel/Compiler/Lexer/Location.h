@@ -10,8 +10,8 @@ Licensed under the MIT License <http://opensource.org/licenses/MIT>
 SPDX-License-Identifier: MIT
 Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 */
-#ifndef _HAZEL_LEXER_LOCATION
-#define _HAZEL_LEXER_LOCATION
+#ifndef _HAZEL_LEXER_LOCATION_H
+#define _HAZEL_LEXER_LOCATION_H
 
 #include <string> 
 
@@ -54,4 +54,4 @@ private:
 
 } // namespace Hazel
 
-#endif // _HAZEL_LEXER_LOCATION
+#endif // _HAZEL_LEXER_LOCATION_H

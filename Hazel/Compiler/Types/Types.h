@@ -11,8 +11,8 @@ SPDX-License-Identifier: MIT
 Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 */
 
-#ifndef HAZEL_TYPES_H 
-#define HAZEL_TYPES_H 
+#ifndef _HAZEL_TYPES_H 
+#define _HAZEL_TYPES_H 
 
 namespace Hazel {
 
@@ -57,4 +57,4 @@ typedef enum {
 
 } // namespace Hazel
 
-#endif // HAZEL_TYPES_H 
+#endif // _HAZEL_TYPES_H 

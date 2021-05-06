@@ -10,13 +10,12 @@ Licensed under the MIT License <http://opensource.org/licenses/MIT>
 SPDX-License-Identifier: MIT
 Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 */
-#ifndef _HAZEL_LEXER
-#define _HAZEL_LEXER 
-
+#ifndef _HAZEL_LEXER_H
+#define _HAZEL_LEXER_H
 
 #include <string>
 #include <optional>
-#include <Hazel/Compiler/Lexer/Lexer.h>
+
 #include <Hazel/Compiler/Lexer/Location.h>
 #include <Hazel/Compiler/Tokens/Tokens.h>
 #include <Hazel/Core/Types.h> 
@@ -143,4 +142,4 @@ static inline bool isMacro(char c);
 
 } // namespace Hazel
 
-#endif // _HAZEL_LEXER
+#endif // _HAZEL_LEXER_H

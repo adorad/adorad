@@ -11,8 +11,8 @@ SPDX-License-Identifier: MIT
 Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 */
 
-#ifndef _HAZEL_TOKEN
-#define _HAZEL_TOKEN 
+#ifndef _HAZEL_TOKEN_H
+#define _HAZEL_TOKEN_H
 
 #include <string>
 #include <iostream>
@@ -336,4 +336,4 @@ public:
 
 } // namespace Hazel 
 
-#endif // _HAZEL_TOKEN
+#endif // _HAZEL_TOKEN_H
