@@ -6,7 +6,6 @@
 
 // #ifdef __cplusplus
 // namespace Hazel {
-// extern "C" {
 // #endif
 
 // // The Primary CSTL Error Class
@@ -355,7 +354,6 @@
 // #endif
 
 // #ifdef __cplusplus
-// } // extern "C"
 // } // namespace Hazel
 // #endif
 

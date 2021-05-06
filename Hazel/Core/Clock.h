@@ -19,7 +19,6 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 
 // #ifdef __cplusplus
 // namespace Hazel {
-// extern "C" {
 // #endif
 
 // Time ==========================================
@@ -29,7 +28,6 @@ CSTL_DEF UInt64   cstl_utc_time_now(void); // Number of microseconds since 1601-
 CSTL_DEF void     cstl_sleep_ms(UInt32 ms);
 
 // #ifdef __cplusplus
-// } // extern "C"
 // } // namespace Hazel
 // #endif
 

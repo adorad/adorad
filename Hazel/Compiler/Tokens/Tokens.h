@@ -19,7 +19,9 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #include <Hazel/Core/HCore.h> 
 #include <Hazel/Compiler/Lexer/Location.h>
 
-// token.h defines constants representing the lexical tokens of the Hazel programming language and basic operations on 
+namespace Hazel {
+
+// Tokens.h defines constants representing the lexical tokens of the Hazel programming language and basic operations on 
 // tokens (printing, predicates).
 
 // Set of lexical tokens understood by the Compiler
@@ -331,6 +333,6 @@ public:
     friend class Lexer;
 }; // class Token
 
-
+} // namespace Hazel 
 
 #endif // _HAZEL_TOKEN

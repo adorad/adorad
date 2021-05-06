@@ -16,7 +16,6 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 
 #ifndef __cplusplus
 #include <stdio.h>
-// #include <cstdlib>
 
 // C-version
 char* readFile(const char* fname) {

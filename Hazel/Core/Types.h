@@ -18,7 +18,6 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 
 // #ifdef __cplusplus
 // namespace Hazel {
-// extern "C" {
 // #endif
 
 // Base Types (similar to the Types in the Hazel Language) ==========================================
@@ -43,7 +42,12 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
     typedef signed __int64    Int64;
 
 #else 
-    #include <stdint.h>
+    #ifdef __cplusplus
+        #include <cstdint>
+    #else
+        #include <stdint.h>
+    #endif // __cplusplus
+
     typedef uint8_t   UInt8; 
     typedef int8_t    Int8; 
     typedef uint16_t  UInt16; 
@@ -154,9 +158,11 @@ typedef Int32 Rune;
 #endif
 
 
-// More Useful Types 
+// More Useful Types
+#define nullchar '\0' 
+ 
 #ifndef null 
-    #if defined(__cplusplus)
+    #ifdef __cplusplus
         #if __cplusplus >= 201103L
             #define null    nullptr 
         #else 
@@ -164,10 +170,8 @@ typedef Int32 Rune;
         #endif 
     #else 
         #define null    (void*)0
-    #endif
+    #endif // __cplusplus
 #endif 
-
-#define nullchar '\0' 
 
 
 // bool is a basic type in C++ and not C
@@ -214,7 +218,6 @@ CSTL_CHECK(sizeof(UIntptr) == sizeof(Intptr));
 
 
 // #ifdef __cplusplus
-// } // extern "C"
 // } // namespace Hazel
 // #endif
 

@@ -16,10 +16,10 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 
 // #ifdef __cplusplus
 // namespace Hazel {
-// extern "C" {
 // #endif
 
-// Debug + Asserts  ==========================================
+// ========================= Debug + Asserts =========================
+
 #ifndef CSTL_CHECK
     #define CSTL_CHECK3(cond, msg)       typedef char static_assertion_##msg[(!!(cond))*2-1]
     // NOTE(jasmcaus): Token pasting madness!!
@@ -30,7 +30,6 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 
 
 // #ifdef __cplusplus
-// } // extern "C"
 // } // namespace Hazel
 // #endif
 

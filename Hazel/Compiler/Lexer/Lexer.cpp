@@ -14,6 +14,7 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #include <Hazel/Compiler/Lexer/Lexer.h>
 
 namespace Hazel {
+    
 /*
     Lexer:
     In this phase, the source code is decomposed into its simplest "tokens". 

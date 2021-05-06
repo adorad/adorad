@@ -16,11 +16,10 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 
 // #ifdef __cplusplus
 // namespace Hazel {
-// extern "C" {
 // #endif
 
 
-// CPUs ==========================================
+// ========================= CPU =========================
 // CSTL_CPU_...
 #if defined(_M_IX86) || defined(_M_X64) || defined(__i386__) || defined(__x86_64__)
     #ifndef CSTL_CPU_X86
@@ -63,7 +62,6 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #endif // CSTL_CPU_...
 
 // #ifdef __cplusplus
-// } // extern "C"
 // } // namespace Hazel
 // #endif
 

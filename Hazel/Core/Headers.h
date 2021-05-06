@@ -18,7 +18,6 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 
 // #ifdef __cplusplus
 // namespace Hazel {
-// extern "C" {
 // #endif
 
 
@@ -120,7 +119,6 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 
 
 // #ifdef __cplusplus
-// } // extern "C"
 // } // namespace Hazel
 // #endif
 
