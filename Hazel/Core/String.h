@@ -18,10 +18,10 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #include <Hazel/Core/Misc.h>
 #include <Hazel/Core/Types.h>
 
-#ifdef __cplusplus
-namespace Hazel {
-extern "C" {
-#endif
+// #ifdef __cplusplus
+// namespace Hazel {
+// extern "C" {
+// #endif
 
 
 // Char Things ==========================================
@@ -382,10 +382,10 @@ static inline void strToUpper(char* str) {
 //     return dest;
 // }
 
+// #ifdef __cplusplus
+// } // extern "C"
+// } // namespace Hazel
+// #endif
 
-#ifdef __cplusplus
-} // extern "C"
-} // namespace Hazel
-#endif
 
 #endif // CSTL_STRING_H

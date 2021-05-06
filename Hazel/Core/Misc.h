@@ -14,10 +14,10 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #ifndef CSTL_MISCELLANEOUS_H
 #define CSTL_MISCELLANEOUS_H
 
-#ifdef __cplusplus
-namespace Hazel {
-extern "C" {
-#endif
+// #ifdef __cplusplus
+// namespace Hazel {
+// extern "C" {
+// #endif
 
 
 // Defines 
@@ -129,9 +129,9 @@ extern "C" {
 #endif 
 
 
-#ifdef __cplusplus
-} // extern "C"
-} // namespace Hazel
-#endif
+// #ifdef __cplusplus
+// } // extern "C"
+// } // namespace Hazel
+// #endif
 
 #endif // CSTL_MISCELLANEOUS_H

@@ -14,10 +14,10 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #ifndef CSTL_MEMORY_H
 #define CSTL_MEMORY_H
 
-#ifdef __cplusplus
-namespace Hazel {
-extern "C" {
-#endif
+// #ifdef __cplusplus
+// namespace Hazel {
+// extern "C" {
+// #endif
 
 // Memory ==========================================
 #ifndef KB_TO_BYTES
@@ -32,9 +32,9 @@ extern "C" {
 #define CSTL__HAS_ZERO(x) (x)-CSTL__ONES & ~(x) & CSTL__HIGHS
 
 
-#ifdef __cplusplus
-} // extern "C"
-} // namespace Hazel
-#endif
+// #ifdef __cplusplus
+// } // extern "C"
+// } // namespace Hazel
+// #endif
 
 #endif // CSTL_MEMORY_H

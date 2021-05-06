@@ -16,10 +16,10 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 
 #include <Hazel/Core/OS.h>
 
-#ifdef __cplusplus
-namespace Hazel {
-extern "C" {
-#endif
+// #ifdef __cplusplus
+// namespace Hazel {
+// extern "C" {
+// #endif
 
 
 // Headers ==========================================
@@ -119,9 +119,9 @@ extern "C" {
 #endif
 
 
-#ifdef __cplusplus
-} // extern "C"
-} // namespace Hazel
-#endif
+// #ifdef __cplusplus
+// } // extern "C"
+// } // namespace Hazel
+// #endif
 
 #endif // CSTL_HEADERS_H
