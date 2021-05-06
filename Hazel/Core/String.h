@@ -18,7 +18,8 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #include <Hazel/Core/Misc.h>
 #include <Hazel/Core/Types.h>
 
-namespace cstl {
+
+namespace Hazel {
 
 // Char Things ==========================================
 static inline bool isUpper(char c) { return c>='A' && c<='Z'; }
@@ -89,109 +90,110 @@ static inline void strToUpper(char* str) {
     }
 }
 
-namespace detail {
-    std::string stripBaseName(const std::string& full_path) {
-        const char kSeparator = '/';
-        size_t pos = full_path.rfind(kSeparator);
+// namespace detail {
+//     std::string stripBaseName(const std::string& full_path) {
+//         const char kSeparator = '/';
+//         size_t pos = full_path.rfind(kSeparator);
 
-        if (pos != std::string::npos) {
-            return full_path.substr(pos + 1, std::string::npos);
-        } else {
-            return full_path;
-        }
-    }
+//         if (pos != std::string::npos) {
+//             return full_path.substr(pos + 1, std::string::npos);
+//         } else {
+//             return full_path;
+//         }
+//     }
 
-    struct CompileTimeEmptyString {
-        operator const std::string&() const {
-            static const std::string empty_string_literal; 
-            return empty_string_literal;
-        }
+//     struct CompileTimeEmptyString {
+//         operator const std::string&() const {
+//             static const std::string empty_string_literal; 
+//             return empty_string_literal;
+//         }
 
-        operator const char*() const {
-            return "";
-        }
-    }; // struct CompileTimeEmptyString
+//         operator const char*() const {
+//             return "";
+//         }
+//     }; // struct CompileTimeEmptyString
 
-    template <typename T>
-    struct CanonicalizeStrTypes {
-        using type = const T&;
-    };
+//     template <typename T>
+//     struct CanonicalizeStrTypes {
+//         using type = const T&;
+//     };
 
-    template <size_t N>
-    struct CanonicalizeStrTypes<char[N]> {
-        using type = const char*;
-    };
+//     template <size_t N>
+//     struct CanonicalizeStrTypes<char[N]> {
+//         using type = const char*;
+//     };
 
 
-    inline std::ostream& _str(std::ostream& ss) {
-        return ss;
-    }
+//     inline std::ostream& _str(std::ostream& ss) {
+//         return ss;
+//     }
 
-    template <typename T>
-    inline std::ostream& _str(std::ostream& ss, const T& t) {
-        ss << t;
-        return ss;
-    }
+//     template <typename T>
+//     inline std::ostream& _str(std::ostream& ss, const T& t) {
+//         ss << t;
+//         return ss;
+//     }
 
-    template <>
-    inline std::ostream& _str<CompileTimeEmptyString>(std::ostream& ss, const CompileTimeEmptyString&) {
-        return ss;
-    }
+//     template <>
+//     inline std::ostream& _str<CompileTimeEmptyString>(std::ostream& ss, const CompileTimeEmptyString&) {
+//         return ss;
+//     }
 
-    template <typename T, typename... Args>
-    inline std::ostream& _str(std::ostream& ss, const T& t, const Args&... args) {
-        return _str(_str(ss, t), args...);
-    }
+//     template <typename T, typename... Args>
+//     inline std::ostream& _str(std::ostream& ss, const T& t, const Args&... args) {
+//         return _str(_str(ss, t), args...);
+//     }
 
-    template<typename... Args>
-    struct _str_wrapper final {
-    static std::string call(const Args&... args) {
-        std::ostringstream ss;
-        _str(ss, args...);
-        return ss.str();
-    }
-    };
+//     template<typename... Args>
+//     struct _str_wrapper final {
+//     static std::string call(const Args&... args) {
+//         std::ostringstream ss;
+//         _str(ss, args...);
+//         return ss.str();
+//     }
+//     };
 
-    // Specializations for already-a-string types.
-    template<>
-    struct _str_wrapper<std::string> final {
-        // return by reference to avoid the binary size of a string copy
-        static const std::string& call(const std::string& str) {
-            return str;
-        }
-    };
+//     // Specializations for already-a-string types.
+//     template<>
+//     struct _str_wrapper<std::string> final {
+//         // return by reference to avoid the binary size of a string copy
+//         static const std::string& call(const std::string& str) {
+//             return str;
+//         }
+//     };
 
-    template<>
-    struct _str_wrapper<const char*> final {
-        static const char* call(const char* str) {
-            return str;
-        }
-    };
+//     template<>
+//     struct _str_wrapper<const char*> final {
+//         static const char* call(const char* str) {
+//             return str;
+//         }
+//     };
 
-    // For cstl::str() with an empty argument list (which is common in our assert macros), we don't 
-    // want to pay the binary size for constructing and destructing a stringstream or even constructing a string.
-    template<>
-    struct _str_wrapper<> final {
-        static CompileTimeEmptyString call() {
-            return CompileTimeEmptyString();
-        }
-    };
+//     // For cstl::str() with an empty argument list (which is common in our assert macros), we don't 
+//     // want to pay the binary size for constructing and destructing a stringstream or even constructing a string.
+//     template<>
+//     struct _str_wrapper<> final {
+//         static CompileTimeEmptyString call() {
+//             return CompileTimeEmptyString();
+//         }
+//     };
 
-} // namespace detail
+// } // namespace detail
 
-// Convert a list of string-like arguments into a single string. 
-template<typename... Args>
-inline decltype(auto) str(const Args&... args) {
-    return detail::_str_wrapper<typename 
-        detail::CanonicalizeStrTypes<Args>::type...>::call(args...);
-}
+// // Convert a list of string-like arguments into a single string. 
+// template<typename... Args>
+// inline decltype(auto) str(const Args&... args) {
+//     return detail::_str_wrapper<typename 
+//         detail::CanonicalizeStrTypes<Args>::type...>::call(args...);
+// }
 
-/// Represents a location in source code (for debugging).
-struct SourceLocation {
-    const char* function;
-    const char* file;
-    UInt32 line;
-};
+// /// Represents a location in source code (for debugging).
+// struct SourceLocation {
+//     const char* function;
+//     const char* file;
+//     UInt32 line;
+// };
+
 
 // // The functions below are part of C's actual library. 
 // // They're here as part of CSTL so that you don't have to include multiple header files (such as C's <string.h>)
@@ -378,6 +380,6 @@ struct SourceLocation {
 // }
 
 
-} // namespace cstl
+} // namespace Hazel
 
 #endif // CSTL_STRING_H

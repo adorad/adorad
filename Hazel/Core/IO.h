@@ -14,35 +14,9 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #ifndef HAZEL_IO_H
 #define HAZEL_IO_H
 
-#ifdef __cplusplus
-
-#include <fstream>
-#include <sstream>
-#include <string> 
-#include <iostream>
-
-// Read file contents
-std::string readFile(const std::string& fname) {
-    std::ifstream stream(fname); 
-	std::string buffer; 
-
-    if(!stream) {
-        std::cout << "Coud not open file: " << fname << "\n";
-        std::abort();
-    }
-
-    std::ostringstream ss;
-    ss << stream.rdbuf();
-    buffer = ss.str();
-    stream.close();
-
-    return buffer;
-}
-
-#else 
-
-#include <cstdio>
-#include <cstdlib>
+#ifndef __cplusplus
+#include <stdio.h>
+// #include <cstdlib>
 
 // C-version
 char* readFile(const char* fname) {
@@ -70,6 +44,31 @@ char* readFile(const char* fname) {
 
     return buffer;
 }
+
+#else 
+#include <fstream>
+#include <sstream>
+#include <string> 
+#include <iostream>
+
+// Read file contents
+std::string readFile(const std::string& fname) {
+    std::ifstream stream(fname); 
+	std::string buffer; 
+
+    if(!stream) {
+        std::cout << "Coud not open file: " << fname << "\n";
+        std::abort();
+    }
+
+    std::ostringstream ss;
+    ss << stream.rdbuf();
+    buffer = ss.str();
+    stream.close();
+
+    return buffer;
+}
+
 #endif // __cplusplus 
 
 #endif // HAZEL_IO_H
