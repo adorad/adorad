@@ -1,7 +1,7 @@
 /*
 _ _    _           ______   _______        
 | |  | |    /\    /___  /   |  ____|| |    
-| |__| |   /  \      / /    | |__   | |       Hazel - The Fast, Expressive & Elegant Programming Language
+| |__| |   /  \      / /    | |__   | |       Hazel - The Fast, Expressive * Elegant Programming Language
 |  __  |  / /\ \    / /     |  __|  | |       Languages: C, C++, and Assembly
 | |  | | / ____ \  / /___   | |____ | |____   https://github.com/HazelLang/Hazel/
 |_|_ |_|/_/    \_\/_______\ |______|_\______|
@@ -13,106 +13,102 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 
 #include <Hazel/Compiler/Lexer/Lexer.h>
 
-namespace Hazel {
-    
+
 /*
     Lexer:
-    In this phase, the source code is decomposed into its simplest "tokens". 
+    In lexer phase, the source code is decomposed into its simplest "tokens". 
 
     Newlines are converted to newline tokens
 */
 
 /*
  * INSPIRATION: https://github.com/JHG777000/marshmallow/blob/master/src/marshmallow_parser.c
- * INSPIRATION: https://github.com/k-mrm/maxc/blob/master/src/compiler/lexer.c
+ * INSPIRATION: https://github.com/k-mrm/maxc/blob/master/src/compiler/lexer->c
 
 */
 
 // ================ Useful Functions used by the Lexer ============
 // Check if the current Lexer state is at EOF
-inline bool Lexer::is_EOF() { return this->__offset >= this->__buffer_capacity; }
+inline bool lexer_is_EOF(Lexer* lexer) { return lexer->offset__ >= lexer->buffer_capacity__; }
 // Extract a Token 
-inline Token Lexer::extract_token() { return this->__token; }
+inline Token lexer_extract_token(Lexer* lexer) { return lexer->token__; }
+// Set token
+inline void lexer_set_token(Lexer* lexer, Token token) { lexer->token__ = token; }
 // Set token type
-void Lexer::set_token(TokenType tok_type) { this->__token.__type = tok_type; }
+inline void lexer_set_token_type(Lexer* lexer, TokenType tok_type) { lexer->token__.type__ = tok_type; }
 // Set token value 
-void Lexer::set_token_value(std::string value) { this->__token.__value = value; }
+inline void lexer_set_token_value(Lexer* lexer, const char* value) { lexer->token__.value__ = value; }
 // Set token bytes 
-void Lexer::set_token_bytes(UInt32 bytes) { this->__token.__tok_bytes = bytes; }
+inline void lexer_set_token_bytes(Lexer* lexer, UInt32 bytes) { lexer->token__.tok_bytes__ = bytes; }
 // Increment Token Bytes
-void Lexer::increment_tok_bytes() { ++this->__token.__tok_bytes;}
+inline void lexer_increment_tok_bytes(Lexer* lexer) { ++lexer->token__.tok_bytes__; }
 // Decrement Token Bytes
-void Lexer::decrement_tok_bytes() { --this->__token.__tok_bytes;}
+inline void lexer_decrement_tok_bytes(Lexer* lexer) { --lexer->token__.tok_bytes__; }
 // Increment Token Length
-void Lexer::increment_tok_length() { ++this->__token.__tok_length;}
+inline void lexer_increment_tok_length(Lexer* lexer) { ++lexer->token__.tok_length__; }
 // Decrement Token Length
-void Lexer::decrement_tok_length() { --this->__token.__tok_length;}
+inline void lexer_decrement_tok_length(Lexer* lexer) { --lexer->token__.tok_length__; }
 
 // Increment the line number
-void Lexer::increment_lineno() {
-	++this->__location.__lineno; 
-	this->reset_colno();
+inline void lexer_increment_lineno(Lexer* lexer) {
+	++lexer->location__.lineno__; 
+	lexer_reset_colno(lexer);
 }
 
 // Decrement the lineno
-void Lexer::decrement_lineno() {
-	--this->__location.__lineno; 
-	this->reset_colno();
+inline void lexer_decrement_lineno(Lexer* lexer) {
+	--lexer->location__.lineno__; 
+	lexer_reset_colno(lexer);
 }
 
 // Increment the column number
-void Lexer::increment_colno() {
-	++this->__location.__colno; 
+inline void lexer_increment_colno(Lexer* lexer) {
+	++lexer->location__.colno__; 
 }
 
 // Decrement the colno
-void Lexer::decrement_colno() {
-	--this->__location.__colno; 
+inline void lexer_decrement_colno(Lexer* lexer) {
+	--lexer->location__.colno__; 
 }
 
 // Increment the Lexical Buffer offset
-void Lexer::increment_offset() {
-	++this->__offset; 
-	this->increment_colno();
+inline void lexer_increment_offset(Lexer* lexer) {
+	++lexer->offset__; 
+	lexer_increment_colno(lexer);
 }
 
 // Decrement the Lexical Buffer offset
-void Lexer::decrement_offset() {
-	--this->__offset; 
-	this->decrement_colno();
+inline void lexer_decrement_offset(Lexer* lexer) {
+	--lexer->offset__; 
+	lexer_decrement_colno(lexer);
 }
 
-// Reset the line
-void Lexer::reset_lineno() { this->__location.set_lineno(0); }
-// Reset the column number 
-void Lexer::reset_colno() { this->__location.set_colno(0); }
-
 // Reset a Lexer Token
-void Lexer::reset_token() {
-	this->__token.reset_();
-	// TODO(jasmcaus): Verify this is accurate
-	this->__token.__value = this->__buffer[this->__offset]; 
-	this->__token.__location = this->__location;
+inline void lexer_reset_token(Lexer* lexer) {
+    lexer_reset_token(lexer);
+	// TODO(jasmcaus): Verify lexer is accurate
+	lexer->token__.value__ = lexer->buffer__[lexer->offset__]; 
+	lexer->token__.location__ = lexer->location__;
 }
 
 // Finalize a Token
-void Lexer::finalize_token(TokenType __tok) {
-	this->__token.__type = __tok; 
-	this->__token.__location.set_fname(this->__location.__fname);
+inline void lexer_finalize_token(Lexer* lexer, TokenType __tok) {
+	lexer->token__.type__ = __tok; 
+	lexer->token__.location__.fname__ = lexer->location__.fname__;
 }
 
 // Reset the buffer 
-void Lexer::reset_buffer() {
-	this->__buffer = ""; 
-	this->__buffer_capacity = 0;
+inline void lexer_reset_buffer(Lexer* lexer) {
+	lexer->buffer__= ""; 
+	lexer->buffer_capacity__ = 0;
 }
 
 // Reset the Lexer state
-void Lexer::reset_() {
-	this->__buffer = ""; 
-	this->__buffer_capacity = 0;
-	this->__offset = 0; 
-	this->__location.reset_();
+inline void lexer_reset(Lexer* lexer) {
+	lexer->buffer__= ""; 
+	lexer->buffer_capacity__ = 0;
+	lexer->offset__ = 0; 
+	lexer_location_init(lexer);
 }
 
 // static inline bool isNewLine(Lexer* lexer, char c) {
@@ -128,20 +124,20 @@ void Lexer::reset_() {
 
 //     // CR+LF or CR
 //     if(c == 0x0D) {
-//         if(lexer->peek_curr() == 0x0A) { lexer->next(); }
+//         if(lexer_peek_curr(lexer) == 0x0A) { lexer_next(lexer); }
 //         return true; 
 //     }
 
 //     // Next Line
-//     if((c == 0xC2) && (lexer->peek_curr() == 0x85)) {
-//         lexer->next(); 
+//     if((c == 0xC2) ** (lexer_peek_curr(lexer) == 0x85)) {
+//         lexer_next(lexer); 
 //         return true;
 //     }
     
 //     // Line Separator
-//     if((c == 0xE2) && (lexer->peek_curr() == 0x80) && (0xA8)) {
-//         lexer->next(); 
-//         lexer->next(); 
+//     if((c == 0xE2) ** (lexer_peek_curr(lexer) == 0x80) ** (0xA8)) {
+//         lexer_next(lexer); 
+//         lexer_next(lexer); 
 //         return true; 
 //     }
 
@@ -165,30 +161,30 @@ static inline bool isBuiltinOperator(char c) {
     // Punctuation
     // . ; : ? ,
     // Operators
-    // + - * / < > ! = | & ^ % ~
+    // + - * / < > ! = | * ^ % ~
     return ((c == '+') || (c == '-') || (c == '*') || (c == '/') || (c == '<') || (c == '>') || (c == '!') || 
-            (c == '=') || (c == '|') || (c == '&') || (c == '^') || (c == '%') || (c == '~') || (c == '.') || 
+            (c == '=') || (c == '|') || (c == '*') || (c == '^') || (c == '%') || (c == '~') || (c == '.') || 
             (c == ';') || (c == ':') || (c == '?') || (c == ',') || (c == '{') || (c == '}') || (c == '[') || 
             (c == ']') || (c == '(') || (c == ')') );
 }
 
 
 // Lexing Errors
-TokenType lexer_error(Lexer* lexer, std::string message) {
-    if(!lexer->is_EOF()) {
-        lexer->increment_tok_length();
-        lexer->increment_offset();
-    }
-    lexer->finalize_token(TOK_ILLEGAL);
-    lexer->set_token_value(message);
-    lexer->set_token_bytes(message.length());
-    return TOK_ILLEGAL; 
-}
+// TokenType lexer_error(Lexer* lexer, const char* message) {
+//     if(!lexer->is_EOF()) {
+//         lexer_increment_tok_length(lexer);
+//         lexer_increment_offset(lexer);
+//     }
+//     lexer->finalize_token(TOK_ILLEGAL);
+//     lexer->set_token_value(message);
+//     lexer->set_token_bytes(message.length());
+//     return TOK_ILLEGAL; 
+// }
 
 
 // // Get the next token from the Lexer
 // Token* lexer_get_next_token(Lexer* lexer) {
-//     while(lexer->curr_char != nullchar && lexer->char_idx < lexer->buffer_capacity) {
+//     while(lexer->curr_char != nullchar ** lexer->char_idx < lexer->buffer_capacity) {
 //         if(isWhitespace(lexer->curr_char))
 //             lexer_skip_whitespace(lexer);
 
@@ -201,12 +197,12 @@ TokenType lexer_error(Lexer* lexer, std::string message) {
 // } 
 
 TokenType lexer_lex_operator(Lexer* lexer) {
-    lexer->reset_token(); 
-    lexer->increment_tok_length(); 
+    lexer_reset_token(lexer);
+    lexer_increment_tok_length(lexer);
 
     // Do not change the declaration order of _next_ and _curr_
-    char next = lexer->next(); 
-    char curr = lexer->peek_curr(); 
+    char next = lexer_next(lexer); 
+    char curr = lexer_peek_curr(lexer); 
     TokenType token = TOK_ILLEGAL; 
 
     switch(next) {
@@ -214,12 +210,12 @@ TokenType lexer_lex_operator(Lexer* lexer) {
         case '=':
             // '=='
             if(curr == '=') {
-                lexer->increment_offset();
-                lexer->increment_tok_length();
+                lexer_increment_offset(lexer);
+                lexer_increment_tok_length(lexer);
 
                 // 
                 // Uncomment the following ONLY if Hazel ends up supporting '==='
-                // curr = lexer->peek_curr(); 
+                // curr = lexer_peek_curr(lexer); 
                 // // '===' 
                 // if(curr == '=') {
                 //     INCREMENT_OFFSET;
@@ -234,8 +230,8 @@ TokenType lexer_lex_operator(Lexer* lexer) {
             
             // '=>'
             if(curr == '>') {
-                lexer->increment_offset();
-                lexer->increment_tok_length();
+                lexer_increment_offset(lexer);
+                lexer_increment_tok_length(lexer);
                 token = EQUALS_ARROW;
             } else {
                 token = EQUALS;
@@ -249,15 +245,15 @@ TokenType lexer_lex_operator(Lexer* lexer) {
             // 
             // '++'
             if(curr == '+') {
-                lexer->increment_offset();
-                lexer->increment_tok_length();
+                lexer_increment_offset(lexer);
+                lexer_increment_tok_length(lexer);
                 token = PLUS_PLUS;
             }
 
             // '+='
             if(curr == '=') {
-                lexer->increment_offset(); 
-                lexer->increment_tok_length();
+                lexer_increment_offset(lexer); 
+                lexer_increment_tok_length(lexer);
 
                 token = PLUS_EQUALS;
             } else {
@@ -272,22 +268,22 @@ TokenType lexer_lex_operator(Lexer* lexer) {
             // 
             // '--'
             if(curr == '-') {
-                lexer->increment_offset();
-                lexer->increment_tok_length();
+                lexer_increment_offset(lexer);
+                lexer_increment_tok_length(lexer);
                 token = MINUS_MINUS;
             }
 
             // '->'
             if(curr == '>') {
-                lexer->increment_offset();
-                lexer->increment_tok_length();
+                lexer_increment_offset(lexer);
+                lexer_increment_tok_length(lexer);
                 token = RARROW;
             }
 
             // '-='
             if(curr == '=') {
-                lexer->increment_offset(); 
-                lexer->increment_tok_length();
+                lexer_increment_offset(lexer); 
+                lexer_increment_tok_length(lexer);
 
                 token = MINUS_EQUALS;
             } else {
@@ -299,15 +295,15 @@ TokenType lexer_lex_operator(Lexer* lexer) {
         case '*':
             // '**'
             if(curr == '*') {
-                lexer->increment_offset();
-                lexer->increment_tok_length();
+                lexer_increment_offset(lexer);
+                lexer_increment_tok_length(lexer);
                 token = MULT_MULT;
             }
 
             // '*='
             if(curr == '=') {
-                lexer->increment_offset(); 
-                lexer->increment_tok_length();
+                lexer_increment_offset(lexer); 
+                lexer_increment_tok_length(lexer);
 
                 token = MULT_EQUALS;
             } else {
@@ -319,15 +315,15 @@ TokenType lexer_lex_operator(Lexer* lexer) {
         case '/':
             // '//'
             if(curr == '/') {
-                lexer->increment_offset();
-                lexer->increment_tok_length();
+                lexer_increment_offset(lexer);
+                lexer_increment_tok_length(lexer);
                 token = SLASH_SLASH;
             }
 
             // '/='
             if(curr == '=') {
-                lexer->increment_offset(); 
-                lexer->increment_tok_length();
+                lexer_increment_offset(lexer); 
+                lexer_increment_tok_length(lexer);
 
                 token = SLASH_EQUALS;
             } else {
@@ -339,8 +335,8 @@ TokenType lexer_lex_operator(Lexer* lexer) {
         case '!':
             // '!='
             if(curr == '=') {
-                lexer->increment_offset(); 
-                lexer->increment_tok_length();
+                lexer_increment_offset(lexer); 
+                lexer_increment_tok_length(lexer);
 
                 token = EXCLAMATION_EQUALS;
             } else {
@@ -352,15 +348,15 @@ TokenType lexer_lex_operator(Lexer* lexer) {
         case '%':
             // '%%'
             if(curr == '%') {
-                lexer->increment_offset();
-                lexer->increment_tok_length();
+                lexer_increment_offset(lexer);
+                lexer_increment_tok_length(lexer);
                 token = MOD_MOD;
             }
 
             // '%='
             if(curr == '=') {
-                lexer->increment_offset(); 
-                lexer->increment_tok_length();
+                lexer_increment_offset(lexer); 
+                lexer_increment_tok_length(lexer);
 
                 token = MOD_EQUALS;
             } else {
@@ -372,22 +368,22 @@ TokenType lexer_lex_operator(Lexer* lexer) {
         case '&':
             // '&&'
             if(curr == '&') {
-                lexer->increment_offset();
-                lexer->increment_tok_length();
+                lexer_increment_offset(lexer);
+                lexer_increment_tok_length(lexer);
                 token = AND_AND;
             }
 
             // '&^'
             if(curr == '^') {
-                lexer->increment_offset();
-                lexer->increment_tok_length();
+                lexer_increment_offset(lexer);
+                lexer_increment_tok_length(lexer);
                 token = AND_NOT;
             }
 
             // '&='
             if(curr == '=') {
-                lexer->increment_offset(); 
-                lexer->increment_tok_length();
+                lexer_increment_offset(lexer); 
+                lexer_increment_tok_length(lexer);
 
                 token = AND_EQUALS;
             } else {
@@ -399,15 +395,15 @@ TokenType lexer_lex_operator(Lexer* lexer) {
         case '|':
             // '||'
             if(curr == '|') {
-                lexer->increment_offset();
-                lexer->increment_tok_length();
+                lexer_increment_offset(lexer);
+                lexer_increment_tok_length(lexer);
                 token = OR_OR;
             }
 
             // '|='
             if(curr == '=') {
-                lexer->increment_offset(); 
-                lexer->increment_tok_length();
+                lexer_increment_offset(lexer); 
+                lexer_increment_tok_length(lexer);
 
                 token = OR_EQUALS;
             } else {
@@ -419,8 +415,8 @@ TokenType lexer_lex_operator(Lexer* lexer) {
         case '^':
             // '^='
             if(curr == '=') {
-                lexer->increment_offset(); 
-                lexer->increment_tok_length();
+                lexer_increment_offset(lexer); 
+                lexer_increment_tok_length(lexer);
 
                 token = XOR_EQUALS;
             } else {
@@ -437,30 +433,30 @@ TokenType lexer_lex_operator(Lexer* lexer) {
         case '<':
             // '<='
             if(curr == '=') {
-                lexer->increment_offset(); 
-                lexer->increment_tok_length();
+                lexer_increment_offset(lexer); 
+                lexer_increment_tok_length(lexer);
 
                 token = LESS_THAN_OR_EQUAL_TO;
             }
 
             // '<-'
             else if(curr == '-') {
-                lexer->increment_offset(); 
-                lexer->increment_tok_length();
+                lexer_increment_offset(lexer); 
+                lexer_increment_tok_length(lexer);
 
                 token = LARROW;
             }
 
             // '<<'
             else if(curr == '<') {
-                lexer->increment_offset();
-                lexer->increment_tok_length();
+                lexer_increment_offset(lexer);
+                lexer_increment_tok_length(lexer);
 
                 // '<<='
-                curr = lexer->peek_curr();
+                curr = lexer_peek_curr(lexer);
                 if(curr == '=') {
-                    lexer->increment_offset();
-                    lexer->increment_tok_length();
+                    lexer_increment_offset(lexer);
+                    lexer_increment_tok_length(lexer);
                     token = LBITSHIFT_EQUALS;
                 } else {
                     token = LBITSHIFT;
@@ -474,22 +470,22 @@ TokenType lexer_lex_operator(Lexer* lexer) {
         case '>':
             // '>='
             if(curr == '=') {
-                lexer->increment_offset(); 
-                lexer->increment_tok_length();
+                lexer_increment_offset(lexer); 
+                lexer_increment_tok_length(lexer);
 
                 token = GREATER_THAN_OR_EQUAL_TO;
             } 
 
             // '>>'
             else if(curr == '>') {
-                lexer->increment_offset();
-                lexer->increment_tok_length();
+                lexer_increment_offset(lexer);
+                lexer_increment_tok_length(lexer);
 
                 // '>>='
-                curr = lexer->peek_curr();
+                curr = lexer_peek_curr(lexer);
                 if(curr == '=') {
-                    lexer->increment_offset();
-                    lexer->increment_tok_length();
+                    lexer_increment_offset(lexer);
+                    lexer_increment_tok_length(lexer);
                     token = RBITSHIFT_EQUALS;
                 } else {
                     token = RBITSHIFT;
@@ -503,8 +499,8 @@ TokenType lexer_lex_operator(Lexer* lexer) {
         case '~':
             // '~='
             if(curr == '=') {
-                lexer->increment_offset(); 
-                lexer->increment_tok_length();
+                lexer_increment_offset(lexer); 
+                lexer_increment_tok_length(lexer);
 
                 token = TILDA_EQUALS;
             } else {
@@ -518,19 +514,19 @@ TokenType lexer_lex_operator(Lexer* lexer) {
             abort();
     }
 
-    lexer->finalize_token(token);
+    lexer_finalize_token(lexer, token);
     // LEXER_DEBUG("Found operator: %s", token_toString(token));
     return token; 
 } 
 
 
 TokenType lexer_lex_separator(Lexer* lexer) {
-    lexer->reset_token(); 
-    lexer->increment_tok_length(); 
+    lexer_reset_token(lexer);
+    lexer_increment_tok_length(lexer);
 
     // Do not change the declaration order of _next_ and _curr_
-    char next = lexer->next(); 
-    char curr = lexer->peek_curr(); 
+    char next = lexer_next(lexer); 
+    char curr = lexer_peek_curr(lexer); 
     TokenType token = TOK_ILLEGAL; 
 
     switch(next) {
@@ -538,14 +534,14 @@ TokenType lexer_lex_separator(Lexer* lexer) {
         case '.':
             // '..'
             if(curr == '.') {
-                lexer->increment_offset();
-                lexer->increment_tok_length();
+                lexer_increment_offset(lexer);
+                lexer_increment_tok_length(lexer);
 
                 // '...'
-                curr = lexer->peek_curr();
+                curr = lexer_peek_curr(lexer);
                 if(curr == '.') {
-                    lexer->increment_offset();
-                    lexer->increment_tok_length();
+                    lexer_increment_offset(lexer);
+                    lexer_increment_tok_length(lexer);
                     token = ELLIPSIS;
                 } else {
                     token = DDOT;
@@ -564,19 +560,19 @@ TokenType lexer_lex_separator(Lexer* lexer) {
             abort();
     }
 
-    lexer->finalize_token(token);
+    lexer_finalize_token(lexer, token);
     // LEXER_DEBUG("Found separator: %s", token_toString(token));
     return token; 
 }
 
 
 TokenType lexer_lex_delimiter(Lexer* lexer) {
-    lexer->reset_token(); 
-    lexer->increment_tok_length(); 
+    lexer_reset_token(lexer);
+    lexer_increment_tok_length(lexer);
 
     // Do not change the declaration order of _next_ and _curr_
-    char next = lexer->next(); 
-    char curr = lexer->peek_curr(); 
+    char next = lexer_next(lexer); 
+    char curr = lexer_peek_curr(lexer); 
     TokenType token = TOK_ILLEGAL; 
 
     switch(next) {       
@@ -591,46 +587,21 @@ TokenType lexer_lex_delimiter(Lexer* lexer) {
             abort();
     }
         
-    lexer->finalize_token(token);
+    lexer_finalize_token(lexer, token);
     // LEXER_DEBUG("Found delimiter: %s", token_toString(token));
     return token; 
 }
 
 
 TokenType lexer_lex_macro(Lexer* lexer) {
-    lexer->reset_token(); 
-    lexer->increment_tok_length(); 
+    lexer_reset_token(lexer);
+    lexer_increment_tok_length(lexer);
     TokenType token = TOK_ILLEGAL;
 
-    char curr = lexer->peek_curr(); 
+    char curr = lexer_peek_curr(lexer); 
     if(curr == '@')
         token = MACRO;
 
-    lexer->finalize_token(token);
+    lexer_finalize_token(lexer, token);
     return token;
 }
-
-
-// TokenType lexer_lex_keywords(Lexer* lexer) {
-    
-// }
-
-
-// TokenType lexer_lex_char(Lexer* lexer) {
-
-// } 
-
-// TokenType lexer_lex_digit(Lexer* lexer) {
-
-// } 
-
-// TokenType lexer_lex_token_id(Lexer* lexer) {
-
-// } 
-
-
-// char* lexer_lex_charstr(Lexer* lexer) {
-
-// }
-
-} // namespace Hazel

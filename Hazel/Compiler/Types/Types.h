@@ -14,47 +14,47 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #ifndef _HAZEL_TYPES_H 
 #define _HAZEL_TYPES_H 
 
-namespace Hazel {
+
 
 // Data Types used in the Hazel Programming Language
 typedef enum {
-    HAZEL_TYPE_Any, 
-    HAZEL_TYPE_Null, 
-    HAZEL_TYPE_Bool, 
-    HAZEL_TYPE_Byte, 
-    HAZEL_TYPE_String, 
-    HAZEL_TYPE_Rune, 
+    HAZELTYPE_Any, 
+    HAZELTYPE_Null, 
+    HAZELTYPE_Bool, 
+    HAZELTYPE_Byte, 
+    HAZELTYPE_String, 
+    HAZELTYPE_Rune, 
 
-    HAZEL_TYPE_Int8, 
-    HAZEL_TYPE_Int16, 
-    HAZEL_TYPE_Int, // Int32
-    HAZEL_TYPE_Int64, 
-    //HAZEL_TYPE_Int128, // To be supported in the future 
+    HAZELTYPE_Int8, 
+    HAZELTYPE_Int16, 
+    HAZELTYPE_Int, // Int32
+    HAZELTYPE_Int64, 
+    //HAZELTYPE_Int128, // To be supported in the future 
 
-    HAZEL_TYPE_Float32, 
-    HAZEL_TYPE_Float64, 
+    HAZELTYPE_Float32, 
+    HAZELTYPE_Float64, 
 
-    HAZEL_TYPE_UInt16,
-    HAZEL_TYPE_UInt32, 
-    HAZEL_TYPE_UInt64, 
-    //HAZEL_TYPE_UInt128, // Will be supported in the future
+    HAZELTYPE_UInt16,
+    HAZELTYPE_UInt32, 
+    HAZELTYPE_UInt64, 
+    //HAZELTYPE_UInt128, // Will be supported in the future
 
     // Tensor-related types
-    HAZEL_TYPE_TensorInt16,
-    HAZEL_TYPE_TensorInt32, 
-    HAZEL_TYPE_TensorInt64, 
-    HAZEL_TYPE_TensorFloat32, 
-    HAZEL_TYPE_TensorFloat64, 
+    HAZELTYPE_TensorInt16,
+    HAZELTYPE_TensorInt32, 
+    HAZELTYPE_TensorInt64, 
+    HAZELTYPE_TensorFloat32, 
+    HAZELTYPE_TensorFloat64, 
 
     // Complex 
-    HAZEL_TYPE_Complex32, 
-    HAZEL_TYPE_Complex64,
+    HAZELTYPE_Complex32, 
+    HAZELTYPE_Complex64,
 
     // Quaternion
-    HAZEL_TYPE_Quaternion128, 
-    HAZEL_TYPE_Quaternion256 
-} Types; 
+    HAZELTYPE_Quaternion128, 
+    HAZELTYPE_Quaternion256 
+} HazelTypes; 
 
-} // namespace Hazel
+
 
 #endif // _HAZEL_TYPES_H 
