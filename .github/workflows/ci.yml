@@ -1,3 +1,6 @@
+# This is a helpful build script with CMake <https://cristianadam.eu/20191222/using-github-actions-with-c-plus-plus-and-cmake/>
+# We will switch to it, but at a later point in time. 
+
 name: CI
 on:
   push:
