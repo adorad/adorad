@@ -7,70 +7,58 @@ on:
     branches:
       - dev
 
-jobs:
-  test:
-    name: Test C
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: LGTM
-        run: echo "LGTM" #TODO, uncomment
-        
 # jobs:
-#   build_linux:
+#   test:
+#     name: Test C
 #     runs-on: ubuntu-latest
-#     steps:
-#       - uses: actions/checkout@v1
-#       # - name: Download LLVM
-#       #   run: sudo apt-get install llvm
-#       - name: Build Hazel
-#         run: make compile
-#       # - name: Hazel run
-#       #   run: ./hazel run examples/demo/demo.hazel
-#       # - name: Hazel check
-#       #   run: ./hazel check examples/demo/demo.hazel -vet
 
-#   build_macOS:
-#     runs-on: macos-latest
 #     steps:
-#       - uses: actions/checkout@v1
-#       # - name: Download LLVM and setup PATH
-#       #   run: |
-#       #     brew install llvm
-#       #     echo "/usr/local/opt/llvm/bin" >> $GITHUB_PATH
-#       #     TMP_PATH=$(xcrun --show-sdk-path)/user/include
-#       #     echo "CPATH=$TMP_PATH" >> $GITHUB_ENV
-#       - name: Build Hazel
-#         run: make release
-#       # - name: Hazel run
-#       #   run: ./hazel run examples/demo/demo.hazel
-#       # - name: Hazel check
-#       #   run: ./hazel check examples/demo/demo.hazel -vet
+#       - name: LGTM
+#         run: echo "LGTM" #TODO, uncomment
+        
+jobs:
+  build_linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Build Hazel
+        run: |
+          mkdir build && cd build
+          cmake -B .
+      # - name: Hazel run
+      #   run: ./hazel run examples/demo/demo.hzl
+      # - name: Hazel check
+      #   run: ./hazel check examples/demo/demo.hzl -vet
 
-#   build_windows:
-#     runs-on: windows-latest
-#     steps:
-#       - uses: actions/checkout@v1
-#       # - name: Download and unpack LLVM bins
-#       #   shell: powershell
-#       #   run: |
-#       #     cd bin
-#       #     $ProgressPreference = "SilentlyContinue";
-#       #     Invoke-WebRequest -Uri https://github.com/odin-lang/Hazel/releases/download/llvm-windows/llvm-binaries.zip -OutFile llvm-binaries.zip
-#       #     7z x llvm-binaries.zip > $null
+  build_macOS:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Build Hazel
+        run: |
+          mkdir build && cd build
+          cmake -B .
+      # - name: Hazel run
+      #   run: ./hazel run examples/demo/demo.hzl
+      # - name: Hazel check
+      #   run: ./hazel check examples/demo/demo.hzl -vet
 
-#       - name: Build Hazel
-#         shell: cmd
-#         run: |
-#           call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat
-#           ./build.bat 1
-#       # - name: Hazel run
-#       #   shell: cmd
-#       #   run: |
-#       #     call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat
-#       #     hazel run examples/demo/demo.hazel
-#       # - name: Hazel check
-#       #   shell: cmd
-#       #   run: |
-#       #     call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat
-#       #     hazel check examples/demo/demo.hazel -vet
+  build_windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Build Hazel
+        shell: cmd
+        run: |
+          mkdir build && cd build
+          cmake -B .
+      # - name: Hazel run
+      #   shell: cmd
+      #   run: |
+      #     call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat
+      #     hazel run examples/demo/demo.hzl
+      # - name: Hazel check
+      #   shell: cmd
+      #   run: |
+      #     call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat
+      #     hazel check examples/demo/demo.hzl -vet
