@@ -23,8 +23,8 @@ jobs:
       - uses: actions/checkout@v1
       - name: Build Hazel
         run: |
-          mkdir build && cd build
-          cmake -B .
+          mkdir build
+          cmake -S . -B build
       # - name: Hazel run
       #   run: ./hazel run examples/demo/demo.hzl
       # - name: Hazel check
@@ -36,8 +36,8 @@ jobs:
       - uses: actions/checkout@v1
       - name: Build Hazel
         run: |
-          mkdir build && cd build
-          cmake -B .
+          mkdir build
+          cmake -S . -B build
       # - name: Hazel run
       #   run: ./hazel run examples/demo/demo.hzl
       # - name: Hazel check
@@ -50,8 +50,8 @@ jobs:
       - name: Build Hazel
         shell: cmd
         run: |
-          mkdir build && cd build
-          cmake -B .
+          mkdir build
+          cmake -S . -B build
       # - name: Hazel run
       #   shell: cmd
       #   run: |
