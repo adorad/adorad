@@ -43,7 +43,7 @@ sources = $(wildcard Hazel/Compiler/IO/*.cpp Hazel/Compiler/Lexer/*.cpp Hazel/Co
 objects = $(sources:Hazel/.cpp=.o)
 
 # To disable warnings, use "-w"
-flags = -g -w -std=c++17 -Wall -Wextra -Werror=return-type -Wno-unknown-pragmas -Wno-sign-compare -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -Wno-unused-result -Wno-unused-local-typedefs -Wno-strict-overflow -Wno-strict-aliasing -Wno-error=deprecated-declarations 
+flags = -g -w -std=c++17 -Wall -Wextra -Werror=return-type -Wno-unknown-pragmas -Wno-sign-compare -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -Wno-unused-result -Wno-unused-local-typedefs -Wno-strict-overflow -Wno-strict-aliasing -Wno-error=deprecated-declarations -Wno-error=comment
 CC = g++
 
 

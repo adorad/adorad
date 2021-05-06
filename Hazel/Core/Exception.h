@@ -159,7 +159,7 @@
 // // Here the static cast is used to pass the build.
 // // if this is used inside a lambda the __func__ macro expands to operator(),
 // // which isn't very useful, but hard to fix in a macro so suppressing the warning.
-// #define CSTL_THROW_ERROR(err_type, msg) \
+// #define CSTL_THROW_ERROR(err_type, msg)
 //     throw ::cstl::err_type({__func__, __FILE__, static_cast<UInt32>(__LINE__)}, msg)
 
 // // This is only used in the error repoting macros below. 
@@ -185,173 +185,175 @@
 
 // #define CSTL_UNLIKELY_OR_CONST(x)   CSTL_UNLIKELY(x)
 
+/**
 
-// // Private helper macro for workaround MSVC misexpansion of nested macro invocations involving __VA_ARGS__.  
-// // See https://stackoverflow.com/questions/5134523/msvc-doesnt-expand-va-args-correctly
-// #define CSTL_EXPAND_MSVC_WORKAROUND(x)      x
+// Private helper macro for workaround MSVC misexpansion of nested macro invocations involving __VA_ARGS__.  
+// See https://stackoverflow.com/questions/5134523/msvc-doesnt-expand-va-args-correctly
+#define CSTL_EXPAND_MSVC_WORKAROUND(x)      x
 
-// // A utility macro that provides assert()-like functionality; that is, it enforces internal invariants in the code 
-// // It supports an arbitrary number of extra argumens that are evaluated only on failure (which will be 
-// // printed in the assert failure message using `operator<<` --> this might be useful to print some variables
-// // which may be useful for debugging.)
-// // 
-// // Usage:
-// //      CSTL_ASSERT(true_cond);
-// //      CSTL_ASSERT(a == 34, "a = ", a); 
-// // 
-// // This is usually meant for internal usage only, although we may expand this globally once stable
-// // Assuming no bugs in the codebase, the conditions tested by this macro should _always_ be true
-// // i.e disabling all of these conditions ideally should not change observable human behaviour. 
-// // 
-// // NOTE: It is SAFE to use this macro in production code; on failure, this simply raises an exeception.
-// // It _does NOT_ unceremoniously quit the process (unlike assert())
-// // 
-// #ifdef CSTL_STRIP_ERROR_MESSAGES
-//     #define CSTL_ASSERT(cond, ...) \
-//         if(CSTL_UNLIKELY_OR_CONST(!(cond))) { \ 
-//             cstl_check_fail(                                \
-//                 __func__,                                   \
-//                 __FILE__,                                   \
-//                 static_cast<UInt32> (__LINE__),             \
-//                 #cond "CSTL ASSERT FAILED at"               \
-//                 CSTL_STRINGIFY(__FILE__)                    \
-//             );                                              \
-//         }
-// #else 
-//     #define CSTL_ASSERT(cond, ...) \
-//         if(CSTL_UNLIKELY_OR_CONST(!(cond))) { \ 
-//             cstl_assert_fail(                               \
-//                 __func__,                                   \
-//                 __FILE__,                                   \
-//                 static_cast<UInt32> (__LINE__),             \
-//                 #cond "CSTL ASSERT FAILED at"               \
-//                 CSTL_STRINGIFY(__FILE__)                    \
-//                 ":"                                         \
-//                 CSTL_STRINGIFY(__LINE__)                    \
-//                 ", please report this as a bug to Hazel. ", \
-//                 cstl::str(__VA_ARGS)                        \
-//             );                                              \
-//         }
-// #endif // CSTL_STRIP_ERROR_MESSAGES
+// A utility macro that provides assert()-like functionality; that is, it enforces internal invariants in the code 
+// It supports an arbitrary number of extra argumens that are evaluated only on failure (which will be 
+// printed in the assert failure message using `operator<<` --> this might be useful to print some variables
+// which may be useful for debugging.)
+// 
+// Usage:
+//      CSTL_ASSERT(true_cond);
+//      CSTL_ASSERT(a == 34, "a = ", a); 
+// 
+// This is usually meant for internal usage only, although we may expand this globally once stable
+// Assuming no bugs in the codebase, the conditions tested by this macro should _always_ be true
+// i.e disabling all of these conditions ideally should not change observable human behaviour. 
+// 
+// NOTE: It is SAFE to use this macro in production code; on failure, this simply raises an exeception.
+// It _does NOT_ unceremoniously quit the process (unlike assert())
+// 
+#ifdef CSTL_STRIP_ERROR_MESSAGES
+    #define CSTL_ASSERT(cond, ...) \
+        if(CSTL_UNLIKELY_OR_CONST(!(cond))) { \ 
+            cstl_check_fail(                                \
+                __func__,                                   \
+                __FILE__,                                   \
+                static_cast<UInt32> (__LINE__),             \
+                #cond "CSTL ASSERT FAILED at"               \
+                CSTL_STRINGIFY(__FILE__)                    \
+            );                                              \
+        }
+#else 
+    #define CSTL_ASSERT(cond, ...) \
+        if(CSTL_UNLIKELY_OR_CONST(!(cond))) { \ 
+            cstl_assert_fail(                               \
+                __func__,                                   \
+                __FILE__,                                   \
+                static_cast<UInt32> (__LINE__),             \
+                #cond "CSTL ASSERT FAILED at"               \
+                CSTL_STRINGIFY(__FILE__)                    \
+                ":"                                         \
+                CSTL_STRINGIFY(__LINE__)                    \
+                ", please report this as a bug to Hazel. ", \
+                cstl::str(__VA_ARGS)                        \
+            );                                              \
+        }
+#endif // CSTL_STRIP_ERROR_MESSAGES
 
-// // A utility macro to make it easier to test for error conditions from user input. 
-// // This is like CSTL_ASSERT - it supports an arbitrary number of extra arguments (evaluated only on failure), which
-// // will be printed to the error message using `operator<<`. 
-// // Most objects in Hazel have these definitions. 
-// // 
-// // Usage:
-// //      CSTL_CHECK(true_cond); // A default error message will be provided, but we recommend writing
-// // an explicit error message, as it is more user-friendly
-// //      CSTL_CHECK(a == 34, "Expected a to be 10, but got ", a);
-// // 
-// // On failure, this macro will raise an exception. 
-// // 
-// // NOTE: It is SAFE to use this macro in production code; on failure, this simply raises an exeception.
-// // It _does NOT_ unceremoniously quit the process
-// // 
-// #ifdef CSTL_STRIP_ERROR_MESSAGES
-//     #define CSTL_CHECK_MSG(cond, type, ...)
-//         (#cond #type " CHECK FAILED at"
-//          CSTL_STRINGIFY(__FILE__))
+// A utility macro to make it easier to test for error conditions from user input. 
+// This is like CSTL_ASSERT - it supports an arbitrary number of extra arguments (evaluated only on failure), which
+// will be printed to the error message using `operator<<`. 
+// Most objects in Hazel have these definitions. 
+// 
+// Usage:
+//      CSTL_CHECK(true_cond); // A default error message will be provided, but we recommend writing
+// an explicit error message, as it is more user-friendly
+//      CSTL_CHECK(a == 34, "Expected a to be 10, but got ", a);
+// 
+// On failure, this macro will raise an exception. 
+// 
+// NOTE: It is SAFE to use this macro in production code; on failure, this simply raises an exeception.
+// It _does NOT_ unceremoniously quit the process
+// 
+#ifdef CSTL_STRIP_ERROR_MESSAGES
+    #define CSTL_CHECK_MSG(cond, type, ...)
+        (#cond #type " CHECK FAILED at"
+         CSTL_STRINGIFY(__FILE__))
     
-//     #define CSTL_CHECK_WITH_MSG(error_t, cond, type, ...) 
-//         if(CSTL_UNLIKELY_OR_CONST(!(cond))) {
-//             CSTL_THROW_ERROR(Error, 
-//                 CSTL_CHECK_MSG(cond, type, __VA_ARGS__)
-//             );
-//         }
-// #else 
-//     #define CSTL_CHECK_MSG(cond, type, ...)                      \
-//         (cstl_check_msg_impl                                     \
-//             (                                                    \
-//                 "Expected " #cond " to be true, but got false.", \
-//                 ##__VA_ARGS__                                    \
-//             )                                                    \
-//         )
+    #define CSTL_CHECK_WITH_MSG(error_t, cond, type, ...) 
+        if(CSTL_UNLIKELY_OR_CONST(!(cond))) {
+            CSTL_THROW_ERROR(Error, 
+                CSTL_CHECK_MSG(cond, type, __VA_ARGS__)
+            );
+        }
+#else 
+    #define CSTL_CHECK_MSG(cond, type, ...)                      \
+        (cstl_check_msg_impl                                     \
+            (                                                    \
+                "Expected " #cond " to be true, but got false.", \
+                ##__VA_ARGS__                                    \
+            )                                                    \
+        )
     
-//     #define CSTL_CHECK_WITH_MSG(error_t, cond, type, ...)    \
-//         if(CSTL_UNLIKELY_OR_CONST(!(cond))) {                \
-//             CSTL_THROW_ERROR(                                \
-//                 error_t,                                     \
-//                 CSTL_CHECK_MSG(cond, type, __VA_ARGS__)      \
-//             );                                               \
-//         }
-// #endif // CSTL_STRIP_ERROR_MESSAGES
+    #define CSTL_CHECK_WITH_MSG(error_t, cond, type, ...)    \
+        if(CSTL_UNLIKELY_OR_CONST(!(cond))) {                \
+            CSTL_THROW_ERROR(                                \
+                error_t,                                     \
+                CSTL_CHECK_MSG(cond, type, __VA_ARGS__)      \
+            );                                               \
+        }
+#endif // CSTL_STRIP_ERROR_MESSAGES
 
-// // The cstl::str() call that creates userMsg can have 1 of 3 return
-// // types depending on the number and types of arguments passed to
-// // TORCH_INTERNAL_ASSERT.  0 arguments will get a
-// // CompileTimeEmptyString, 1 const char * will be passed straight
-// // through, and anything else will get converted to std::string.
-// [[noreturn]] void cstl_check_fail(const char* func, const char* file, UInt32 line, const std::string& msg);
-// [[noreturn]] void cstl_check_fail(const char* func, const char* file, UInt32 line, const char* msg);
+// The cstl::str() call that creates userMsg can have 1 of 3 return
+// types depending on the number and types of arguments passed to
+// TORCH_INTERNAL_ASSERT.  0 arguments will get a
+// CompileTimeEmptyString, 1 const char * will be passed straight
+// through, and anything else will get converted to std::string.
+[[noreturn]] void cstl_check_fail(const char* func, const char* file, UInt32 line, const std::string& msg);
+[[noreturn]] void cstl_check_fail(const char* func, const char* file, UInt32 line, const char* msg);
 
-// [[noreturn]] void cstl_assert_fail(const char* func, const char* file, UInt32 line, const char* condMsg, const char* userMsg);
-// [[noreturn]] void cstl_assert_fail(const char* func, const char* file, UInt32 line, const char* condMsg, const std::string& userMsg);
-// [[noreturn]] void cstl_assert_fail(const char* func, const char* file, UInt32 line, const char* condMsg, cstl::detail::CompileTimeEmptyString userMsg) {
-//     cstl_check_fail(func, file, line, condMsg);
-// }
+[[noreturn]] void cstl_assert_fail(const char* func, const char* file, UInt32 line, const char* condMsg, const char* userMsg);
+[[noreturn]] void cstl_assert_fail(const char* func, const char* file, UInt32 line, const char* condMsg, const std::string& userMsg);
+[[noreturn]] void cstl_assert_fail(const char* func, const char* file, UInt32 line, const char* condMsg, cstl::detail::CompileTimeEmptyString userMsg) {
+    cstl_check_fail(func, file, line, condMsg);
+}
 
-// #ifdef CSTL_STRIP_ERROR_MESSAGES
-//     #define CSTL_CHECK(cond, ...)                     \                     
-//         if (CSTL_UNLIKELY_OR_CONST(!(cond))) {        \                        
-//             cstl_check_fail(                          \            
-//                 __func__,                             \
-//                 __FILE__,                             \
-//                 static_cast<UInt32>(__LINE__),      \      
-//                 CSTL_CHECK_MSG(cond, "", __VA_ARGS__) \
-//             );                                        \
-//         }
-// #else
-//     #define CSTL_CHECK(cond, ...)                         \
-//         if (CSTL_UNLIKELY_OR_CONST(!(cond))) {            \
-//             cstl_check_fail(                              \
-//                 __func__,                                 \
-//                 __FILE__,                                 \
-//                 static_cast<UInt32>(__LINE__),            \
-//                 CSTL_CHECK_MSG(cond, "", ##__VA_ARGS__)   \
-//             );                                            \
-//         }
-// #endif // CSTL_STRIP_ERROR_MESSAGES
+#ifdef CSTL_STRIP_ERROR_MESSAGES
+    #define CSTL_CHECK(cond, ...)                     \                     
+        if (CSTL_UNLIKELY_OR_CONST(!(cond))) {        \                        
+            cstl_check_fail(                          \            
+                __func__,                             \
+                __FILE__,                             \
+                static_cast<UInt32>(__LINE__),      \      
+                CSTL_CHECK_MSG(cond, "", __VA_ARGS__) \
+            );                                        \
+        }
+#else
+    #define CSTL_CHECK(cond, ...)                         \
+        if (CSTL_UNLIKELY_OR_CONST(!(cond))) {            \
+            cstl_check_fail(                              \
+                __func__,                                 \
+                __FILE__,                                 \
+                static_cast<UInt32>(__LINE__),            \
+                CSTL_CHECK_MSG(cond, "", ##__VA_ARGS__)   \
+            );                                            \
+        }
+#endif // CSTL_STRIP_ERROR_MESSAGES
 
-// // Debug only version of CSTL_ASSERT. This macro only checks in debug build, and does nothing in release build.  
-// // It is appropriate to use in situations where you want to add an assert to a hotpath, 
-// // but it is too expensive to run this assert on production builds.
-// #ifdef NDEBUG
-//     // Optimized version - generates no code.
-//     #define CSTL_ASSERT_DEBUG_ONLY(...) \
-//         while (false)                               \
-//             CSTL_EXPAND_MSVC_WORKAROUND(CSTL_ASSERT(__VA_ARGS__))
-// #else
-//     #define CSTL_ASSERT_DEBUG_ONLY(...) \
-//         CSTL_EXPAND_MSVC_WORKAROUND(CSTL_ASSERT(__VA_ARGS__))
-// #endif // NDEBUG
+// Debug only version of CSTL_ASSERT. This macro only checks in debug build, and does nothing in release build.  
+// It is appropriate to use in situations where you want to add an assert to a hotpath, 
+// but it is too expensive to run this assert on production builds.
+#ifdef NDEBUG
+    // Optimized version - generates no code.
+    #define CSTL_ASSERT_DEBUG_ONLY(...) \
+        while (false)                               \
+            CSTL_EXPAND_MSVC_WORKAROUND(CSTL_ASSERT(__VA_ARGS__))
+#else
+    #define CSTL_ASSERT_DEBUG_ONLY(...) \
+        CSTL_EXPAND_MSVC_WORKAROUND(CSTL_ASSERT(__VA_ARGS__))
+#endif // NDEBUG
 
-// // Report a warning to the user.  
-// // This accepts an arbitrary number of extra arguments which are concatenated 
-// // into the warning message using `operator<<`
-// //
-// #ifdef CSTL_STRIP_ERROR_MESSAGES
-//     #define CSTL_WARN(...)                     \
-//         ::cstl::Warning::warn({                  \
-//                 __func__,                       \
-//                 __FILE__,                       \
-//                 static_cast<UInt32>(__LINE__) \
-//                 },                              \
-//             {},                                 \
-//             false                               \
-//         )
-// #else
-//     #define CSTL_WARN(...)                     \
-//         ::cstl::Warning::warn({                  \
-//                 __func__,                       \
-//                 __FILE__,                       \
-//                 static_cast<UInt32>(__LINE__) \
-//                 },                              \
-//             ::cstl::str(__VA_ARGS__),            \
-//             false                               \
-//         )
-// #endif
+// Report a warning to the user.  
+// This accepts an arbitrary number of extra arguments which are concatenated 
+// into the warning message using `operator<<`
+//
+#ifdef CSTL_STRIP_ERROR_MESSAGES
+    #define CSTL_WARN(...)                     \
+        ::cstl::Warning::warn({                  \
+                __func__,                       \
+                __FILE__,                       \
+                static_cast<UInt32>(__LINE__) \
+                },                              \
+            {},                                 \
+            false                               \
+        )
+#else
+    #define CSTL_WARN(...)                     \
+        ::cstl::Warning::warn({                  \
+                __func__,                       \
+                __FILE__,                       \
+                static_cast<UInt32>(__LINE__) \
+                },                              \
+            ::cstl::str(__VA_ARGS__),            \
+            false                               \
+        )
+#endif
+*/
 
 // #ifdef __cplusplus
 // } // namespace Hazel

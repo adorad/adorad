@@ -24,7 +24,7 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 namespace Hazel {
 
 // Read file contents
-std::string readFile(const std::string& fname) {
+std::string read_File(const std::string& fname) {
     std::ifstream stream(fname); 
 	std::string buffer; 
 
