@@ -15,6 +15,7 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #define CSTL_MEMORY_H
 
 #ifdef __cplusplus
+namespace Hazel {
 extern "C" {
 #endif
 
@@ -30,8 +31,10 @@ extern "C" {
 #define CSTL__HIGHS       CSTL__ONES * (UInt8_MAX/2+1)
 #define CSTL__HAS_ZERO(x) (x)-CSTL__ONES & ~(x) & CSTL__HIGHS
 
-#if defined(__cplusplus)
-}
+
+#ifdef __cplusplus
+} // extern "C"
+} // namespace Hazel
 #endif
 
 #endif // CSTL_MEMORY_H

@@ -16,8 +16,10 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #define CSTL_OS_H
 
 #ifdef __cplusplus
+namespace Hazel {
 extern "C" {
 #endif
+
 
 // Operating Systems ==========================================
 // CSTL_SYSTEM_...
@@ -54,8 +56,10 @@ extern "C" {
     #error This Operating System in not supported by Hazel
 #endif
 
-#if defined(__cplusplus)
-}
+
+#ifdef __cplusplus
+} // extern "C"
+} // namespace Hazel
 #endif
 
 #endif // CSTL_OS_H

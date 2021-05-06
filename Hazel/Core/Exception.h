@@ -1,10 +1,13 @@
 #ifndef CSTL_EXCEPTION_H
 #define CSTL_EXCEPTION_H 
 
-#include <Hazel/Core/Types.h>
 #include <Hazel/Core/String.h>
+#include <Hazel/Core/Types.h>
 
+// #ifdef __cplusplus
 // namespace Hazel {
+// extern "C" {
+// #endif
 
 // // The Primary CSTL Error Class
 // // Provides a complete error message with source code location information via `what()`, and a more conce message via 
@@ -146,7 +149,6 @@
 //     }
 
 // } // namespace detail
-// } // namespace Hazel 
 
 // // ========= ERROR REPORTING MACROS =========
 
@@ -350,6 +352,11 @@
 //             ::cstl::str(__VA_ARGS__),            \
 //             false                               \
 //         )
+// #endif
+
+// #ifdef __cplusplus
+// } // extern "C"
+// } // namespace Hazel
 // #endif
 
 #endif // CSTL_EXCEPTION_H

@@ -51,6 +51,8 @@ char* readFile(const char* fname) {
 #include <string> 
 #include <iostream>
 
+namespace Hazel {
+
 // Read file contents
 std::string readFile(const std::string& fname) {
     std::ifstream stream(fname); 
@@ -69,6 +71,7 @@ std::string readFile(const std::string& fname) {
     return buffer;
 }
 
+} // namespace Hazel
 #endif // __cplusplus 
 
 #endif // HAZEL_IO_H

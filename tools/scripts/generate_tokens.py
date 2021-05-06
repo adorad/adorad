@@ -62,6 +62,7 @@ token_h_template = """\
 #define HAZEL_TOKEN_H
 
 #ifdef __cplusplus
+namespace Hazel {
 extern "C" {
 #endif
 

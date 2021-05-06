@@ -15,6 +15,7 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #define CSTL_MISCELLANEOUS_H
 
 #ifdef __cplusplus
+namespace Hazel {
 extern "C" {
 #endif
 
@@ -127,8 +128,10 @@ extern "C" {
     #define CSTL_ABS(x)     ((x) < 0 ? -(x) : (x))
 #endif 
 
-#if defined(__cplusplus)
-}
+
+#ifdef __cplusplus
+} // extern "C"
+} // namespace Hazel
 #endif
 
 #endif // CSTL_MISCELLANEOUS_H

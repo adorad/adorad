@@ -17,6 +17,7 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #include <Hazel/Core/OS.h>
 
 #ifdef __cplusplus
+namespace Hazel {
 extern "C" {
 #endif
 
@@ -117,8 +118,10 @@ extern "C" {
     #include <semaphore.h>
 #endif
 
-#if defined(__cplusplus)
-}
+
+#ifdef __cplusplus
+} // extern "C"
+} // namespace Hazel
 #endif
 
 #endif // CSTL_HEADERS_H
