@@ -28,76 +28,25 @@ namespace Hazel {
 
 */
 
-// Useful Functions used by the Lexer 
+// ================ Useful Functions used by the Lexer ============
 // Check if the current Lexer state is at EOF
-inline bool Lexer::is_EOF() {
-	return this->offset >= this->buffer_capacity;
-}
-
-// Reset the line
-void Lexer::reset_lineno() {
-	this->__location.set_lineno(0);
-}
-
-// Reset the column number 
-void Lexer::reset_colno() {
-	this->__location.set_colno(0);
-}
-
-// Reset a Lexer Token
-void Lexer::reset_token() {
-	this->token.reset_();
-	// TODO(jasmcaus): Verify this is accurate
-	this->token.__value = this->buffer[this->offset]; 
-	this->token.__location = this->__location;
-}
-
-// Finalize a Token
-void Lexer::finalize_token(TokenType __tok) {
-	this->token.type = __tok; 
-	this->token.__location.set_fname(this->__location.__fname);
-    
-}
-
+inline bool Lexer::is_EOF() { return this->__offset >= this->__buffer_capacity; }
 // Extract a Token 
-inline Token Lexer::extract_token() {
-	return this->token;
-}
-
+inline Token Lexer::extract_token() { return this->__token; }
 // Set token type
-void Lexer::set_token(TokenType tok_type) {
-	this->token.type = tok_type; 
-}
-
+void Lexer::set_token(TokenType tok_type) { this->__token.__type = tok_type; }
 // Set token value 
-void Lexer::set_token_value(std::string value) {
-	this->token.__value = value; 
-}
-
+void Lexer::set_token_value(std::string value) { this->__token.__value = value; }
 // Set token bytes 
-void Lexer::set_token_bytes(UInt32 bytes) {
-	this->token.tok_bytes = bytes; 
-}
-
+void Lexer::set_token_bytes(UInt32 bytes) { this->__token.__tok_bytes = bytes; }
 // Increment Token Bytes
-void Lexer::increment_tok_bytes() {
-	++this->token.tok_bytes;
-}
-
+void Lexer::increment_tok_bytes() { ++this->__token.__tok_bytes;}
 // Decrement Token Bytes
-void Lexer::decrement_tok_bytes() {
-	--this->token.tok_bytes;
-}
-
+void Lexer::decrement_tok_bytes() { --this->__token.__tok_bytes;}
 // Increment Token Length
-void Lexer::increment_tok_length() {
-	++this->token.tok_length;
-}
-
+void Lexer::increment_tok_length() { ++this->__token.__tok_length;}
 // Decrement Token Length
-void Lexer::decrement_tok_length() {
-	--this->token.tok_length;
-}
+void Lexer::decrement_tok_length() { --this->__token.__tok_length;}
 
 // Increment the line number
 void Lexer::increment_lineno() {
@@ -123,27 +72,46 @@ void Lexer::decrement_colno() {
 
 // Increment the Lexical Buffer offset
 void Lexer::increment_offset() {
-	++this->offset; 
+	++this->__offset; 
 	this->increment_colno();
 }
 
 // Decrement the Lexical Buffer offset
 void Lexer::decrement_offset() {
-	--this->offset; 
+	--this->__offset; 
 	this->decrement_colno();
+}
+
+// Reset the line
+void Lexer::reset_lineno() { this->__location.set_lineno(0); }
+// Reset the column number 
+void Lexer::reset_colno() { this->__location.set_colno(0); }
+
+// Reset a Lexer Token
+void Lexer::reset_token() {
+	this->__token.reset_();
+	// TODO(jasmcaus): Verify this is accurate
+	this->__token.__value = this->__buffer[this->__offset]; 
+	this->__token.__location = this->__location;
+}
+
+// Finalize a Token
+void Lexer::finalize_token(TokenType __tok) {
+	this->__token.__type = __tok; 
+	this->__token.__location.set_fname(this->__location.__fname);
 }
 
 // Reset the buffer 
 void Lexer::reset_buffer() {
-	this->buffer = ""; 
-	this->buffer_capacity = 0;
+	this->__buffer = ""; 
+	this->__buffer_capacity = 0;
 }
 
 // Reset the Lexer state
 void Lexer::reset_() {
-	this->buffer = ""; 
-	this->buffer_capacity = 0;
-	this->offset = 0; 
+	this->__buffer = ""; 
+	this->__buffer_capacity = 0;
+	this->__offset = 0; 
 	this->__location.reset_();
 }
 
@@ -181,9 +149,7 @@ void Lexer::reset_() {
 //     return false; 
 // }
 
-static inline bool isComment(char c1, char c2) { 
-    return isSlashComment(c1, c2) || isHashComment(c1) || isHashComment(c2);
-}
+static inline bool isComment(char c1, char c2) { return isSlashComment(c1, c2) || isHashComment(c1) || isHashComment(c2); }
 static inline bool isSlashComment(char c1, char c2) { return (c1 == '/' && (c2 == '*' || c2 == '/')); }
 static inline bool isHashComment(char c) { return c == '#';}
 static inline bool isSemicolon(char c) { return c == ';'; }

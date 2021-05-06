@@ -233,15 +233,15 @@ public:
     // Make a token from a TokenType
     Token(const TokenType __tok_type) {
         reset_();
-        this->type = __tok_type;
+        this->__type = __tok_type;
     }
 
     // Copy constructor 
     Token(const Token& other) {
-        this->type = other.type; 
-        this->offset = other.offset; 
-        this->tok_bytes = other.tok_bytes; 
-        this->tok_length = other.tok_length; 
+        this->__type = other.__type; 
+        this->__offset = other.__offset; 
+        this->__tok_bytes = other.__tok_bytes; 
+        this->__tok_length = other.__tok_length; 
         this->__location = other.__location;
         this->__value = other.__value;
     }
@@ -249,33 +249,33 @@ public:
     // Make a token for an invalid value
     Token make_illegal_tok() {
         Token token; 
-        token.type = TOK_ILLEGAL; 
+        token.__type = TOK_ILLEGAL; 
         return token;
     }
 
     // Make a token representing the end of file
     Token make_eof_tok() {
         Token token; 
-        token.type = TOK_EOF; 
+        token.__type = TOK_EOF; 
         return token;
     }
 
     // Clone a Token
     Token clone(Token& other) {
         Token token; 
-        token.type = other.type; 
-        token.offset = other.offset; 
-        token.tok_bytes = other.tok_bytes; 
-        token.tok_length = other.tok_length; 
+        token.__type = other.__type; 
+        token.__offset = other.__offset; 
+        token.__tok_bytes = other.__tok_bytes; 
+        token.__tok_length = other.__tok_length; 
         token.__value = other.__value;
         token.__location = other.__location;
         return token;
     }
 
     // Set a token type 
-    void set_tok_type(TokenType tok_type) { this->type = tok_type; }
+    void set_tok_type(TokenType tok_type) { this->__type = tok_type; }
     // Get token type 
-    TokenType tok_type() { return this->type; }
+    TokenType tok_type() { return this->__type; }
     // Returns the location of the token
     Location location() { return this->__location; }
     // Get the token value 
@@ -288,10 +288,10 @@ public:
 
     // Reset the Token
     void reset_() {
-        this->type = TOK_ILLEGAL; 
-        this->offset = 0; 
-        this->tok_bytes = 0; 
-        this->tok_length = 0; 
+        this->__type = TOK_ILLEGAL; 
+        this->__offset = 0; 
+        this->__tok_bytes = 0; 
+        this->__tok_length = 0; 
         this->__value = "";
         this->__location.reset_();
     }
@@ -325,10 +325,10 @@ public:
     bool isSemiColon();
 
 public:
-    TokenType type;     // Token Type
-    UInt32 offset;      // Offset of the first character of the Token
-    UInt32 tok_bytes;   // Token length (in bytes)
-    UInt32 tok_length;  // Token length (UTF-8)
+    TokenType __type;     // Token Type
+    UInt32 __offset;      // Offset of the first character of the Token
+    UInt32 __tok_bytes;   // Token length (in bytes)
+    UInt32 __tok_length;  // Token length (UTF-8)
     std::string __value;  // Token value
     Location __location;  // Location of the source file
     friend class Lexer;

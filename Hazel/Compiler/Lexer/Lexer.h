@@ -41,26 +41,34 @@ public:
         reset_();
     }
 
+    Lexer(std::string buffer) {
+        this->__buffer = buffer; 
+        this->__buffer_capacity = buffer.length();
+        this->__offset = 0; 
+        this->__location.reset_();
+    }
+
     // Constructor 
     Lexer(std::string buffer, std::string fname) {
-        this->buffer = buffer; 
-        this->buffer_capacity = buffer.length();
-        this->offset = 0; 
+        this->__buffer = buffer; 
+        this->__buffer_capacity = buffer.length();
+        this->__offset = 0; 
         this->__location.reset_();
         this->__location.set_fname(fname);
     }
 
+
     // Lexer next() increments the buffer offset and essentially _advances_ to the next element in the buffer
     inline char next() {
         this->increment_colno();
-        return (char)this->buffer[this->offset++];
+        return (char)this->__buffer[this->__offset++];
     }
 
     // Lexer peek() allows you to "look ahead" `n` characters in the Lexical buffer
     // It _does not_ increment the buffer offset 
     inline char peek(int n) {
-        if(this->offset + (n-1) < this->buffer_capacity) {
-            return (char)this->buffer[this->offset + n];
+        if(this->__offset + (n-1) < this->__buffer_capacity) {
+            return (char)this->__buffer[this->__offset + n];
         } else {
             return 0;
         }
@@ -68,8 +76,13 @@ public:
 
     // Lexer peek_curr() returns the current element in the Lexical Buffer
     inline char peek_curr() {
-        return (char)this->buffer[this->offset];
+        return (char)this->__buffer[this->__offset];
     }
+
+    inline std::string buffer() { return this->__buffer; }
+    inline UInt32 buffer_capacity() { return this->__buffer_capacity; }
+    inline UInt32 offset() { return this->__offset; }
+    inline Location location() { return this->__location; }
 
     inline bool is_EOF();
     void finalize_token(TokenType __tok);
@@ -99,15 +112,15 @@ public:
 
 
 protected:
-    std::string buffer;     // the Lexical buffer
-    UInt32 buffer_capacity; // current buffer capacity (in Bytes)
-    UInt32 offset;          // current buffer offset (in Bytes) 
-                            // offset of the beginning of the line (no. of chars b/w the beginning of the Lexical Buffer
-                            // and the beginning of the line)
-                            // Sometimes called the buffer position
+    std::string __buffer;     // the Lexical buffer
+    UInt32 __buffer_capacity; // current buffer capacity (in Bytes)
+    UInt32 __offset;          // current buffer offset (in Bytes) 
+                              // offset of the beginning of the line (no. of chars b/w the beginning of the Lexical Buffer
+                              // and the beginning of the line)
+                              // Sometimes called the buffer position
 
-    Token token;            // current token
-    Location __location;    // Location of the source code
+    Token __token;            // current token
+    Location __location;      // Location of the source code
 }; // class Lexer
 
 

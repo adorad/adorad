@@ -1,7 +1,17 @@
 #include <Hazel/Hazel.h>
+#include <string>
+#include <iostream>
 
 int main() {
-    // Example: 
+    std::string buffer = "123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    Hazel::Lexer lexer(buffer);
+
+    std::cout << lexer.buffer() << "\n";
+    std::cout << lexer.buffer_capacity() << "\n";
+    std::cout << lexer.next() << "\n";
+    std::cout << lexer.peek_curr() << "\n";
+
+    // C - Example: 
     // To compile a Hazel source file:
     // >> hazel compile hello.hzl
     // if(argc<3) {

@@ -17,7 +17,7 @@ namespace Hazel {
 
 // Convert a Token to its respective String representation
 std::string Token::toString() {
-    switch(this->type) {
+    switch(this->__type) {
         // Special (internal usage only)
         case TOK_EOF: return "TOK_EOF";
         case TOK_NULL: return "TOK_NULL";
@@ -178,32 +178,32 @@ bool Token::isJumpStatement() {
 	// Break (BREAK)
 	// Continue (CONTINUE)
 	// Return (RETURN)
-	return (this->type == BREAK || this->type == CONTINUE || this->type == RETURN); 
+	return (this->__type == BREAK || this->__type == CONTINUE || this->__type == RETURN); 
 } 
 
 bool Token::isLoopStatement() {
 	// While (WHILE)
 	// For (FOR)
-	return (this->type == WHILE || this->type == FOR); 
+	return (this->__type == WHILE || this->__type == FOR); 
 } 
 
 bool Token::isFlowStatement() {
 	// If 
 	// Match 
-	return (this->type == IF || this->type == MATCH); 
+	return (this->__type == IF || this->__type == MATCH); 
 } 
 
 bool Token::isMatchStatement() {
 	// Declarations used in match-case 
-	return (this->type == MATCH || this->type == CASE || this->type == DEFAULT); 
+	return (this->__type == MATCH || this->__type == CASE || this->__type == DEFAULT); 
 } 
 
 bool Token::isExpressionStatement() {
 	// Postfix Operations: isPrimaryExpressionStatement or module (for files)
 	// Unary Ops: PLUS, MINUS, EXCLAMATION, NOT
 	// RAISE 
-	return (isPrimaryExpressionStatement() || this->type == MODULE || this->type == PLUS || this->type == MINUS || 
-            this->type == EXCLAMATION || this->type == NOT || this->type == RAISE); 
+	return (isPrimaryExpressionStatement() || this->__type == MODULE || this->__type == PLUS || this->__type == MINUS || 
+            this->__type == EXCLAMATION || this->__type == NOT || this->__type == RAISE); 
 } 
 
 bool Token::isPrimaryExpressionStatement() {
@@ -214,10 +214,10 @@ bool Token::isPrimaryExpressionStatement() {
 	// FUNC
 	// ILLEGAL
 	// '(' expression ')'
-	return (this->type == INTEGER || this->type == BIN_INT || this->type == HEX_INT || this->type == IMAG || 
-			this->type == FLOAT || this->type == RUNE || this->type == STRING || this->type == IDENTIFIER || 
-			this->type == TOK_NULL || this->type == FUNC || this->type == TOK_ILLEGAL || this->type == LPAREN || 
-			this->type == RPAREN); 
+	return (this->__type == INTEGER || this->__type == BIN_INT || this->__type == HEX_INT || this->__type == IMAG || 
+			this->__type == FLOAT || this->__type == RUNE || this->__type == STRING || this->__type == IDENTIFIER || 
+			this->__type == TOK_NULL || this->__type == FUNC || this->__type == TOK_ILLEGAL || this->__type == LPAREN || 
+			this->__type == RPAREN); 
 }
 
 bool Token::isDeclStatement() {
@@ -227,81 +227,81 @@ bool Token::isDeclStatement() {
 	// Enum Declaration (ENUM)
 	// Module Declaration (MODULE)
 	// Empty Declaration (SEMICOLON)
-	return (this->type == ANY || this->type == FUNC || this->type == CLASS || this->type == STRUCT || 
-			this->type == ENUM || this->type == MODULE || this->type == SEMICOLON); 
+	return (this->__type == ANY || this->__type == FUNC || this->__type == CLASS || this->__type == STRUCT || 
+			this->__type == ENUM || this->__type == MODULE || this->__type == SEMICOLON); 
 } 
 
 
 bool Token::isSpecial() {
-	return (this->type == TOK_ID || this->type == TOK_EOF || this->type == TOK_ILLEGAL || this->type == COMMENT); 
+	return (this->__type == TOK_ID || this->__type == TOK_EOF || this->__type == TOK_ILLEGAL || this->__type == COMMENT); 
 }
 
 bool Token::isLiteral() {
-	return this->type > TOK___LITERALS_BEGIN && this->type < TOK___LITERALS_END; 
+	return this->__type > TOK___LITERALS_BEGIN && this->__type < TOK___LITERALS_END; 
 }
 
 bool Token::isKeyword() {
-	return this->type > TOK___KEYWORDS_BEGIN && this->type < TOK___KEYWORDS_END; 
+	return this->__type > TOK___KEYWORDS_BEGIN && this->__type < TOK___KEYWORDS_END; 
 }
 
 bool Token::isOperator() {
-	return this->type > TOK___OPERATORS_BEGIN && this->type < TOK___OPERATORS_END; 
+	return this->__type > TOK___OPERATORS_BEGIN && this->__type < TOK___OPERATORS_END; 
 }
 
 bool Token::isComparisonOperator() {
-	return this->type > TOK___COMP_OPERATORS_BEGIN && this->type < TOK___COMP_OPERATORS_END; 
+	return this->__type > TOK___COMP_OPERATORS_BEGIN && this->__type < TOK___COMP_OPERATORS_END; 
 }
 
 bool Token::isAssignmentOperator() {
-	return this->type > TOK___ASSIGNMENT_OPERATORS_BEGIN && this->type < TOK___ASSIGNMENT_OPERATORS_END; 
+	return this->__type > TOK___ASSIGNMENT_OPERATORS_BEGIN && this->__type < TOK___ASSIGNMENT_OPERATORS_END; 
 }
 
 bool Token::isDelimiter() {
-	return this->type > TOK___DELIMITERS_OPERATORS_BEGIN && this->type < TOK___DELIMITERS_OPERATORS_END;
+	return this->__type > TOK___DELIMITERS_OPERATORS_BEGIN && this->__type < TOK___DELIMITERS_OPERATORS_END;
 }
 
 bool Token::isArrow() {
-	return this->type > TOK___ARROW_OPERATORS_BEGIN && this->type < TOK___ARROW_OPERATORS_END;
+	return this->__type > TOK___ARROW_OPERATORS_BEGIN && this->__type < TOK___ARROW_OPERATORS_END;
 }
 
 bool Token::isBitwise() {
-	return this->type > TOK___BITWISE_OPERATORS_BEGIN && this->type < TOK___BITWISE_OPERATORS_END;
+	return this->__type > TOK___BITWISE_OPERATORS_BEGIN && this->__type < TOK___BITWISE_OPERATORS_END;
 }
 
 bool Token::isSeparator() {
-	return this->type > TOK___SEPARATORS_BEGIN && this->type < TOK___SEPARATORS_END;
+	return this->__type > TOK___SEPARATORS_BEGIN && this->__type < TOK___SEPARATORS_END;
 }
 
 bool Token::isIdentifier() {
-	return this->type == IDENTIFIER; 
+	return this->__type == IDENTIFIER; 
 }
 
 bool Token::isEOF() {
-	return this->type == TOK_EOF; 
+	return this->__type == TOK_EOF; 
 }
 
 bool Token::isNULL() {
-	return this->type == TOK_NULL; 
+	return this->__type == TOK_NULL; 
 }
 
 bool Token::isIllegal() {
-	return this->type == TOK_ILLEGAL; 
+	return this->__type == TOK_ILLEGAL; 
 }
 
 bool Token::isMacro() {
-	return this->type == MACRO; 
+	return this->__type == MACRO; 
 }
 
 bool Token::isImport() {
-	return this->type == IMPORT; 
+	return this->__type == IMPORT; 
 }
 
 bool Token::isInclude() {
-	return this->type == INCLUDE; 
+	return this->__type == INCLUDE; 
 }
 
 bool Token::isSemiColon() {
-	return this->type == SEMICOLON; 
+	return this->__type == SEMICOLON; 
 }
 
 } // namespace Hazel 
