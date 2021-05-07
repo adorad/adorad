@@ -37,14 +37,14 @@ file(GLOB_RECURSE HAZEL_HEADERS *.h)
 add_library(libHazelStatic STATIC ${LIBHAZEL_SOURCES} ${HAZEL_HEADERS})
 if(NOT MSVC)
     add_library(libHazelShared SHARED ${LIBHAZEL_SOURCES} ${HAZEL_HEADERS})
-endif() # MSVc
+endif() # MSVC
 
 # Enable hidden visibility if compiler supports it.
 if(${COMPILER_SUPPORTS_HIDDEN_VISIBILITY})
     target_compile_options(libHazelStatic PRIVATE "-fvisibility=hidden")
     if(NOT MSVC)
         target_compile_options(libHazelShared PRIVATE "-fvisibility=hidden")
-    endif() # MSVc
+    endif() # MSVC
 endif()
 
 # ======================
