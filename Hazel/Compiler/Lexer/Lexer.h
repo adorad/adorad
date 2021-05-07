@@ -29,41 +29,39 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
     Reference: 
         1. ASCII Table: http://www.theasciicode.com.ar 
 */
-class Lexer {
-public:
-    // Default constructor 
-    Lexer() {
-        reset_();
-    }
+typedef struct Lexer {
+    const char* buffer;     // the Lexical buffer
+    UInt32 buffer_capacity; // current buffer capacity (in Bytes)
+    UInt32 offset;          // current buffer offset (in Bytes) 
+                              // offset of the beginning of the line (no. of chars b/w the beginning of the Lexical Buffer
+                              // and the beginning of the line)
+                              // Sometimes called the buffer position
 
-    Lexer(const char* buffer) {
-        this->__buffer = buffer; 
-        this->__buffer_capacity = buffer.length();
-        this->__offset = 0; 
-        this->__location.reset_();
-    }
-
-    // Constructor 
-    Lexer(const char* buffer, const char* fname) {
-        this->__buffer = buffer; 
-        this->__buffer_capacity = buffer.length();
-        this->__offset = 0; 
-        this->__location.reset_();
-        this->__location.set_fname(fname);
-    }
+    Token token;            // current token
+    Location location;      // Location of the source code
+} Lexer; 
 
 
-    // Lexer next() increments the buffer offset and essentially _advances_ to the next element in the buffer
-    inline char next() {
-        this->increment_colno();
-        return (char)this->__buffer[this->__offset++];
-    }
+// Constructor 
+Lexer* lexer_init(const char* buffer) {
+    Lexer* lexer = calloc(1, sizeof(Lexer));
+    lexer->buffer = buffer; 
+    lexer->buffer_capacity = strlen(buffer);
+    lexer->offset = 0; 
+    lexer_location_init(lexer);
+    return lexer;
+}
+
+inline char lexer_next(Lexer* lexer) 
+    lexer->increment_colno();
+    return (char)lexer->buffer[lexer->offset++];
+}
 
     // Lexer peek() allows you to "look ahead" `n` characters in the Lexical buffer
     // It _does not_ increment the buffer offset 
     inline char peek(int n) {
-        if(this->__offset + (n-1) < this->__buffer_capacity) {
-            return (char)this->__buffer[this->__offset + n];
+        if(lexer->offset + (n-1) < lexer->buffer_capacity) {
+            return (char)lexer->buffer[lexer->offset + n];
         } else {
             return 0;
         }
@@ -71,13 +69,13 @@ public:
 
     // Lexer peek_curr() returns the current element in the Lexical Buffer
     inline char peek_curr() {
-        return (char)this->__buffer[this->__offset];
+        return (char)lexer->buffer[lexer->offset];
     }
 
-    inline const char* buffer() { return this->__buffer; }
-    inline UInt32 buffer_capacity() { return this->__buffer_capacity; }
-    inline UInt32 offset() { return this->__offset; }
-    inline Location location() { return this->__location; }
+    inline const char* buffer() { return lexer->buffer; }
+    inline UInt32 buffer_capacity() { return lexer->buffer_capacity; }
+    inline UInt32 offset() { return lexer->offset; }
+    inline Location location() { return lexer->location; }
 
     inline bool is_EOF();
     void finalize_token(TokenType __tok);
@@ -105,18 +103,6 @@ public:
     void reset_buffer();
     void reset_();
 
-
-protected:
-    const char* __buffer;     // the Lexical buffer
-    UInt32 __buffer_capacity; // current buffer capacity (in Bytes)
-    UInt32 __offset;          // current buffer offset (in Bytes) 
-                              // offset of the beginning of the line (no. of chars b/w the beginning of the Lexical Buffer
-                              // and the beginning of the line)
-                              // Sometimes called the buffer position
-
-    Token __token;            // current token
-    Location __location;      // Location of the source code
-}; // class Lexer
 
 
 // A List of Compiler Pragmas recorded for functions. 

@@ -234,10 +234,10 @@ public:
     // Copy constructor 
     Token(const Token& other) {
         this->__type = other.__type; 
-        this->__offset = other.__offset; 
+        this->offset = other.offset; 
         this->__tok_bytes = other.__tok_bytes; 
         this->__tok_length = other.__tok_length; 
-        this->__location = other.__location;
+        this->location = other.location;
         this->__value = other.__value;
     }
 
@@ -259,11 +259,11 @@ public:
     Token clone(Token& other) {
         Token token; 
         token.__type = other.__type; 
-        token.__offset = other.__offset; 
+        token.offset = other.offset; 
         token.__tok_bytes = other.__tok_bytes; 
         token.__tok_length = other.__tok_length; 
         token.__value = other.__value;
-        token.__location = other.__location;
+        token.location = other.location;
         return token;
     }
 
@@ -272,7 +272,7 @@ public:
     // Get token type 
     TokenType tok_type() { return this->__type; }
     // Returns the location of the token
-    Location location() { return this->__location; }
+    Location location() { return this->location; }
     // Get the token value 
     const char* value() { return this->__value; }
 
@@ -284,11 +284,11 @@ public:
     // Reset the Token
     void reset_() {
         this->__type = TOK_ILLEGAL; 
-        this->__offset = 0; 
+        this->offset = 0; 
         this->__tok_bytes = 0; 
         this->__tok_length = 0; 
         this->__value = "";
-        this->__location.reset_();
+        this->location.reset_();
     }
 
     Token& operator=(const Token&);
@@ -321,11 +321,11 @@ public:
 
 public:
     TokenType __type;     // Token Type
-    UInt32 __offset;      // Offset of the first character of the Token
+    UInt32 offset;      // Offset of the first character of the Token
     UInt32 __tok_bytes;   // Token length (in bytes)
     UInt32 __tok_length;  // Token length (UTF-8)
     const char* __value;  // Token value
-    Location __location;  // Location of the source file
+    Location location;  // Location of the source file
     friend class Lexer;
 }; // class Token
 

@@ -107,7 +107,7 @@ This can be done with the command `hazel.exe symlink`.
 * [Advanced Topics](#advanced-topics)
     * [Memory-unsafe code](#memory-unsafe-code)
     * [Structs with reference fields](structs-with-reference-fields)
-    * [sizeof and __offsetof](#sizeof-and-__offsetof)
+    * [sizeof and offsetof](#sizeof-and-offsetof)
     * [Calling C from V](#calling-c-from-v)
     * [Debugging generated C code](#debugging-generated-c-code)
     * [Conditional compilation](#conditional-compilation)
@@ -3133,10 +3133,10 @@ print(baz)
 print(qux)
 ```
 
-## sizeof and __offsetof
+## sizeof and offsetof
 
 * `sizeof(Type)` gives the size of a type in bytes.
-* `__offsetof(Struct, field_name)` gives the offset in bytes of a struct field.
+* `offsetof(Struct, field_name)` gives the offset in bytes of a struct field.
 
 ```hazel
 struct Foo {
@@ -3145,8 +3145,8 @@ struct Foo {
 }
 
 assert sizeof(Foo) == 8
-assert __offsetof(Foo, a) == 0
-assert __offsetof(Foo, b) == 4
+assert offsetof(Foo, a) == 0
+assert offsetof(Foo, b) == 4
 ```
 
 ## Calling C from V
@@ -4031,7 +4031,7 @@ type
 typeof
 union
 unsafe
-__offsetof
+offsetof
 ```
 See also [Types](#types).
 

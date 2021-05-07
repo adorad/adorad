@@ -28,89 +28,89 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 
 // ================ Useful Functions used by the Lexer ============
 // Check if the current Lexer state is at EOF
-inline bool Lexer::is_EOF() { return this->__offset >= this->__buffer_capacity; }
+inline bool Lexer::is_EOF() { return this->offset >= this->__buffer_capacity; }
 // Extract a Token 
-inline Token Lexer::extract_token() { return this->__token; }
+inline Token Lexer::extract_token() { return this->token; }
 // Set token type
-void Lexer::set_token(TokenType tok_type) { this->__token.__type = tok_type; }
+void Lexer::set_token(TokenType tok_type) { this->token.__type = tok_type; }
 // Set token value 
-void Lexer::set_token_value(const char* value) { this->__token.__value = value; }
+void Lexer::set_token_value(const char* value) { this->token.__value = value; }
 // Set token bytes 
-void Lexer::set_token_bytes(UInt32 bytes) { this->__token.__tok_bytes = bytes; }
+void Lexer::set_token_bytes(UInt32 bytes) { this->token.__tok_bytes = bytes; }
 // Increment Token Bytes
-void Lexer::increment_tok_bytes() { ++this->__token.__tok_bytes;}
+void Lexer::increment_tok_bytes() { ++this->token.__tok_bytes;}
 // Decrement Token Bytes
-void Lexer::decrement_tok_bytes() { --this->__token.__tok_bytes;}
+void Lexer::decrement_tok_bytes() { --this->token.__tok_bytes;}
 // Increment Token Length
-void Lexer::increment_tok_length() { ++this->__token.__tok_length;}
+void Lexer::increment_tok_length() { ++this->token.__tok_length;}
 // Decrement Token Length
-void Lexer::decrement_tok_length() { --this->__token.__tok_length;}
+void Lexer::decrement_tok_length() { --this->token.__tok_length;}
 
 // Increment the line number
 void Lexer::increment_lineno() {
-	++this->__location.__lineno; 
+	++this->location.__lineno; 
 	this->reset_colno();
 }
 
 // Decrement the lineno
 void Lexer::decrement_lineno() {
-	--this->__location.__lineno; 
+	--this->location.__lineno; 
 	this->reset_colno();
 }
 
 // Increment the column number
 void Lexer::increment_colno() {
-	++this->__location.__colno; 
+	++this->location.__colno; 
 }
 
 // Decrement the colno
 void Lexer::decrement_colno() {
-	--this->__location.__colno; 
+	--this->location.__colno; 
 }
 
 // Increment the Lexical Buffer offset
 void Lexer::increment_offset() {
-	++this->__offset; 
+	++this->offset; 
 	this->increment_colno();
 }
 
 // Decrement the Lexical Buffer offset
 void Lexer::decrement_offset() {
-	--this->__offset; 
+	--this->offset; 
 	this->decrement_colno();
 }
 
 // Reset the line
-void Lexer::reset_lineno() { this->__location.set_lineno(0); }
+void Lexer::reset_lineno() { this->location.set_lineno(0); }
 // Reset the column number 
-void Lexer::reset_colno() { this->__location.set_colno(0); }
+void Lexer::reset_colno() { this->location.set_colno(0); }
 
 // Reset a Lexer Token
 void Lexer::reset_token() {
-	this->__token.reset_();
+	this->token.reset_();
 	// TODO(jasmcaus): Verify this is accurate
-	this->__token.__value = this->__buffer[this->__offset]; 
-	this->__token.__location = this->__location;
+	this->token.__value = this->__buffer[this->offset]; 
+	this->token.location = this->location;
 }
 
 // Finalize a Token
 void Lexer::finalize_token(TokenType __tok) {
-	this->__token.__type = __tok; 
-	this->__token.__location.set_fname(this->__location.__fname);
+	this->token.__type = __tok; 
+	this->token.location.set_fname(this->location.__fname);
 }
 
 // Reset the buffer 
 void Lexer::reset_buffer() {
-	this->__buffer = ""; 
+	this->buffer= ""; 
 	this->__buffer_capacity = 0;
 }
 
 // Reset the Lexer state
 void Lexer::reset_() {
-	this->__buffer = ""; 
+	this->buffer= ""; 
 	this->__buffer_capacity = 0;
-	this->__offset = 0; 
-	this->__location.reset_();
+	this->offset = 0; 
+	this->location.reset_();
 }
 
 // static inline bool isNewLine(Lexer* lexer, char c) {
