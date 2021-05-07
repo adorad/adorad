@@ -19,15 +19,15 @@ configure_file(
 # Note that this library must have _minimal_ dependencies 
 
 file(GLOB HAZEL_SOURCES
-    Core/*.cpp 
-    Compiler/IO/*.cpp
-    Compiler/Lexer/*.cpp
-    Compiler/Parser/*.cpp
-    Compiler/Tokens/*.cpp
-    Compiler/Types/*.cpp
+    Core/*.c 
+    Compiler/IO/*.c
+    Compiler/Lexer/*.c
+    Compiler/Parser/*.c
+    Compiler/Tokens/*.c
+    Compiler/Types/*.c
 )
 
-file(GLOB_RECURSE HAZEL_ALL_TEST_FILES ../test/*.cpp)
+file(GLOB_RECURSE HAZEL_ALL_TEST_FILES ../test/*.c)
 file(GLOB_RECURSE HAZEL_HEADERS *.h)
 
 add_library(HazelMain ${HAZEL_SOURCES} ${HAZEL_HEADERS})

@@ -15,9 +15,45 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 
 #include <string.h>
 
-#include <Hazel/Compiler/Lexer/Location.h>
-#include <Hazel/Compiler/Tokens/Tokens.h>
+// #include <Hazel/Compiler/Lexer/Location.h>
 #include <Hazel/Core/Types.h> 
+#include <Hazel/Compiler/Tokens/Tokens.h>
+
+
+inline void lexer_set_lineno(Lexer* lexer, UInt32 lineno) { lexer->location__.lineno__ = lineno; }
+inline void lexer_set_colno(Lexer* lexer, UInt32 colno) { lexer->location__.colno__ = colno; }
+inline void lexer_set_fname(Lexer* lexer, const char* fname) { lexer->location__.fname__ = fname; }
+inline UInt32 lexer_lineno(Lexer* lexer) { return lexer->location__.lineno__; }
+inline UInt32 lexer_colno(Lexer* lexer) { return lexer->location__.colno__; }
+inline const char* fname(Lexer* lexer) { return lexer->location__.fname__; }
+
+// Reset the line
+void lexer_reset_lineno(Lexer* lexer) { lexer->location__.lineno__ = 0; }
+// Reset the column number 
+void lexer_reset_colno(Lexer* lexer) { lexer->location__.colno__ = 0; }
+
+inline bool lexer_is_EOF(Lexer* lexer);
+inline void lexer_finalize_token(Lexer* lexer, TokenType __tok);
+
+inline void lexer_increment_tok_bytes(Lexer* lexer);
+inline void lexer_decrement_tok_bytes(Lexer* lexer);
+inline void lexer_increment_tok_length(Lexer* lexer);
+inline void lexer_decrement_tok_length(Lexer* lexer);
+inline void lexer_increment_lineno(Lexer* lexer);
+inline void lexer_decrement_lineno(Lexer* lexer);
+inline void lexer_increment_colno(Lexer* lexer);
+inline void lexer_decrement_colno(Lexer* lexer);
+inline void lexer_increment_offset(Lexer* lexer);
+inline void lexer_decrement_offset(Lexer* lexer);
+
+inline void lexer_set_token(Lexer* lexer, Token token);
+inline void lexer_set_token_value(Lexer* lexer, const char* value);
+inline void lexer_set_token_type(Lexer* lexer, TokenType tok_type);
+inline void lexer_set_token_bytes(Lexer* lexer, UInt32 bytes);
+inline Token lexer_extract_token(Lexer* lexer);
+
+// Resets
+void lexer_reset_(Lexer* lexer);
 
 /*
     Hazel's Lexer is built in such a way that no (or negligible) memory allocations are necessary during usage. 
@@ -88,28 +124,11 @@ inline Location lexer_location(Lexer* lexer) {
     return lexer->location__; 
 }
 
-inline bool lexer_is_EOF(Lexer* lexer);
-inline void lexer_finalize_token(TokenType __tok);
-
-inline void lexer_increment_tok_bytes(Lexer* lexer);
-inline void lexer_decrement_tok_bytes(Lexer* lexer);
-inline void lexer_increment_tok_length(Lexer* lexer);
-inline void lexer_decrement_tok_length(Lexer* lexer);
-inline void lexer_increment_lineno(Lexer* lexer);
-inline void lexer_decrement_lineno(Lexer* lexer);
-inline void lexer_increment_colno(Lexer* lexer);
-inline void lexer_decrement_colno(Lexer* lexer);
-inline void lexer_increment_offset(Lexer* lexer);
-inline void lexer_decrement_offset(Lexer* lexer);
-
-inline void lexer_set_token(Lexer* lexer, Token token);
-inline void lexer_set_token_value(Lexer* lexer, const char* value);
-inline void lexer_set_token_type(Lexer* lexer, TokenType tok_type);
-inline void lexer_set_token_bytes(Lexer* lexer, UInt32 bytes);
-inline Token lexer_extract_token(Lexer* lexer);
-
-// Resets
-void lexer_reset_(Lexer* lexer);
+void lexer_location_init(Lexer* lexer) {
+    lexer->location__.lineno__ = 0; 
+    lexer->location__.colno__ = 0; 
+    lexer->location__.fname__ = "";
+}
 
 
 // A List of Compiler Pragmas recorded for functions. 

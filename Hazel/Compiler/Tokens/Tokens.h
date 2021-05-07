@@ -244,6 +244,12 @@ Token* token_init() {
     return token;
 }
 
+void token_location_init(Token* token) {
+    token->location__.lineno__ = 0; 
+    token->location__.colno__ = 0; 
+    token->location__.fname__ = "";
+}
+
 Token* token_from_tok_type(const TokenType __tok_type) {
     Token* token = token_init();
     token->type__ = __tok_type;
