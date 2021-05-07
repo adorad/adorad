@@ -20,6 +20,7 @@ if(ENV_CXX_STANDARD GREATER -1)
 endif()
 
 # ------ Setting the C Standard ------
+set(CMAKE_C_EXTENSIONS OFF)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED TRUE)
 
@@ -96,7 +97,9 @@ if(NOT MSVC)
     endif()
 endif()
 
+# A shared library is always produced if a library type is not passed to the add_library command.
+# If this is off, a Static Library will be built by default
+set(BUILD_SHARED_LIBS OFF)
+
 # ------ Main Build ------
 add_subdirectory(Hazel)
-include_directories(${CMAKE_SOURCE_DIR})
-add_executable(Hazel Hazel/main.c)
