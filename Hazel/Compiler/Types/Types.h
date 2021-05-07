@@ -45,7 +45,7 @@ typedef enum {
     HAZELTYPE_TensorFloat64, 
 
     // Complex 
-    HAZELTYPE_Complex32, 
+    HAZELTYPE_Complex32,
     HAZELTYPE_Complex64,
 
     // Quaternion
