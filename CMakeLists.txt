@@ -98,4 +98,4 @@ endif()
 add_subdirectory(Hazel)
 
 include_directories(${CMAKE_SOURCE_DIR})
-add_executable(Hazel Hazel/main.cpp)
+add_executable(Hazel Hazel/main.c)

@@ -39,12 +39,12 @@ $(VERBOSE).SILENT:
 exec = hazel
 emitout = hazeloutput.txt
 emittestout = hazeltestoutput.txt
-sources = $(wildcard Hazel/Compiler/Lexer/*.cpp Hazel/Compiler/Tokens/*.cpp Hazel/*.cpp )
-objects = $(sources:Hazel/.cpp=.o)
+sources = $(wildcard Hazel/Compiler/Lexer/*.c Hazel/Compiler/Tokens/*.c Hazel/*.c )
+objects = $(sources:Hazel/.c=.o)
 
 # To disable warnings, use "-w"
-flags = -g -w -std=c++17 -Wall -Wextra -Werror=return-type -Wno-unknown-pragmas -Wno-sign-compare -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -Wno-unused-result -Wno-unused-local-typedefs -Wno-strict-overflow -Wno-strict-aliasing -Wno-error=deprecated-declarations -Wno-error=comment
-CC = g++
+flags = -g -w
+CC = gcc
 
 
 all :
@@ -64,7 +64,7 @@ emitcmd :
 .PHONY: emitcmd 
 
 emitoutput :
-	$(CC) -E Hazel/main.cpp $(flags) -o $(emitout) -I .
+	$(CC) -E Hazel/main.c $(flags) -o $(emitout) -I .
 	echo Saved to $(emitout) ...
 .PHONY: emitoutput 
 
@@ -127,7 +127,7 @@ cmakeclean:
 
 # ------------Minor Testing only -----------
 test:
-	$(CC) test.cpp $(flags) -o test -I .
+	$(CC) test.c $(flags) -o test -I .
 	echo Compiled Test!
 	echo -------------------
 	echo -------------------
@@ -135,11 +135,11 @@ test:
 .PHONY: test 
 
 emittestcmd:
-	echo $(CC) test.cpp $(flags) -o test -I .
+	echo $(CC) test.c $(flags) -o test -I .
 .PHONY: emittestcmd
 
 emittestoutput :
-	$(CC) -E test.cpp $(flags) -o $(emittestout) -I .
+	$(CC) -E test.c $(flags) -o $(emittestout) -I .
 	echo Saved to $(emittestout) ...
 .PHONY: emittestoutput 
 
@@ -155,7 +155,7 @@ testclean:
 
 # 	python $(SRCDIR)/tools/scripts/generate_tokens.py token_c      \
 # 		   $(SRCDIR)/hazel/compiler/grammar/Tokens                  \
-# 		   $(SRCDIR)/hazel/compiler/tokens/__token.cpp                \
+# 		   $(SRCDIR)/hazel/compiler/tokens/__token.c                \
 
 # 	python $(SRCDIR)/tools/scripts/generate_tokens.py token_py     \
 # 		   $(SRCDIR)/hazel/compiler/grammar/Tokens                  \
