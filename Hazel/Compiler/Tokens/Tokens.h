@@ -14,13 +14,11 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #ifndef _HAZEL_TOKEN_H
 #define _HAZEL_TOKEN_H
 
-#include <string>
-#include <iostream>
+#include <stdlib.h>
 
 #include <Hazel/Core/Types.h> 
 #include <Hazel/Compiler/Lexer/Location.h>
 
-namespace Hazel {
 
 // Tokens.h defines constants representing the lexical tokens of the Hazel programming language and basic operations on 
 // tokens (printing, predicates).
@@ -214,6 +212,7 @@ TOKENKIND(TOK___KEYWORDS_END, ""), \
 \
     TOKENKIND(TOK_COUNT, "")
 
+
 typedef enum {
     #define TOKENKIND(tok, str)     tok
         ALLTOKENS
@@ -221,119 +220,61 @@ typedef enum {
 } TokenType; 
 
 /*
-    Main Token Class 
+    Main Token Struct 
 */
-class Token {
-public:
-    // Default constructor (create a NO_TOKEN instance)
-    Token() {
-        reset_();
-    }
+typedef struct {
+    TokenType type__;     // Token Type
+    UInt32 offset__;      // Offset of the first character of the Token
+    UInt32 tok_bytes__;   // Token length (in bytes)
+    UInt32 tok_length__;  // Token length (UTF-8)
+    const char* value__;  // Token value
+    Location location__;  // Location of the source file
+} Token;
 
-    // Make a token from a TokenType
-    Token(const TokenType __tok_type) {
-        reset_();
-        this->__type = __tok_type;
-    }
+// Create a basic (ILLEGAL) token
+Token* token_init();
+void token_location_init(Token* token);
+Token* token_from_tok_type(const TokenType __tok_type);
+Token* token_make_illegal_tok();
+Token* token_make_eof_tok();
+// Clone a Token
+Token* token_clone(Token* other);
+// Get token type 
+TokenType token_get_tok_type(Token token);
+// Returns the location of the token
+Location token_location(Token token);
+// Get the token value 
+const char* value(Token token);
+// Reset a Token instance
+void token_reset_token(Token* token);
 
-    // Copy constructor 
-    Token(const Token& other) {
-        this->__type = other.__type; 
-        this->__offset = other.__offset; 
-        this->__tok_bytes = other.__tok_bytes; 
-        this->__tok_length = other.__tok_length; 
-        this->__location = other.__location;
-        this->__value = other.__value;
-    }
 
-    // Make a token for an invalid value
-    Token make_illegal_tok() {
-        Token token; 
-        token.__type = TOK_ILLEGAL; 
-        return token;
-    }
+const char* token_toString(Token* token);
+inline bool token_isJumpStatement(Token* token);
+inline bool token_isLoopStatement(Token* token);
+inline bool token_isFlowStatement(Token* token);
+inline bool token_isMatchStatement(Token* token);
+inline bool token_isExpressionStatement(Token* token);
+inline bool token_isPrimaryExpressionStatement(Token* token);
+inline bool token_isDeclStatement(Token* token);
+inline bool token_isSpecial(Token* token);
+inline bool token_isLiteral(Token* token);
+inline bool token_isKeyword(Token* token);
+inline bool token_isOperator(Token* token);
+inline bool token_isComparisonOperator(Token* token);
+inline bool token_isAssignmentOperator(Token* token);
+inline bool token_isDelimiter(Token* token);
+inline bool token_isArrow(Token* token);
+inline bool token_isBitwise(Token* token);
+inline bool token_isSeparator(Token* token);
+inline bool token_isIdentifier(Token* token);
+inline bool token_isEOF(Token* token);
+inline bool token_isNULL(Token* token);
+inline bool token_isIllegal(Token* token);
+inline bool token_isMacro(Token* token);
+inline bool token_isImport(Token* token);
+inline bool token_isInclude(Token* token);
+inline bool token_isSemiColon(Token* token);
 
-    // Make a token representing the end of file
-    Token make_eof_tok() {
-        Token token; 
-        token.__type = TOK_EOF; 
-        return token;
-    }
-
-    // Clone a Token
-    Token clone(Token& other) {
-        Token token; 
-        token.__type = other.__type; 
-        token.__offset = other.__offset; 
-        token.__tok_bytes = other.__tok_bytes; 
-        token.__tok_length = other.__tok_length; 
-        token.__value = other.__value;
-        token.__location = other.__location;
-        return token;
-    }
-
-    // Set a token type 
-    void set_tok_type(TokenType tok_type) { this->__type = tok_type; }
-    // Get token type 
-    TokenType tok_type() { return this->__type; }
-    // Returns the location of the token
-    Location location() { return this->__location; }
-    // Get the token value 
-    std::string value() { return this->__value; }
-
-    // Print the Token for debugging
-    void print() {
-        std::cout << "DEBUG! CURRENT TOKEN  = \"" << toString() << "\"\n";
-    }
-
-    // Reset the Token
-    void reset_() {
-        this->__type = TOK_ILLEGAL; 
-        this->__offset = 0; 
-        this->__tok_bytes = 0; 
-        this->__tok_length = 0; 
-        this->__value = "";
-        this->__location.reset_();
-    }
-
-    Token& operator=(const Token&);
-    std::string toString();
-    bool isJumpStatement();
-    bool isLoopStatement();
-    bool isFlowStatement();
-    bool isMatchStatement();
-    bool isExpressionStatement();
-    bool isPrimaryExpressionStatement();
-    bool isDeclStatement();
-    bool isSpecial() ;
-    bool isLiteral();
-    bool isKeyword();
-    bool isOperator();
-    bool isComparisonOperator();
-    bool isAssignmentOperator();
-    bool isDelimiter();
-    bool isArrow();
-    bool isBitwise();
-    bool isSeparator();
-    bool isIdentifier();
-    bool isEOF();
-    bool isNULL();
-    bool isIllegal();
-    bool isMacro();
-    bool isImport();
-    bool isInclude();
-    bool isSemiColon();
-
-public:
-    TokenType __type;     // Token Type
-    UInt32 __offset;      // Offset of the first character of the Token
-    UInt32 __tok_bytes;   // Token length (in bytes)
-    UInt32 __tok_length;  // Token length (UTF-8)
-    std::string __value;  // Token value
-    Location __location;  // Location of the source file
-    friend class Lexer;
-}; // class Token
-
-} // namespace Hazel 
 
 #endif // _HAZEL_TOKEN_H

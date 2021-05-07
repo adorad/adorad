@@ -59,62 +59,62 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
         #endif
     #endif
 
-    #include <malloc.h> // NOTE(jasmcaus): _aligned_*()
+    // #include <malloc.h> // NOTE(jasmcaus): _aligned_*()
     // #include <intrin.h>
 
 #else
-    #include <dlfcn.h>
-    #include <errno.h>
-    #include <fcntl.h>
-    #include <pthread.h>
+    // #include <dlfcn.h>
+    // #include <errno.h>
+    // #include <fcntl.h>
+    // #include <pthread.h>
 
     #ifndef _IOSC11_SOURCE
         #define _IOSC11_SOURCE
     #endif
 
-    #include <stdlib.h> // NOTE(jasmcaus): malloc on linux
-    #include <sys/mman.h>
+    // #include <stdlib.h> // NOTE(jasmcaus): malloc on linux
+    // #include <sys/mman.h>
 
     #if !defined(CSTL_SYSTEM_OSX) && !defined(__FreeBSD__)
-        #include <sys/sendfile.h>
+        // #include <sys/sendfile.h>
     #endif
 
-    #include <sys/stat.h>
-    #include <sys/time.h>
-    #include <sys/Types.h>
-    #include <time.h>
-    #include <unistd.h>
+    // #include <sys/stat.h>
+    // #include <sys/time.h>
+    // #include <sys/Types.h>
+    // #include <time.h>
+    // #include <unistd.h>
 
     #if defined(CSTL_CPU_X86)
-        #include <xmmintrin.h>
+        // #include <xmmintrin.h>
     #endif
 #endif
 
 #if defined(CSTL_SYSTEM_OSX)
-    #include <mach/mach.h>
-    #include <mach/mach_init.h>
-    #include <mach/mach_time.h>
-    #include <mach/thread_act.h>
-    #include <mach/thread_policy.h>
-    #include <sys/sysctl.h>
-    #include <copyfile.h>
-    #include <mach/clock.h>
+    // #include <mach/mach.h>
+    // #include <mach/mach_init.h>
+    // #include <mach/mach_time.h>
+    // #include <mach/thread_act.h>
+    // #include <mach/thread_policy.h>
+    // #include <sys/sysctl.h>
+    // #include <copyfile.h>
+    // #include <mach/clock.h>
 #endif
 
 #if defined(CSTL_SYSTEM_FREEBSD)
-    #include <sys/sysctl.h>
-    #include <pthread_np.h>
-    #include <sys/cpuset.h>
-    #include <sys/Types.h>
-    #include <sys/socket.h>
-    #include <sys/uio.h>
+    // #include <sys/sysctl.h>
+    // #include <pthread_np.h>
+    // #include <sys/cpuset.h>
+    // #include <sys/Types.h>
+    // #include <sys/socket.h>
+    // #include <sys/uio.h>
 
     #define lseek64 lseek
     #define sendfile(out, in, offset, count) sendfile(out, in, offset, count, NULL, NULL, 0)
 #endif
 
 #if defined(CSTL_SYSTEM_UNIX)
-    #include <semaphore.h>
+    // #include <semaphore.h>
 #endif
 
 

@@ -38,6 +38,8 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
     #else 
         #define inline 
     #endif 
+#else
+    #define inline
 #endif 
 
 

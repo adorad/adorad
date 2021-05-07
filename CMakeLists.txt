@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
-project(Hazel CXX C)
+project(Hazel 
+        LANGUAGES C
+)
 
 # message("Root Dir: CMAKE_SOURCE_DIR = ${CMAKE_SOURCE_DIR}")
 # message("Root Dir: CMAKE_CURRENT_SOURCE_DIR = ${CMAKE_CURRENT_SOURCE_DIR}")
@@ -9,18 +11,18 @@ project(Hazel CXX C)
 set(CMAKE_INSTALL_MESSAGE NEVER)
 
 # ------ Check and set CMAKE_CXX_STANDARD ------
-string(FIND "${CMAKE_CXX_FLAGS}" "-std=c++" ENV_CXX_STANDARD)
+string(FIND "${CMAKE_C_FLAGS}" "-std=c" ENV_CXX_STANDARD)
 if(ENV_CXX_STANDARD GREATER -1)
     message (
-        WARNING "C++ Standard Version definition detected in an environment variable."
-        "Hazel requires -std=c++17. Please remove -std=c++ settings in your environment."
+        WARNING "C Standard Version definition detected in an environment variable."
+        "Hazel requires -std=c11. Please remove -std=c settings in your environment."
     )
 endif()
 
-# ------ Setting the CXX Standard ------
-set(CMAKE_CXX_STANDARD 17)
+# ------ Setting the C Standard ------
+set(CMAKE_C_EXTENSIONS OFF)
 set(CMAKE_C_STANDARD 11)
-
+set(CMAKE_C_STANDARD_REQUIRED TRUE)
 
 # Disable in-source builds to prevent corruption of the source tree 
 if(" ${CMAKE_SOURCE_DIR}" STREQUAL " ${CMAKE_BINARY_DIR}")
@@ -61,41 +63,43 @@ endif()
 # ------ A List of Compiler Flags ------
 # A (more or less comprehensive) list is here: https://caiorss.github.io/C-Cpp-Notes/compiler-flags-options.html
 if(NOT MSVC)
+    string(APPEND CMAKE_C_FLAGS " -std=c11")
     # Optimizations
     if(CMAKE_BUILD_TYPE STREQUAL "Release")
-        string(APPEND CMAKE_CXX_FLAGS " -O2 -fPIC")
+        string(APPEND CMAKE_C_FLAGS " -O2 -fPIC")
     endif()
-    string(APPEND CMAKE_CXX_FLAGS " -Wall")
-    string(APPEND CMAKE_CXX_FLAGS " -Wextra")
-    string(APPEND CMAKE_CXX_FLAGS " -Werror=return-type")
-    string(APPEND CMAKE_CXX_FLAGS " -Wno-unknown-pragmas")
-    string(APPEND CMAKE_CXX_FLAGS " -Wno-sign-compare")
-    string(APPEND CMAKE_CXX_FLAGS " -Wno-unused-parameter")
-    string(APPEND CMAKE_CXX_FLAGS " -Wno-unused-variable")
-    string(APPEND CMAKE_CXX_FLAGS " -Wno-unused-function")
-    string(APPEND CMAKE_CXX_FLAGS " -Wno-unused-result")
-    string(APPEND CMAKE_CXX_FLAGS " -Wno-unused-local-typedefs")
-    string(APPEND CMAKE_CXX_FLAGS " -Wno-strict-overflow")
-    string(APPEND CMAKE_CXX_FLAGS " -Wno-strict-aliasing")
-    string(APPEND CMAKE_CXX_FLAGS " -Wno-error=deprecated-declarations")
+    string(APPEND CMAKE_C_FLAGS " -Wall")
+    string(APPEND CMAKE_C_FLAGS " -Wextra")
+    string(APPEND CMAKE_C_FLAGS " -Werror=return-type")
+    string(APPEND CMAKE_C_FLAGS " -Wno-unknown-pragmas")
+    string(APPEND CMAKE_C_FLAGS " -Wno-sign-compare")
+    string(APPEND CMAKE_C_FLAGS " -Wno-unused-parameter")
+    string(APPEND CMAKE_C_FLAGS " -Wno-unused-variable")
+    string(APPEND CMAKE_C_FLAGS " -Wno-unused-function")
+    string(APPEND CMAKE_C_FLAGS " -Wno-unused-result")
+    string(APPEND CMAKE_C_FLAGS " -Wno-unused-local-typedefs")
+    string(APPEND CMAKE_C_FLAGS " -Wno-strict-overflow")
+    string(APPEND CMAKE_C_FLAGS " -Wno-strict-aliasing")
+    string(APPEND CMAKE_C_FLAGS " -Wno-error=deprecated-declarations")
 
     if(WERROR)
         check_cxx_compiler_flag("-Werror" COMPILER_SUPPORT_WERROR)
         if(NOT COMPILER_SUPPORT_WERROR)
             set(WERROR FALSE)
         else()
-            string(APPEND CMAKE_CXX_FLAGS " -Werror")   
+            string(APPEND CMAKE_C_FLAGS " -Werror")   
         endif()
     endif(WERROR)
 
     if(NOT APPLE)
-        string(APPEND CMAKE_CXX_FLAGS " -Wno-unused-but-set-variable")
-        string(APPEND CMAKE_CXX_FLAGS " -Wno-maybe-uninitialized")
+        string(APPEND CMAKE_C_FLAGS " -Wno-unused-but-set-variable")
+        string(APPEND CMAKE_C_FLAGS " -Wno-maybe-uninitialized")
     endif()
 endif()
 
+# A shared library is always produced if a library type is not passed to the add_library command.
+# If this is off, a Static Library will be built by default
+set(BUILD_SHARED_LIBS OFF)
+
 # ------ Main Build ------
 add_subdirectory(Hazel)
-
-include_directories(${CMAKE_SOURCE_DIR})
-add_executable(Hazel Hazel/main.cpp)
