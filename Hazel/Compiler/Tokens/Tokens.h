@@ -232,58 +232,19 @@ typedef struct {
 } Token;
 
 // Create a basic (ILLEGAL) token
-Token* token_init() {
-    Token* token = calloc(1, sizeof(Token));
-    token->type__ = TOK_ILLEGAL; 
-    token->offset__ = 0; 
-    token->tok_bytes__ = 0; 
-    token->tok_length__ = 0; 
-    token->value__ = "";
-    token_location_init(token);
-
-    return token;
-}
-
-void token_location_init(Token* token) {
-    token->location__.lineno__ = 0; 
-    token->location__.colno__ = 0; 
-    token->location__.fname__ = "";
-}
-
-Token* token_from_tok_type(const TokenType __tok_type) {
-    Token* token = token_init();
-    token->type__ = __tok_type;
-    return token;
-}
-
-Token* token_make_illegal_tok() {
-    return token_init();
-}
-
-Token* token_make_eof_tok() {
-    Token* token = token_init();
-    token->type__ = TOK_EOF;
-    return token;
-}
-
+Token* token_init();
+void token_location_init(Token* token);
+Token* token_from_tok_type(const TokenType __tok_type);
+Token* token_make_illegal_tok();
+Token* token_make_eof_tok();
 // Clone a Token
-Token* token_clone(Token* other) {
-    Token* token = token_init();
-    token->type__ = other->type__; 
-    token->offset__ = other->offset__; 
-    token->tok_bytes__ = other->tok_bytes__; 
-    token->tok_length__ = other->tok_length__; 
-    token->value__ = other->value__;
-    token->location__ = other->location__;
-    return token;
-}
-
+Token* token_clone(Token* other);
 // Get token type 
-TokenType token_get_tok_type(Token* token) { return token->type__; }
+TokenType token_get_tok_type(Token token);
 // Returns the location of the token
-Location token_location(Token* token) { return token->location__; }
+Location token_location(Token token);
 // Get the token value 
-const char* value(Token* token) { return token->value__; }
+const char* value(Token token);
 
 
 const char* token_toString(Token* token);

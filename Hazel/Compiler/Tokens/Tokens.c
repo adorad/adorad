@@ -13,6 +13,66 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 
 #include <Hazel/Compiler/Tokens/Tokens.h>
 
+// Token constructor
+Token* token_init() {
+    Token* token = calloc(1, sizeof(Token));
+    token->type__ = TOK_ILLEGAL; 
+    token->offset__ = 0; 
+    token->tok_bytes__ = 0; 
+    token->tok_length__ = 0; 
+    token->value__ = "";
+    token_location_init(token);
+
+    return token;
+}
+
+// Initialize/Reset a token's location
+void token_location_init(Token* token) {
+    token->location__.lineno__ = 0; 
+    token->location__.colno__ = 0; 
+    token->location__.fname__ = "";
+}
+
+// Make a token from a TokenType
+// Note: This is not recommended because the rest of the Token fields are populated with default 
+// values only
+Token* token_from_tok_type(const TokenType __tok_type) {
+    Token* token = token_init();
+    token->type__ = __tok_type;
+    return token;
+}
+
+Token* token_make_illegal_tok() {
+    return token_init();
+}
+
+// Construct an EOF token
+Token* token_make_eof_tok() {
+    Token* token = token_init();
+    token->type__ = TOK_EOF;
+    return token;
+}
+
+// Clone a Token
+Token* token_clone(Token* other) {
+    Token* token = token_init();
+    token->type__ = other->type__; 
+    token->offset__ = other->offset__; 
+    token->tok_bytes__ = other->tok_bytes__; 
+    token->tok_length__ = other->tok_length__; 
+    token->value__ = other->value__;
+    token->location__ = other->location__;
+    return token;
+}
+
+// Get token type 
+TokenType token_get_tok_type(Token token) { return token.type__; }
+// Returns the location of the token
+Location token_location(Token token) { return token.location__; }
+// Get the token value 
+const char* value(Token token) { return token.value__; }
+
+
 // Convert a Token to its respective String representation
 const char* token_toString(Token* token) {
     switch(token->type__) {
@@ -135,7 +195,7 @@ const char* token_toString(Token* token) {
         case ELSEIF: return "elseif";  
         case EXCEPT: return "except";  
         case EXPORT: return "export";  
-        case EXTERN: return "extern";  
+        case EXTERN: return "inline";  
         case FINALLY: return "finally"; 
         case FOR: return "for";     
         case FROM: return "from";     
@@ -216,7 +276,7 @@ inline bool token_isPrimaryExpressionStatement(Token* token) {
 			token->type__ == FLOAT || token->type__ == RUNE || token->type__ == STRING || token->type__ == IDENTIFIER || 
 			token->type__ == TOK_NULL || token->type__ == FUNC || token->type__ == TOK_ILLEGAL || token->type__ == LPAREN || 
 			token->type__ == RPAREN); 
-}
+} 
 
 inline bool token_isDeclStatement(Token* token) {
 	// Variable Declaration (with types + "Any") 

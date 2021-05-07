@@ -14,42 +14,10 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #ifndef _CSTL_IO_H
 #define _CSTL_IO_H
 
-#ifdef __cplusplus
-
-#include <fstream>
-#include <sstream>
-#include <string> 
-#include <iostream>
-
-namespace Hazel {
-
-// Read file contents
-// std::string read_File(const std::string& fname) {
-//     std::ifstream stream(fname); 
-// 	std::string buffer; 
-
-//     if(!stream) {
-//         std::cout << "Coud not open file: " << fname << "\n";
-//         std::abort();
-//     }
-
-//     std::ostringstream ss;
-//     ss << stream.rdbuf();
-//     buffer = ss.str();
-//     stream.close();
-
-//     return buffer;
-// }
-
-int hello_world(const int x) {
-    std::cout << x ;
-}
-
-} // namespace Hazel
-
-#else 
+#ifndef __cplusplus
 
 #include <stdio.h>
+#include <stdlib.h>
 
 // C-version
 char* readFile(const char* fname) {
@@ -77,6 +45,36 @@ char* readFile(const char* fname) {
 
     return buffer;
 }
+
+
+#else 
+
+#include <fstream>
+#include <sstream>
+#include <string> 
+#include <iostream>
+
+namespace Hazel {
+
+// Read file contents
+std::string read_File(const std::string& fname) {
+    std::ifstream stream(fname); 
+	std::string buffer; 
+
+    if(!stream) {
+        std::cout << "Coud not open file: " << fname << "\n";
+        std::abort();
+    }
+
+    std::ostringstream ss;
+    ss << stream.rdbuf();
+    buffer = ss.str();
+    stream.close();
+
+    return buffer;
+}
+
+} // namespace Hazel
 
 #endif // __cplusplus 
 

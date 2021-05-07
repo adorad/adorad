@@ -13,7 +13,6 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 
 #include <Hazel/Compiler/Lexer/Lexer.h>
 
-
 /*
     Lexer:
     In lexer phase, the source code is decomposed into its simplest "tokens". 
@@ -23,11 +22,80 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 
 /*
  * INSPIRATION: https://github.com/JHG777000/marshmallow/blob/master/src/marshmallow_parser.c
- * INSPIRATION: https://github.com/k-mrm/maxc/blob/master/src/compiler/lexer->c
+ * INSPIRATION: https://github.com/k-mrm/maxc/blob/master/src/compiler/lexer.c
 
 */
 
-// ================ Useful Functions used by the Lexer ============
+// 
+// ================ Lexer Stuff ================
+// 
+// Constructor 
+Lexer* lexer_init(const char* buffer) {
+    Lexer* lexer = calloc(1, sizeof(Lexer));
+    lexer->buffer__ = buffer; 
+    lexer->buffer_capacity__ = strlen(buffer);
+    lexer->offset__ = 0;
+    lexer_location_init(lexer);
+    return lexer;
+}
+
+// lexer_next() consumes the next element in the Lexical Buffer
+// It increments the buffer offset and essentially _advances_ to the next element in the buffer
+inline char lexer_next(Lexer* lexer) {
+    lexer_increment_colno(lexer);
+    return (char)lexer->buffer__[lexer->offset__++];
+}
+
+// lexer_peek() allows you to "look ahead" `n` characters in the Lexical buffer
+// It _does not_ increment the buffer offset 
+inline char lexer_peek(Lexer* lexer, int n) {
+    if(lexer->offset__ + (n-1) < lexer->buffer_capacity__) {
+        return (char)lexer->buffer__[lexer->offset__ + n];
+    } else {
+        return 0; // corresponds to TOK_ILLEGAL
+    }
+}
+
+// lexer_peek_curr() returns the current element in the Lexical Buffer
+inline char lexer_peek_curr(Lexer* lexer) {
+    return (char)lexer->buffer__[lexer->offset__];
+}
+inline const char* lexer_buffer(Lexer* lexer) { 
+    return lexer->buffer__; 
+}
+inline UInt32 lexer_buffer_capacity(Lexer* lexer) { 
+    return lexer->buffer_capacity__; 
+}
+inline UInt32 lexer_offset(Lexer* lexer) { 
+    return lexer->offset__; 
+}
+
+// 
+// ================ Lexer Location ================
+// 
+void lexer_location_init(Lexer* lexer) {
+    lexer->location__.lineno__ = 0; 
+    lexer->location__.colno__ = 0; 
+    lexer->location__.fname__ = "";
+}
+inline void lexer_set_lineno(Lexer* lexer, UInt32 lineno) { lexer->location__.lineno__ = lineno; }
+inline void lexer_set_colno(Lexer* lexer, UInt32 colno) { lexer->location__.colno__ = colno; }
+inline void lexer_set_fname(Lexer* lexer, const char* fname) { lexer->location__.fname__ = fname; }
+
+inline Location lexer_location(Lexer* lexer);
+inline UInt32 lexer_lineno(Lexer* lexer) { return lexer->location__.lineno__; }
+inline UInt32 lexer_colno(Lexer* lexer) { return lexer->location__.colno__; }
+inline const char* fname(Lexer* lexer) { return lexer->location__.fname__; }
+
+// Reset the line
+void lexer_reset_lineno(Lexer* lexer) { lexer->location__.lineno__ = 0; }
+// Reset the column number 
+void lexer_reset_colno(Lexer* lexer) { lexer->location__.colno__ = 0; }
+
+
+// 
+// ================ Useful Functions used by the Lexer ================
+// 
 // Check if the current Lexer state is at EOF
 inline bool lexer_is_EOF(Lexer* lexer) { return lexer->offset__ >= lexer->buffer_capacity__; }
 // Extract a Token 
@@ -85,7 +153,8 @@ inline void lexer_decrement_offset(Lexer* lexer) {
 
 // Reset a Lexer Token
 inline void lexer_reset_token(Lexer* lexer) {
-    lexer_reset_token(lexer);
+    // CHECK THIS
+    // lexer_reset_token(lexer);
 	// TODO(jasmcaus): Verify lexer is accurate
 	lexer->token__.value__ = lexer->buffer__[lexer->offset__]; 
 	lexer->token__.location__ = lexer->location__;
@@ -111,39 +180,41 @@ inline void lexer_reset(Lexer* lexer) {
 	lexer_location_init(lexer);
 }
 
-// static inline bool isNewLine(Lexer* lexer, char c) {
-//     // Carriage Return: U+000D (UTF-8 in hex: 0D)
-//     // Line Feed: U+000A (UTF-8 in hex: 0A)
-//     // CR+LF: CR (U+000D) followed by LF (U+000A) (UTF-8 in hex: 0D0A)
-//     // UTF-8 cases https://en.wikipedia.org/wiki/Newline#Unicode:
-//     //      1. Next Line, U+0085 (UTF-8 in hex: C285)
-//     //      2. Line Separator, U+2028 (UTF-8 in hex: E280A8)
+// This needs a Lexer instance to be able to `peek` at the next element to determine if CR+LF
+// TODO(jasmcaus): Remove this need / Construct a better function
+static inline bool isNewLine(Lexer* lexer, char c) {
+    // Carriage Return: U+000D (UTF-8 in hex: 0D)
+    // Line Feed: U+000A (UTF-8 in hex: 0A)
+    // CR+LF: CR (U+000D) followed by LF (U+000A) (UTF-8 in hex: 0D0A)
+    // UTF-8 cases https://en.wikipedia.org/wiki/Newline#Unicode:
+    //      1. Next Line, U+0085 (UTF-8 in hex: C285)
+    //      2. Line Separator, U+2028 (UTF-8 in hex: E280A8)
 
-//     // Line Feed 
-//     if(c == 0x0A) return true; 
+    // Line Feed 
+    if(c == 0x0A) return true; 
 
-//     // CR+LF or CR
-//     if(c == 0x0D) {
-//         if(lexer_peek_curr(lexer) == 0x0A) { lexer_next(lexer); }
-//         return true; 
-//     }
+    // CR+LF or CR
+    if(c == 0x0D) {
+        if(lexer_peek_curr(lexer) == 0x0A) { lexer_next(lexer); }
+        return true; 
+    }
 
-//     // Next Line
-//     if((c == 0xC2) ** (lexer_peek_curr(lexer) == 0x85)) {
-//         lexer_next(lexer); 
-//         return true;
-//     }
+    // Next Line
+    if((c == 0xC2) && (lexer_peek_curr(lexer) == 0x85)) {
+        lexer_next(lexer); 
+        return true;
+    }
     
-//     // Line Separator
-//     if((c == 0xE2) ** (lexer_peek_curr(lexer) == 0x80) ** (0xA8)) {
-//         lexer_next(lexer); 
-//         lexer_next(lexer); 
-//         return true; 
-//     }
+    // Line Separator
+    if((c == 0xE2) && (lexer_peek_curr(lexer) == 0x80) && (0xA8)) {
+        lexer_next(lexer); 
+        lexer_next(lexer); 
+        return true; 
+    }
 
-//     // will add more at some point in the future 
-//     return false; 
-// }
+    // will add more at some point in the future 
+    return false; 
+}
 
 static inline bool isComment(char c1, char c2) { return isSlashComment(c1, c2) || isHashComment(c1) || isHashComment(c2); }
 static inline bool isSlashComment(char c1, char c2) { return (c1 == '/' && (c2 == '*' || c2 == '/')); }
@@ -170,16 +241,16 @@ static inline bool isBuiltinOperator(char c) {
 
 
 // Lexing Errors
-// TokenType lexer_error(Lexer* lexer, const char* message) {
-//     if(!lexer->is_EOF()) {
-//         lexer_increment_tok_length(lexer);
-//         lexer_increment_offset(lexer);
-//     }
-//     lexer->finalize_token(TOK_ILLEGAL);
-//     lexer->set_token_value(message);
-//     lexer->set_token_bytes(message.length());
-//     return TOK_ILLEGAL; 
-// }
+TokenType lexer_error(Lexer* lexer, const char* message) {
+    if(!lexer_is_EOF(lexer)) {
+        lexer_increment_tok_length(lexer);
+        lexer_increment_offset(lexer);
+    }
+    lexer_finalize_token(lexer, TOK_ILLEGAL);
+    lexer_set_token_value(lexer, message);
+    lexer_set_token_bytes(lexer, strlen(message));
+    return TOK_ILLEGAL; 
+}
 
 
 // // Get the next token from the Lexer

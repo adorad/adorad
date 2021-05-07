@@ -13,47 +13,12 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #ifndef _HAZEL_LEXER_H
 #define _HAZEL_LEXER_H
 
+#include <stdio.h>
 #include <string.h>
 
 // #include <Hazel/Compiler/Lexer/Location.h>
 #include <Hazel/Core/Types.h> 
 #include <Hazel/Compiler/Tokens/Tokens.h>
-
-
-inline void lexer_set_lineno(Lexer* lexer, UInt32 lineno) { lexer->location__.lineno__ = lineno; }
-inline void lexer_set_colno(Lexer* lexer, UInt32 colno) { lexer->location__.colno__ = colno; }
-inline void lexer_set_fname(Lexer* lexer, const char* fname) { lexer->location__.fname__ = fname; }
-inline UInt32 lexer_lineno(Lexer* lexer) { return lexer->location__.lineno__; }
-inline UInt32 lexer_colno(Lexer* lexer) { return lexer->location__.colno__; }
-inline const char* fname(Lexer* lexer) { return lexer->location__.fname__; }
-
-// Reset the line
-void lexer_reset_lineno(Lexer* lexer) { lexer->location__.lineno__ = 0; }
-// Reset the column number 
-void lexer_reset_colno(Lexer* lexer) { lexer->location__.colno__ = 0; }
-
-inline bool lexer_is_EOF(Lexer* lexer);
-inline void lexer_finalize_token(Lexer* lexer, TokenType __tok);
-
-inline void lexer_increment_tok_bytes(Lexer* lexer);
-inline void lexer_decrement_tok_bytes(Lexer* lexer);
-inline void lexer_increment_tok_length(Lexer* lexer);
-inline void lexer_decrement_tok_length(Lexer* lexer);
-inline void lexer_increment_lineno(Lexer* lexer);
-inline void lexer_decrement_lineno(Lexer* lexer);
-inline void lexer_increment_colno(Lexer* lexer);
-inline void lexer_decrement_colno(Lexer* lexer);
-inline void lexer_increment_offset(Lexer* lexer);
-inline void lexer_decrement_offset(Lexer* lexer);
-
-inline void lexer_set_token(Lexer* lexer, Token token);
-inline void lexer_set_token_value(Lexer* lexer, const char* value);
-inline void lexer_set_token_type(Lexer* lexer, TokenType tok_type);
-inline void lexer_set_token_bytes(Lexer* lexer, UInt32 bytes);
-inline Token lexer_extract_token(Lexer* lexer);
-
-// Resets
-void lexer_reset_(Lexer* lexer);
 
 /*
     Hazel's Lexer is built in such a way that no (or negligible) memory allocations are necessary during usage. 
@@ -80,55 +45,22 @@ typedef struct Lexer {
 
 
 // Constructor 
-Lexer* lexer_init(const char* buffer) {
-    Lexer* lexer = calloc(1, sizeof(Lexer));
-    lexer->buffer__ = buffer; 
-    lexer->buffer_capacity__ = strlen(buffer);
-    lexer->offset__ = 0;
-    lexer_location_init(lexer);
-
-}
-
+Lexer* lexer_init(const char* buffer);
 // lexer_next() consumes the next element in the Lexical Buffer
 // It increments the buffer offset and essentially _advances_ to the next element in the buffer
-inline char lexer_next(Lexer* lexer) {
-    lexer_increment_colno(lexer);
-    return (char)lexer->buffer__[lexer->offset__++];
-}
-
+static inline char lexer_next(Lexer* lexer);
 // lexer_peek() allows you to "look ahead" `n` characters in the Lexical buffer
 // It _does not_ increment the buffer offset 
-inline char lexer_peek(Lexer* lexer, int n) {
-    if(lexer->offset__ + (n-1) < lexer->buffer_capacity__) {
-        return (char)lexer->buffer__[lexer->offset__ + n];
-    } else {
-        return 0; // corresponds to TOK_ILLEGAL
-    }
-}
-
+static inline char lexer_peek(Lexer* lexer, int n);
 // lexer_peek_curr() returns the current element in the Lexical Buffer
-inline char lexer_peek_curr(Lexer* lexer) {
-    return (char)lexer->buffer__[lexer->offset__];
-}
+static inline char lexer_peek_curr(Lexer* lexer);
+inline const char* lexer_buffer(Lexer* lexer);
+inline UInt32 lexer_buffer_capacity(Lexer* lexer);
+inline UInt32 lexer_offset(Lexer* lexer);
 
-inline const char* lexer_buffer(Lexer* lexer) { 
-    return lexer->buffer__; 
-}
-inline UInt32 lexer_buffer_capacity(Lexer* lexer) { 
-    return lexer->buffer_capacity__; 
-}
-inline UInt32 lexer_offset(Lexer* lexer) { 
-    return lexer->offset__; 
-}
-inline Location lexer_location(Lexer* lexer) { 
-    return lexer->location__; 
-}
-
-void lexer_location_init(Lexer* lexer) {
-    lexer->location__.lineno__ = 0; 
-    lexer->location__.colno__ = 0; 
-    lexer->location__.fname__ = "";
-}
+// Locations
+void lexer_location_init(Lexer* lexer);
+inline Location lexer_location(Lexer* lexer);
 
 
 // A List of Compiler Pragmas recorded for functions. 
@@ -140,15 +72,31 @@ typedef enum {
 } CompilerPragmas;
 
 
-TokenType lexer_lex_string(Lexer* lexer); 
-TokenType lexer_lex_operator(Lexer* lexer);
-TokenType lexer_lex_separator(Lexer* lexer);
-TokenType lexer_lex_delimiter(Lexer* lexer);
-TokenType lexer_lex_macro(Lexer* lexer);
-TokenType lexer_lex_keywords(Lexer* lexer);
-TokenType lexer_lex_char(Lexer* lexer); 
-TokenType lexer_lex_digit(Lexer* lexer); 
-TokenType lexer_lex_token_id(Lexer* lexer); 
+static inline bool lexer_is_EOF(Lexer* lexer);
+static inline void lexer_finalize_token(Lexer* lexer, TokenType __tok);
+
+static inline void lexer_increment_tok_bytes(Lexer* lexer);
+static inline void lexer_decrement_tok_bytes(Lexer* lexer);
+static inline void lexer_increment_tok_length(Lexer* lexer);
+static inline void lexer_decrement_tok_length(Lexer* lexer);
+static inline void lexer_increment_lineno(Lexer* lexer);
+static inline void lexer_decrement_lineno(Lexer* lexer);
+static inline void lexer_increment_colno(Lexer* lexer);
+static inline void lexer_decrement_colno(Lexer* lexer);
+static inline void lexer_increment_offset(Lexer* lexer);
+static inline void lexer_decrement_offset(Lexer* lexer);
+
+static inline void lexer_set_token(Lexer* lexer, Token token);
+static inline void lexer_set_token_value(Lexer* lexer, const char* value);
+static inline void lexer_set_token_type(Lexer* lexer, TokenType tok_type);
+static inline void lexer_set_token_bytes(Lexer* lexer, UInt32 bytes);
+static inline Token lexer_extract_token(Lexer* lexer);
+
+// Resets
+void lexer_reset(Lexer* lexer);
+void lexer_reset_token(Lexer* lexer);
+
+TokenType lexer_error(Lexer* lexer, const char* message);
 
 static inline bool isBuiltinOperator(char c);
 static inline bool isIdentifier(char c);
@@ -160,6 +108,14 @@ static inline bool isSemicolon(char c);
 static inline bool isString(char c);
 static inline bool isMacro(char c);
 
-
+TokenType lexer_lex_string(Lexer* lexer); 
+TokenType lexer_lex_operator(Lexer* lexer);
+TokenType lexer_lex_separator(Lexer* lexer);
+TokenType lexer_lex_delimiter(Lexer* lexer);
+TokenType lexer_lex_macro(Lexer* lexer);
+TokenType lexer_lex_keywords(Lexer* lexer);
+TokenType lexer_lex_char(Lexer* lexer); 
+TokenType lexer_lex_digit(Lexer* lexer); 
+TokenType lexer_lex_token_id(Lexer* lexer); 
 
 #endif // _HAZEL_LEXER_H

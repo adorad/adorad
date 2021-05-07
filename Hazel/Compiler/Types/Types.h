@@ -14,9 +14,7 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #ifndef _HAZEL_TYPES_H 
 #define _HAZEL_TYPES_H 
 
-
-
-// Data Types used in the Hazel Programming Language
+// list of Data Types used in the Hazel Programming Language
 typedef enum {
     HAZELTYPE_Any, 
     HAZELTYPE_Null, 
@@ -54,7 +52,6 @@ typedef enum {
     HAZELTYPE_Quaternion128, 
     HAZELTYPE_Quaternion256 
 } HazelTypes; 
-
 
 
 #endif // _HAZEL_TYPES_H 
