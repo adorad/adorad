@@ -76,6 +76,7 @@ add_executable(HazelShared ${CMAKE_CURRENT_SOURCE_DIR}/main.c)
 target_link_libraries(HazelShared libHazelShared)
 
 # Installation
+install(TARGETS libHazelStatic DESTINATION lib)
 install(TARGETS libHazelShared DESTINATION lib)
 install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
         DESTINATION include
@@ -88,5 +89,5 @@ install(FILES ${CMAKE_BINARY_DIR}/Hazel/Core/CMake_Macros.h
 )
 
 if(MSVC AND HAZEL_BUILD_SHARED_LIBS)
-    install(FILES $<TARGET_PDB_FILE:c10> DESTINATION lib OPTIONAL)
+    install(FILES $<TARGET_PDB_FILE:Hazel> DESTINATION lib OPTIONAL)
 endif()
