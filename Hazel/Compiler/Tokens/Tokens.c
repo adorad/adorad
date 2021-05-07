@@ -71,6 +71,15 @@ TokenType token_get_tok_type(Token token) { return token.type__; }
 Location token_location(Token token) { return token.location__; }
 // Get the token value 
 const char* value(Token token) { return token.value__; }
+// Reset a Token instance
+void token_reset_token(Token* token) {
+    token->type__ = TOK_ILLEGAL; 
+    token->offset__ = 0; 
+    token->tok_bytes__ = 0; 
+    token->tok_length__ = 0; 
+    token->value__ = "";
+    token_location_init(token);
+}
 
 
 // Convert a Token to its respective String representation

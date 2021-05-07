@@ -16,7 +16,7 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #include <stdio.h>
 #include <string.h>
 
-// #include <Hazel/Compiler/Lexer/Location.h>
+#include <Hazel/Core/String.h> 
 #include <Hazel/Core/Types.h> 
 #include <Hazel/Compiler/Tokens/Tokens.h>
 

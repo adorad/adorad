@@ -42,19 +42,9 @@
 // 	printf("%d", token); 
 // }
 
-#include <stdlib.h>
+#include <stdio.h>
 
-typedef struct {
-    int ptr;
-} Lexer;    
-
-void increment(Lexer* lex) {
-    ++(*lex).ptr;
-}
 
 int main() {
-    Lexer* lex = calloc(1, sizeof(Lexer));
-    printf("Value before: %d\n", lex->ptr);
-    increment(lex);
-    printf("Value after: %d\n", lex->ptr);
+    printf("%d", 'T');
 }

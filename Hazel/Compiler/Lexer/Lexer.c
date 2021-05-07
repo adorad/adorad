@@ -154,9 +154,9 @@ inline void lexer_decrement_offset(Lexer* lexer) {
 // Reset a Lexer Token
 inline void lexer_reset_token(Lexer* lexer) {
     // CHECK THIS
-    // lexer_reset_token(lexer);
-	// TODO(jasmcaus): Verify lexer is accurate
-	lexer->token__.value__ = lexer->buffer__[lexer->offset__]; 
+    lexer->token__.type__ = TOK_ILLEGAL;
+	// TODO(jasmcaus): Verify this is accurate
+	lexer->token__.value__ = lexer->buffer__ + lexer->offset__; 
 	lexer->token__.location__ = lexer->location__;
 }
 
@@ -187,30 +187,30 @@ static inline bool isNewLine(Lexer* lexer, char c) {
     // Line Feed: U+000A (UTF-8 in hex: 0A)
     // CR+LF: CR (U+000D) followed by LF (U+000A) (UTF-8 in hex: 0D0A)
     // UTF-8 cases https://en.wikipedia.org/wiki/Newline#Unicode:
-    //      1. Next Line, U+0085 (UTF-8 in hex: C285)
+    //      1. Next Line, U+0085 (UTF-8 in hex: C285) or (194)
     //      2. Line Separator, U+2028 (UTF-8 in hex: E280A8)
 
     // Line Feed 
-    if(c == 0x0A) return true; 
+    if(c == '\n') return true; 
 
     // CR+LF or CR
-    if(c == 0x0D) {
-        if(lexer_peek_curr(lexer) == 0x0A) { lexer_next(lexer); }
+    if(c == '\r') {
+        if(lexer_peek_curr(lexer) == '\n') { lexer_next(lexer); }
         return true; 
     }
 
-    // Next Line
-    if((c == 0xC2) && (lexer_peek_curr(lexer) == 0x85)) {
-        lexer_next(lexer); 
-        return true;
-    }
+    // // Next Line
+    // if((c == 194) && (lexer_peek_curr(lexer) == 133)) {
+    //     lexer_next(lexer); 
+    //     return true;
+    // }
     
-    // Line Separator
-    if((c == 0xE2) && (lexer_peek_curr(lexer) == 0x80) && (0xA8)) {
-        lexer_next(lexer); 
-        lexer_next(lexer); 
-        return true; 
-    }
+    // // Line Separator
+    // if((c == 226) && (lexer_peek_curr(lexer) == 128) && 168) {
+    //     lexer_next(lexer); 
+    //     lexer_next(lexer); 
+    //     return true; 
+    // }
 
     // will add more at some point in the future 
     return false; 

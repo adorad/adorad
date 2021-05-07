@@ -245,6 +245,8 @@ TokenType token_get_tok_type(Token token);
 Location token_location(Token token);
 // Get the token value 
 const char* value(Token token);
+// Reset a Token instance
+void token_reset_token(Token* token);
 
 
 const char* token_toString(Token* token);
