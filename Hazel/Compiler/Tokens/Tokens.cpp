@@ -13,8 +13,6 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 
 #include <Hazel/Compiler/Tokens/Tokens.h>
 
-namespace Hazel {
-
 // Convert a Token to its respective String representation
 std::string Token::toString() {
     switch(this->__type) {
@@ -303,5 +301,3 @@ bool Token::isInclude() {
 bool Token::isSemiColon() {
 	return this->__type == SEMICOLON; 
 }
-
-} // namespace Hazel 

@@ -14,8 +14,6 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #ifndef _HAZEL_TYPES_H 
 #define _HAZEL_TYPES_H 
 
-namespace Hazel {
-
 // Data Types used in the Hazel Programming Language
 typedef enum {
     HAZEL_TYPE_Any, 
@@ -55,6 +53,5 @@ typedef enum {
     HAZEL_TYPE_Quaternion256 
 } Types; 
 
-} // namespace Hazel
 
 #endif // _HAZEL_TYPES_H 

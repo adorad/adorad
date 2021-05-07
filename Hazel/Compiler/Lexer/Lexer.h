@@ -13,16 +13,11 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #ifndef _HAZEL_LEXER_H
 #define _HAZEL_LEXER_H
 
-#include <string>
-#include <optional>
-
 #include <Hazel/Compiler/Lexer/Location.h>
 #include <Hazel/Compiler/Tokens/Tokens.h>
 #include <Hazel/Core/Types.h> 
 #include <Hazel/Core/String.h> 
 
-
-namespace Hazel {
 /*
     Hazel's Lexer is built in such a way that no (or negligible) memory allocations are necessary during usage. 
 
@@ -153,6 +148,5 @@ static inline bool isSemicolon(char c);
 static inline bool isString(char c);
 static inline bool isMacro(char c);
 
-} // namespace Hazel
 
 #endif // _HAZEL_LEXER_H

@@ -13,11 +13,8 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #ifndef _HAZEL_LEXER_LOCATION_H
 #define _HAZEL_LEXER_LOCATION_H
 
-#include <string> 
-
 #include <Hazel/Core/Types.h>
 
-namespace Hazel {
 
 // Location holds information about a location in a source file
 // Includes the colno, lineno, fname...
@@ -51,7 +48,5 @@ private:
     friend class Lexer;
     friend class Token;
 };
-
-} // namespace Hazel
 
 #endif // _HAZEL_LEXER_LOCATION_H

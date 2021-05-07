@@ -14,13 +14,8 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #ifndef _HAZEL_TOKEN_H
 #define _HAZEL_TOKEN_H
 
-#include <string>
-#include <iostream>
-
 #include <Hazel/Core/Types.h> 
 #include <Hazel/Compiler/Lexer/Location.h>
-
-namespace Hazel {
 
 // Tokens.h defines constants representing the lexical tokens of the Hazel programming language and basic operations on 
 // tokens (printing, predicates).
@@ -333,7 +328,5 @@ public:
     Location __location;  // Location of the source file
     friend class Lexer;
 }; // class Token
-
-} // namespace Hazel 
 
 #endif // _HAZEL_TOKEN_H
