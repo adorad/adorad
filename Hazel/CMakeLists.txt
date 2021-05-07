@@ -17,12 +17,10 @@ configure_file(
 # Main Build File for the main Hazel Library
 # 
 # Note that this library must have _minimal_ dependencies 
-
-file(GLOB HAZEL_SOURCES
-    Core/*.c 
+# _DO NOT_ add `main.c` here (we're building a library, remember?)
+file(GLOB LIBHAZEL_SOURCES
     Compiler/IO/*.c
     Compiler/Lexer/*.c
-    Compiler/Parser/*.c
     Compiler/Tokens/*.c
     Compiler/Types/*.c
 )
@@ -31,31 +29,60 @@ file(GLOB_RECURSE HAZEL_ALL_TEST_FILES ../test/*.c)
 file(GLOB_RECURSE HAZEL_HEADERS *.h)
 
 # Build the Shared/Static Library
-# A Shared Library is built if the BUILD_SHARED_LIBS command is on (check the root CMakeLists.txt)
-add_library(libHazel ${HAZEL_SOURCES} ${HAZEL_HEADERS})
+add_library(libHazelStatic STATIC ${LIBHAZEL_SOURCES} ${HAZEL_HEADERS})
+add_library(libHazelShared SHARED ${LIBHAZEL_SOURCES} ${HAZEL_HEADERS})
 
 # Enable hidden visibility if compiler supports it.
 if(${COMPILER_SUPPORTS_HIDDEN_VISIBILITY})
-    target_compile_options(libHazel PRIVATE "-fvisibility=hidden")
+    target_compile_options(libHazelStatic PRIVATE "-fvisibility=hidden")
+    target_compile_options(libHazelShared PRIVATE "-fvisibility=hidden")
 endif()
 
+# ======================
+# For libHazelStatic
+# =====================
 target_include_directories(
-    libHazel PUBLIC 
+    libHazelStatic PUBLIC 
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../>
     $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}>
     $<INSTALL_INTERFACE:include>
 )
-
 # Build the executable
-add_executable(Hazel ${HAZEL_SOURCES}  ${HAZEL_HEADERS})
-target_link_libraries(Hazel libHazel)
+# main.c (or whatever demo file you want to link against) =
+add_executable(HazelStatic ${CMAKE_CURRENT_SOURCE_DIR}/main.c)
+target_link_libraries(HazelStatic libHazelStatic)
 
 # Installation
-install(TARGETS libHazel DESTINATION lib)
+install(TARGETS libHazelStatic DESTINATION lib)
 install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
         DESTINATION include
         FILES_MATCHING PATTERN "*.h"
 )
+
+# ================
+
+# ======================
+# For libHazelShared
+# =====================
+target_include_directories(
+    libHazelShared PUBLIC 
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../>
+    $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}>
+    $<INSTALL_INTERFACE:include>
+)
+# Build the executable
+# main.c (or whatever demo file you want to link against) =
+add_executable(HazelShared ${CMAKE_CURRENT_SOURCE_DIR}/main.c)
+target_link_libraries(HazelShared libHazelShared)
+
+# Installation
+install(TARGETS libHazelShared DESTINATION lib)
+install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
+        DESTINATION include
+        FILES_MATCHING PATTERN "*.h"
+)
+
+
 install(FILES ${CMAKE_BINARY_DIR}/Hazel/Core/CMake_Macros.h
         DESTINATION include/Hazel/Core/Macros
 )
