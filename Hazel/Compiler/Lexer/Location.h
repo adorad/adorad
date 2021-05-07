@@ -29,10 +29,10 @@ public:
 
     inline void set_lineno(UInt32 lineno) { this->__lineno = lineno; }
     inline void set_colno(UInt32 colno) { this->__colno = colno; }
-    inline void set_fname(const std::string& fname) { this->__fname = fname; }
+    inline void set_fname(const const char*& fname) { this->__fname = fname; }
     inline UInt32 lineno() { return this->__lineno; }
     inline UInt32 colno() { return this->__colno; }
-    inline std::string fname() { return this->__fname; }
+    inline const char* fname() { return this->__fname; }
 
 private:
     // This is private because we restrict what can potentially reset a Location state
@@ -44,7 +44,7 @@ private:
 
     UInt32 __lineno;          // the line number in the source where the token occured
     UInt32 __colno;           // the column number
-    std::string __fname;      // the file name
+    const char* __fname;      // the file name
     friend class Lexer;
     friend class Token;
 };

@@ -14,7 +14,7 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #include <Hazel/Compiler/Tokens/Tokens.h>
 
 // Convert a Token to its respective String representation
-std::string Token::toString() {
+const char* Token::toString() {
     switch(this->__type) {
         // Special (internal usage only)
         case TOK_EOF: return "TOK_EOF";

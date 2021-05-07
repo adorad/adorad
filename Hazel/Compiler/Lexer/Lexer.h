@@ -36,7 +36,7 @@ public:
         reset_();
     }
 
-    Lexer(std::string buffer) {
+    Lexer(const char* buffer) {
         this->__buffer = buffer; 
         this->__buffer_capacity = buffer.length();
         this->__offset = 0; 
@@ -44,7 +44,7 @@ public:
     }
 
     // Constructor 
-    Lexer(std::string buffer, std::string fname) {
+    Lexer(const char* buffer, const char* fname) {
         this->__buffer = buffer; 
         this->__buffer_capacity = buffer.length();
         this->__offset = 0; 
@@ -74,7 +74,7 @@ public:
         return (char)this->__buffer[this->__offset];
     }
 
-    inline std::string buffer() { return this->__buffer; }
+    inline const char* buffer() { return this->__buffer; }
     inline UInt32 buffer_capacity() { return this->__buffer_capacity; }
     inline UInt32 offset() { return this->__offset; }
     inline Location location() { return this->__location; }
@@ -94,7 +94,7 @@ public:
     void decrement_offset();
 
     void set_token(TokenType tok_type);
-    void set_token_value(std::string value);
+    void set_token_value(const char* value);
     void set_token_bytes(UInt32 bytes);
     inline Token extract_token();
 
@@ -107,7 +107,7 @@ public:
 
 
 protected:
-    std::string __buffer;     // the Lexical buffer
+    const char* __buffer;     // the Lexical buffer
     UInt32 __buffer_capacity; // current buffer capacity (in Bytes)
     UInt32 __offset;          // current buffer offset (in Bytes) 
                               // offset of the beginning of the line (no. of chars b/w the beginning of the Lexical Buffer

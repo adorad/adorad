@@ -34,7 +34,7 @@ inline Token Lexer::extract_token() { return this->__token; }
 // Set token type
 void Lexer::set_token(TokenType tok_type) { this->__token.__type = tok_type; }
 // Set token value 
-void Lexer::set_token_value(std::string value) { this->__token.__value = value; }
+void Lexer::set_token_value(const char* value) { this->__token.__value = value; }
 // Set token bytes 
 void Lexer::set_token_bytes(UInt32 bytes) { this->__token.__tok_bytes = bytes; }
 // Increment Token Bytes
@@ -172,7 +172,7 @@ static inline bool isBuiltinOperator(char c) {
 
 
 // Lexing Errors
-TokenType lexer_error(Lexer* lexer, std::string message) {
+TokenType lexer_error(Lexer* lexer, const char* message) {
     if(!lexer->is_EOF()) {
         lexer->increment_tok_length();
         lexer->increment_offset();

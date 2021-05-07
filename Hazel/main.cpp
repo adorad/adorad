@@ -3,7 +3,7 @@
 #include <iostream>
 
 int main() {
-    std::string buffer = "123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const char* buffer = "123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     Hazel::Lexer lexer(buffer);
 
     std::cout << lexer.buffer() << "\n";

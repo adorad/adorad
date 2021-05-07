@@ -274,7 +274,7 @@ public:
     // Returns the location of the token
     Location location() { return this->__location; }
     // Get the token value 
-    std::string value() { return this->__value; }
+    const char* value() { return this->__value; }
 
     // Print the Token for debugging
     void print() {
@@ -292,7 +292,7 @@ public:
     }
 
     Token& operator=(const Token&);
-    std::string toString();
+    const char* toString();
     bool isJumpStatement();
     bool isLoopStatement();
     bool isFlowStatement();
@@ -324,7 +324,7 @@ public:
     UInt32 __offset;      // Offset of the first character of the Token
     UInt32 __tok_bytes;   // Token length (in bytes)
     UInt32 __tok_length;  // Token length (UTF-8)
-    std::string __value;  // Token value
+    const char* __value;  // Token value
     Location __location;  // Location of the source file
     friend class Lexer;
 }; // class Token
