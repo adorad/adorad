@@ -28,6 +28,7 @@ jobs:
         run: |
           mkdir build
           cmake -S . -B build
+          cd build && make
       # - name: Hazel run
       #   run: ./hazel run examples/demo/demo.hzl
       # - name: Hazel check
@@ -41,6 +42,7 @@ jobs:
         run: |
           mkdir build
           cmake -S . -B build
+          cd build && make
       # - name: Hazel run
       #   run: ./hazel run examples/demo/demo.hzl
       # - name: Hazel check
@@ -55,6 +57,7 @@ jobs:
         run: |
           mkdir build
           cmake -S . -B build
+          cd build && make
       # - name: Hazel run
       #   shell: cmd
       #   run: |

@@ -96,7 +96,7 @@ GENERATOR = "MinGW Makefiles"
 ## 1. CMake Exec (generate the build files)
 ## 2. Run CMake Makefile
 ## 3. Run CXX compiled executable
-
+ 
 cmake:
 	cmake -S $(SOURCE_DIR) -B $(BUILD_DIR) -G $(GENERATOR)
 	echo --------------------------------------------
