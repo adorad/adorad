@@ -1,10 +1,9 @@
 cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
-project(HazelMain CXX)
+project(HazelMain LANGUAGES C)
 
-# message("Sub1 Dir: CMAKE_SOURCE_DIR = ${CMAKE_SOURCE_DIR}")
-# message("Sub1 Dir: CMAKE_CURRENT_SOURCE_DIR = ${CMAKE_CURRENT_SOURCE_DIR}")
-
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_C_EXTENSIONS OFF)
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_STANDARD_REQUIRED TRUE)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Configure the Macro file 

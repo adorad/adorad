@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 project(Hazel 
-        LANGUAGES C
-)
+        LANGUAGES C)
 
 # message("Root Dir: CMAKE_SOURCE_DIR = ${CMAKE_SOURCE_DIR}")
 # message("Root Dir: CMAKE_CURRENT_SOURCE_DIR = ${CMAKE_CURRENT_SOURCE_DIR}")
