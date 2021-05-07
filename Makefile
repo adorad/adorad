@@ -87,6 +87,8 @@ clean:
 
 # ---------- CMAKE STUFF --------
 TARGET = Hazel
+STATICTARGET = HazelStatic
+SHAREDTARGET = HazelShared
 SOURCE_DIR = .
 BUILD_DIR = build
 RUN_DIR = build/bin
@@ -102,9 +104,14 @@ cmake:
 	echo --------------------------------------------
 	echo --------------------------------------------
 	cd $(BUILD_DIR) && $(MAKE) && \
-	echo --------------------------------------------
-	echo --------------------------------------------
-	cd $(RUN_DIR) && $(TARGET)
+	echo ------------------------------------------
+	echo ------------- STATIC LIBRARY -------------
+	echo ------------------------------------------
+	cd $(RUN_DIR) && $(STATICTARGET)
+	echo ------------------------------------------
+	echo ------------- SHARED LIBRARY -------------
+	echo ------------------------------------------
+	cd $(RUN_DIR) && $(SHAREDTARGET)
 .PHONY: cmake 
 
 # Generate the CMake MinGW Makefiles
