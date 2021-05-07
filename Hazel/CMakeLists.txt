@@ -83,7 +83,7 @@ install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
         FILES_MATCHING PATTERN "*.h"
 )
 
-
+# Hazel/Core/CMake_Macros.h --> include/Hazel/Core/Macros/CMake_Macros.h
 install(FILES ${CMAKE_BINARY_DIR}/Hazel/Core/CMake_Macros.h
         DESTINATION include/Hazel/Core/Macros
 )
