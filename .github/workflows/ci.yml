@@ -57,7 +57,7 @@ jobs:
         run: |
           mkdir build
           cmake -S . -B build
-          cd build && make
+          cd build && cmake -B .
       # - name: Hazel run
       #   shell: cmd
       #   run: |
