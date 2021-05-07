@@ -116,7 +116,7 @@ cmake:
 
 # Generate the CMake MinGW Makefiles
 cmakeexec: 
-	cmake -S $(SOURCE_DIR) -B $(BUILD_DIR) -G $(GENERATOR)
+	cmake -S $(SOURCE_DIR) -B $(BUILD_DIR)
 .PHONY: cmakeexec
 
 cmakemake:

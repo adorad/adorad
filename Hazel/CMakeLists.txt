@@ -29,13 +29,22 @@ file(GLOB_RECURSE HAZEL_ALL_TEST_FILES ../test/*.c)
 file(GLOB_RECURSE HAZEL_HEADERS *.h)
 
 # Build the Shared/Static Library
+#
+# Currently, we have no symbols to export, so building a shared library with Visual Studio will fail.
+# Example: __declspec(dllexport) or __declspec(dllimport) --> export/import symbols 
+# When we do, go ahead and remove the `if(NOT MSVC)` checks
+
 add_library(libHazelStatic STATIC ${LIBHAZEL_SOURCES} ${HAZEL_HEADERS})
-add_library(libHazelShared SHARED ${LIBHAZEL_SOURCES} ${HAZEL_HEADERS})
+if(NOT MSVC)
+    add_library(libHazelShared SHARED ${LIBHAZEL_SOURCES} ${HAZEL_HEADERS})
+endif() # MSVc
 
 # Enable hidden visibility if compiler supports it.
 if(${COMPILER_SUPPORTS_HIDDEN_VISIBILITY})
     target_compile_options(libHazelStatic PRIVATE "-fvisibility=hidden")
-    target_compile_options(libHazelShared PRIVATE "-fvisibility=hidden")
+    if(NOT MSVC)
+        target_compile_options(libHazelShared PRIVATE "-fvisibility=hidden")
+    endif() # MSVc
 endif()
 
 # ======================
@@ -61,23 +70,29 @@ install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
 
 # ================
 
-# ======================
-# For libHazelShared
-# =====================
-target_include_directories(
-    libHazelShared PUBLIC 
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../>
-    $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}>
-    $<INSTALL_INTERFACE:include>
-)
-# Build the executable
-# main.c (or whatever demo file you want to link against) =
-add_executable(HazelShared ${CMAKE_CURRENT_SOURCE_DIR}/main.c)
-target_link_libraries(HazelShared libHazelShared)
+if(NOT MSVC)
+    # ======================
+    # For libHazelShared
+    # =====================
+    target_include_directories(
+        libHazelShared PUBLIC 
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../>
+        $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}>
+        $<INSTALL_INTERFACE:include>
+    )
+    # Build the executable
+    # main.c (or whatever demo file you want to link against) =
+    add_executable(HazelShared ${CMAKE_CURRENT_SOURCE_DIR}/main.c)
+    target_link_libraries(HazelShared libHazelShared)
+endif() # MSVC
 
 # Installation
 install(TARGETS libHazelStatic DESTINATION lib)
-install(TARGETS libHazelShared DESTINATION lib)
+if(NOT MSVC)
+    install(TARGETS libHazelShared DESTINATION lib)
+endif() # MSVC
+
+# *.h --> include/*.h
 install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
         DESTINATION include
         FILES_MATCHING PATTERN "*.h"
