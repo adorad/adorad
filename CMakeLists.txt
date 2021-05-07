@@ -9,11 +9,11 @@ project(Hazel CXX C)
 set(CMAKE_INSTALL_MESSAGE NEVER)
 
 # ------ Check and set CMAKE_CXX_STANDARD ------
-string(FIND "${CMAKE_CXX_FLAGS}" "-std=c++" ENV_CXX_STANDARD)
+string(FIND "${CMAKE_CXX_FLAGS}" "-std=c" ENV_CXX_STANDARD)
 if(ENV_CXX_STANDARD GREATER -1)
     message (
-        WARNING "C++ Standard Version definition detected in an environment variable."
-        "Hazel requires -std=c++17. Please remove -std=c++ settings in your environment."
+        WARNING "C Standard Version definition detected in an environment variable."
+        "Hazel requires -std=c11. Please remove -std=c++ settings in your environment."
     )
 endif()
 
