@@ -1266,7 +1266,7 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
         #pragma clang diagnostic push
         #pragma clang diagnostic ignored "-Wreserved-id-macro"
     #endif // __clang__
-#endif __linux__
+#endif // __linux__
 
 #define __STDC_FORMAT_MACROS 1
 
@@ -1330,7 +1330,7 @@ static inline Int64 cstl_utest_ns(void) {
                         (counter.QuadPart * 1000000000) / frequency.QuadPart);
     #elif defined(__linux) && defined(__STRICT_ANSI__)
         return CSTL_CAST(Int64, clock()) * 1000000000 / CLOCKS_PER_SEC;
-    #elifdef __linux
+    #elif defined(__linux)
         struct timespec ts;
         #ifdef __STDC_VERSION__ && __STDC_VERSION__ >= 201112L
             timespec_get(&ts, TIME_UTC);
