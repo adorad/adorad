@@ -66,8 +66,8 @@ CREDITS
 #include <Hazel/Core/String.h>
 #include <Hazel/Core/Types.h>
 
-#ifdef CSTL_USE_UTEST 
-    #include <Hazel/Core/UTest.h>
-#endif // CSTL_USE_UTEST
+#ifdef CSTL_USE_ARROW_UTEST
+    #include <Hazel/Core/Arrow.h>
+#endif // CSTL_USE_ARROW_UTEST
 
 #endif // _CSTL_CORE_CSTL_H
