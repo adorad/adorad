@@ -2,7 +2,7 @@
 // #include <string>
 // #include <iostream>
 
-int main(int argc, char **argv) {
+int main(int argc, const char* const argv[]) {
     // std::string buffer = "123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     // Hazel::Lexer lexer(buffer);
 

@@ -1278,7 +1278,7 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #endif
 
 #define CSTL_INITIALIZER(f)                                                   \
-    static void f(void) __attribute__((constructor));                            \
+    static void f(void)     __attribute__((constructor));                            \
     static void f(void)
 
 #endif // _MSC_VER
@@ -1330,6 +1330,7 @@ static inline Int64 cstl_utest_ns(void) {
                         (counter.QuadPart * 1000000000) / frequency.QuadPart);
     #elif defined(__linux) && defined(__STRICT_ANSI__)
         return CSTL_CAST(Int64, clock()) * 1000000000 / CLOCKS_PER_SEC;
+
     #elif defined(__linux)
         struct timespec ts;
         #ifdef __STDC_VERSION__ && __STDC_VERSION__ >= 201112L
@@ -2053,11 +2054,11 @@ cleanup:
 /*
     Defines a main function and begins executing tests
 */
-#define CSTL_MAIN()      
-    // we need, in exactly one source file, define the global struct that will hold
-    // the data we need to run cstl_utest. This macro allows the user to declare the
-    // data without having to use the CSTL_MAIN macro, thus allowing them to write
-    // their own main() function.                                                    
+#define CSTL_MAIN()      \
+    // we need, in exactly one source file, define the global struct that will hold \
+    // the data we need to run cstl_utest. This macro allows the user to declare the \
+    // data without having to use the CSTL_MAIN macro, thus allowing them to write \
+    // their own main() function.                                                    \ 
     struct cstl_utest_state_s cstl_utest_state = {0, 0, 0};     \
     int main(int argc, const char* const argv[]) {              \
         return cstl_utest_main(argc, argv);                     \
