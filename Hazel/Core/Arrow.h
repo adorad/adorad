@@ -2054,14 +2054,16 @@ cleanup:
 /*
     Defines a main function and begins executing tests
 */
-#define CSTL_MAIN()      \
-    // we need, in exactly one source file, define the global struct that will hold \
-    // the data we need to run cstl_utest. This macro allows the user to declare the \
-    // data without having to use the CSTL_MAIN macro, thus allowing them to write \
-    // their own main() function.                                                    \ 
-    struct cstl_utest_state_s cstl_utest_state = {0, 0, 0};     \
-    int main(int argc, const char* const argv[]) {              \
-        return cstl_utest_main(argc, argv);                     \
-    }
+#ifndef CSTL_MAIN()
+    #define CSTL_MAIN()      \
+        /* we need, in exactly one source file, define the global struct that will hold */ \
+        /* the data we need to run cstl_utest. This macro allows the user to declare the */ \
+        /* data without having to use the CSTL_MAIN macro, thus allowing them to write */ \
+        /* their own main() function. */ \
+        struct cstl_utest_state_s cstl_utest_state = {0, 0, 0};     \
+        int main(int argc, const char* const argv[]) {              \
+            return cstl_utest_main(argc, argv);                     \
+        }
+#endif // CSTL_MAIN()
 
 #endif // CSTL_UTEST_H
