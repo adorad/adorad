@@ -24,7 +24,8 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macOS-latest]
-        type: [Debug, RelWithDebInfo, MinSizeRel, Release] 
+        # type: [Debug, RelWithDebInfo, MinSizeRel, Release] 
+        type: [Release] 
         compilers: [default, clang, gcc]
     runs-on: ${{ matrix.os }}
     
@@ -57,7 +58,9 @@ jobs:
       - name: CMake with Clang (Windows)
         shell: bash
         if: (matrix.compiler == 'clang') && (matrix.os == 'windows')
-        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=${{ matrix.type }} -T ClangCL
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=${{ matrix.type }} -DCMAKE_C_COMPILER=clang-cl 
+        else:
+        
 
       - name: Build
         shell: bash

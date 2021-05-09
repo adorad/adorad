@@ -62,7 +62,11 @@ endif()
 # ------ A List of Compiler Flags ------
 # A (more or less comprehensive) list is here: https://caiorss.github.io/C-Cpp-Notes/compiler-flags-options.html
 if(NOT MSVC)
-    string(APPEND CMAKE_C_FLAGS " -std=c11")
+    if("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
+        string(APPEND CMAKE_C_FLAGS " -std=gnu11")
+    else()
+        string(APPEND CMAKE_C_FLAGS " -std=c11")
+    endif()
     # Optimizations
     if(CMAKE_BUILD_TYPE STREQUAL "Release")
         string(APPEND CMAKE_C_FLAGS " -O2 -fPIC")
@@ -94,6 +98,13 @@ if(NOT MSVC)
         string(APPEND CMAKE_C_FLAGS " -Wno-unused-but-set-variable")
         string(APPEND CMAKE_C_FLAGS " -Wno-maybe-uninitialized")
     endif()
+
+# For MSVC 
+else()
+    string(APPEND CMAKE_C_FLAGS " /Wall")
+    string(APPEND CMAKE_C_FLAGS " /WX")  
+    string(APPEND CMAKE_C_FLAGS " /wd4514")
+    string(APPEND CMAKE_C_FLAGS " /wd5045")
 endif()
 
 # A shared library is always produced if a library type is not passed to the add_library command.
