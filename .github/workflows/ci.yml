@@ -76,24 +76,24 @@ jobs:
         run: |
           cmake --build build/ --config ${{ matrix.type }}
       
-      - name: Test
-        working-directory: ${{github.workspace}}/build
-        shell: bash
-        run: |
-          if [ "${{ matrix.os }}" == "windows-latest" ]; then cd ${{ matrix.type }}; fi; ./hazel
+      # - name: Test
+      #   working-directory: ${{github.workspace}}/build
+      #   shell: bash
+      #   run: |
+      #     if [ "${{ matrix.os }}" == "windows-latest" ]; then cd ${{ matrix.type }}; fi; ./hazel
 
-      - name: Test Whole Program Optimization
-        working-directory: ${{github.workspace}}/build
-        shell: bash
-        run: |
-          if [ "${{ matrix.os }}" == "windows-latest" ]; then cd ${{ matrix.type }}; fi; ./hazel_wpo
+      # - name: Test Whole Program Optimization
+      #   working-directory: ${{github.workspace}}/build
+      #   shell: bash
+      #   run: |
+      #     if [ "${{ matrix.os }}" == "windows-latest" ]; then cd ${{ matrix.type }}; fi; ./hazel_wpo
 
-      - name: Test with Multithreading
-        working-directory: ${{github.workspace}}/build
-        shell: bash
-        if: startsWith(matrix.os, 'windows')
-        run: |
-          if [ "${{ matrix.os }}" == "windows-latest" ]; then cd ${{ matrix.type }}; fi; ./hazel_mt
+      # - name: Test with Multithreading
+      #   working-directory: ${{github.workspace}}/build
+      #   shell: bash
+      #   if: startsWith(matrix.os, 'windows')
+      #   run: |
+      #     if [ "${{ matrix.os }}" == "windows-latest" ]; then cd ${{ matrix.type }}; fi; ./hazel_mt
 
 
   # build_linux:
