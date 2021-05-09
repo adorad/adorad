@@ -306,7 +306,9 @@ CSTL_EXTERN struct cstl_utest_state_s   cstl_utest_state;
     #define CSTL_OVERLOADABLE
 #elif __clang__
     // Clang has the nice overloadable attribute 
-    #define CSTL_OVERLOADABLE   __attribute__((overloadable))
+    #if __has_attribute(overloadable)
+        #define CSTL_OVERLOADABLE   __attribute__((overloadable))
+    #endif // __hasattribute
 #endif // __cplusplus
 
 
