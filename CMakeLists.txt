@@ -95,8 +95,8 @@ if(NOT MSVC)
     endif(WERROR)
 
     if(NOT APPLE)
-        string(APPEND CMAKE_C_FLAGS " -Wno-unused-but-set-variable")
-        string(APPEND CMAKE_C_FLAGS " -Wno-maybe-uninitialized")
+        string(APPEND CMAKE_C_FLAGS " -Wno-unused-const-variable")
+        string(APPEND CMAKE_C_FLAGS " -Wno-uninitialized")
     endif()
 
 # For MSVC 
