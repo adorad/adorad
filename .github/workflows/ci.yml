@@ -27,7 +27,7 @@ jobs:
         os: [ubuntu-latest, windows-latest, macOS-latest]
         # type: [Debug, RelWithDebInfo, MinSizeRel, Release] 
         type: [Release] 
-        compilers: [default, clang, gcc]
+        compiler: [default, clang, gcc]
         exclude:
           - {os: "ubuntu-latest", compiler: "default"}
           - {os: "macOS-latest", compiler: "gcc"}  # not needed
