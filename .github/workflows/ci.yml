@@ -1,7 +1,7 @@
 # This is a helpful build script with CMake <https://cristianadam.eu/20191222/using-github-actions-with-c-plus-plus-and-cmake/>
 # We will switch to it, but at a later point in time. 
 
-name: CI
+name: CMake
 on:
   push:
     branches:
@@ -10,15 +10,6 @@ on:
     branches:
       - dev
 
-# jobs:
-#   test:
-#     name: Test C
-#     runs-on: ubuntu-latest
-
-#     steps:
-#       - name: LGTM
-#         run: echo "LGTM" #TODO, uncomment
-        
 jobs:
   build:
     strategy:
@@ -46,7 +37,6 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         run: |
           sudo apt-get install -y gcc-11 g++-10 clang-10
-
       - name: Default Platform Compiler
         shell: bash
         if: matrix.compiler == 'default'
@@ -64,37 +54,108 @@ jobs:
         if: (matrix.compiler == 'clang') && (matrix.os == 'ubuntu-latest')
         run: |
           cmake -S . -B build -DCMAKE_BUILD_TYPE=${{ matrix.type }} -DCMAKE_C_COMPILER=clang-10 -DCMAKE_CXX_COMPILER=clang++-10
-
       - name: Clang (Windows)
         shell: bash
         if: (matrix.compiler == 'clang') && (matrix.os == 'windows-latest')
         run: |
           cmake -S . -B build -DCMAKE_BUILD_TYPE=${{ matrix.type }} -DCMAKE_C_COMPILER=clang-cl 
-
       - name: Build
         shell: bash
         run: |
           cmake --build build/ --config ${{ matrix.type }}
+          # name: CMake
+
+
+# name: CI
+# on:
+#   push:
+#     branches:
+#       - dev
+#   pull_request:
+#     branches:
+#       - dev
+
+        
+# jobs:
+#   build:
+#     strategy:
+#       fail-fast: false
+#       matrix:
+#         os: [ubuntu-latest, windows-latest, macOS-latest]
+#         # type: [Debug, RelWithDebInfo, MinSizeRel, Release] 
+#         type: [Release] 
+#         compiler: [default, clang, gcc]
+#         exclude:
+#           - {os: "ubuntu-latest", compiler: "default"}
+#           - {os: "macOS-latest", compiler: "gcc"}  # not needed
+#           - {os: "macOS-latest", compiler: "clang"} # handled by `default`
+          
+#     runs-on: ${{ matrix.os }}
+    
+#     steps: 
+#       - uses: actions/checkout@v1
+
+#       - name: Create the Build Folder
+#         run: |
+#           mkdir ${{github.workspace}}/build
+        
+#       - name: Set up Compilers on Ubuntu
+#         if: matrix.os == 'ubuntu-latest'
+#         run: |
+#           sudo apt-get install -y gcc-11 g++-10 clang-10
+
+#       - name: Default Platform Compiler
+#         shell: bash
+#         if: matrix.compiler == 'default'
+#         run: |
+#           cmake -S . -B build -DCMAKE_BUILD_TYPE=${{ matrix.type }}
       
-      # - name: Test
-      #   working-directory: ${{github.workspace}}/build
-      #   shell: bash
-      #   run: |
-      #     if [ "${{ matrix.os }}" == "windows-latest" ]; then cd ${{ matrix.type }}; fi; ./hazel
+#       - name: GCC
+#         shell: bash
+#         if: matrix.compiler == 'gcc'
+#         run: |
+#           cmake -S . -B build -DCMAKE_BUILD_TYPE=${{ matrix.type }} -DCMAKE_C_COMPILER=gcc-11 -DCMAKE_CXX_COMPILER=g++-10
+      
+#       - name: Clang (Ubuntu)
+#         shell: bash
+#         if: (matrix.compiler == 'clang') && (matrix.os == 'ubuntu-latest')
+#         run: |
+#           cmake -S . -B build -DCMAKE_BUILD_TYPE=${{ matrix.type }} -DCMAKE_C_COMPILER=clang-10 -DCMAKE_CXX_COMPILER=clang++-10
 
-      # - name: Test Whole Program Optimization
-      #   working-directory: ${{github.workspace}}/build
-      #   shell: bash
-      #   run: |
-      #     if [ "${{ matrix.os }}" == "windows-latest" ]; then cd ${{ matrix.type }}; fi; ./hazel_wpo
+#       - name: Clang (Windows)
+#         shell: bash
+#         if: (matrix.compiler == 'clang') && (matrix.os == 'windows-latest')
+#         run: |
+#           cmake -S . -B build -DCMAKE_BUILD_TYPE=${{ matrix.type }} -DCMAKE_C_COMPILER=clang-cl 
 
-      # - name: Test with Multithreading
-      #   working-directory: ${{github.workspace}}/build
-      #   shell: bash
-      #   if: startsWith(matrix.os, 'windows')
-      #   run: |
-      #     if [ "${{ matrix.os }}" == "windows-latest" ]; then cd ${{ matrix.type }}; fi; ./hazel_mt
+#       - name: Build
+#         shell: bash
+#         run: |
+#           cmake --build build/ --config ${{ matrix.type }}
+      
+#       # - name: Test
+#       #   working-directory: ${{github.workspace}}/build
+#       #   shell: bash
+#       #   run: |
+#       #     if [ "${{ matrix.os }}" == "windows-latest" ]; then cd ${{ matrix.type }}; fi; ./hazel
 
+#       # - name: Test Whole Program Optimization
+#       #   working-directory: ${{github.workspace}}/build
+#       #   shell: bash
+#       #   run: |
+#       #     if [ "${{ matrix.os }}" == "windows-latest" ]; then cd ${{ matrix.type }}; fi; ./hazel_wpo
+
+#       # - name: Test with Multithreading
+#       #   working-directory: ${{github.workspace}}/build
+#       #   shell: bash
+#       #   if: startsWith(matrix.os, 'windows')
+#       #   run: |
+#       #     if [ "${{ matrix.os }}" == "windows-latest" ]; then cd ${{ matrix.type }}; fi; ./hazel_mt
+
+############################################################################################################################
+############################################################################################################################
+############################################################################################################################
+############################################################################################################################
 
   # build_linux:
   #   runs-on: ubuntu-latest
