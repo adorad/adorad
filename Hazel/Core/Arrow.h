@@ -99,6 +99,10 @@
 #endif
 
 #ifdef _MSC_VER
+    #ifdef _WIN32
+        // Fixes the `warning C4668: '__cplusplus' is not defined as a preprocessor macro`
+        #pragma warning (disable : 4668)
+    #endif
     #ifdef _WIN64
         #define CSTL_SYMBOL_PREFIX
     #else
