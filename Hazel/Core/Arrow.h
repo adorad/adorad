@@ -389,22 +389,22 @@ CSTL_EXTERN struct cstl_utest_state_s   cstl_utest_state;
 
     #define cstl_utest_type_printer(val)                                                \
         CSTL_PRINTF(_Generic((val),  \
-                        signed char    : "%d",        \
-                        unsigned char  : "%u",        \
-                        short          : "%d",        \
-                        unsigned short : "%u",        \
-                        int            : "%d",        \
-                        long           : "%ld",       \
-                        Ll             : "%lld",      \
-                        unsigned       : "%u",        \
-                        unsigned long  : "%lu",       \
-                        Ull            : "%llu",      \
-                        Float32        : "%f",        \
-                        Float64        : "%f",        \
-                        long double    : "%Lf",       \
-                        default        : _Generic((val - val),        \
-                                            ptrdiff_t : "%p",         \
-                                            default   : "undef")),    \
+                        signed char        : "%d",        \
+                        unsigned char      : "%u",        \
+                        short              : "%d",        \
+                        unsigned short     : "%u",        \
+                        int                : "%d",        \
+                        long               : "%ld",       \
+                        long long          : "%lld",      \
+                        unsigned           : "%u",        \
+                        unsigned long      : "%lu",       \
+                        unsigned long long : "%llu",      \
+                        float              : "%f",        \
+                        double             : "%f",        \
+                        long double        : "%Lf",       \
+                        default            : _Generic((val - val),        \
+                                                ptrdiff_t : "%p",         \
+                                                default   : "undef")),    \
                     (val))
 #else
 /*
