@@ -39,7 +39,14 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
         #define inline 
     #endif 
 #else
-    #define inline
+    // We default to C's inline function
+    // NOTE: GCC performs inline substitution for `inline` functions. This presents a problem because declared `inline`
+    // functions are not visible to the linker and hence will result in ``undefined reference to `function` `` errors
+    // A quick fix is to make sure `inline` functions are declared as static. 
+    // 
+    // We can enforce this here, but I'll wait for sometime. If we decide to go ahead with it, a simple text substitution
+    // should work :)
+    #define inline  inline
 #endif 
 
 
@@ -52,7 +59,7 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
             #define force_inline __forceinline
         #endif 
     #else 
-        #define force_inline    __attribute__ ((__always_inline__))
+        #define force_inline    __attribute__((__always_inline__))
     #endif 
 #endif 
 

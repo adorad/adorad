@@ -203,11 +203,11 @@ TOKENKIND(TOK___KEYWORDS_BEGIN, ""),  \
     TOKENKIND(TUPLE,     "tuple"),    \
     TOKENKIND(TYPE,      "type"),     \
     TOKENKIND(TYPEOF,    "typeof"),   \
-    TOKENKIND(USE,       "use"), /* aliasing purposes */ \
     TOKENKIND(WHEN,      "when"),     \
     TOKENKIND(WHERE,     "where"),    \
     TOKENKIND(WHILE,     "while"),    \
     TOKENKIND(UNION,     "union"),    \
+    TOKENKIND(USE,       "use"), /* aliasing purposes */ \
 TOKENKIND(TOK___KEYWORDS_END, ""), \
 \
     TOKENKIND(TOK_COUNT, "")
@@ -232,11 +232,11 @@ typedef struct {
 } Token;
 
 // Create a basic (ILLEGAL) token
-Token* token_init();
+Token* token_init(void);
 void token_location_init(Token* token);
 Token* token_from_tok_type(const TokenType __tok_type);
-Token* token_make_illegal_tok();
-Token* token_make_eof_tok();
+Token* token_make_illegal_tok(void);
+Token* token_make_eof_tok(void);
 // Clone a Token
 Token* token_clone(Token* other);
 // Get token type 
@@ -250,31 +250,31 @@ void token_reset_token(Token* token);
 
 
 const char* token_toString(Token* token);
-inline bool token_isJumpStatement(Token* token);
-inline bool token_isLoopStatement(Token* token);
-inline bool token_isFlowStatement(Token* token);
-inline bool token_isMatchStatement(Token* token);
-inline bool token_isExpressionStatement(Token* token);
-inline bool token_isPrimaryExpressionStatement(Token* token);
-inline bool token_isDeclStatement(Token* token);
-inline bool token_isSpecial(Token* token);
-inline bool token_isLiteral(Token* token);
-inline bool token_isKeyword(Token* token);
-inline bool token_isOperator(Token* token);
-inline bool token_isComparisonOperator(Token* token);
-inline bool token_isAssignmentOperator(Token* token);
-inline bool token_isDelimiter(Token* token);
-inline bool token_isArrow(Token* token);
-inline bool token_isBitwise(Token* token);
-inline bool token_isSeparator(Token* token);
-inline bool token_isIdentifier(Token* token);
-inline bool token_isEOF(Token* token);
-inline bool token_isNULL(Token* token);
-inline bool token_isIllegal(Token* token);
-inline bool token_isMacro(Token* token);
-inline bool token_isImport(Token* token);
-inline bool token_isInclude(Token* token);
-inline bool token_isSemiColon(Token* token);
+static inline bool token_isJumpStatement(Token* token);
+static inline bool token_isLoopStatement(Token* token);
+static inline bool token_isFlowStatement(Token* token);
+static inline bool token_isMatchStatement(Token* token);
+static inline bool token_isExpressionStatement(Token* token);
+static inline bool token_isPrimaryExpressionStatement(Token* token);
+static inline bool token_isDeclStatement(Token* token);
+static inline bool token_isSpecial(Token* token);
+static inline bool token_isLiteral(Token* token);
+static inline bool token_isKeyword(Token* token);
+static inline bool token_isOperator(Token* token);
+static inline bool token_isComparisonOperator(Token* token);
+static inline bool token_isAssignmentOperator(Token* token);
+static inline bool token_isDelimiter(Token* token);
+static inline bool token_isArrow(Token* token);
+static inline bool token_isBitwise(Token* token); 
+static inline bool token_isSeparator(Token* token);
+static inline bool token_isIdentifier(Token* token);
+static inline bool token_isEOF(Token* token);
+static inline bool token_isNULL(Token* token);
+static inline bool token_isIllegal(Token* token);
+static inline bool token_isMacro(Token* token);
+static inline bool token_isImport(Token* token);
+static inline bool token_isInclude(Token* token);
+static inline bool token_isSemiColon(Token* token);
 
 
 #endif // _HAZEL_TOKEN_H

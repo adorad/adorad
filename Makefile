@@ -114,10 +114,29 @@ cmake:
 	cd $(RUN_DIR) && $(SHAREDTARGET)
 .PHONY: cmake 
 
+cmakemsvc:
+	cmake -S $(SOURCE_DIR) -B $(BUILD_DIR)
+	echo --------------------------------------------
+	echo --------------------------------------------
+	cd $(BUILD_DIR) && cmake --build . && \
+	echo ------------------------------------------
+	echo ------------- STATIC LIBRARY -------------
+	echo ------------------------------------------
+	cd $(RUN_DIR) && $(STATICTARGET)
+	echo ------------------------------------------
+	echo ------------- SHARED LIBRARY -------------
+	echo ------------------------------------------
+	cd $(RUN_DIR) && $(SHAREDTARGET)
+.PHONY: cmakemsvc 
+
 # Generate the CMake MinGW Makefiles
 cmakeexec: 
-	cmake -S $(SOURCE_DIR) -B $(BUILD_DIR)
+	cmake -S $(SOURCE_DIR) -B $(BUILD_DIR) -G $(GENERATOR)
 .PHONY: cmakeexec
+
+cmakeexecmsvc: 
+	cmake -S $(SOURCE_DIR) -B $(BUILD_DIR)
+.PHONY: cmakeexecmsvc
 
 cmakemake:
 	cd $(BUILD_DIR) && $(MAKE)

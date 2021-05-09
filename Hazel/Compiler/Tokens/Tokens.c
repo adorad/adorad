@@ -14,7 +14,7 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #include <Hazel/Compiler/Tokens/Tokens.h>
 
 // Token constructor
-Token* token_init() {
+Token* token_init(void) {
     Token* token = calloc(1, sizeof(Token));
     token->type__ = TOK_ILLEGAL; 
     token->offset__ = 0; 
@@ -33,7 +33,7 @@ void token_location_init(Token* token) {
     token->location__.fname__ = "";
 }
 
-// Make a token from a TokenType
+// Make a token from a TokenType 
 // Note: This is not recommended because the rest of the Token fields are populated with default 
 // values only
 Token* token_from_tok_type(const TokenType __tok_type) {
@@ -42,12 +42,12 @@ Token* token_from_tok_type(const TokenType __tok_type) {
     return token;
 }
 
-Token* token_make_illegal_tok() {
+Token* token_make_illegal_tok(void) {
     return token_init();
 }
 
 // Construct an EOF token
-Token* token_make_eof_tok() {
+Token* token_make_eof_tok(void) {
     Token* token = token_init();
     token->type__ = TOK_EOF;
     return token;
@@ -126,6 +126,8 @@ const char* token_toString(Token* token) {
         case MOD_MOD: return "%%";
         case PLUS_PLUS: return "++";
         case MINUS_MINUS: return "--";
+        case MULT_MULT: return "**";
+        case SLASH_SLASH: return "//";
         case AT_SIGN: return "@";
         case HASH_SIGN: return "#";
         case QUESTION: return "?";
@@ -151,6 +153,7 @@ const char* token_toString(Token* token) {
         case LBITSHIFT_EQUALS: return "<<=";
         case RBITSHIFT_EQUALS: return ">>=";
         case TILDA: return "~";
+        case TILDA_EQUALS: return "~=";
 
         // Arrows
         case EQUALS_ARROW: return "=>";
@@ -234,8 +237,9 @@ const char* token_toString(Token* token) {
         case TYPEOF: return "typeof";  
         case WHEN: return "when";    
         case WHERE: return "where";   
-        case WHILE: return "while";   
+        case WHILE: return "while";    
         case UNION: return "union";  
+        case USE: return "use";  
         // We should _never_ reach here
         default: return "ILLEGAL";
     }
