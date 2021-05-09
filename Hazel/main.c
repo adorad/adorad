@@ -2,8 +2,6 @@
 // #include <string>
 // #include <iostream>
 
-CSTL_MAIN()
-
 TEST(c, ASSERT_TRUE) { ASSERT_TRUE(1); }
 
 TEST(c, ASSERT_FALSE) { ASSERT_FALSE(0); }
