@@ -43,7 +43,7 @@ jobs:
           mkdir ${{github.workspace}}/build
         
       - name: Set up Compilers on Ubuntu
-        if: startsWith(matrix.os, 'ubuntu')
+        if: matrix.os, 'ubuntu-latest'
         run: |
           sudo apt-get install -y gcc-11 g++-10 clang-10
 
@@ -61,13 +61,13 @@ jobs:
       
       - name: Clang (Ubuntu)
         shell: bash
-        if: (matrix.compiler == 'clang') && (matrix.os == 'ubuntu')
+        if: (matrix.compiler == 'clang') && (matrix.os == 'ubuntu-latest')
         run: |
           cmake -S . -B build -DCMAKE_BUILD_TYPE=${{ matrix.type }} -DCMAKE_C_COMPILER=clang-10 -DCMAKE_CXX_COMPILER=clang++-10
 
       - name: Clang (Windows)
         shell: bash
-        if: (matrix.compiler == 'clang') && (matrix.os == 'windows')
+        if: (matrix.compiler == 'clang') && (matrix.os == 'windows-latest')
         run: |
           cmake -S . -B build -DCMAKE_BUILD_TYPE=${{ matrix.type }} -DCMAKE_C_COMPILER=clang-cl 
 
