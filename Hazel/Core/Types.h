@@ -61,18 +61,18 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 typedef float  Float32; 
 typedef double Float64; 
 
-CSTL_CHECK(sizeof(UInt8)  == sizeof(Int8));
-CSTL_CHECK(sizeof(UInt16) == sizeof(Int16));
-CSTL_CHECK(sizeof(UInt32) == sizeof(Int32));
-CSTL_CHECK(sizeof(UInt64) == sizeof(Int64));
+CSTL_DEBUG_CHECK(sizeof(UInt8)  == sizeof(Int8));
+CSTL_DEBUG_CHECK(sizeof(UInt16) == sizeof(Int16));
+CSTL_DEBUG_CHECK(sizeof(UInt32) == sizeof(Int32));
+CSTL_DEBUG_CHECK(sizeof(UInt64) == sizeof(Int64));
 
-CSTL_CHECK(sizeof(UInt8)  == 1);
-CSTL_CHECK(sizeof(UInt16) == 2);
-CSTL_CHECK(sizeof(UInt32) == 4);
-CSTL_CHECK(sizeof(UInt64) == 8);
+CSTL_DEBUG_CHECK(sizeof(UInt8)  == 1);
+CSTL_DEBUG_CHECK(sizeof(UInt16) == 2);
+CSTL_DEBUG_CHECK(sizeof(UInt32) == 4);
+CSTL_DEBUG_CHECK(sizeof(UInt64) == 8);
 
-CSTL_CHECK(sizeof(Float32) == 4);
-CSTL_CHECK(sizeof(Float64) == 8);
+CSTL_DEBUG_CHECK(sizeof(Float32) == 4);
+CSTL_DEBUG_CHECK(sizeof(Float64) == 8);
 
 // Bool-sy
 typedef Int8  Bool8; 
@@ -214,7 +214,7 @@ typedef Int32 Rune;
     typedef  intptr_t    Intptr;
 #endif
 
-CSTL_CHECK(sizeof(UIntptr) == sizeof(Intptr));
+CSTL_DEBUG_CHECK(sizeof(UIntptr) == sizeof(Intptr));
 
 
 // #ifdef __cplusplus
