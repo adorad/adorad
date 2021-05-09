@@ -60,8 +60,8 @@ TOKENKIND(TOK___LITERALS_BEGIN, ""), \
     TOKENKIND(STRING,        "STRING"),       \
     TOKENKIND(RAW_STRING,    "RAW_STRING"),   \
     TOKENKIND(TRIPLE_STRING, "TRIPLE_STRING"), \
-    TOKENKIND(TRUE,          "TRUE"),         \
-    TOKENKIND(FALSE,         "FALSE"),        \
+    TOKENKIND(TOK_TRUE,      "TRUE"),         \
+    TOKENKIND(TOK_FALSE,     "FALSE"),        \
 TOKENKIND(TOK___LITERALS_END, ""), \
 \
     /* Operators */ \
