@@ -23,9 +23,9 @@ jobs:
   build:
     strategy:
       matrix:
-        os = [ubuntu-latest, windows-latest, macOS-latest]
-        type = [Debug, RelWithDebInfo, MinSizeRel, Release] 
-        compilers = [default, clang, gcc]
+        os: [ubuntu-latest, windows-latest, macOS-latest]
+        type: [Debug, RelWithDebInfo, MinSizeRel, Release] 
+        compilers: [default, clang, gcc]
     runs-on: ${{ matrix.os }}
     
     steps: 
