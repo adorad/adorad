@@ -20,51 +20,111 @@ on:
 #         run: echo "LGTM" #TODO, uncomment
         
 jobs:
-  build_linux:
-    runs-on: ubuntu-latest
-    steps:
+  build:
+    strategy:
+      matrix:
+        os = [ubuntu-latest, windows-latest, macOS-latest]
+        type = [Debug, RelWithDebInfo, MinSizeRel, Release] 
+        compilers = [default, clang, gcc]
+    runs-on: ${{ matrix.os }}
+    
+    steps: 
       - uses: actions/checkout@v1
-      - name: Build Hazel
-        run: |
-          mkdir build
-          cmake -S . -B build
-          cd build && make
-      # - name: Hazel run
-      #   run: ./hazel run examples/demo/demo.hzl
-      # - name: Hazel check
-      #   run: ./hazel check examples/demo/demo.hzl -vet
 
-  build_macOS:
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v1
-      - name: Build Hazel
+      - name: Create the Build Folder
         run: |
-          mkdir build
-          cmake -S . -B build
-          cd build && make
-      # - name: Hazel run
-      #   run: ./hazel run examples/demo/demo.hzl
-      # - name: Hazel check
-      #   run: ./hazel check examples/demo/demo.hzl -vet
+          mkdir ${{github.workspace}}/build
+        
+      - name: Set up Compilers on Ubuntu
+        if: startsWith(matrix.os, 'ubuntu')
+        run: sudo apt-get install -y gcc-11 g++-10 clang-10
 
-  build_windows:
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v1
-      - name: Build Hazel
-        shell: cmd
-        run: |
-          mkdir build
-          cmake -S . -B build
-          cd build && cmake --build .
-      # - name: Hazel run
-      #   shell: cmd
-      #   run: |
-      #     call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat
-      #     hazel run examples/demo/demo.hzl
-      # - name: Hazel check
-      #   shell: cmd
-      #   run: |
-      #     call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat
-      #     hazel check examples/demo/demo.hzl -vet
+      - name: CMake with Default Compiler
+        shell: bash
+        if: matrix.compiler == 'default'
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=${{ matrix.type }}
+      
+      - name: CMake with GCC
+        shell: bash
+        if: matrix.compiler == 'gcc'
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=${{ matrix.type }} -DCMAKE_C_COMPILER=gcc-11 -DCMAKE_CXX_COMPILER=g++-10
+      
+      - name: CMake with Clang (Ubuntu)
+        shell: bash
+        if: (matrix.compiler == 'clang') && (matrix.os == 'ubuntu')
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=${{ matrix.type }} -DCMAKE_C_COMPILER=clang-10 -DCMAKE_CXX_COMPILER=clang++-10
+
+      - name: CMake with Clang (Windows)
+        shell: bash
+        if: (matrix.compiler == 'clang') && (matrix.os == 'windows')
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=${{ matrix.type }} -T ClangCL
+
+      - name: Build
+        shell: bash
+        run: cmake --build build/ --config ${{ matrix.type }}
+      
+      - name: Test
+        working-directory: ${{github.workspace}}/build
+        shell: bash
+        run: if [ "${{ matrix.os }}" == "windows-latest" ]; then cd ${{ matrix.type }}; fi; ./hazel
+
+      - name: Test Whole Program Optimization
+        working-directory: ${{github.workspace}}/build
+        shell: bash
+        run: if [ "${{ matrix.os }}" == "windows-latest" ]; then cd ${{ matrix.type }}; fi; ./hazel_wpo
+
+      - name: Test with Multithreading
+        working-directory: ${{github.workspace}}/build
+        shell: bash
+        if: startsWith(matrix.os, 'windows')
+        run: if [ "${{ matrix.os }}" == "windows-latest" ]; then cd ${{ matrix.type }}; fi; ./hazel_mt
+
+
+  # build_linux:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v1
+  #     - name: Build Hazel
+  #       run: |
+  #         mkdir build
+  #         cmake -S . -B build
+  #         cd build && make
+  #     # - name: Hazel run
+  #     #   run: ./hazel run examples/demo/demo.hzl
+  #     # - name: Hazel check
+  #     #   run: ./hazel check examples/demo/demo.hzl -vet
+
+  # build_macOS:
+  #   runs-on: macos-latest
+  #   steps:
+  #     - uses: actions/checkout@v1
+  #     - name: Build Hazel
+  #       run: |
+  #         mkdir build
+  #         cmake -S . -B build
+  #         cd build && make
+  #     # - name: Hazel run
+  #     #   run: ./hazel run examples/demo/demo.hzl
+  #     # - name: Hazel check
+  #     #   run: ./hazel check examples/demo/demo.hzl -vet
+
+  # build_windows:
+  #   runs-on: windows-latest
+  #   steps:
+  #     - uses: actions/checkout@v1
+  #     - name: Build Hazel
+  #       shell: cmd
+  #       run: |
+  #         mkdir build
+  #         cmake -S . -B build
+  #         cd build && cmake --build .
+  #     # - name: Hazel run
+  #     #   shell: cmd
+  #     #   run: |
+  #     #     call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat
+  #     #     hazel run examples/demo/demo.hzl
+  #     # - name: Hazel check
+  #     #   shell: cmd
+  #     #   run: |
+  #     #     call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat
+  #     #     hazel check examples/demo/demo.hzl -vet

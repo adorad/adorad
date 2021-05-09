@@ -7,7 +7,7 @@ set(CMAKE_C_STANDARD_REQUIRED TRUE)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Configure the Macro file 
-set(C10_BUILD_SHARED_LIBS ${BUILD_SHARED_LIBS}) # used in ../CMake/cmake_macros.h.in
+set(HAZEL_BUILD_SHARED_LIBS ${BUILD_SHARED_LIBS}) # used in ../CMake/cmake_macros.h.in
 configure_file(
     ${CMAKE_SOURCE_DIR}/CMake/cmake_macros.h.in
     ${CMAKE_SOURCE_DIR}/Hazel/Core/CMake_Macros.h
