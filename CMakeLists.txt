@@ -54,10 +54,12 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 # ------Compiler and linker options ------
 # In case of Makefiles, if the user does not setup CMAKE_BUILD_TYPE, assume it's Release: 
-if(CMAKE_GENERATOR MATCHES "Makefiles|Ninja" AND "${CMAKE_BUILD_TYPE}" STREQUAL "")
+if(NOT CMAKE_BUILD_TYPE)
     message(STATUS "Build type not set - defaulting to Release")
-    set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose the type of build from: Debug Release." FORCE)
-endif()
+    set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose the type of build, options are: Debug Release
+    RelWithDebInfo MinSizeRel Coverage." FORCE)
+endif(NOT CMAKE_BUILD_TYPE)
+
 
 # ------ A List of Compiler Flags ------
 # A (more or less comprehensive) list is here: https://caiorss.github.io/C-Cpp-Notes/compiler-flags-options.html
