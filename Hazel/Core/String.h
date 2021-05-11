@@ -18,6 +18,8 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #include <Hazel/Core/Misc.h>
 #include <Hazel/Core/Types.h>
 
+// UTF8 Inspiration: https://github.com/sheredom/utf8.h/blob/master/utf8.h
+
 // #ifdef __cplusplus
 // namespace Hazel {
 // #endif

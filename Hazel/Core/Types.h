@@ -169,7 +169,7 @@ typedef Int32 Rune;
             #define null    0
         #endif 
     #else 
-        #define null    (void*)0
+        #define null    ((void*)0)
     #endif // __cplusplus
 #endif 
 
