@@ -16,9 +16,9 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 
 #include <Hazel/Core/Debug.h>
 
-// #ifdef __cplusplus
-// namespace Hazel {
-// #endif
+#ifdef __cplusplus
+namespace Hazel {
+#endif
 
 // Base Types (similar to the Types in the Hazel Language) ==========================================
 #if defined(CSTL_COMPILER_MSVC)
@@ -217,8 +217,8 @@ typedef Int32 Rune;
 CSTL_DEBUG_CHECK(sizeof(UIntptr) == sizeof(Intptr));
 
 
-// #ifdef __cplusplus
-// } // namespace Hazel
-// #endif
+#ifdef __cplusplus
+} // namespace Hazel
+#endif
 
 #endif // CSTL_TYPES_H

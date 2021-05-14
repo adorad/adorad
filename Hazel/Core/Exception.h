@@ -4,9 +4,9 @@
 #include <Hazel/Core/String.h>
 #include <Hazel/Core/Types.h>
 
-// #ifdef __cplusplus
-// namespace Hazel {
-// #endif
+#ifdef __cplusplus
+namespace Hazel {
+#endif
 
 // // The Primary CSTL Error Class
 // // Provides a complete error message with source code location information via `what()`, and a more conce message via 
@@ -355,8 +355,8 @@
 #endif
 */
 
-// #ifdef __cplusplus
-// } // namespace Hazel
-// #endif
+#ifdef __cplusplus
+} // namespace Hazel
+#endif
 
 #endif // CSTL_EXCEPTION_H

@@ -14,9 +14,9 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #ifndef CSTL_MISCELLANEOUS_H
 #define CSTL_MISCELLANEOUS_H
 
-// #ifdef __cplusplus
-// namespace Hazel {
-// #endif
+#ifdef __cplusplus
+namespace Hazel {
+#endif
 
 
 // Defines 
@@ -56,10 +56,10 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
         #if _MSC_VER < 1300
             #define force_inline
         #else 
-            #define force_inline __forceinline
+            #define force_inline   __forceinline
         #endif 
     #else 
-        #define force_inline    __attribute__((__always_inline__))
+        #define force_inline       __attribute__((__always_inline__))
     #endif 
 #endif 
 
@@ -69,15 +69,40 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
     #if defined(_MSC_VER)
         #define no_inline   __declspec(noinline)
     #else 
-        #define no_inline   __attribute__ ((noinline))
+        #define no_inline   __attribute__((noinline))
     #endif 
 #endif 
 
 
-// Cast 
-#ifndef cast 
-    #define cast(Type)  (Type)
-#endif 
+// Casts
+#ifdef __cplusplus
+    #define cast(type, x)       static_cast<type>(x)
+    #define ptrcast(type, x)    reinterpret_cast<type>(x)
+#else
+    #define cast(type, x)       ((type)x)
+    #define ptrcast(type, x)    ((type)x)
+#endif // __cplusplus
+
+
+// Noexcept
+#ifdef __cplusplus && __cplusplus >= 201103L
+    #define noexcept    noexcept
+#endif // __cplusplus
+
+
+// Nothrow
+#ifdef __cplusplus && defined(_MSC_VER)
+    #define nothrow   __declspec(nothrow)
+#else
+    #define nothrow
+#endif // __cplusplus
+
+
+// printf Format-string specifiers for Int64 and UInt64 respectively
+#if defined(_MSC_VER) && (_MSC_VER < 1920)
+    #define CSTL_PRId64     "I64d"
+    #define CSTL_PRIu64     "I64u"
+#endif // _MSC_VER
 
 
 // A signed sizeof is more useful 
@@ -137,8 +162,8 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #endif 
 
 
-// #ifdef __cplusplus
-// } // namespace Hazel
-// #endif
+#ifdef __cplusplus
+} // namespace Hazel
+#endif
 
 #endif // CSTL_MISCELLANEOUS_H

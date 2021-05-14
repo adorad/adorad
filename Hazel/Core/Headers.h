@@ -16,9 +16,9 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 
 #include <Hazel/Core/OS.h>
 
-// #ifdef __cplusplus
-// namespace Hazel {
-// #endif
+#ifdef __cplusplus
+namespace Hazel {
+#endif
 
 
 // Headers ==========================================
@@ -28,7 +28,7 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
     #endif
 #endif
 
-#if defined(CSTL_SYSTEM_UNIX)
+#if defined(CSTL_OS_UNIX)
     #define _GNU_SOURCE
     #define _LARGEFILE64_SOURCE
 #endif
@@ -36,12 +36,12 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 
 // TODO(jasmcaus): How many of these headers do I really need?
 // #include <stdarg.h>
-#if !defined(CSTL_SYSTEM_WINDOWS)
+#if !defined(CSTL_OS_WINDOWS)
     #include <stddef.h>
     #include <stdarg.h>
 #endif
 
-#if defined(CSTL_SYSTEM_WINDOWS)
+#if defined(CSTL_OS_WINDOWS)
     #if !defined(CSTL_NO_WINDOWS_H)
         #define NOMINMAX 1
         #if !defined(CSTL_WINDOWS_H_INCLUDED)
@@ -75,7 +75,7 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
     // #include <stdlib.h> // NOTE(jasmcaus): malloc on linux
     // #include <sys/mman.h>
 
-    #if !defined(CSTL_SYSTEM_OSX) && !defined(__FreeBSD__)
+    #if !defined(CSTL_OS_OSX) && !defined(__FreeBSD__)
         // #include <sys/sendfile.h>
     #endif
 
@@ -90,7 +90,7 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
     #endif
 #endif
 
-#if defined(CSTL_SYSTEM_OSX)
+#if defined(CSTL_OS_OSX)
     // #include <mach/mach.h>
     // #include <mach/mach_init.h>
     // #include <mach/mach_time.h>
@@ -101,7 +101,7 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
     // #include <mach/clock.h>
 #endif
 
-#if defined(CSTL_SYSTEM_FREEBSD)
+#if defined(CSTL_OS_FREEBSD)
     // #include <sys/sysctl.h>
     // #include <pthread_np.h>
     // #include <sys/cpuset.h>
@@ -113,13 +113,13 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
     #define sendfile(out, in, offset, count) sendfile(out, in, offset, count, NULL, NULL, 0)
 #endif
 
-#if defined(CSTL_SYSTEM_UNIX)
+#if defined(CSTL_OS_UNIX)
     // #include <semaphore.h>
 #endif
 
 
-// #ifdef __cplusplus
-// } // namespace Hazel
-// #endif
+#ifdef __cplusplus
+} // namespace Hazel
+#endif
 
 #endif // CSTL_HEADERS_H

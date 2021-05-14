@@ -20,9 +20,9 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 
 // UTF8 Inspiration: https://github.com/sheredom/utf8.h/blob/master/utf8.h
 
-// #ifdef __cplusplus
-// namespace Hazel {
-// #endif
+#ifdef __cplusplus
+namespace Hazel {
+#endif
 
 
 // Char Things ==========================================
@@ -383,9 +383,9 @@ static inline void strToUpper(char* str) {
 //     return dest;
 // }
 
-// #ifdef __cplusplus
-// } // namespace Hazel
-// #endif
+#ifdef __cplusplus
+} // namespace Hazel
+#endif
 
 
 #endif // CSTL_STRING_H

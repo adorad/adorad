@@ -14,9 +14,9 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #ifndef CSTL_DEBUG_H
 #define CSTL_DEBUG_H
 
-// #ifdef __cplusplus
-// namespace Hazel {
-// #endif
+#ifdef __cplusplus
+namespace Hazel {
+#endif
 
 // ========================= Debug + Asserts =========================
 
@@ -29,8 +29,8 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #endif
 
 
-// #ifdef __cplusplus
-// } // namespace Hazel
-// #endif
+#ifdef __cplusplus
+} // namespace Hazel
+#endif
 
 #endif // CSTL_DEBUG_H
