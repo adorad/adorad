@@ -81,8 +81,6 @@ Float32 cstl_toDegrees(Float32 radians) { return radians * 360.0f / CSTL_MATH_TA
 Float32 cstl_sin(Float32 x);
 Float32 cstl_cos(Float32 x);
 Float32 cstl_tan(Float32 x);
-Float32 cstl_arcsin(Float32 x);
-Float32 cstl_arccos(Float32 x);
 Float32 cstl_arctan(Float32 x);
 Float32 cstl_arctan2(Float32 x, Float32 y);
 Float32 cstl_exp(Float32 x);
@@ -132,25 +130,6 @@ Float32 cstl_tan(Float32 radians) {
     x += 1.0f;
     x *= radians;
     return x;
-}
-
-#ifdef _MSC_VER
-    Float32 cstl_sqrt(Float32 a)  { 
-        return _mm_cvtss_f32(_mm_sqrt_ss(_mm_set_ss(x))); 
-    };
-#else
-    #include <intrin.h>
-    Float32 cstl_sqrt(Float32 x) {
-        return __builtin_sqrt(x);
-    }
-#endif // _MSC_VER
-
-Float32 cstl_arcsin(Float32 x) { 
-    return cstl_arctan2(x, cstl_sqrt((1.0f + x) * (1.0f - x))); 
-}
-
-Float32 cstl_arccos(Float32 x) { 
-    return cstl_arctan2(cstl_sqrt((1.0f + x) * (1.0 - x)), x); 
 }
 
 Float32 cstl_arctan(Float32 x) {
