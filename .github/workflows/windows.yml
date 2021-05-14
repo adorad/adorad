@@ -38,7 +38,8 @@ jobs:
     runs-on: windows-2016
     strategy:
       matrix:
-        build_type: [Debug, RelWithDebInfo, MinSizeRel, Release] 
+        # build_type: [Debug, RelWithDebInfo, MinSizeRel, Release] 
+        build_type: [Release]
         architecture: [Win32, x64]
 
     steps:
@@ -88,7 +89,8 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        build_type: [Debug, RelWithDebInfo, MinSizeRel, Release] 
+        # build_type: [Debug, RelWithDebInfo, MinSizeRel, Release] 
+        build_type: [Release]
         architecture: [Win32, x64]
 
     steps:
@@ -128,7 +130,8 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        build_type: [Debug, RelWithDebInfo, MinSizeRel, Release] 
+        # build_type: [Debug, RelWithDebInfo, MinSizeRel, Release] 
+        build_type: [Release]
         version: [10, 11]
 
     steps:
@@ -154,7 +157,8 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        build_type: [Debug, RelWithDebInfo, MinSizeRel, Release] 
+        # build_type: [Debug, RelWithDebInfo, MinSizeRel, Release] 
+        build_type: [Release]
         architecture: [Win32, x64]
 
     steps:
