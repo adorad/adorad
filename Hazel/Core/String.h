@@ -15,7 +15,7 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #define CSTL_STRING_H
 
 #include <Hazel/Core/Memory.h>
-#include <Hazel/Core/Misc.h>
+#include <Hazel/Core/Math.h>
 #include <Hazel/Core/Types.h>
 
 // UTF8 Inspiration: https://github.com/sheredom/utf8.h/blob/master/utf8.h

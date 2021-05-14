@@ -65,5 +65,6 @@ CREDITS
 #include <Hazel/Core/OS.h>
 #include <Hazel/Core/String.h>
 #include <Hazel/Core/Types.h>
+#include <Hazel/Core/Math.h>
 
 #endif // _CSTL_CORE_CSTL_H
