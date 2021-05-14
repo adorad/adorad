@@ -92,7 +92,7 @@ Float32 cstl_square(Float32 x);
 Float32 cstl_log2(Float32 x);
 
 
-#ifdef _MSC_VER
+// #ifdef _MSC_VER
     Float32 cstl_sin(Float32 x) {
         static Float32 const x0 = +1.91059300966915117e-31f;
         static Float32 const x1 = +1.00086760103908896f;
@@ -196,26 +196,7 @@ Float32 cstl_log2(Float32 x);
 		return flipped ? 1.0f/r : r;
 	}
 
-#else
-
-    Float32 cstl_rsqrt(Float32 x)            { return 1.0f/__builtin_sqrt(x); }
-    Float32 cstl_sqrt(Float32 x)             { return __builtin_sqrt(x); }
-    Float32 cstl_sin(Float32 radians)        { return __builtin_sinf(radians); }
-    Float32 cstl_cos(Float32 radians)        { return __builtin_cosf(radians); }
-    Float32 cstl_tan(Float32 radians)        { return __builtin_tanf(radians); }
-    Float32 cstl_arcsin(Float32 x)           { return __builtin_asinf(x); }
-    Float32 cstl_arccos(Float32 x)           { return __builtin_acosf(x); }
-    Float32 cstl_arctan(Float32 x)           { return __builtin_atanf(x); }
-    Float32 cstl_arctan2(Float32 x, Float32 y) { return __builtin_atan2f(x, y); }
-
-
-    Float32 cstl_exp(Float32 x)  { return __builtin_expf(x); }
-    Float32 cstl_log(Float32 x)  { return __builtin_logf(x); }
-
-	// Should this be cstl_exp(y * cstl_log(x)) ?
-    Float32 cstl_pow(Float32 x, Float32 y) { return __builtin_powf(x, y); }
-
-#endif // _MSC_VER
+// #endif // _MSC_VER
 
 Float32 cstl_square(Float32 x){
     return cstl_exp(CSTL_MATH_LOG_TWO * x);
