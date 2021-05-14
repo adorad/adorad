@@ -75,7 +75,8 @@ namespace Hazel {
 #elif defined(__ATM_EABI__)
     #define CSTL_ARCH_ARM
 #else
-    #error This Architecture is not supoorted by Hazel
+    #define CSTL_ARCH_UNKNOWN
+    // #error This Architecture is not supported by Hazel
 #endif // __x86_64
 
 

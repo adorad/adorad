@@ -2,6 +2,8 @@
 #ifndef CSTL_MATH_H
 #define CSTL_MATH_H
 
+#include <Hazel/Core/Types.h>
+
 #ifdef __cplusplus
 namespace cstl {
 extern "C" {
@@ -70,53 +72,53 @@ extern "C" {
 } // extern "C"
 #endif // __cplusplus
 
-float cstl_toRadians(float degrees);
-float cstl_toDegrees(float radians);
+Float32 cstl_toRadians(Float32 degrees);
+Float32 cstl_toDegrees(Float32 radians);
 
-float cstl_toRadians(float degrees) { return degrees * CSTL_MATH_TAU / 360.0f;}
-float cstl_toDegrees(float radians) { return radians * 360.0f / CSTL_MATH_TAU;}
+Float32 cstl_toRadians(Float32 degrees) { return degrees * CSTL_MATH_TAU / 360.0f;}
+Float32 cstl_toDegrees(Float32 radians) { return radians * 360.0f / CSTL_MATH_TAU;}
 
-float cstl_sin(float x);
-float cstl_cos(float x);
-float cstl_tan(float x);
-float cstl_arcsin(float x);
-float cstl_arccos(float x);
-float cstl_arctan(float x);
-float cstl_arctan2(float x, float y);
-float cstl_exp(float x);
-float cstl_log(float x);
-float cstl_pow(float x, float y);
-float cstl_square(float x);
-float cstl_log2(float x);
+Float32 cstl_sin(Float32 x);
+Float32 cstl_cos(Float32 x);
+Float32 cstl_tan(Float32 x);
+Float32 cstl_arcsin(Float32 x);
+Float32 cstl_arccos(Float32 x);
+Float32 cstl_arctan(Float32 x);
+Float32 cstl_arctan2(Float32 x, Float32 y);
+Float32 cstl_exp(Float32 x);
+Float32 cstl_log(Float32 x);
+Float32 cstl_pow(Float32 x, Float32 y);
+Float32 cstl_square(Float32 x);
+Float32 cstl_log2(Float32 x);
 
 
 #ifdef _MSC_VER
-    float cstl_sin(float x) {
-        static float const x0 = +1.91059300966915117e-31f;
-        static float const x1 = +1.00086760103908896f;
-        static float const x2 = -1.21276126894734565e-2f;
-        static float const x3 = -1.38078780785773762e-1f;
-        static float const x4 = -2.67353392911981221e-2f;
-        static float const x5 = +2.08026600266304389e-2f;
-        static float const x6 = -3.03996055049204407e-3f;
-        static float const x7 = +1.38235642404333740e-4f;
+    Float32 cstl_sin(Float32 x) {
+        static Float32 const x0 = +1.91059300966915117e-31f;
+        static Float32 const x1 = +1.00086760103908896f;
+        static Float32 const x2 = -1.21276126894734565e-2f;
+        static Float32 const x3 = -1.38078780785773762e-1f;
+        static Float32 const x4 = -2.67353392911981221e-2f;
+        static Float32 const x5 = +2.08026600266304389e-2f;
+        static Float32 const x6 = -3.03996055049204407e-3f;
+        static Float32 const x7 = +1.38235642404333740e-4f;
         return x0 + x*(x1 + x*(x2 + x*(x3 + x*(x4 + x*(x5 + x*(x6 + x*x7))))));
 	}
-    float cstl_cos(float x) {
-        static float const x0 = +1.00238601909309722f;
-        static float const x1 = -3.81919947353040024e-2f;
-        static float const x2 = -3.94382342128062756e-1f;
-        static float const x3 = -1.18134036025221444e-1f;
-        static float const x4 = +1.07123798512170878e-1f;
-        static float const x5 = -1.86637164165180873e-2f;
-        static float const x6 = +9.90140908664079833e-4f;
-        static float const x7 = -5.23022132118824778e-14f;
+    Float32 cstl_cos(Float32 x) {
+        static Float32 const x0 = +1.00238601909309722f;
+        static Float32 const x1 = -3.81919947353040024e-2f;
+        static Float32 const x2 = -3.94382342128062756e-1f;
+        static Float32 const x3 = -1.18134036025221444e-1f;
+        static Float32 const x4 = +1.07123798512170878e-1f;
+        static Float32 const x5 = -1.86637164165180873e-2f;
+        static Float32 const x6 = +9.90140908664079833e-4f;
+        static Float32 const x7 = -5.23022132118824778e-14f;
         return x0 + x*(x1 + x*(x2 + x*(x3 + x*(x4 + x*(x5 + x*(x6 + x*x7))))));
 	}
 
-    float cstl_tan(float radians) {
-        float rr = radians*radians;
-        float x = 9.5168091e-03f;
+    Float32 cstl_tan(Float32 radians) {
+        Float32 rr = radians*radians;
+        Float32 x = 9.5168091e-03f;
         x *= rr;
         x += 2.900525e-03f;
         x *= rr;
@@ -133,27 +135,27 @@ float cstl_log2(float x);
         return x;
 	}
 
-    float cstl_arcsin(float x) { return cstl_arctan2(x, cstl_sqrt((1.0f + x) * (1.0f - x))); }
-    float cstl_arccos(float x) { return cstl_arctan2(cstl_sqrt((1.0f + x) * (1.0 - x)), x); }
+    Float32 cstl_arcsin(Float32 x) { return cstl_arctan2(x, cstl_sqrt((1.0f + x) * (1.0f - x))); }
+    Float32 cstl_arccos(Float32 x) { return cstl_arctan2(cstl_sqrt((1.0f + x) * (1.0 - x)), x); }
 
-    float cstl_arctan(float x) {
-        float u  = x*x;
-        float u2 = u*u;
-        float u3 = u2*u;
-        float u4 = u3*u;
-        float f  = 1.0f+0.33288950512027f*u-0.08467922817644f*u2+0.03252232640125f*u3-0.00749305860992f*u4;
+    Float32 cstl_arctan(Float32 x) {
+        Float32 u  = x*x;
+        Float32 u2 = u*u;
+        Float32 u3 = u2*u;
+        Float32 u4 = u3*u;
+        Float32 f  = 1.0f+0.33288950512027f*u-0.08467922817644f*u2+0.03252232640125f*u3-0.00749305860992f*u4;
         return x/f;
 	}
 
-    float cstl_arctan2(float x, float y) {
+    Float32 cstl_arctan2(Float32 x, Float32 y) {
         if (cstl_abs(y) > cstl_abs(x)) {
-            float y = cstl_arctan(x/y);
+            Float32 y = cstl_arctan(x/y);
             if (y > 0.0f)
                 return a;
             else
                 return x > 0.0f ? a+CSTL_MATH_TAU_OVER_2:a-GB_MATH_TAU_OVER_2;
         } else {
-            float y = cstl_arctan(y/x);
+            Float32 y = cstl_arctan(y/x);
             if (y > 0.0f)
                 return x > 0.0f ? CSTL_MATH_TAU_OVER_4-a:-CSTL_MATH_TAU_OVER_4-a;
             else
@@ -161,21 +163,21 @@ float cstl_log2(float x);
         }
 	}
 
-    float cstl_exp(float x) {
-        union { float f; int i; } u, v;
+    Float32 cstl_exp(Float32 x) {
+        union { Float32 f; int i; } u, v;
         u.i = (int)(6051102 * x + 1056478197);
         v.i = (int)(1056478197 - 6051102 * x);
         return u.f / v.f;
 	}
 
-    float cstl_log(float x) {
-        union { float f; int i; } u = {x};
+    Float32 cstl_log(Float32 x) {
+        union { Float32 f; int i; } u = {x};
         return (u.i - 1064866805) * 8.262958405176314e-8f; /* 1 / 12102203.0; */
 	}
 
-    float cstl_pow(float x, float y) {
+    Float32 cstl_pow(Float32 x, Float32 y) {
 		int flipped = 0, e;
-		float f, r = 1.0f;
+		Float32 f, r = 1.0f;
 		if (y < 0) {
             flipped = 1;
             y = -y;
@@ -196,29 +198,29 @@ float cstl_log2(float x);
 
 #else
 
-    float cstl_rsqrt(float x)            { return 1.0f/__builtin_sqrt(x); }
-    float cstl_sqrt(float x)             { return __builtin_sqrt(x); }
-    float cstl_sin(float radians)        { return __builtin_sinf(radians); }
-    float cstl_cos(float radians)        { return __builtin_cosf(radians); }
-    float cstl_tan(float radians)        { return __builtin_tanf(radians); }
-    float cstl_arcsin(float x)           { return __builtin_asinf(x); }
-    float cstl_arccos(float x)           { return __builtin_acosf(x); }
-    float cstl_arctan(float x)           { return __builtin_atanf(x); }
-    float cstl_arctan2(float x, float y) { return __builtin_atan2f(x, y); }
+    Float32 cstl_rsqrt(Float32 x)            { return 1.0f/__builtin_sqrt(x); }
+    Float32 cstl_sqrt(Float32 x)             { return __builtin_sqrt(x); }
+    Float32 cstl_sin(Float32 radians)        { return __builtin_sinf(radians); }
+    Float32 cstl_cos(Float32 radians)        { return __builtin_cosf(radians); }
+    Float32 cstl_tan(Float32 radians)        { return __builtin_tanf(radians); }
+    Float32 cstl_arcsin(Float32 x)           { return __builtin_asinf(x); }
+    Float32 cstl_arccos(Float32 x)           { return __builtin_acosf(x); }
+    Float32 cstl_arctan(Float32 x)           { return __builtin_atanf(x); }
+    Float32 cstl_arctan2(Float32 x, Float32 y) { return __builtin_atan2f(x, y); }
 
 
-    float cstl_exp(float x)  { return __builtin_expf(x); }
-    float cstl_log(float x)  { return __builtin_logf(x); }
+    Float32 cstl_exp(Float32 x)  { return __builtin_expf(x); }
+    Float32 cstl_log(Float32 x)  { return __builtin_logf(x); }
 
 	// Should this be cstl_exp(y * cstl_log(x)) ?
-    float cstl_pow(float x, float y) { return __builtin_powf(x, y); }
+    Float32 cstl_pow(Float32 x, Float32 y) { return __builtin_powf(x, y); }
 
 #endif // _MSC_VER
 
-float cstl_square(float x){
+Float32 cstl_square(Float32 x){
     return cstl_exp(CSTL_MATH_LOG_TWO * x);
 }
-float cstl_log2(float x){
+Float32 cstl_log2(Float32 x){
     return cstl_log(x) / CSTL_MATH_LOG_TWO;
 }
 
