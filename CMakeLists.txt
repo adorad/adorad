@@ -99,6 +99,10 @@ if(NOT MSVC)
     if(NOT APPLE)
         string(APPEND CMAKE_C_FLAGS " -Wno-unused-const-variable")
         string(APPEND CMAKE_C_FLAGS " -Wno-uninitialized")
+    else()
+        # Disables the ``implicit declaration of function is invalid in C99`` warning 
+        # This error is irritating even though we explicitely tell CMake to build according to the C11 standard
+        string(APPEND CMAKE_C_FLAGS " -Wno-implicit-function-declaration") 
     endif()
 
 # For MSVC 
