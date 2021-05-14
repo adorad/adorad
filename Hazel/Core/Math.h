@@ -142,7 +142,7 @@ Float32 cstl_arctan(Float32 x) {
 }
 
 Float32 cstl_arctan2(Float32 x, Float32 y) {
-    if (cstl_abs(y) > cstl_abs(x)) {
+    if (CSTL_ABS(y) > CSTL_ABS(x)) {
         Float32 a = cstl_arctan(x/y);
         if (y > 0.0f)
             return a;
