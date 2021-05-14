@@ -140,28 +140,6 @@ namespace Hazel {
 // }
 
 
-// Some fun with macros ==========================================
-#ifndef CSTL_MAX
-    #define CSTL_MAX(x, y)     ((x) > (y) ? (x) : (y))
-#endif 
-
-#ifndef CSTL_MIN
-    #define CSTL_MIN(x, y)     ((x) < (y) ? (x) : (y))
-#endif 
-
-#ifndef CSTL_CLAMP
-    #define CSTL_CLAMP(x, lower, upper)     CSTL_MIN(CSTL_MAX((x), (lower)), (upper))
-#endif 
-
-#ifndef CSTL_IS_BETWEEN
-    #define CSTL_IS_BETWEEN(x, lower, upper)     (((lower) <= (x) ) && ((x) <= (upper)))
-#endif 
-
-#ifndef CSTL_ABS
-    #define CSTL_ABS(x)     ((x) < 0 ? -(x) : (x))
-#endif 
-
-
 #ifdef __cplusplus
 } // namespace Hazel
 #endif
