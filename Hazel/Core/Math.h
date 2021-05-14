@@ -154,7 +154,7 @@ Float32 cstl_arctan2(Float32 x, Float32 y) {
         else
             return x > 0.0f ? a + CSTL_MATH_TAU_BY_2 : a - CSTL_MATH_TAU_BY_2;
     } else {
-        Float32 y = cstl_arctan(y/x);
+        Float32 a = cstl_arctan(y/x);
         if (y > 0.0f)
             return x > 0.0f ? CSTL_MATH_TAU_BY_4 - a : -CSTL_MATH_TAU_BY_4 - a;
         else
