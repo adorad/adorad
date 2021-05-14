@@ -215,6 +215,12 @@ float cstl_log2(float x);
 
 #endif // _MSC_VER
 
+float cstl_square(float x){
+    return cstl_exp(CSTL_MATH_LOG_TWO * x);
+}
+float cstl_log2(float x){
+    return cstl_log(x) / CSTL_MATH_LOG_TWO;
+}
 
 #ifdef __cplusplus
 } // namespace cstl
