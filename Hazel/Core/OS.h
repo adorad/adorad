@@ -67,6 +67,42 @@ namespace Hazel {
     #error This Operating System in not supported by Hazel
 #endif
 
+// Architetures
+#if defined(__x86_64__)
+    #define CSTL_ARCH_X86_64
+#elif defined(__aarch64__)
+    #define CSTL_ARCH_ARM64
+#elif defined(__ATM_EABI__)
+    #define CSTL_ARCH_ARM
+#else
+    #error This Architecture is not supoorted by Hazel
+#endif // __x86_64
+
+
+// printf Format specifiers
+#define CSTL_PRI_usize  "Iu"
+#define CSTL_PRId64     "I64d"
+#define CSTL_PRIu64     "I64u"
+#define CSTL_PRI_x64    "I64x"
+
+#ifdef CSTL_OS_WINDOWS
+    #define CSTL_OS_SEP         "\\"
+    #define CSTL_OS_SEP_CHAR    '\\'
+#else
+    #define CSTL_OS_SEP         "/"
+    #define CSTL_OS_SEP_CHAR    '/'
+#endif // CSTL_OS_WINDOWS
+
+
+// Terminal Colours
+typedef TerminalColours {
+    CSTL_TERMCOLOUR_RED_,
+    CSTL_TERMCOLOUR_GREEN_,
+    CSTL_TERMCOLOUR_CYAN_,
+    CSTL_TERMCOLOUR_WHITE_,
+    CSTL_TERMCOLOUR_BOLD_,
+    CSTL_TERMCOLOUR_RESET_,
+} TerminalColours;
 
 #ifdef __cplusplus
 } // namespace Hazel
