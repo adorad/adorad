@@ -85,13 +85,13 @@ namespace Hazel {
 
 
 // Noexcept
-#ifdef __cplusplus && __cplusplus >= 201103L
+#if defined(__cplusplus) && (__cplusplus >= 201103L)
     #define noexcept    noexcept
 #endif // __cplusplus
 
 
 // Nothrow
-#ifdef __cplusplus && defined(_MSC_VER)
+#if defined(__cplusplus) && defined(_MSC_VER)
     #define nothrow   __declspec(nothrow)
 #else
     #define nothrow

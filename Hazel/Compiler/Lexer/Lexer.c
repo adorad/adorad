@@ -82,7 +82,7 @@ inline void lexer_set_lineno(Lexer* lexer, UInt32 lineno) { lexer->location__.li
 inline void lexer_set_colno(Lexer* lexer, UInt32 colno) { lexer->location__.colno__ = colno; }
 inline void lexer_set_fname(Lexer* lexer, const char* fname) { lexer->location__.fname__ = fname; }
 
-inline Location lexer_location(Lexer* lexer);
+inline Location lexer_location(Lexer* lexer) { return lexer->location__; }
 inline UInt32 lexer_lineno(Lexer* lexer) { return lexer->location__.lineno__; }
 inline UInt32 lexer_colno(Lexer* lexer) { return lexer->location__.colno__; }
 inline const char* fname(Lexer* lexer) { return lexer->location__.fname__; }

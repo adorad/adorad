@@ -95,7 +95,7 @@ namespace Hazel {
 
 
 // Terminal Colours
-typedef TerminalColours {
+typedef enum TerminalColours {
     CSTL_TERMCOLOUR_RED_,
     CSTL_TERMCOLOUR_GREEN_,
     CSTL_TERMCOLOUR_CYAN_,

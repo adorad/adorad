@@ -58,9 +58,9 @@ static inline bool isLetter(char c) {
 }
 
 static inline bool isHexDigit(char c) {
-    return  isDigit(c)                   ||
-            CSTL_IS_BETWEEN(c, 'a', 'f') ||
-            CSTL_IS_BETWEEN(c, 'A', 'F'); 
+    return isDigit(c)                   ||
+           CSTL_IS_BETWEEN(c, 'a', 'f') ||
+           CSTL_IS_BETWEEN(c, 'A', 'F'); 
 }
 
 static inline Int32 digitToInt(char c) { return isDigit(c) ? c-'0' : c-'W'; }
