@@ -12,7 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        build_type: [Debug, RelWithDebInfo, MinSizeRel, Release] 
+        # build_type: [Debug, RelWithDebInfo, MinSizeRel, Release] 
+        build_type: [Release]
         
     steps:
       - uses: actions/checkout@v2

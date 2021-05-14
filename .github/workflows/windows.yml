@@ -13,7 +13,8 @@ jobs:
     strategy:
       matrix:
         architecture: [x64, x86]
-        build_type: [Debug, RelWithDebInfo, MinSizeRel, Release] 
+        # build_type: [Debug, RelWithDebInfo, MinSizeRel, Release] 
+        build_type: [Release]
 
     steps:
       - uses: actions/checkout@v2
