@@ -30,6 +30,7 @@ int main(int argc, const char* const argv[]) {
     // char* source = readFile("test/LexerDemo.hzl");
     // printf(source);
     // free(source);
+    printf("Aren't we supposed to work? \n");
 
     return 0; 
 }
