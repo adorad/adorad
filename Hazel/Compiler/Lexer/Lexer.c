@@ -180,8 +180,6 @@ inline void lexer_reset(Lexer* lexer) {
 	lexer_location_init(lexer);
 }
 
-// This needs a Lexer instance to be able to `peek` at the next element to determine if CR+LF
-// TODO(jasmcaus): Remove this need / Construct a better function
 static inline bool isNewLine(Lexer* lexer, char c) {
     // Carriage Return: U+000D (UTF-8 in hex: 0D)
     // Line Feed: U+000A (UTF-8 in hex: 0A)
