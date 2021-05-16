@@ -177,15 +177,29 @@ static TokenType token_twochar(char c1, char c2) {
             if(c2 == '=') return TILDA_EQUALS;
         case '.':
             if(c2 == '.') return DDOT;
+        
+        // We should never get here
+        default: return TOK_ILLEGAL;
     }
 }
 
 // Returns the token corresponding to three characters
 static TokenType token_threechar(char c1, char c2, char c3) {
+    switch(c1) {
+        case '<':
+            if(c2 == '<' && c3 == '=') return LBITSHIFT_EQUALS;
+            break;
+        case '>':
+            if(c2 == '>' && c3 == '=') return RBITSHIFT_EQUALS;
+            break;
+        case '.':
+            if(c2 == '.' && c3 == '.') return ELLIPSIS;
+            break;
 
+        // We should never get here
+        default: return TOK_ILLEGAL;
+    }
 }
-
-
 
 // Convert a Token to its respective String representation
 const char* token_toString(Token* token) {
