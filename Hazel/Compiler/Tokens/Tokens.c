@@ -115,6 +115,8 @@ static TokenType token_onechar(char c) {
         case ';': return SEMICOLON;
         case ',': return COMMA;
         case '.': return DOT;
+        // This is actually one character - the second backslash acts as an escape character in C.
+        case '\\': return BACKSLASH;
 
         // We should never get here
         default: return TOK_ILLEGAL;
@@ -152,7 +154,29 @@ static TokenType token_twochar(char c1, char c2) {
         case '|':
             if(c2 == '|') return OR_OR;
             if(c2 == '=') return OR_EQUALS;
-
+            break;
+        case '^':
+            if(c2 == '=') return XOR_EQUALS;
+            break;
+        case '<':
+            if(c2 == '=') return LESS_THAN_OR_EQUAL_TO;
+            if(c2 == '-') return LARROW;
+            if(c2 == '<<') return LBITSHIFT;
+            break;
+        case '>':
+            if(c2 == '=') return GREATER_THAN_OR_EQUAL_TO;
+            if(c2 == '>') return RBITSHIFT;
+            break;
+        case '!':
+            if(c2 == '=') return EXCLAMATION_EQUALS;
+            break;
+        case '=':
+            if(c2 == '=') return EQUALS_EQUALS;
+            break;
+        case '~':
+            if(c2 == '=') return TILDA_EQUALS;
+        case '.':
+            if(c2 == '.') return DDOT;
     }
 }
 
