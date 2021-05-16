@@ -34,11 +34,11 @@ The main files are:
 - Creates a parser object for each file and runs `parse()` on them.
 - The correct backend is called (C, JS, x64), and a binary is compiled.
 
-2. `hazel/scanner` The scanner's job is to parse a list of characters and convert them to tokens.
+2. `hazel/lexer` The lexer's job is to parse a list of characters and convert them to tokens.
 
 3. `hazel/token` This is simply a list of all tokens, their string values, and a couple of helper functions.
 
-4. `hazel/parser` The parser: It converts a list of tokens into an AST (Abstract Binary Tree). 
+4. `hazel/parser` The parser converts a list of tokens into an AST (Abstract Binary Tree). 
 In Hazel, objects can be used before declaration, so unknown types are marked as unresolved. They are resolved later in the 
 type checker.
 
@@ -59,4 +59,4 @@ language's tools.
 assembly instructions to machine code and build the binary from scratch byte by byte. It manually builds all headers, 
 segments, sections, symtable, relocations, etc. Right now it only has basic support of the x64 platform/ELF format.
 
-The rest of the directories are vlib modules: `builtin/` (Strings, Tensors, maps), `time/`, `os/`, etc. Their documentation is pretty clear.
+The rest of the directories are hzlib modules: `builtin/` (Strings, Tensors, maps), `time/`, `os/`, etc. Their documentation is pretty clear.
