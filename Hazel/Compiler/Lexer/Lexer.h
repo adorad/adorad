@@ -46,13 +46,16 @@ typedef struct Lexer {
 
 // Constructor 
 Lexer* lexer_init(const char* buffer);
-// lexer_next() consumes the next element in the Lexical Buffer
-// It increments the buffer offset and essentially _advances_ to the next element in the buffer
+// Returns the current character in the Lexical Buffer and advances to the next element.
+// It does this by incrementing the buffer offset.
 static inline char lexer_next(Lexer* lexer);
-// lexer_peek() allows you to "look ahead" `n` characters in the Lexical buffer
-// It _does not_ increment the buffer offset 
-static inline char lexer_peek(Lexer* lexer, int n);
-// lexer_peek_curr() returns the current element in the Lexical Buffer
+// Returns the previous `n` elements in the Lexical buffer.
+// This is non-destructive -- the buffer offset is not updated.
+static inline char lexer_prev(Lexer* lexer, UInt32 n);
+// "Look ahead" `n` characters in the Lexical buffer.
+// It _does not_ increment the buffer offset.
+static inline char lexer_peek(Lexer* lexer, UInt32 n);
+// lexer_peek_curr() returns the current element in the Lexical Buffer.
 static inline char lexer_peek_curr(Lexer* lexer);
 inline const char* lexer_buffer(Lexer* lexer);
 inline UInt32 lexer_buffer_capacity(Lexer* lexer);

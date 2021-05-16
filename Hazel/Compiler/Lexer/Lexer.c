@@ -39,17 +39,27 @@ Lexer* lexer_init(const char* buffer) {
     return lexer;
 }
 
-// lexer_next() consumes the next element in the Lexical Buffer
-// It increments the buffer offset and essentially _advances_ to the next element in the buffer
+// Returns the current character in the Lexical Buffer and advances to the next element.
+// It does this by incrementing the buffer offset.
 inline char lexer_next(Lexer* lexer) {
     lexer_increment_colno(lexer);
     return (char)lexer->buffer__[lexer->offset__++];
 }
 
-// lexer_peek() allows you to "look ahead" `n` characters in the Lexical buffer
-// It _does not_ increment the buffer offset 
-inline char lexer_peek(Lexer* lexer, int n) {
-    if(lexer->offset__ + (n-1) < lexer->buffer_capacity__) {
+// Returns the previous `n` elements in the Lexical buffer.
+// This is non-destructive -- the buffer offset is not updated.
+static inline char lexer_prev(Lexer* lexer, UInt32 n) {
+    if(lexer->offset__ - n >= 0) {
+        return (char)lexer->buffer__[lexer->offset__ - n];
+    } else  {
+        return 0; // TOK_ILLEGAL
+    }
+}
+
+// "Look ahead" `n` characters in the Lexical buffer.
+// It _does not_ increment the buffer offset.
+inline char lexer_peek(Lexer* lexer, UInt32 n) {
+    if(lexer->offset__ + n <= lexer->buffer_capacity__) {
         return (char)lexer->buffer__[lexer->offset__ + n];
     } else {
         return 0; // corresponds to TOK_ILLEGAL
