@@ -81,6 +81,87 @@ void token_reset_token(Token* token) {
     token_location_init(token);
 }
 
+// Returns the token corresponding to a single character
+static TokenType token_onechar(char c) {
+    switch(c) {
+        // Operators
+        case '+': return PLUS;
+        case '-': return MINUS;
+        case '*': return MULT;
+        case '/': return SLASH;
+        case '%': return MOD;
+        case '@': return AT_SIGN;
+        case '#': return HASH_SIGN;
+        case '?': return QUESTION;
+        // Comparison Operators
+        case '>': return GREATER_THAN;
+        case '<': return LESS_THAN;
+        // Assignment operators
+        case '=': return EQUALS;
+        case '~': return TILDA;
+        // Delimiters
+        case '[': return LSQUAREBRACK;
+        case ']': return RSQUAREBRACK;
+        case '{': return LBRACE; 
+        case '}': return RBRACE;
+        case '(': return LPAREN;
+        case ')': return RPAREN;
+        // Bitwise Operators
+        case '&': return AND;
+        case '|': return OR;
+        case '!': return EXCLAMATION;
+        // Separators
+        case ':': return COLON;
+        case ';': return SEMICOLON;
+        case ',': return COMMA;
+        case '.': return DOT;
+
+        // We should never get here
+        default: return TOK_ILLEGAL;
+    }
+}
+
+// Returns the token corresponding to two characters
+static TokenType token_twochar(char c1, char c2) {
+    switch(c1) {
+        case '+':
+            if(c2 == '+') return PLUS_PLUS;
+            if(c2 == '=') return PLUS_EQUALS;
+            break;
+        case '-':
+            if(c2 == '-') return MINUS_MINUS;
+            if(c2 == '=') return MINUS_EQUALS;
+            if(c2 == '>') return RARROW;
+            break;
+        case '*':
+            if(c2 == '*') return MULT_MULT;
+            if(c2 == '=') return MULT_EQUALS;
+            break;
+        case '/':
+            if(c2 == '/') return SLASH_SLASH;
+            if(c2 == '=') return SLASH_EQUALS;
+            break;
+        case '%':
+            if(c2 == '%') return MOD_MOD;
+            if(c2 == '=') return MOD_EQUALS;
+            break;
+        case '&':
+            if(c2 == '&') return AND_AND;
+            if(c2 == '^') return AND_NOT;
+            if(c2 == '=') return AND_EQUALS;
+        case '|':
+            if(c2 == '|') return OR_OR;
+            if(c2 == '=') return OR_EQUALS;
+
+    }
+}
+
+// Returns the token corresponding to three characters
+static TokenType token_threechar(char c1, char c2, char c3) {
+
+}
+
+
 
 // Convert a Token to its respective String representation
 const char* token_toString(Token* token) {

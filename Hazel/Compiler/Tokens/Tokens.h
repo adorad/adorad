@@ -248,6 +248,12 @@ const char* value(Token token);
 // Reset a Token instance
 void token_reset_token(Token* token);
 
+// Returns the token corresponding to a single character
+static TokenType token_onechar(char c);
+// Returns the token corresponding to two characters
+static TokenType token_twochar(char c1, char c2);
+// Returns the token corresponding to three characters
+static TokenType token_threechar(char c1, char c2, char c3);
 
 const char* token_toString(Token* token);
 static inline bool token_isJumpStatement(Token* token);
@@ -275,6 +281,5 @@ static inline bool token_isMacro(Token* token);
 static inline bool token_isImport(Token* token);
 static inline bool token_isInclude(Token* token);
 static inline bool token_isSemiColon(Token* token);
-
 
 #endif // _HAZEL_TOKEN_H
