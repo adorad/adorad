@@ -57,14 +57,66 @@ static inline char lexer_prev(Lexer* lexer, UInt32 n);
 static inline char lexer_peek(Lexer* lexer, UInt32 n);
 // lexer_peek_curr() returns the current element in the Lexical Buffer.
 static inline char lexer_peek_curr(Lexer* lexer);
-inline const char* lexer_buffer(Lexer* lexer);
-inline UInt32 lexer_buffer_capacity(Lexer* lexer);
-inline UInt32 lexer_offset(Lexer* lexer);
 
-// Locations
-void lexer_location_init(Lexer* lexer);
-inline Location lexer_location(Lexer* lexer);
+static inline bool lexer_is_EOF(Lexer* lexer);
+static inline void lexer_finalize_token(Lexer* lexer, TokenType __tok);
 
+#ifndef LEXER_MACROS_
+#define LEXER_MACROS_
+    // Increment Token Bytes
+    #define LEXER_INCREMENT_TOK_BYTES    ++lexer->token__.tok_bytes__
+    // Decrement Token Bytes
+    #define LEXER_INCREMENT_TOK_BYTES    --lexer->token__.tok_bytes__ 
+    // Increment Token Length
+    #define LEXER_INCREMENT_TOK_LENGTH   ++lexer->token__.tok_length__
+    // Decrement Token Length
+    #define LEXER_DECREMENT_TOK_LENGTH   --lexer->token__.tok_length__ 
+
+    // Reset the line
+    #define LEXER_RESET_LINENO           lexer->location__.lineno__ = 0
+    // Reset the column number 
+    #define LEXER_RESET_COLNO            lexer->location__.colno__ = 0
+
+    // Increment the line number
+    #define LEXER_INCREMENT_LINENO       ++lexer->location__.lineno__; LEXER_RESET_COLNO
+    // Decrement the lineno
+    #define LEXER_DECREMENT_LINENO       --lexer->location__.lineno__; LEXER_RESET_COLNO
+    // Increment the column number
+    #define LEXER_INCREMENT_COLNO        ++lexer->location__.colno__ 
+    // Decrement the colno
+    #define LEXER_DECREMENT_COLNO        --lexer->location__.colno__
+
+    // Increment the Lexical Buffer offset
+    #define LEXER_INCREMENT_OFFSET       ++lexer->offset__; LEXER_INCREMENT_COLNO
+    // Decrement the Lexical Buffer offset
+    #define LEXER_DECREMENT_OFFSET       --lexer->offset__; LEXER_DECREMENT_COLNO
+
+    // Reset a Lexer Token
+    #define LEXER_RESET_TOKEN                                       \
+        /* CHECK THIS */                                            \
+        lexer->token__.type__ = TOK_ILLEGAL;                        \
+        /* TODO(jasmcaus): Verify this is accurate */               \
+        lexer->token__.value__ = lexer->buffer__ + lexer->offset__; \
+        lexer->token__.location__ = lexer->location__
+
+    // Reset the buffer 
+    #define LEXER_RESET_BUFFER        \
+        lexer->buffer__= "";          \
+        lexer->buffer_capacity__ = 0
+
+    // Reset the Lexer state
+    #define LEXER_RESET               \
+        lexer->buffer__= "";          \
+        lexer->buffer_capacity__ = 0; \
+        lexer->offset__ = 0;          \
+        LEXER_LOCATION_INIT
+
+    #define LEXER_LOCATION_INIT           \
+        lexer->location__.lineno__ = 0;   \
+        lexer->location__.colno__ = 0;    \
+        lexer->location__.fname__ = ""
+
+#endif // LEXER_MACROS_
 
 // A List of Compiler Pragmas recorded for functions. 
 // Options are used as bits in a bitmask
@@ -75,29 +127,11 @@ typedef enum {
 } CompilerPragmas;
 
 
-static inline bool lexer_is_EOF(Lexer* lexer);
-static inline void lexer_finalize_token(Lexer* lexer, TokenType __tok);
-
-static inline void lexer_increment_tok_bytes(Lexer* lexer);
-static inline void lexer_decrement_tok_bytes(Lexer* lexer);
-static inline void lexer_increment_tok_length(Lexer* lexer);
-static inline void lexer_decrement_tok_length(Lexer* lexer);
-static inline void lexer_increment_lineno(Lexer* lexer);
-static inline void lexer_decrement_lineno(Lexer* lexer);
-static inline void lexer_increment_colno(Lexer* lexer);
-static inline void lexer_decrement_colno(Lexer* lexer);
-static inline void lexer_increment_offset(Lexer* lexer);
-static inline void lexer_decrement_offset(Lexer* lexer);
-
 static inline void lexer_set_token(Lexer* lexer, Token token);
 static inline void lexer_set_token_value(Lexer* lexer, const char* value);
 static inline void lexer_set_token_type(Lexer* lexer, TokenType tok_type);
 static inline void lexer_set_token_bytes(Lexer* lexer, UInt32 bytes);
 static inline Token lexer_extract_token(Lexer* lexer);
-
-// Resets
-void lexer_reset(Lexer* lexer);
-void lexer_reset_token(Lexer* lexer);
 
 TokenType lexer_error(Lexer* lexer, const char* message);
 
