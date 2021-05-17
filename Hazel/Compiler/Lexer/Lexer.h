@@ -66,7 +66,7 @@ static inline void lexer_finalize_token(Lexer* lexer, TokenType __tok);
     // Increment Token Bytes
     #define LEXER_INCREMENT_TOK_BYTES    ++lexer->token__.tok_bytes__
     // Decrement Token Bytes
-    #define LEXER_INCREMENT_TOK_BYTES    --lexer->token__.tok_bytes__ 
+    #define LEXER_DECREMENT_TOK_BYTES    --lexer->token__.tok_bytes__ 
     // Increment Token Length
     #define LEXER_INCREMENT_TOK_LENGTH   ++lexer->token__.tok_length__
     // Decrement Token Length
@@ -145,6 +145,7 @@ static inline bool isSemicolon(char c);
 static inline bool isString(char c);
 static inline bool isMacro(char c);
 
+TokenType lexer_lex_comment(Lexer* lexer);
 TokenType lexer_lex_string(Lexer* lexer); 
 TokenType lexer_lex_operator(Lexer* lexer);
 TokenType lexer_lex_separator(Lexer* lexer);

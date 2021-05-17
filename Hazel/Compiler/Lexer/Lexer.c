@@ -171,6 +171,26 @@ TokenType lexer_error(Lexer* lexer, const char* message) {
     return TOK_ILLEGAL; 
 }
 
+TokenType lexer_lex_comment(Lexer* lexer) {
+    // # Hello 
+    bool isLineComment = lexer_peek(lexer, 1) == '#';
+
+    LEXER_RESET_TOKEN;
+    LEXER_INCREMENT_OFFSET;
+
+    char c = lexer_next(lexer);
+
+    while(!lexer_is_EOF(lexer)) {
+        if(isLineComment) {
+            if(isNewLine(lexer, c)) {
+                printf("%c", c);
+                LEXER_INCREMENT_LINENO;
+                break;
+            }
+        }
+    }
+
+}
 
 TokenType lexer_lex_operator(Lexer* lexer) {
     LEXER_RESET_TOKEN;
