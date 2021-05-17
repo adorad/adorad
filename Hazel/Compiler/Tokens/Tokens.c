@@ -117,10 +117,9 @@ static TokenType token_onechar(char c) {
         case '.': return DOT;
         // This is actually one character - the second backslash acts as an escape character in C.
         case '\\': return BACKSLASH;
-
-        // We should never get here
-        default: return TOK_ILLEGAL;
     }
+    // We should never get here
+    return TOK_ILLEGAL;
 }
 
 // Returns the token corresponding to two characters
@@ -161,7 +160,7 @@ static TokenType token_twochar(char c1, char c2) {
         case '<':
             if(c2 == '=') return LESS_THAN_OR_EQUAL_TO;
             if(c2 == '-') return LARROW;
-            if(c2 == '<<') return LBITSHIFT;
+            if(c2 == '<') return LBITSHIFT;
             break;
         case '>':
             if(c2 == '=') return GREATER_THAN_OR_EQUAL_TO;
@@ -177,10 +176,9 @@ static TokenType token_twochar(char c1, char c2) {
             if(c2 == '=') return TILDA_EQUALS;
         case '.':
             if(c2 == '.') return DDOT;
-        
-        // We should never get here
-        default: return TOK_ILLEGAL;
     }
+    // We should never get here
+    return TOK_ILLEGAL;
 }
 
 // Returns the token corresponding to three characters
@@ -195,10 +193,9 @@ static TokenType token_threechar(char c1, char c2, char c3) {
         case '.':
             if(c2 == '.' && c3 == '.') return ELLIPSIS;
             break;
-
-        // We should never get here
-        default: return TOK_ILLEGAL;
     }
+    // We should never get here
+    return TOK_ILLEGAL;
 }
 
 // Convert a Token to its respective String representation

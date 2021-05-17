@@ -53,18 +53,18 @@ CREDITS
     #include <Hazel/Core/CMake_Macros.h>
 #endif // CSTL_USING_CUSTOM_GENERATED_MACROS
 
+#include <Hazel/Core/Headers.h>
 #include <Hazel/Core/Clock.h>
 #include <Hazel/Core/Compilers.h>
 #include <Hazel/Core/CPUs.h>
 #include <Hazel/Core/Debug.h>
+#include <Hazel/Core/Types.h>
 #include <Hazel/Core/Exception.h>
-#include <Hazel/Core/Headers.h>
 #include <Hazel/Core/IO.h>
 #include <Hazel/Core/Memory.h>
 #include <Hazel/Core/Misc.h>
 #include <Hazel/Core/OS.h>
-#include <Hazel/Core/String.h>
-#include <Hazel/Core/Types.h>
 #include <Hazel/Core/Math.h>
+#include <Hazel/Core/String.h>
 
 #endif // _CSTL_CORE_CSTL_H

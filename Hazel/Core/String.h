@@ -68,10 +68,10 @@ static inline Int32 hexDigitToInt(char c) {
     if(isDigit(c))
         return digitToInt(c);
 
-    else if (CSTL_IS_BETWEEN(c, 'a', 'f'))
+    else if(CSTL_IS_BETWEEN(c, 'a', 'f'))
         return c-'a' + 10; 
 
-    else if (CSTL_IS_BETWEEN(c, 'A', 'F'))
+    else if(CSTL_IS_BETWEEN(c, 'A', 'F'))
         return c-'A' + 10; 
 
     return -1; 
