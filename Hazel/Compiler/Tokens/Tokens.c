@@ -33,44 +33,6 @@ void token_location_init(Token* token) {
     token->location__.fname__ = "";
 }
 
-// Make a token from a TokenType 
-// Note: This is not recommended because the rest of the Token fields are populated with default 
-// values only
-Token* token_from_tok_type(const TokenType __tok_type) {
-    Token* token = token_init();
-    token->type__ = __tok_type;
-    return token;
-}
-
-Token* token_make_illegal_tok(void) {
-    return token_init();
-}
-
-// Construct an EOF token
-Token* token_make_eof_tok(void) {
-    Token* token = token_init();
-    token->type__ = TOK_EOF;
-    return token;
-}
-
-// Clone a Token
-Token* token_clone(Token* other) {
-    Token* token = token_init();
-    token->type__ = other->type__; 
-    token->offset__ = other->offset__; 
-    token->tok_bytes__ = other->tok_bytes__; 
-    token->tok_length__ = other->tok_length__; 
-    token->value__ = other->value__;
-    token->location__ = other->location__;
-    return token;
-}
-
-// Get token type 
-TokenType token_get_tok_type(Token token) { return token.type__; }
-// Returns the location of the token
-Location token_location(Token token) { return token.location__; }
-// Get the token value 
-const char* value(Token token) { return token.value__; }
 // Reset a Token instance
 void token_reset_token(Token* token) {
     token->type__ = TOK_ILLEGAL; 
@@ -417,7 +379,6 @@ inline bool token_isDeclStatement(Token* token) {
 	return (token->type__ == ANY || token->type__ == FUNC || token->type__ == CLASS || token->type__ == STRUCT || 
 			token->type__ == ENUM || token->type__ == MODULE || token->type__ == SEMICOLON); 
 } 
-
 
 inline bool token_isSpecial(Token* token) {
 	return (token->type__ == TOK_ID || token->type__ == TOK_EOF || token->type__ == TOK_ILLEGAL || token->type__ == COMMENT); 

@@ -234,15 +234,6 @@ typedef struct {
 // Create a basic (ILLEGAL) token
 Token* token_init(void);
 void token_location_init(Token* token);
-Token* token_from_tok_type(const TokenType __tok_type);
-Token* token_make_illegal_tok(void);
-Token* token_make_eof_tok(void);
-// Clone a Token
-Token* token_clone(Token* other);
-// Get token type 
-TokenType token_get_tok_type(Token token);
-// Returns the location of the token
-Location token_location(Token token);
 // Get the token value 
 const char* value(Token token);
 // Reset a Token instance

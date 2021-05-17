@@ -1,3 +1,4 @@
+""" Multiline comment
 # This is a comment
 func input(Int in) -> Bool {
     print("Hello World");

@@ -153,7 +153,7 @@ cmakeclean:
 
 # ------------Minor Testing only -----------
 test:
-	$(CC) test.c $(flags) -o test -I .
+	$(CC) test.c $(flags) -o test -I . -I Hazel
 	echo Compiled Test!
 	echo -------------------
 	echo -------------------

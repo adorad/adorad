@@ -59,7 +59,6 @@ static inline char lexer_peek(Lexer* lexer, UInt32 n);
 static inline char lexer_peek_curr(Lexer* lexer);
 
 static inline bool lexer_is_EOF(Lexer* lexer);
-static inline void lexer_finalize_token(Lexer* lexer, TokenType __tok);
 
 #ifndef LEXER_MACROS_
 #define LEXER_MACROS_
@@ -125,13 +124,6 @@ typedef enum {
     COMPILER_NOINLINE = 1 << 0, // Do not inline
     COMPILER_NOTINHEAP = 1 << 1, // Type not in heap
 } CompilerPragmas;
-
-
-static inline void lexer_set_token(Lexer* lexer, Token token);
-static inline void lexer_set_token_value(Lexer* lexer, const char* value);
-static inline void lexer_set_token_type(Lexer* lexer, TokenType tok_type);
-static inline void lexer_set_token_bytes(Lexer* lexer, UInt32 bytes);
-static inline Token lexer_extract_token(Lexer* lexer);
 
 TokenType lexer_error(Lexer* lexer, const char* message);
 

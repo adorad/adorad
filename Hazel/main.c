@@ -13,16 +13,15 @@ int main(int argc, const char* const argv[]) {
     Lexer* lexer = calloc(1, sizeof(Lexer)); 
 	char* buffer = readFile("test/LexerDemo.hzl");
 	lexer = lexer_init(buffer); 
+    printf("Lexer buffer: \n%s\n", lexer->buffer__);
+    printf("--------------\n");
     
     TokenType t = lexer_lex_comment(lexer);
-
-    printf(buffer);
 
     // Delete when done 
     free(lexer); 
     free(buffer);
 
     // printf("Aren't we supposed to work? \n");
-
     return 0; 
 }
