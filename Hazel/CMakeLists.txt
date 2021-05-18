@@ -16,6 +16,7 @@ configure_file(
     ${CMAKE_SOURCE_DIR}/Hazel/Core/CMake_Macros.h
 )
 
+#
 # Main Build File for the main Hazel Library
 # 
 # Note that this library must have _minimal_ dependencies 

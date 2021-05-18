@@ -1,4 +1,5 @@
 #include <Hazel/Hazel.h>
+#include <Arrow/Arrow.h>
 
 TEST(Lexer, Init) {
     char* buffer = "0123456789abcdefghijklmnopqrstuvwxyz";
