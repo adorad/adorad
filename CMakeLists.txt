@@ -12,7 +12,7 @@ string(FIND "${CMAKE_C_FLAGS}" "-std=c" ENV_CXX_STANDARD)
 if(ENV_CXX_STANDARD GREATER -1)
     message (
         WARNING "C Standard Version definition detected in an environment variable."
-        "Hazel requires -std=c11. Please remove -std=c settings in your environment."
+        "Hazel requires at least-std=c11. Please remove -std=c settings in your environment."
     )
 endif()
 
@@ -37,25 +37,30 @@ if(NOT CMAKE_SIZEOF_VOID_P GREATER 0)
 endif()
 
 
-option(HAZEL_BUILD_TESTS "Build Hazel test binaries" OFF)
-option(BUILD_BINARY "Build the C++ binaries" OFF)
+option(HAZEL_BUILD_TESTS "Build Hazel test binaries" ON)
+option(HAZEL_BUILD_STATIC_LIB "Build Hazel Static Library " OFF)
+option(HAZEL_BUILD_SHARED_LIB "Build Hazel Shared Library " OFF)
 option(BUILD_DOCS "Build Hazel documentation" OFF)
-option(USE_CUDA "Use CUDA" OFF) # TODO (turn ON)
-option(USE_FAST_NVCC "Use parallel NVCC build" OFF)
-option(WERROR "Build with -Werror supported by the compiler" OFF)
+
+if(HAZEL_BUILD_TESTS)
+    # We need at least a Static Library to build and link with Hazel's Internal Tests
+    if(NOT HAZEL_BUILD_STATIC_LIB)
+        set(HAZEL_BUILD_STATIC_LIB ON)
+    endif()
+endif()
 
 # ------ CMake build directories ------
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY  ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY  ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY  ${CMAKE_BINARY_DIR}/bin)
 
 
 # ------Compiler and linker options ------
 # In case of Makefiles, if the user does not setup CMAKE_BUILD_TYPE, assume it's Release: 
 if(NOT CMAKE_BUILD_TYPE)
     message(STATUS "Build type not set - defaulting to Release")
-    set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose the type of build, options are: Debug Release
-    RelWithDebInfo MinSizeRel Coverage." FORCE)
+    set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose the type of build, options are: Debug, Release,
+    RelWithDebInfo, or MinSizeRel." FORCE)
 endif(NOT CMAKE_BUILD_TYPE)
 
 

@@ -1,4 +1,3 @@
-#include <Arrow/Arrow.h>
 #include <Hazel/Hazel.h>
 
 TEST(Lexer, Init) {
