@@ -1,11 +1,9 @@
 cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 project(Hazel 
+        DESCRIPTION "The Hazel Programming Language"
+        VERSION 1.0.0
         LANGUAGES C)
 
-# message("Root Dir: CMAKE_SOURCE_DIR = ${CMAKE_SOURCE_DIR}")
-# message("Root Dir: CMAKE_CURRENT_SOURCE_DIR = ${CMAKE_CURRENT_SOURCE_DIR}")
-
-# add_subdirectory(Hazel)
 # ------ Disable CMAKE_INSTALL_MESSAGE  ------
 set(CMAKE_INSTALL_MESSAGE NEVER)
 
@@ -39,7 +37,7 @@ if(NOT CMAKE_SIZEOF_VOID_P GREATER 0)
 endif()
 
 
-option(HAZEL_NO_TEST "Do not build Hazel test binaries" OFF)
+option(HAZEL_BUILD_TESTS "Build Hazel test binaries" OFF)
 option(BUILD_BINARY "Build the C++ binaries" OFF)
 option(BUILD_DOCS "Build Hazel documentation" OFF)
 option(USE_CUDA "Use CUDA" OFF) # TODO (turn ON)
@@ -126,3 +124,7 @@ set(BUILD_SHARED_LIBS OFF)
 
 # ------ Main Build ------
 add_subdirectory(Hazel)
+
+if(HAZEL_BUILD_TESTS)
+    add_subdirectory(test)
+endif()
