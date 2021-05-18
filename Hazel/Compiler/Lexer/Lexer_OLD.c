@@ -89,7 +89,7 @@
 
 
 // // Finalize a Token
-// inline void lexer_finalize_token(Lexer* lexer, TokenType __tok) {
+// inline void lexer_finalize_token(Lexer* lexer, TokenKind __tok) {
 // 	lexer->token__.type__ = __tok; 
 // 	lexer->token__.location__.fname__ = lexer->location__.fname__;
 // }
@@ -135,7 +135,7 @@
 // }
 
 // // Lexing Errors
-// TokenType lexer_error(Lexer* lexer, const char* message) {
+// TokenKind lexer_error(Lexer* lexer, const char* message) {
 //     if(!lexer_is_EOF(lexer)) {
 //         LEXER_INCREMENT_TOK_LENGTH;
 //         LEXER_INCREMENT_OFFSET;
@@ -146,7 +146,7 @@
 //     return TOK_ILLEGAL; 
 // }
 
-// TokenType lexer_lex_comment(Lexer* lexer) {
+// TokenKind lexer_lex_comment(Lexer* lexer) {
 //     bool isLineComment = lexer_peek_curr(lexer) == '#';
 //     LEXER_RESET_TOKEN; 
 
@@ -179,7 +179,7 @@
 // }
 
 // // Delete later
-// // TokenType lexe_lex_comment(Lexer* lexer) {
+// // TokenKind lexe_lex_comment(Lexer* lexer) {
 // //             // Search for matching `"""` and `"""` comments
 // //             // Verify that we're in-bounds of the lexer (if we're able to lookahead 2 characters)
 // //             // if(lexer_is_EOF(lexer_peek(lexer, 2))) break; 
@@ -202,14 +202,14 @@
 // //     printf("Current char = %c\n", lexer_peek_curr(lexer));
 // // }
 
-// TokenType lexer_lex_operator(Lexer* lexer) {
+// TokenKind lexer_lex_operator(Lexer* lexer) {
 //     LEXER_RESET_TOKEN;
 //     LEXER_INCREMENT_TOK_LENGTH;
 
 //     // Do not change the declaration order of _next_ and _curr_
 //     char next = lexer_next(lexer); 
 //     char curr = lexer_peek_curr(lexer); 
-//     TokenType token = TOK_ILLEGAL; 
+//     TokenKind token = TOK_ILLEGAL; 
 
 //     switch(next) {
 //         // '='
@@ -526,14 +526,14 @@
 // } 
 
 
-// TokenType lexer_lex_separator(Lexer* lexer) {
+// TokenKind lexer_lex_separator(Lexer* lexer) {
 //     LEXER_RESET_TOKEN;
 //     LEXER_INCREMENT_TOK_LENGTH;
 
 //     // Do not change the declaration order of _next_ and _curr_
 //     char next = lexer_next(lexer); 
 //     char curr = lexer_peek_curr(lexer); 
-//     TokenType token = TOK_ILLEGAL; 
+//     TokenKind token = TOK_ILLEGAL; 
 
 //     switch(next) {
 //         // '.'
@@ -572,14 +572,14 @@
 // }
 
 
-// TokenType lexer_lex_delimiter(Lexer* lexer) {
+// TokenKind lexer_lex_delimiter(Lexer* lexer) {
 //     LEXER_RESET_TOKEN;
 //     LEXER_INCREMENT_TOK_LENGTH;
 
 //     // Do not change the declaration order of _next_ and _curr_
 //     char next = lexer_next(lexer); 
 //     char curr = lexer_peek_curr(lexer); 
-//     TokenType token = TOK_ILLEGAL; 
+//     TokenKind token = TOK_ILLEGAL; 
 
 //     switch(next) {       
 //         case '[': token = LSQUAREBRACK; break; 
@@ -599,10 +599,10 @@
 // }
 
 
-// TokenType lexer_lex_macro(Lexer* lexer) {
+// TokenKind lexer_lex_macro(Lexer* lexer) {
 //     LEXER_RESET_TOKEN;
 //     LEXER_INCREMENT_TOK_LENGTH;
-//     TokenType token = TOK_ILLEGAL;
+//     TokenKind token = TOK_ILLEGAL;
 
 //     char curr = lexer_peek_curr(lexer); 
 //     if(curr == '@')

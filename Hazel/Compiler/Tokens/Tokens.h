@@ -51,7 +51,8 @@ TOKENKIND(TOK___LITERALS_BEGIN, ""), \
     TOKENKIND(UINT16_LIT,   "UINT16_LIT"),    \
     TOKENKIND(UINT32_LIT,   "UINT32_LIT"),    \
     TOKENKIND(UINT64_LIT,   "UINT64_LIT"),    \
-    TOKENKIND(FLOAT,        "FLOAT"),         \
+    /* FLOAT conflicts with a typedef in <windows.h> */ \
+    TOKENKIND(TOK_FLOAT,     "FLOAT"),        \
     TOKENKIND(FLOAT32_LIT,  "FLOAT32_LIT"),   \
     TOKENKIND(FLOAT64_LIT,  "FLOAT64_LIT"),   \
     TOKENKIND(FLOAT128_LIT, "FLOAT128_LIT"),  \
@@ -217,13 +218,13 @@ typedef enum {
     #define TOKENKIND(tok, str)     tok
         ALLTOKENS
     #undef TOKENKIND
-} TokenType; 
+} TokenKind; 
 
 /*
     Main Token Struct 
 */
 typedef struct {
-    TokenType type__;     // Token Type
+    TokenKind type__;     // Token Type
     UInt32 offset__;      // Offset of the first character of the Token
     UInt32 tok_bytes__;   // Token length (in bytes)
     UInt32 tok_length__;  // Token length (UTF-8)
@@ -240,11 +241,11 @@ const char* value(Token token);
 void token_reset_token(Token* token);
 
 // Returns the token corresponding to a single character
-static TokenType token_onechar(char c);
+static TokenKind token_onechar(char c);
 // Returns the token corresponding to two characters
-static TokenType token_twochar(char c1, char c2);
+static TokenKind token_twochar(char c1, char c2);
 // Returns the token corresponding to three characters
-static TokenType token_threechar(char c1, char c2, char c3);
+static TokenKind token_threechar(char c1, char c2, char c3);
 
 const char* token_toString(Token* token);
 static inline bool token_isJumpStatement(Token* token);

@@ -24,7 +24,7 @@ literals = [
     "UINT16_LIT",     
     "UINT32_LIT",     
     "UINT64_LIT",     
-    "FLOAT",          
+    "TOK_FLOAT",          
     "FLOAT32_LIT",    
     "FLOAT64_LIT",    
     "FLOAT128_LIT",  

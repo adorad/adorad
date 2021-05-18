@@ -44,7 +44,7 @@ void token_reset_token(Token* token) {
 }
 
 // Returns the token corresponding to a single character
-static TokenType token_onechar(char c) {
+static TokenKind token_onechar(char c) {
     switch(c) {
         // Operators
         case '+': return PLUS;
@@ -85,7 +85,7 @@ static TokenType token_onechar(char c) {
 }
 
 // Returns the token corresponding to two characters
-static TokenType token_twochar(char c1, char c2) {
+static TokenKind token_twochar(char c1, char c2) {
     switch(c1) {
         case '+':
             if(c2 == '+') return PLUS_PLUS;
@@ -144,7 +144,7 @@ static TokenType token_twochar(char c1, char c2) {
 }
 
 // Returns the token corresponding to three characters
-static TokenType token_threechar(char c1, char c2, char c3) {
+static TokenKind token_threechar(char c1, char c2, char c3) {
     switch(c1) {
         case '<':
             if(c2 == '<' && c3 == '=') return LBITSHIFT_EQUALS;
@@ -183,7 +183,7 @@ const char* token_toString(Token* token) {
         case UINT16_LIT: return "UINT16_LIT";     
         case UINT32_LIT: return "UINT32_LIT";     
         case UINT64_LIT: return "UINT64_LIT";     
-        case FLOAT: return "FLOAT";          
+        case TOK_FLOAT: return "FLOAT";          
         case FLOAT32_LIT: return "FLOAT32_LIT";    
         case FLOAT64_LIT: return "FLOAT64_LIT";    
         case FLOAT128_LIT: return "FLOAT128_LIT";  
@@ -364,7 +364,7 @@ inline bool token_isPrimaryExpressionStatement(Token* token) {
 	// ILLEGAL
 	// '(' expression ')'
 	return (token->type__ == INTEGER || token->type__ == BIN_INT || token->type__ == HEX_INT || token->type__ == IMAG || 
-			token->type__ == FLOAT || token->type__ == RUNE || token->type__ == STRING || token->type__ == IDENTIFIER || 
+			token->type__ == TOK_FLOAT || token->type__ == RUNE || token->type__ == STRING || token->type__ == IDENTIFIER || 
 			token->type__ == TOK_NULL || token->type__ == FUNC || token->type__ == TOK_ILLEGAL || token->type__ == LPAREN || 
 			token->type__ == RPAREN); 
 } 

@@ -37,6 +37,8 @@ file(GLOB_RECURSE HAZEL_HEADERS *.h)
 # For libHazelStatic
 # ======================
 if(HAZEL_BUILD_STATIC_LIB)
+    message("--------- [INFO] Building libHazelStatic")
+
     add_library(libHazelStatic STATIC ${LIBHAZEL_SOURCES} ${HAZEL_HEADERS})
     # Enable hidden visibility if compiler supports it.
     if(${COMPILER_SUPPORTS_HIDDEN_VISIBILITY})
@@ -67,6 +69,7 @@ endif() # HAZEL_BUILD_STATIC_LIB
 # When we do, go ahead and remove the `if(NOT MSVC)` checks
 if(HAZEL_BUILD_SHARED_LIB)
     if(NOT MSVC)
+        message("--------- [INFO] Building libHazelShared")
         add_library(libHazelShared SHARED ${LIBHAZEL_SOURCES} ${HAZEL_HEADERS})
         target_compile_options(libHazelShared PRIVATE "-fvisibility=hidden")
     

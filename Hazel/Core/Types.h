@@ -58,6 +58,14 @@ namespace Hazel {
     typedef int64_t   Int64; 
 #endif // Hazel Basic Types 
 
+// <windows.h> declares a typedef float FLOAT for its internal usage. 
+// We need to be polite and respect that :)
+// NOTE: <windows.h> is declared in Muon during Hazel's Internal Tests
+// #if defined(_WIN32) || defined(__WIN32__) || defined(__WINDOWS__)
+//     #define Float32     float
+// #else 
+//     typedef float  Float32; 
+// #endif // _WIN32
 typedef float  Float32; 
 typedef double Float64; 
 
@@ -132,31 +140,10 @@ typedef Int32 Rune;
 #define Float64_MIN 2.2250738585072014e-308
 #define Float64_MAX 1.7976931348623157e+308
 
-
 // The same thing as size_t 
-#ifndef _Ull_DEFINED
-    #define _Ull_DEFINED
-    #undef Ull
-
-    #ifdef _WIN64
-        typedef unsigned __int64 Ull;
-    #else
-        typedef unsigned int Ull;
-    #endif //_WIN64
-#endif
-
+typedef UInt64     Ull;
 // The same thing as ptrdiff_t
-#ifndef _Ll_DEFINED
-    #define _Ll_DEFINED
-    #undef Ll
-
-    #ifdef _WIN64
-        typedef __int64 Ll;
-    #else
-        typedef int Ll;
-    #endif //_WIN64
-#endif
-
+typedef Int64      Ll;
 
 // More Useful Types
 #define nullchar '\0' 
@@ -182,16 +169,6 @@ typedef Int32 Rune;
     static const bool true  = 1;
 #endif 
 
-// #ifndef __cplusplus
-//     #define bool   _Bool
-//     #define true   1
-//     #define false  0
-// #else
-    /* Supporting _Bool in C++ is a GCC extension.  */
-    // #define _Bool	bool
-// #endif // __cplusplus 
-
-
 // (U)Intptr is only here for semantic reasons really as this library will only support 32/64 bit OSes.
 // Are there any modern OSes (not 16 bit) where Intptr != ptrdiff_t/Ll ?
 #if defined(_WIN64)
@@ -215,7 +192,6 @@ typedef Int32 Rune;
 #endif
 
 CSTL_DEBUG_CHECK(sizeof(UIntptr) == sizeof(Intptr));
-
 
 #ifdef __cplusplus
 } // namespace Hazel

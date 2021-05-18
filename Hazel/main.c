@@ -16,7 +16,7 @@ int main(int argc, const char* const argv[]) {
     printf("Lexer buffer: \n%s\n", lexer->buffer__);
     printf("--------------\n");
     
-    // TokenType t = lexer_lex_comment(lexer);
+    // TokenKind t = lexer_lex_comment(lexer);
 
     // Delete when done 
     free(lexer); 

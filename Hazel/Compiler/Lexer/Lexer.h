@@ -48,7 +48,7 @@ typedef struct Lexer {
 Lexer* lexer_init(const char* buffer);
 // Returns the current character in the Lexical Buffer and advances to the next element.
 // It does this by incrementing the buffer offset.
-static inline char lexer_next(Lexer* lexer);
+inline char lexer_next(Lexer* lexer);
 // Returns the previous `n` elements in the Lexical buffer.
 // This is non-destructive -- the buffer offset is not updated.
 static inline char lexer_prev(Lexer* lexer, UInt32 n);
@@ -111,8 +111,8 @@ static inline bool lexer_is_EOF(Lexer* lexer);
         LEXER_LOCATION_INIT
 
     #define LEXER_LOCATION_INIT           \
-        lexer->location__.lineno__ = 0;   \
-        lexer->location__.colno__ = 0;    \
+        lexer->location__.lineno__ = 1;   \
+        lexer->location__.colno__ = 1;    \
         lexer->location__.fname__ = ""
 
 #endif // LEXER_MACROS_
@@ -125,7 +125,7 @@ typedef enum {
     COMPILER_NOTINHEAP = 1 << 1, // Type not in heap
 } CompilerPragmas;
 
-TokenType lexer_error(Lexer* lexer, const char* message);
+TokenKind lexer_error(Lexer* lexer, const char* message);
 
 static inline bool isBuiltinOperator(char c);
 static inline bool isIdentifier(char c);
@@ -137,15 +137,15 @@ static inline bool isSemicolon(char c);
 static inline bool isString(char c);
 static inline bool isMacro(char c);
 
-TokenType lexer_lex_comment(Lexer* lexer);
-TokenType lexer_lex_string(Lexer* lexer); 
-TokenType lexer_lex_operator(Lexer* lexer);
-TokenType lexer_lex_separator(Lexer* lexer);
-TokenType lexer_lex_delimiter(Lexer* lexer);
-TokenType lexer_lex_macro(Lexer* lexer);
-TokenType lexer_lex_keywords(Lexer* lexer);
-TokenType lexer_lex_char(Lexer* lexer); 
-TokenType lexer_lex_digit(Lexer* lexer); 
-TokenType lexer_lex_token_id(Lexer* lexer); 
+TokenKind lexer_lex_comment(Lexer* lexer);
+TokenKind lexer_lex_string(Lexer* lexer); 
+TokenKind lexer_lex_operator(Lexer* lexer);
+TokenKind lexer_lex_separator(Lexer* lexer);
+TokenKind lexer_lex_delimiter(Lexer* lexer);
+TokenKind lexer_lex_macro(Lexer* lexer);
+TokenKind lexer_lex_keywords(Lexer* lexer);
+TokenKind lexer_lex_char(Lexer* lexer); 
+TokenKind lexer_lex_digit(Lexer* lexer); 
+TokenKind lexer_lex_token_id(Lexer* lexer); 
 
 #endif // _HAZEL_LEXER_H
