@@ -1,5 +1,8 @@
 cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
-project(HazelMain LANGUAGES C)
+project(
+    HazelMain 
+    LANGUAGES C
+)
 
 set(CMAKE_C_EXTENSIONS OFF)
 set(CMAKE_C_STANDARD 11)
@@ -23,15 +26,11 @@ file(GLOB LIBHAZEL_SOURCES
     Compiler/Tokens/*.c
     Compiler/Types/*.c
 )
-
 file(GLOB_RECURSE HAZEL_HEADERS *.h)
 
 # 
 # Build the Shared/Static Library
 #
-# Currently, we have no symbols to export, so building a shared library with Visual Studio will fail.
-# Example: __declspec(dllexport) or __declspec(dllimport) --> export/import symbols 
-# When we do, go ahead and remove the `if(NOT MSVC)` checks
 
 # ======================
 # For libHazelStatic
@@ -62,6 +61,9 @@ endif() # HAZEL_BUILD_STATIC_LIB
 # ======================
 # For libHazelShared
 # ======================
+# Currently, we have no symbols to export, so building a shared library with Visual Studio will fail.
+# Example: __declspec(dllexport) or __declspec(dllimport) --> export/import symbols 
+# When we do, go ahead and remove the `if(NOT MSVC)` checks
 if(HAZEL_BUILD_SHARED_LIB)
     if(NOT MSVC)
         add_library(libHazelShared SHARED ${LIBHAZEL_SOURCES} ${HAZEL_HEADERS})
