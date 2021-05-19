@@ -67,7 +67,6 @@ endif(NOT CMAKE_BUILD_TYPE)
 # ------ A List of Compiler Flags ------
 # A (more or less comprehensive) list is here: https://caiorss.github.io/C-Cpp-Notes/compiler-flags-options.html
 if(NOT MSVC)
-    message("--------------------------CMAKE_C_COMPILER_ID ==== ${CMAKE_C_COMPILER_ID}")
     if("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
         string(APPEND CMAKE_C_FLAGS " -std=gnu11")
     else()
@@ -112,6 +111,8 @@ if(NOT MSVC)
         # This error is irritating even though we explicitely tell CMake to build according to the C11 standard
         string(APPEND CMAKE_C_FLAGS " -Wno-implicit-function-declaration") 
     endif()
+
+    message("--------------------------CMAKE_C_FLAGS ==== ${CMAKE_C_FLAGS}")
 
 # For MSVC 
 else()
