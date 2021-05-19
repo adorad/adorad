@@ -211,8 +211,8 @@ Hello world
 
 ```bash
 cd examples
-hazel hello_world.hzl && ./hello_world    # or simply
-hazel  hello_world.hzl                 # this builds the program and runs it right away
+hazel hello_world.hzl && ./hello_world   # or simply
+hazel  hello_world.hzl                   # this builds the program and runs it right away
 ```
 
 ## Hazel sync
