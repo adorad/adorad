@@ -153,7 +153,7 @@ jobs:
       # For info here: https://stackoverflow.com/questions/19024259/how-to-change-the-build-type-to-release-mode-in-cmake
     - name: Build
       run: |
-        cmake --build build --config ${{matrix.build_type}} --parallel 10
+        cmake --build build --config Release --parallel 10
 
     - name: Test
       run: |

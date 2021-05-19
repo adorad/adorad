@@ -118,7 +118,7 @@ cmakemsvc:
 	echo --------------------------------------------
 	echo ----------------- TESTING! -----------------
 	echo --------------------------------------------
-	cd $(BUILD_DIR)/bin/Release && ctest -j 10 -C Release --output-on-failure
+	cd $(BUILD_DIR)/test && ctest -j 10 -C Release --output-on-failure
 .PHONY: cmakemsvc 
 
 # Generate the CMake MinGW Makefiles
