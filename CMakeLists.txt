@@ -85,12 +85,13 @@ if(NOT MSVC)
     if(CMAKE_BUILD_TYPE STREQUAL "Release")
         string(APPEND CMAKE_C_FLAGS " -O2")
     endif()
+
     if (NOT CMAKE_C_COMPILER_ID STREQUAL "Clang")
         string(APPEND CMAKE_C_FLAGS " -fPIC")
     endif()
+
     string(APPEND CMAKE_C_FLAGS " -Wall")
     string(APPEND CMAKE_C_FLAGS " -Wextra")
-    string(APPEND CMAKE_C_FLAGS " -Werror=return-type")
     string(APPEND CMAKE_C_FLAGS " -Wno-unknown-pragmas")
     string(APPEND CMAKE_C_FLAGS " -Wno-sign-compare")
     string(APPEND CMAKE_C_FLAGS " -Wno-unused-parameter")
@@ -98,8 +99,11 @@ if(NOT MSVC)
     string(APPEND CMAKE_C_FLAGS " -Wno-unused-function")
     string(APPEND CMAKE_C_FLAGS " -Wno-unused-result")
     string(APPEND CMAKE_C_FLAGS " -Wno-unused-local-typedefs")
+    string(APPEND CMAKE_C_FLAGS " -Wno-discarded-qualifiers")
+    string(APPEND CMAKE_C_FLAGS " -Wno-multistatement-macros")
     string(APPEND CMAKE_C_FLAGS " -Wno-strict-overflow")
     string(APPEND CMAKE_C_FLAGS " -Wno-strict-aliasing")
+    string(APPEND CMAKE_C_FLAGS " -Werror=return-type")
     string(APPEND CMAKE_C_FLAGS " -Wno-error=deprecated-declarations")
 
     if(WERROR)
@@ -120,8 +124,6 @@ if(NOT MSVC)
         string(APPEND CMAKE_C_FLAGS " -Wno-implicit-function-declaration") 
     endif()
 
-    message("--------------------------CMAKE_C_FLAGS ==== ${CMAKE_C_FLAGS}")
-
 # For MSVC 
 else()
     # Optimizations
@@ -132,6 +134,20 @@ else()
     # string(APPEND CMAKE_C_FLAGS " /WX")  # Treats Linker Warnings as Errors
     string(APPEND CMAKE_C_FLAGS " /wd4514")
     string(APPEND CMAKE_C_FLAGS " /wd5045")
+
+    # Ignore some MSVC warnings
+    # 1. C4061: enumerator in switch os enum is not explicitly handled by a case label
+    # 2. C4100: argv & argc: unreferenced formal parameter
+    # 3. C4710: printf: function not inlined
+    # 4: C4711: function selected for automatic inline expansion
+    # 5. C5105: macro expansion producing `defined` has undefined behaviour
+    # NOTE: For some reason (maybe I'm looking at this the wrong way, `/IGNORE` does not seems to work!!)
+    # string(APPEND CMAKE_C_FLAGS " /IGNORE:4061,4100,4710,4711")
+    string(APPEND CMAKE_C_FLAGS " /wd4061")
+    string(APPEND CMAKE_C_FLAGS " /wd4100")
+    string(APPEND CMAKE_C_FLAGS " /wd4710")
+    string(APPEND CMAKE_C_FLAGS " /wd4711")
+    string(APPEND CMAKE_C_FLAGS " /wd5105")
 endif()
 
 # A shared library is always produced if a library type is not passed to the add_library command.

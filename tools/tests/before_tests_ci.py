@@ -33,6 +33,11 @@ def main():
             MKDIRS.append(destroot)
 
         for file in files:
+            # CMakeLists.txt is not required to be copied
+            # TODO(jasmcaus): Maybe change this?
+            if file.endswith('.txt'):
+                continue
+
             filepath = os.path.join(root, file)
             destpath = os.path.join(destroot, file)
             # print(filepath)

@@ -49,6 +49,8 @@ if(HAZEL_BUILD_STATIC_LIB)
         libHazelStatic PUBLIC 
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../>
         $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}>
+        # This is here out of convenience. You might break a test or two if this is removed.
+            $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}>
         $<INSTALL_INTERFACE:include>
     )
     # Build the executable

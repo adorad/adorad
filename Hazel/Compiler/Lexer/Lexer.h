@@ -32,8 +32,8 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 */
 typedef struct Lexer {
     const char* buffer;     // the Lexical buffer
-    UInt64 buffer_capacity; // current buffer capacity (in Bytes)
-    UInt64 offset;          // current buffer offset (in Bytes) 
+    UInt32 buffer_capacity; // current buffer capacity (in Bytes)
+    UInt32 offset;          // current buffer offset (in Bytes) 
                             // offset of the beginning of the line (no. of chars b/w the beginning of the Lexical Buffer
                             // and the beginning of the line)
                             // Sometimes called the buffer position
