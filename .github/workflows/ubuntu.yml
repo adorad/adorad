@@ -14,12 +14,17 @@ jobs:
   Clang:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         # build_type: [Debug, RelWithDebInfo, MinSizeRel, Release] 
         build_type: [Release]
         
     steps:
       - uses: actions/checkout@v2
+      - name: Set up HazelInternalTests folder
+        run: |
+          python tools/tests/before_tests_ci.py 
+          
       - name: Set up GCC on Ubuntu
         run: |
           sudo apt-get install -y gcc-11
@@ -39,6 +44,7 @@ jobs:
   GCC:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         # build_type: [Debug, RelWithDebInfo, MinSizeRel, Release] 
         build_type: [Release]
@@ -48,6 +54,10 @@ jobs:
       - name: Set up Clang on Ubuntu
         run: |
           sudo apt-get install -y clang-10
+
+      - name: Set up HazelInternalTests folder
+        run: |
+          python tools/tests/before_tests_ci.py 
 
       - name: CMake
         run: |

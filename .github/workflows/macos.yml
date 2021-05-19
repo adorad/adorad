@@ -15,6 +15,7 @@ jobs:
   xcode:
     runs-on: macos-10.15
     strategy:
+      fail-fast: false
       matrix:
         # build_type: [Debug, RelWithDebInfo, MinSizeRel, Release] 
         build_type: [Release] 
@@ -24,7 +25,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Cmake
+      - name: Set up HazelInternalTests folder
+        run: |
+          python tools/tests/before_tests_ci.py 
+      
+      - name: CMake
         run: cmake -S . -B build -D CMAKE_BUILD_TYPE=${{ matrix.build_type }} -DMUON_BUILDTESTS=On
         
       - name: Build
