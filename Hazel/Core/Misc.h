@@ -32,11 +32,11 @@ namespace Hazel {
 // Inline 
 #ifdef __cplusplus
     #if defined(_MSC_VER) && _MSC_VER <= 1800 
-        #define inline  __inline
+        #define CSTL_INLINE     __inline
     #elif !defined(__STDC_VERSION__)
-        #define inline __inline__
+        #define CSTL_INLINE     __inline__
     #else 
-        #define inline 
+        #define CSTL_INLINE 
     #endif 
 #else
     // We default to C's inline function
@@ -46,30 +46,32 @@ namespace Hazel {
     // 
     // We can enforce this here, but I'll wait for sometime. If we decide to go ahead with it, a simple text substitution
     // should work :)
-    #define inline  inline
+    #define CSTL_INLINE  inline
 #endif 
 
 
 // Force Inline
-#ifndef force_inline
+#ifndef CSTL_ALWAYS_INLINE
     #if defined(_MSC_VER)
         #if _MSC_VER < 1300
-            #define force_inline
+            #define CSTL_ALWAYS_INLINE
         #else 
-            #define force_inline   __forceinline
+            #define CSTL_ALWAYS_INLINE   __forceinline
         #endif 
+    #elif __has_attribute(always_inline) || defined(__GNUC__)
+        #define CSTL_ALWAYS_INLINE       __attribute__((__always_inline__)) inline
     #else 
-        #define force_inline       __attribute__((__always_inline__))
+        #define CSTL_ALWAYS_INLINE       inline
     #endif 
 #endif 
 
 
 // No Inline 
-#ifndef no_inline
+#ifndef CSTL_NOINLINE
     #if defined(_MSC_VER)
-        #define no_inline   __declspec(noinline)
+        #define CSTL_NOINLINE   __declspec(noinline)
     #else 
-        #define no_inline   __attribute__((noinline))
+        #define CSTL_NOINLINE   __attribute__((noinline))
     #endif 
 #endif 
 
