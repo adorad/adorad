@@ -142,8 +142,12 @@ cmakeclean:
 	rmdir /Q /S $(BUILD_DIR) && mkdir $(BUILD_DIR)
 .PHONY: cmakeclean
 
+# ------------ HazelInternalTests -----------
+internaltest:
+	python tools/tests/before_tests_ci.py
+.PHONY: internaltest
 
-# ------------Minor Testing only -----------
+# ------------ Minor Testing only -----------
 test:
 	$(CC) test.c $(flags) -o test -I . -I Hazel
 	echo Compiled Test!
