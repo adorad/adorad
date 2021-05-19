@@ -72,6 +72,7 @@ extern "C" {
 } // extern "C"
 #endif // __cplusplus
 
+/*
 Float32 cstl_toRadians(Float32 degrees);
 Float32 cstl_toDegrees(Float32 radians);
 
@@ -197,6 +198,8 @@ Float32 cstl_square(Float32 x){
 Float32 cstl_log2(Float32 x){
     return cstl_log(x) / CSTL_MATH_LOG_TWO;
 }
+
+*/ 
 
 #ifdef __cplusplus
 } // namespace cstl
