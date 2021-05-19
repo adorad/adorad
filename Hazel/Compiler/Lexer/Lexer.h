@@ -17,7 +17,6 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #include <string.h>
 
 #include <Hazel/Core/String.h> 
-#include <Hazel/Core/Types.h> 
 #include <Hazel/Compiler/Tokens/Tokens.h>
 
 /*
@@ -48,7 +47,7 @@ typedef struct Lexer {
 Lexer* lexer_init(const char* buffer);
 // Returns the current character in the Lexical Buffer and advances to the next element.
 // It does this by incrementing the buffer offset.
-inline char lexer_next(Lexer* lexer);
+char lexer_next(Lexer* lexer);
 // Returns the previous `n` elements in the Lexical buffer.
 // This is non-destructive -- the buffer offset is not updated.
 static inline char lexer_prev(Lexer* lexer, UInt32 n);
