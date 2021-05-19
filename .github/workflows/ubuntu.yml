@@ -6,6 +6,8 @@ on:
       - dev
       - master
   pull_request:
+      - dev
+      - master
 
 jobs:
   Clang:
@@ -29,6 +31,9 @@ jobs:
         run: |
           cmake --build build --config=${{ matrix.build_type }}
 
+      - name: Test
+        run: cd build/test ; ctest -j 10 -C ${{ matrix.build_type }} --output-on-failure
+
 
   GCC:
     runs-on: ubuntu-latest
@@ -50,3 +55,6 @@ jobs:
       - name: Build
         run: |
           cmake --build build --config=${{ matrix.build_type }}
+      
+      - name: Test
+        run: cd build/test ; ctest -j 10 -C ${{ matrix.build_type }} --output-on-failure

@@ -6,6 +6,8 @@ on:
       - dev
       - master
   pull_request:
+      - dev
+      - master
 
 jobs:
   mingw:
@@ -32,7 +34,7 @@ jobs:
           cmake --build build --parallel 10
 
       - name: Test
-        run: cd build ; ctest -j 10 -C ${{ matrix.build_type }} --output-on-failure
+        run: cd build/test ; ctest -j 10 -C ${{ matrix.build_type }} --output-on-failure
 
   MSVC2017:
     runs-on: windows-2016
@@ -64,7 +66,7 @@ jobs:
 
     - name: Test
       run: |
-        cd build ; ctest -j 10 -C ${{ matrix.build_type }} --output-on-failure
+        cd build/test ; ctest -j 10 -C ${{ matrix.build_type }} --output-on-failure
 
 
   MSVC2017_latest:
@@ -82,7 +84,7 @@ jobs:
 
     - name: Test
       run: |
-        cd build ; ctest -j 10 -C Release --output-on-failure
+        cd build/test ; ctest -j 10 -C Release --output-on-failure
 
 
   MSVC2019:
@@ -105,7 +107,7 @@ jobs:
 
     - name: Test
       run: |
-        cd build ; ctest -j 10 -C ${{ matrix.build_type }} --output-on-failure
+        cd build/test ; ctest -j 10 -C ${{ matrix.build_type }} --output-on-failure
 
 
   MSVC2019_latest:
@@ -123,7 +125,7 @@ jobs:
 
     - name: Test
       run: |
-        cd build ; ctest -j 10 -C Release --output-on-failure
+        cd build/test ; ctest -j 10 -C Release --output-on-failure
 
 
   Clang:
@@ -150,7 +152,7 @@ jobs:
 
       - name: Test
         run: |
-          cd build ; ctest -j 10 -C ${{ matrix.build_type }} --exclude-regex "test-unicode" --output-on-failure
+          cd build/test ; ctest -j 10 -C ${{ matrix.build_type }} --output-on-failure
 
 
   Clang-cl-11:
@@ -171,4 +173,4 @@ jobs:
           cmake --build build --config ${{ matrix.build_type }} --parallel 10
       - name: Test
         run: |
-          cd build ; ctest -j 10 -C ${{ matrix.build_type }} --exclude-regex "test-unicode" --output-on-failure
+          cd build/test ; ctest -j 10 -C ${{ matrix.build_type }} --exclude-regex "test-unicode" --output-on-failure

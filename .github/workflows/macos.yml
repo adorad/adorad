@@ -6,6 +6,8 @@ on:
       - dev
       - master
   pull_request:
+      - dev
+      - master
 
 
 jobs:
@@ -28,4 +30,4 @@ jobs:
         run: cmake --build build --config=${{ matrix.build_type }} --parallel 10
 
       - name: Test
-        run: cd build ; ctest -j 10 --output-on-failure
+        run: cd build ; ctest -j 10 -C ${{ matrix.build_type }} --output-on-failure
