@@ -41,7 +41,7 @@ def main():
             filepath = os.path.join(root, file)
             destpath = os.path.join(destroot, file)
             # print(filepath)
-            print(f'[INFO] Copying {destpath}')
+            print(f"[INFO] Copying {destpath}")
 
             # Copy contents
             shutil.copy(filepath, destpath)
