@@ -103,8 +103,8 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Set up HazelInternalTests folder
-        run: |
-          python tools/tests/before_tests_ci.py 
+      run: |
+        python tools/tests/before_tests_ci.py 
 
     - name: CMake
       run: |
@@ -162,8 +162,8 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Set up HazelInternalTests folder
-        run: |
-          python tools/tests/before_tests_ci.py 
+      run: |
+        python tools/tests/before_tests_ci.py 
 
     - name: CMake
       run: |
