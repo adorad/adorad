@@ -18,6 +18,7 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(Muon)
 
 enable_testing()
+include(CTest)
 
 file(GLOB 
     HAZEL_INTERNAL_TESTS_SOURCES
@@ -29,7 +30,6 @@ file(GLOB
 #############################################################################
 foreach(source ${HAZEL_INTERNAL_TESTS_SOURCES})
     get_filename_component(testcase ${source} NAME_WE)
-    # message("FILE_BASENAME: ${testcase}")
     add_executable(
         ${testcase} # without file extension
         ${source} # With file extension

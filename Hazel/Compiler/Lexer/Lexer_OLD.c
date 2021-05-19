@@ -90,8 +90,8 @@
 
 // // Finalize a Token
 // inline void lexer_finalize_token(Lexer* lexer, TokenKind __tok) {
-// 	lexer->token__.type__ = __tok; 
-// 	lexer->token__.location.fname = lexer->location.fname;
+// 	lexer->token.type = __tok; 
+// 	lexer->token.location.fname = lexer->location.fname;
 // }
 
 // static inline bool isNewLine(Lexer* lexer, char c) {

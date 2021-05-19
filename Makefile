@@ -107,18 +107,18 @@ cmake:
 	echo --------------------------------------------
 	echo ----------------- TESTING! -----------------
 	echo --------------------------------------------
-	cd $(BUILD_DIR)/test && ctest -j 10 --output-on-failure
+	cd $(BUILD_DIR)/test && ctest -j 10 -C Release --output-on-failure
 .PHONY: cmake 
 
 cmakemsvc:
-	cmake -S $(SOURCE_DIR) -B $(BUILD_DIR)
+	cmake -S $(SOURCE_DIR) -B $(BUILD_DIR) -DCMAKE_BUILD_TYPE=Release
 	echo --------------------------------------------
 	echo --------------------------------------------
-	cd $(BUILD_DIR) && cmake --build . && \
+	cd $(BUILD_DIR) && cmake --build . --config Release && \
 	echo --------------------------------------------
 	echo ----------------- TESTING! -----------------
 	echo --------------------------------------------
-	cd $(BUILD_DIR)/test && ctest -j 10 --output-on-failure
+	cd $(BUILD_DIR)/bin/Release && ctest -j 10 -C Release --output-on-failure
 .PHONY: cmakemsvc 
 
 # Generate the CMake MinGW Makefiles

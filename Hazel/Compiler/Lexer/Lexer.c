@@ -12,6 +12,7 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 */
 
 #include <Hazel/Compiler/Lexer/Lexer.h>
+#include <Hazel/Core/Types.h>
 
 /*
     Lexer:
@@ -46,17 +47,17 @@ char lexer_next(Lexer* lexer) {
         char c = lexer->buffer[lexer->offset++];
         // If `c` and the next few characters are newlines, skip over them
         // The function must return a pure character (not newline, etc)
-        for(;;) {
-            if(isNewLine(lexer, c)) {
-                LEXER_RESET_COLNO;
-                LEXER_INCREMENT_OFFSET;
-            } else {
-                L;
-                break;
-            }
-        }
+        // for(;;) {
+        //     if(isNewLine(lexer, c)) {
+        //         LEXER_RESET_COLNO;
+        //         LEXER_INCREMENT_OFFSET;
+        //     } else {
+        //         L;
+        //         break;
+        //     }
+        // }
         LEXER_INCREMENT_COLNO;
-        return (char)lexer->buffer[lexer->offset++];
+        return (char)lexer->buffer[lexer->offset];
     }
 }
 

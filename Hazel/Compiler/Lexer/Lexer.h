@@ -32,13 +32,13 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 */
 typedef struct Lexer {
     const char* buffer;     // the Lexical buffer
-    UInt32 buffer_capacity; // current buffer capacity (in Bytes)
-    UInt32 offset;          // current buffer offset (in Bytes) 
-                              // offset of the beginning of the line (no. of chars b/w the beginning of the Lexical Buffer
-                              // and the beginning of the line)
-                              // Sometimes called the buffer position
+    UInt64 buffer_capacity; // current buffer capacity (in Bytes)
+    UInt64 offset;          // current buffer offset (in Bytes) 
+                            // offset of the beginning of the line (no. of chars b/w the beginning of the Lexical Buffer
+                            // and the beginning of the line)
+                            // Sometimes called the buffer position
 
-    Token token__;            // current token
+    Token token;            // current token
     Location location;      // Location of the source code
 } Lexer;
 
@@ -62,13 +62,13 @@ static inline bool lexer_is_EOF(Lexer* lexer);
 #ifndef LEXER_MACROS_
 #define LEXER_MACROS_
     // Increment Token Bytes
-    #define LEXER_INCREMENT_TOK_BYTES    ++lexer->token__.tok_bytes__
+    #define LEXER_INCREMENT_TOK_BYTES    ++lexer->token.tok_bytes
     // Decrement Token Bytes
-    #define LEXER_DECREMENT_TOK_BYTES    --lexer->token__.tok_bytes__ 
+    #define LEXER_DECREMENT_TOK_BYTES    --lexer->token.tok_bytes 
     // Increment Token Length
-    #define LEXER_INCREMENT_TOK_LENGTH   ++lexer->token__.tok_length__
+    #define LEXER_INCREMENT_TOK_LENGTH   ++lexer->token.tok_length
     // Decrement Token Length
-    #define LEXER_DECREMENT_TOK_LENGTH   --lexer->token__.tok_length__ 
+    #define LEXER_DECREMENT_TOK_LENGTH   --lexer->token.tok_length 
 
     // Reset the line
     #define LEXER_RESET_LINENO           lexer->location.lineno = 0
@@ -92,10 +92,10 @@ static inline bool lexer_is_EOF(Lexer* lexer);
     // Reset a Lexer Token
     #define LEXER_RESET_TOKEN                                       \
         /* CHECK THIS */                                            \
-        lexer->token__.type__ = TOK_ILLEGAL;                        \
+        lexer->token.type = TOK_ILLEGAL;                        \
         /* TODO(jasmcaus): Verify this is accurate */               \
-        lexer->token__.value__ = lexer->buffer + lexer->offset; \
-        lexer->token__.location = lexer->location
+        lexer->token.value = lexer->buffer + lexer->offset; \
+        lexer->token.location = lexer->location
 
     // Reset the buffer 
     #define LEXER_RESET_BUFFER        \

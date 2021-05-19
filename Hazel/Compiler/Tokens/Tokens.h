@@ -224,11 +224,11 @@ typedef enum {
     Main Token Struct 
 */
 typedef struct {
-    TokenKind type__;     // Token Type
-    UInt32 offset;      // Offset of the first character of the Token
-    UInt32 tok_bytes__;   // Token length (in bytes)
-    UInt32 tok_length__;  // Token length (UTF-8)
-    const char* value__;  // Token value
+    TokenKind type;     // Token Type
+    UInt64 offset;      // Offset of the first character of the Token
+    UInt32 tok_bytes;   // Token length (in bytes)
+    UInt32 tok_length;  // Token length (UTF-8)
+    const char* value;  // Token value
     Location location;  // Location of the source file
 } Token;
 
