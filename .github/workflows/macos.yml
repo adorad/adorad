@@ -27,7 +27,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Set up HazelInternalTests folder
         run: |
-          python --version ; python tools/tests/before_tests_ci.py 
+          python3 --version ; python3 tools/tests/before_tests_ci.py 
       
       - name: CMake
         run: cmake -S . -B build -D CMAKE_BUILD_TYPE=${{ matrix.build_type }} -DMUON_BUILDTESTS=On
