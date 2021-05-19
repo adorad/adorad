@@ -18,9 +18,9 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 // Location holds information about a location in a source file
 // Includes the colno, lineno, fname...
 typedef struct {
-    UInt32 lineno__;     // the line number in the source where the token occured
-    UInt32 colno__;      // the column number
-    const char* fname__; // the file name
+    UInt32 lineno;     // the line number in the source where the token occured
+    UInt32 colno;      // the column number
+    const char* fname; // the file name
 } Location;
 
 #endif // _HAZEL_LEXER_LOCATION_H

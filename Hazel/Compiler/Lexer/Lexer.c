@@ -28,9 +28,9 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 // 
 Lexer* lexer_init(const char* buffer) {
     Lexer* lexer = calloc(1, sizeof(Lexer));
-    lexer->buffer__ = buffer; 
-    lexer->buffer_capacity__ = strlen(buffer);
-    lexer->offset__ = 0;
+    lexer->buffer = buffer; 
+    lexer->buffer_capacity = strlen(buffer);
+    lexer->offset = 0;
     LEXER_LOCATION_INIT;
     return lexer;
 }
@@ -40,22 +40,34 @@ Lexer* lexer_init(const char* buffer) {
 // Handles new line characters
 // inline char lexer_next(Lexer* lexer) {
 char lexer_next(Lexer* lexer) {
-    if(lexer->offset__ + 1 > lexer->buffer_capacity__) {
+    if(lexer->offset + 1 > lexer->buffer_capacity) {
         return nullchar; 
     } else {
+        char c = lexer->buffer[lexer->offset++];
+        // If `c` and the next few characters are newlines, skip over them
+        // The function must return a pure character (not newline, etc)
+        for(;;) {
+            if(isNewLine(lexer, c)) {
+                LEXER_RESET_COLNO;
+                LEXER_INCREMENT_OFFSET;
+            } else {
+                L;
+                break;
+            }
+        }
         LEXER_INCREMENT_COLNO;
-        return (char)lexer->buffer__[lexer->offset__++];
+        return (char)lexer->buffer[lexer->offset++];
     }
 }
 
 // Advance `n` characters in the Lexical Buffer
 // inline char lexer_next_n(Lexer* lexer, UInt32 n) {
 char lexer_next_n(Lexer* lexer, UInt32 n) {
-    if(lexer->offset__ + n > lexer->buffer_capacity__) {
+    if(lexer->offset + n > lexer->buffer_capacity) {
         return nullchar;
     } else {
-        lexer->location__.colno__ += n;
-        lexer->offset__ += n;
-        return (char)lexer->buffer__[lexer->offset__];
+        lexer->location.colno += n;
+        lexer->offset += n;
+        return (char)lexer->buffer[lexer->offset];
     }
 }

@@ -32,9 +32,9 @@
 // // Constructor 
 // Lexer* lexer_init(const char* buffer) {
 //     Lexer* lexer = calloc(1, sizeof(Lexer));
-//     lexer->buffer__ = buffer; 
-//     lexer->buffer_capacity__ = strlen(buffer);
-//     lexer->offset__ = 0;
+//     lexer->buffer = buffer; 
+//     lexer->buffer_capacity = strlen(buffer);
+//     lexer->offset = 0;
 //     LEXER_LOCATION_INIT;
 //     return lexer;
 // }
@@ -43,7 +43,7 @@
 // // It does this by incrementing the buffer offset.
 // inline char lexer_next(Lexer* lexer) {
 //     LEXER_INCREMENT_COLNO;
-//     return (char)lexer->buffer__[lexer->offset__++];
+//     return (char)lexer->buffer[lexer->offset++];
 // }
 
 // // Advance `n` elements in the Lexical Buffer
@@ -52,8 +52,8 @@
 // //     while(i!=n) 
 // //         LEXER_INCREMENT_COLNO;
 // //     if(lexer_is_EOF(lexer_peek(lexer, n))) {
-// //         lexer->offset__ += n; 
-// //         return (char)lexer->buffer__[lexer->offset__];
+// //         lexer->offset += n; 
+// //         return (char)lexer->buffer[lexer->offset];
 // //     } else {
 // //         printf("[ERROR]: BUFFER OVERFLOW DETECTED AT %s:%d", __FILE__, __LINE__);
 // //     }
@@ -62,8 +62,8 @@
 // // Returns the previous `n` elements in the Lexical buffer.
 // // This is non-destructive -- the buffer offset is not updated.
 // static inline char lexer_prev(Lexer* lexer, UInt32 n) {
-//     if(lexer->offset__ - n >= 0) {
-//         return (char)lexer->buffer__[lexer->offset__ - n];
+//     if(lexer->offset - n >= 0) {
+//         return (char)lexer->buffer[lexer->offset - n];
 //     } else  {
 //         return 0; // TOK_ILLEGAL
 //     }
@@ -72,8 +72,8 @@
 // // "Look ahead" `n` characters in the Lexical buffer.
 // // It _does not_ increment the buffer offset.
 // inline char lexer_peek(Lexer* lexer, UInt32 n) {
-//     if(lexer->offset__ + n <= lexer->buffer_capacity__) {
-//         return (char)lexer->buffer__[lexer->offset__ + n];
+//     if(lexer->offset + n <= lexer->buffer_capacity) {
+//         return (char)lexer->buffer[lexer->offset + n];
 //     } else {
 //         return 0; // corresponds to TOK_ILLEGAL
 //     }
@@ -81,17 +81,17 @@
 
 // // lexer_peek_curr() returns the current element in the Lexical Buffer
 // inline char lexer_peek_curr(Lexer* lexer) {
-//     return (char)lexer->buffer__[lexer->offset__];
+//     return (char)lexer->buffer[lexer->offset];
 // }
 
 // // Check if the current Lexer state is at EOF
-// inline bool lexer_is_EOF(Lexer* lexer) { return lexer->offset__ >= lexer->buffer_capacity__; }
+// inline bool lexer_is_EOF(Lexer* lexer) { return lexer->offset >= lexer->buffer_capacity; }
 
 
 // // Finalize a Token
 // inline void lexer_finalize_token(Lexer* lexer, TokenKind __tok) {
 // 	lexer->token__.type__ = __tok; 
-// 	lexer->token__.location__.fname__ = lexer->location__.fname__;
+// 	lexer->token__.location.fname = lexer->location.fname;
 // }
 
 // static inline bool isNewLine(Lexer* lexer, char c) {
@@ -198,7 +198,7 @@
 // //         }
 // //     }
 // //     printf("\n");
-// //     printf("Stats: lexer->offset = %d\n", lexer->offset__);
+// //     printf("Stats: lexer->offset = %d\n", lexer->offset);
 // //     printf("Current char = %c\n", lexer_peek_curr(lexer));
 // // }
 

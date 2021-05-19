@@ -13,7 +13,7 @@ int main(int argc, const char* const argv[]) {
     Lexer* lexer = calloc(1, sizeof(Lexer)); 
 	char* buffer = readFile("test/LexerDemo.hzl");
 	lexer = lexer_init(buffer); 
-    printf("Lexer buffer: \n%s\n", lexer->buffer__);
+    printf("Lexer buffer: \n%s\n", lexer->buffer);
     printf("--------------\n");
     
     // TokenKind t = lexer_lex_comment(lexer);

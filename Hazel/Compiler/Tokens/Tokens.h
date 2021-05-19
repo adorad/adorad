@@ -225,11 +225,11 @@ typedef enum {
 */
 typedef struct {
     TokenKind type__;     // Token Type
-    UInt32 offset__;      // Offset of the first character of the Token
+    UInt32 offset;      // Offset of the first character of the Token
     UInt32 tok_bytes__;   // Token length (in bytes)
     UInt32 tok_length__;  // Token length (UTF-8)
     const char* value__;  // Token value
-    Location location__;  // Location of the source file
+    Location location;  // Location of the source file
 } Token;
 
 // Create a basic (ILLEGAL) token

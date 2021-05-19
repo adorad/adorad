@@ -58,4 +58,4 @@ jobs:
           cmake --build build --config=${{ matrix.build_type }}
       
       - name: Test
-        run: cd build/test ; ctest -j 10 -C ${{ matrix.build_type }} --output-on-failure
+        run: cd build/test ; ls; ctest -j 10 -C ${{ matrix.build_type }} --output-on-failure

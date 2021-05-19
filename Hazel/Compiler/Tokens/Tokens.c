@@ -17,7 +17,7 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 Token* token_init(void) {
     Token* token = calloc(1, sizeof(Token));
     token->type__ = TOK_ILLEGAL; 
-    token->offset__ = 0; 
+    token->offset = 0; 
     token->tok_bytes__ = 0; 
     token->tok_length__ = 0; 
     token->value__ = "";
@@ -28,15 +28,15 @@ Token* token_init(void) {
 
 // Initialize/Reset a token's location
 void token_location_init(Token* token) {
-    token->location__.lineno__ = 0; 
-    token->location__.colno__ = 0; 
-    token->location__.fname__ = "";
+    token->location.lineno = 0; 
+    token->location.colno = 0; 
+    token->location.fname = "";
 }
 
 // Reset a Token instance
 void token_reset_token(Token* token) {
     token->type__ = TOK_ILLEGAL; 
-    token->offset__ = 0; 
+    token->offset = 0; 
     token->tok_bytes__ = 0; 
     token->tok_length__ = 0; 
     token->value__ = "";

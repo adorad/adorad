@@ -39,8 +39,8 @@ $(VERBOSE).SILENT:
 exec = hazel
 emitout = hazeloutput.txt
 emittestout = hazeltestoutput.txt
-sources = $(wildcard Hazel/Compiler/Lexer/*.c Hazel/Compiler/Tokens/*.c Hazel/Compiler/Types/*.c Hazel/*.c )
-objects = $(sources:Hazel/.c=.o)
+sources = $(wildcard HazelInternalTests/Compiler/Lexer/*.c HazelInternalTests/Compiler/Tokens/*.c HazelInternalTests/Compiler/Types/*.c HazelInternalTests/*.c )
+objects = $(sources:HazelInternalTests/.c=.o)
 
 # To disable warnings, use "-w"
 flags = -g -w -std=c11 -Wall -Wextra -Werror=return-type -Wno-unknown-pragmas -Wno-sign-compare -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -Wno-unused-result -Wno-unused-local-typedefs -Wno-strict-overflow -Wno-strict-aliasing -Wno-error=deprecated-declarations -Wno-error=comment
