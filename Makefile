@@ -104,14 +104,10 @@ cmake:
 	echo --------------------------------------------
 	echo --------------------------------------------
 	cd $(BUILD_DIR) && $(MAKE) && \
-	echo ------------------------------------------
-	echo ------------- STATIC LIBRARY -------------
-	echo ------------------------------------------
-	cd $(RUN_DIR) && $(STATICTARGET)
-	echo ------------------------------------------
-	echo ------------- SHARED LIBRARY -------------
-	echo ------------------------------------------
-	cd $(RUN_DIR) && $(SHAREDTARGET)
+	echo --------------------------------------------
+	echo ----------------- TESTING! -----------------
+	echo --------------------------------------------
+	cd $(BUILD_DIR)/test && ctest -j 10 --output-on-failure
 .PHONY: cmake 
 
 cmakemsvc:
@@ -119,14 +115,10 @@ cmakemsvc:
 	echo --------------------------------------------
 	echo --------------------------------------------
 	cd $(BUILD_DIR) && cmake --build . && \
-	echo ------------------------------------------
-	echo ------------- STATIC LIBRARY -------------
-	echo ------------------------------------------
-	cd $(RUN_DIR) && $(STATICTARGET)
-	echo ------------------------------------------
-	echo ------------- SHARED LIBRARY -------------
-	echo ------------------------------------------
-	cd $(RUN_DIR) && $(SHAREDTARGET)
+	echo --------------------------------------------
+	echo ----------------- TESTING! -----------------
+	echo --------------------------------------------
+	cd $(BUILD_DIR)/test && ctest -j 10 --output-on-failure
 .PHONY: cmakemsvc 
 
 # Generate the CMake MinGW Makefiles
@@ -164,7 +156,7 @@ emittestcmd:
 	echo $(CC) test.c $(flags) -o test -I .
 .PHONY: emittestcmd
 
-emittestoutput :
+emittestoutput:
 	$(CC) -E test.c $(flags) -o $(emittestout) -I .
 	echo Saved to $(emittestout) ...
 .PHONY: emittestoutput 
