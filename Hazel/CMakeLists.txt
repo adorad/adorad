@@ -72,13 +72,18 @@ if(HAZEL_BUILD_SHARED_LIB)
         message("--------- [INFO] Building libHazelShared")
         add_library(libHazelShared SHARED ${LIBHAZEL_SOURCES} ${HAZEL_HEADERS})
         target_compile_options(libHazelShared PRIVATE "-fvisibility=hidden")
-    
+        # If building a Shared library, set dllimport/dllexport properly.
+        target_compile_options(libHazelShared PRIVATE "-DCSTL_BUILD_MAIN_LIB")
+
         target_include_directories(
             libHazelShared PUBLIC 
             $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../>
             $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}>
+            # This is here out of convenience. You might break a test or two if this is removed.
+            $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}>
             $<INSTALL_INTERFACE:include>
         )
+
         # Build the executable
         # main.c (or whatever demo file you want to link against) =
         add_executable(HazelShared ${CMAKE_CURRENT_SOURCE_DIR}/main.c)
@@ -106,6 +111,7 @@ install(
     DESTINATION include/Hazel/Core/Macros
 )
 
-if(MSVC AND HAZEL_BUILD_SHARED_LIB)
+# For CSTL_BUILD_SHARED_LIB, see Core/Export.h
+if(MSVC AND CSTL_BUILD_SHARED_LIB)
     install(FILES $<TARGET_PDB_FILE:Hazel> DESTINATION lib OPTIONAL)
 endif()

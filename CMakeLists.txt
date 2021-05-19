@@ -1,8 +1,17 @@
 cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
-project(Hazel 
-        DESCRIPTION "The Hazel Programming Language"
-        VERSION 1.0.0
-        LANGUAGES C)
+project(
+    Hazel 
+    DESCRIPTION "The Hazel Programming Language"
+    VERSION 1.0.0
+    LANGUAGES C
+)
+
+    
+# Use compiler ID "AppleClang" instead of "Clang" for XCode.
+# Not setting this sometimes makes XCode C compiler gets detected as "Clang",
+# even when the C++ one is detected as "AppleClang".
+cmake_policy(SET CMP0010 NEW)
+cmake_policy(SET CMP0025 NEW)
 
 # ------ Disable CMAKE_INSTALL_MESSAGE  ------
 set(CMAKE_INSTALL_MESSAGE NEVER)
@@ -76,10 +85,9 @@ if(NOT MSVC)
     if(CMAKE_BUILD_TYPE STREQUAL "Release")
         string(APPEND CMAKE_C_FLAGS " -O2")
     endif()
-    # if (NOT CMAKE_C_COMPILER_ID STREQUAL "Clang")
-        message("--------------------------CMAKE_C_COMPILER_ID ==== ${CMAKE_C_COMPILER_ID}")
+    if (NOT CMAKE_C_COMPILER_ID STREQUAL "Clang")
         string(APPEND CMAKE_C_FLAGS " -fPIC")
-    # endif()
+    endif()
     string(APPEND CMAKE_C_FLAGS " -Wall")
     string(APPEND CMAKE_C_FLAGS " -Wextra")
     string(APPEND CMAKE_C_FLAGS " -Werror=return-type")

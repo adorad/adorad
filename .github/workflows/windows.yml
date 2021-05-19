@@ -176,7 +176,7 @@ jobs:
 
       - name: CMake
         run: |
-          cmake -S . -B build -DCMAKE_C_COMPILER="C:/Program Files/LLVM/bin/clang.exe" -G"MinGW Makefiles" -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DMUON_BUILDTESTS=On
+          cmake -S . -B build -G"MinGW Makefiles" -DCMAKE_C_COMPILER="C:/Program Files/LLVM/bin/clang.exe" -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DMUON_BUILDTESTS=On
 
       - name: Build
         run: |
@@ -200,9 +200,11 @@ jobs:
       - name: CMake
         run: |
           cmake -S . -B build -G "Visual Studio 16 2019" -A ${{ matrix.architecture }} -T ClangCL -DMUON_BUILDTESTS=On
+
       - name: Build
         run: |
           cmake --build build --config ${{ matrix.build_type }} --parallel 10
+
       - name: Test
         run: |
-          cd build/test ; dir; ctest -j 10 -C ${{ matrix.build_type }} --exclude-regex "test-unicode" --output-on-failure
+          cd build/test ; dir; ctest -j 10 -C ${{ matrix.build_type }} --output-on-failure
