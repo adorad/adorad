@@ -67,18 +67,34 @@ namespace Hazel {
     #error This Operating System in not supported by Hazel
 #endif
 
+
+#if defined(_WIN32)
+	#define CSTL_API GB_EXTERN __declspec(dllexport)
+	#define GB_DLL_IMPORT GB_EXTERN __declspec(dllimport)
+#else
+	#define CSTL_API GB_EXTERN __attribute__((visibility("default")))
+	#define GB_DLL_IMPORT GB_EXTERN
+#endif
+
+
 // Architetures
 #if defined(__x86_64__)
-    #define CSTL_ARCH_X86_64
+    #define CSTL_ARCH_X86_64    1
 #elif defined(__aarch64__)
-    #define CSTL_ARCH_ARM64
+    #define CSTL_ARCH_ARM64     1
 #elif defined(__ATM_EABI__)
-    #define CSTL_ARCH_ARM
+    #define CSTL_ARCH_ARM       1
 #else
     #define CSTL_ARCH_UNKNOWN
     // #error This Architecture is not supported by Hazel
 #endif // __x86_64
 
+// Generic 32 vs 64 bit
+#if defined(_WIN64) || defined(__x86_64__) || defined(_M_X64) || defined(__64BIT__) || defined(__powerpc64__) || defined(__ppc64__)
+    #define CSTL_ARCH_64BIT     1
+#else 
+    #define CSTL_ARCH_32BIT     1
+#endif // _WIN64
 
 // printf Format specifiers
 #define CSTL_PRI_usize  "Iu"

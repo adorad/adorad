@@ -98,9 +98,14 @@ namespace Hazel {
 #endif // __cplusplus
 
 
-// printf Format-string specifiers for Int64 and UInt64 respectively
-#define CSTL_PRId64     "I64d"
-#define CSTL_PRIu64     "I64u"
+// printf format-string specifiers for Int64 and UInt64 respectively
+#ifdef __clang__
+    #define CSTL_PRId64     "lld"
+    #define CSTL_PRIu64     "llu"
+#else 
+    #define CSTL_PRId64     "I64d"
+    #define CSTL_PRIu64     "I64u"
+#endif  // __clang__
 
 
 // A signed sizeof is more useful 

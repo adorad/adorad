@@ -116,14 +116,14 @@ typedef Int32 Rune;
     #define Int64_MIN  (-0x7fffffffffffffffll - 1)
     #define Int64_MAX  0x7fffffffffffffffll
 
-    #if defined(GB_ARCH_32_BIT)
+    #if defined(CSTL_ARCH_32BIT)
         #define UINTSIZE_MIX UInt32_MIN
         #define UINTSIZE_MAX UInt32_MAX
 
         #define INTSIZE_MIX Int32_MIN
         #define INTSIZE_MAX Int32_MAX
     
-    #elif defined(GB_ARCH_64_BIT)
+    #elif defined(CSTL_ARCH_64BIT)
         #define UINTSIZE_MIX UInt64_MIN
         #define UINTSIZE_MAX UInt64_MAX
 
