@@ -78,26 +78,37 @@ namespace Hazel {
 
 // Casts
 #ifdef __cplusplus
-    #define cast(type, x)       static_cast<type>(x)
-    #define ptrcast(type, x)    reinterpret_cast<type>(x)
+    #define CSTL_CAST(type, x)       static_cast<type>(x)
+    #define CSTL_PTRCAST(type, x)    reinterpret_cast<type>(x)
 #else
-    #define cast(type, x)       ((type)x)
-    #define ptrcast(type, x)    ((type)x)
+    #define CSTL_CAST(type, x)       ((type)x)
+    #define CSTL_PTRCAST(type, x)    ((type)x)
 #endif // __cplusplus
 
 
 // Noexcept
 #if defined(__cplusplus) && (__cplusplus >= 201103L)
-    #define noexcept    noexcept
+    #define CSTL_NOEXCEPT    noexcept
+#else 
+    #define CSTL_NOEXCEPT
 #endif // __cplusplus
 
 
 // Nothrow
 #if defined(__cplusplus) && defined(_MSC_VER)
-    #define nothrow   __declspec(nothrow)
+    #define CSTL_NOTHROW   __declspec(nothrow)
 #else
-    #define nothrow
+    #define CSTL_NOTHROW
 #endif // __cplusplus
+
+
+#define CSTL_CONCATENATE_IMPL(s1, s2)   s1##s2
+#define CSTL_CONCATENATE(s1, s2)        CSTL_CONCATENATE_IMPL(s1, s2)
+
+#define CSTL_MACRO_EXPAND(args)         args
+
+#define CSTL_STRINGIZE_IMPL(x)          #x
+#define CSTL_STRINGIZE(x)               CSTL_STRINGIZE_IMPL(x)
 
 
 // printf format-string specifiers for Int64 and UInt64 respectively
