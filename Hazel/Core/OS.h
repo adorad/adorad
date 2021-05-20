@@ -92,12 +92,6 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
     #define CSTL_ARCH_32BIT     1
 #endif // _WIN64
 
-// printf Format specifiers
-#define CSTL_PRI_usize  "Iu"
-#define CSTL_PRId64     "I64d"
-#define CSTL_PRIu64     "I64u"
-#define CSTL_PRI_x64    "I64x"
-
 #ifdef CSTL_OS_WINDOWS
     #define CSTL_OS_SEP         "\\"
     #define CSTL_OS_SEP_CHAR    '\\'
