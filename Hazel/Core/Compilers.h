@@ -14,10 +14,6 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #ifndef CSTL_COMPILERS_H
 #define CSTL_COMPILERS_H
 
-#ifdef __cplusplus
-namespace Hazel {
-#endif
-
 
 // Compilers ==========================================
 // CSTL_COMPILER_...
@@ -30,9 +26,5 @@ namespace Hazel {
 #else 
     #error Unknown Compiler (Hazel currently supports only MSVC, GCC and Clang)
 #endif 
-
-#ifdef __cplusplus
-} // namespace Hazel
-#endif
 
 #endif // CSTL_COMPILERS_H

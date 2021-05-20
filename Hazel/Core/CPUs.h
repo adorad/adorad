@@ -14,10 +14,6 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #ifndef CSTL_CPU_H
 #define CSTL_CPU_H
 
-#ifdef __cplusplus
-namespace Hazel {
-#endif
-
 
 // ========================= CPU =========================
 // CSTL_CPU_...
@@ -61,8 +57,5 @@ namespace Hazel {
     #error Unknown CPU Type
 #endif // CSTL_CPU_...
 
-#ifdef __cplusplus
-} // namespace Hazel
-#endif
 
 #endif // CSTL_CPU_H

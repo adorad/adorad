@@ -14,12 +14,9 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #ifndef CSTL_CLOCK_H
 #define CSTL_CLOCK_H
 
-#include <Hazel/Core/Misc.h>
-#include <Hazel/Core/Types.h>
+// #include <Hazel/Core/Misc.h>
+// #include <Hazel/Core/Types.h>
 
-#ifdef __cplusplus
-namespace Hazel {
-#endif
 
 // Time ==========================================
 // CSTL_DEF UInt64   cstl_rdtsc(void);
@@ -27,8 +24,5 @@ namespace Hazel {
 // CSTL_DEF UInt64   cstl_utc_time_now(void); // Number of microseconds since 1601-01-01 UTC
 // CSTL_DEF void     cstl_sleep_ms(UInt32 ms);
 
-#ifdef __cplusplus
-} // namespace Hazel
-#endif
 
 #endif // CSTL_CLOCK_H

@@ -16,10 +16,6 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 
 #include <Hazel/Core/OS.h>
 
-#ifdef __cplusplus
-namespace Hazel {
-#endif
-
 
 // Headers ==========================================
 #if defined(_WIN32) && !defined(__MINGW32__)
@@ -119,9 +115,5 @@ namespace Hazel {
     // #include <semaphore.h>
 #endif
 
-
-#ifdef __cplusplus
-} // namespace Hazel
-#endif
 
 #endif // CSTL_HEADERS_H
