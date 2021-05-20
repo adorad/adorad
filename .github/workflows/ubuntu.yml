@@ -11,7 +11,7 @@ on:
       - master
 
 jobs:
-  Clang:
+  GCC:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -41,7 +41,7 @@ jobs:
         run: cd build/test ; ls; ctest -j 10 -C ${{ matrix.build_type }} --output-on-failure
 
 
-  GCC:
+  Clang:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false

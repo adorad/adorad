@@ -16,6 +16,7 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 
 #include <stdlib.h>
 
+#include <Hazel/Core/Misc.h>
 #include <Hazel/Core/Types.h> 
 #include <Hazel/Compiler/Lexer/Location.h>
 
@@ -151,7 +152,7 @@ TOKENKIND(TOK___SEPARATORS_BEGIN, ""), \
     TOKENKIND(BACKSLASH, "\\"),  \
 TOKENKIND(TOK___SEPARATORS_END, ""), \
 \
-    /* Keywords */ \
+    /* Keywords */                    \
 TOKENKIND(TOK___KEYWORDS_BEGIN, ""),  \
     TOKENKIND(KEYWORD,    ""), /* Token Classification*/ \
     TOKENKIND(ANY,       "any"),      \
@@ -209,7 +210,7 @@ TOKENKIND(TOK___KEYWORDS_BEGIN, ""),  \
     TOKENKIND(WHILE,     "while"),    \
     TOKENKIND(UNION,     "union"),    \
     TOKENKIND(USE,       "use"), /* aliasing purposes */ \
-TOKENKIND(TOK___KEYWORDS_END, ""), \
+TOKENKIND(TOK___KEYWORDS_END, ""),    \
 \
     TOKENKIND(TOK_COUNT, "")
 
