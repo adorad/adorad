@@ -75,6 +75,8 @@ endif(NOT CMAKE_BUILD_TYPE)
 
 # ------ A List of Compiler Flags ------
 # A (more or less comprehensive) list is here: https://caiorss.github.io/C-Cpp-Notes/compiler-flags-options.html
+message("--------- [INFO] CMAKE_C_COMPILER_ID               == ${CMAKE_C_COMPILER_ID}")
+message("--------- [INFO] CMAKE_C_COMPILER_FRONTEND_VARIANT == ${CMAKE_C_COMPILER_FRONTEND_VARIANT}")
 if(NOT MSVC)
     if("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
         string(APPEND CMAKE_C_FLAGS " -std=gnu11")
@@ -87,7 +89,12 @@ if(NOT MSVC)
     endif()
 
     if (NOT CMAKE_C_COMPILER_ID STREQUAL "Clang")
+        # Clang doesn't have either of these flags
         string(APPEND CMAKE_C_FLAGS " -fPIC")
+        string(APPEND CMAKE_C_FLAGS " -Wno-discarded-qualifiers")
+        string(APPEND CMAKE_C_FLAGS " -Wno-multistatement-macros")
+    else() # For Clang
+        string(APPEND CMAKE_C_FLAGS " -Wno-ignored-qualifiers")
     endif()
 
     string(APPEND CMAKE_C_FLAGS " -Wall")
@@ -99,8 +106,6 @@ if(NOT MSVC)
     string(APPEND CMAKE_C_FLAGS " -Wno-unused-function")
     string(APPEND CMAKE_C_FLAGS " -Wno-unused-result")
     string(APPEND CMAKE_C_FLAGS " -Wno-unused-local-typedefs")
-    string(APPEND CMAKE_C_FLAGS " -Wno-discarded-qualifiers")
-    string(APPEND CMAKE_C_FLAGS " -Wno-multistatement-macros")
     string(APPEND CMAKE_C_FLAGS " -Wno-strict-overflow")
     string(APPEND CMAKE_C_FLAGS " -Wno-strict-aliasing")
     string(APPEND CMAKE_C_FLAGS " -Werror=return-type")
@@ -132,19 +137,21 @@ else()
     endif()
     string(APPEND CMAKE_C_FLAGS " /Wall")
     # string(APPEND CMAKE_C_FLAGS " /WX")  # Treats Linker Warnings as Errors
-    string(APPEND CMAKE_C_FLAGS " /wd4514")
-    string(APPEND CMAKE_C_FLAGS " /wd5045")
 
     # Ignore some MSVC warnings
     # 1. C4061: enumerator in switch os enum is not explicitly handled by a case label
     # 2. C4100: argv & argc: unreferenced formal parameter
-    # 3. C4710: printf: function not inlined
-    # 4: C4711: function selected for automatic inline expansion
-    # 5. C5105: macro expansion producing `defined` has undefined behaviour
+    # 3. C4127: 'conditional expression is constant'
+    # 4. C4514: 'function' : unreferenced inline function has been removed
+    # 5. C4710: printf: function not inlined
+    # 6: C4711: function selected for automatic inline expansion
+    # 7. C5105: macro expansion producing `defined` has undefined behaviour
     # NOTE: For some reason (maybe I'm looking at this the wrong way, `/IGNORE` does not seems to work!!)
     # string(APPEND CMAKE_C_FLAGS " /IGNORE:4061,4100,4710,4711")
     string(APPEND CMAKE_C_FLAGS " /wd4061")
     string(APPEND CMAKE_C_FLAGS " /wd4100")
+    string(APPEND CMAKE_C_FLAGS " /wd4127")
+    string(APPEND CMAKE_C_FLAGS " /wd4514")
     string(APPEND CMAKE_C_FLAGS " /wd4710")
     string(APPEND CMAKE_C_FLAGS " /wd4711")
     string(APPEND CMAKE_C_FLAGS " /wd5105")
