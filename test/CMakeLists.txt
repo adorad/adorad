@@ -35,12 +35,12 @@ file(GLOB
 # Note: This only happens during the CI phase and _should not_ run whenever an external library needs to 
 # link to Hazel
 file(GLOB HAZEL_INTERNALTEST_SOURCES
-    ../HazelInternalTests/Compiler/IO/*.c
-    ../HazelInternalTests/Compiler/Lexer/*.c
-    ../HazelInternalTests/Compiler/Tokens/*.c
-    ../HazelInternalTests/Compiler/Types/*.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../HazelInternalTests/Compiler/IO/*.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../HazelInternalTests/Compiler/Lexer/*.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../HazelInternalTests/Compiler/Tokens/*.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../HazelInternalTests/Compiler/Types/*.c
 )
-file(GLOB_RECURSE HAZEL_INTERNALTEST_HEADERS ../HazelInternalTests/*.h)
+file(GLOB_RECURSE HAZEL_INTERNALTEST_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/../HazelInternalTests/*.h)
 
 message("--------- [INFO] Building the Static Library for HazelInternalTests ")
 add_library(libHazelInternalTests STATIC ${HAZEL_INTERNALTEST_SOURCES} ${HAZEL_INTERNALTEST_HEADERS})
@@ -60,7 +60,7 @@ target_include_directories(
 
 # Build the executable
 # main.c (or whatever demo file you want to link against)
-add_executable(HazelInternalStatic ../HazelInternalTests/main.c)
+add_executable(HazelInternalStatic ${CMAKE_CURRENT_SOURCE_DIR}/../HazelInternalTests/main.c)
 target_link_libraries(HazelInternalStatic libHazelInternalTests)
 
 # Installation
