@@ -15,10 +15,6 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #ifndef CSTL_OS_H
 #define CSTL_OS_H
 
-#ifdef __cplusplus
-namespace Hazel {
-#endif
-
 
 // Operating Systems ==========================================
 // CSTL_OS_...
@@ -110,19 +106,5 @@ namespace Hazel {
     #define CSTL_OS_SEP_CHAR    '/'
 #endif // CSTL_OS_WINDOWS
 
-
-// Terminal Colours
-typedef enum TerminalColours {
-    CSTL_TERMCOLOUR_RED_,
-    CSTL_TERMCOLOUR_GREEN_,
-    CSTL_TERMCOLOUR_CYAN_,
-    CSTL_TERMCOLOUR_WHITE_,
-    CSTL_TERMCOLOUR_BOLD_,
-    CSTL_TERMCOLOUR_RESET_,
-} TerminalColours;
-
-#ifdef __cplusplus
-} // namespace Hazel
-#endif
 
 #endif // CSTL_OS_H

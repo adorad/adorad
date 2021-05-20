@@ -49,7 +49,9 @@ namespace Hazel {
             #define WIN32_MEAN_AND_LEAN 1
             #define VC_EXTRALEAN        1
         #endif
-        // #include <windows.h>
+        // #pragma warning(push, 0)
+        //     #include <Windows.h>
+        // #pragma warning(pop)
         #undef NOMINMAX
 
         #if !defined(CSTL_WINDOWS_H_INCLUDED)

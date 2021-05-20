@@ -14,10 +14,6 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #ifndef CSTL_MISCELLANEOUS_H
 #define CSTL_MISCELLANEOUS_H
 
-#ifdef __cplusplus
-namespace Hazel {
-#endif
-
 
 // Inline 
 #ifdef __cplusplus
@@ -132,9 +128,5 @@ namespace Hazel {
     #define CSTL_INTERNAL     static // Internal Linkage
     #define CSTL_LOCALPERSIST static // Local Persisting Variables  
 #endif 
-
-#ifdef __cplusplus
-} // namespace Hazel
-#endif
 
 #endif // CSTL_MISCELLANEOUS_H

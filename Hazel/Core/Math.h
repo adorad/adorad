@@ -5,7 +5,6 @@
 #include <Hazel/Core/Types.h>
 
 #ifdef __cplusplus
-namespace cstl {
 extern "C" {
 #endif // __cplusplus
 
@@ -201,7 +200,4 @@ Float32 cstl_log2(Float32 x){
 
 */ 
 
-#ifdef __cplusplus
-} // namespace cstl
-#endif // __cplusplus
 #endif // CSTL_MATH_H
