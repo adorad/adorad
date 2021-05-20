@@ -92,25 +92,25 @@ Float32 cstl_log2(Float32 x);
 
 
 Float32 cstl_sin(Float32 x) {
-    static Float32 const x0 = +1.91059300966915117e-31f;
-    static Float32 const x1 = +1.00086760103908896f;
-    static Float32 const x2 = -1.21276126894734565e-2f;
-    static Float32 const x3 = -1.38078780785773762e-1f;
-    static Float32 const x4 = -2.67353392911981221e-2f;
-    static Float32 const x5 = +2.08026600266304389e-2f;
-    static Float32 const x6 = -3.03996055049204407e-3f;
-    static Float32 const x7 = +1.38235642404333740e-4f;
+    CSTL_STATIC Float32 const x0 = +1.91059300966915117e-31f;
+    CSTL_STATIC Float32 const x1 = +1.00086760103908896f;
+    CSTL_STATIC Float32 const x2 = -1.21276126894734565e-2f;
+    CSTL_STATIC Float32 const x3 = -1.38078780785773762e-1f;
+    CSTL_STATIC Float32 const x4 = -2.67353392911981221e-2f;
+    CSTL_STATIC Float32 const x5 = +2.08026600266304389e-2f;
+    CSTL_STATIC Float32 const x6 = -3.03996055049204407e-3f;
+    CSTL_STATIC Float32 const x7 = +1.38235642404333740e-4f;
     return x0 + x*(x1 + x*(x2 + x*(x3 + x*(x4 + x*(x5 + x*(x6 + x*x7))))));
 }
 Float32 cstl_cos(Float32 x) {
-    static Float32 const x0 = +1.00238601909309722f;
-    static Float32 const x1 = -3.81919947353040024e-2f;
-    static Float32 const x2 = -3.94382342128062756e-1f;
-    static Float32 const x3 = -1.18134036025221444e-1f;
-    static Float32 const x4 = +1.07123798512170878e-1f;
-    static Float32 const x5 = -1.86637164165180873e-2f;
-    static Float32 const x6 = +9.90140908664079833e-4f;
-    static Float32 const x7 = -5.23022132118824778e-14f;
+    CSTL_STATIC Float32 const x0 = +1.00238601909309722f;
+    CSTL_STATIC Float32 const x1 = -3.81919947353040024e-2f;
+    CSTL_STATIC Float32 const x2 = -3.94382342128062756e-1f;
+    CSTL_STATIC Float32 const x3 = -1.18134036025221444e-1f;
+    CSTL_STATIC Float32 const x4 = +1.07123798512170878e-1f;
+    CSTL_STATIC Float32 const x5 = -1.86637164165180873e-2f;
+    CSTL_STATIC Float32 const x6 = +9.90140908664079833e-4f;
+    CSTL_STATIC Float32 const x7 = -5.23022132118824778e-14f;
     return x0 + x*(x1 + x*(x2 + x*(x3 + x*(x4 + x*(x5 + x*(x6 + x*x7))))));
 }
 

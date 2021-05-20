@@ -19,16 +19,6 @@ namespace Hazel {
 #endif
 
 
-// Defines 
-#ifndef CSTL_DEF 
-    #ifdef CSTL_EXTERN
-        #define CSTL_DEF extern
-    #else 
-        #define CSTL_DEF static
-    #endif 
-#endif // CSTL_DEF
-
-
 // Inline 
 #ifdef __cplusplus
     #if defined(_MSC_VER) && _MSC_VER <= 1800 
@@ -129,6 +119,14 @@ namespace Hazel {
 
 // Statics!
 // static means 3-4 different things in C/C++!!
+#ifndef CSTL_EXTERN
+    #define CSTL_EXTERN     extern
+#endif 
+
+#ifndef CSTL_STATIC
+    #define CSTL_STATIC     static
+#endif
+
 #ifndef CSTL_GLOBAL
     #define CSTL_GLOBAL       static // Global Variables
     #define CSTL_INTERNAL     static // Internal Linkage

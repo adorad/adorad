@@ -25,45 +25,45 @@ namespace Hazel {
 
 
 // Char Things ==========================================
-static inline bool isUpper(char c) { return c>='A' && c<='Z'; }
-static inline bool isLower(char c) { return c>='a' && c<='z'; }
-static inline bool isDigit(char c) { return c >= '0' && c <= '9'; }
-static inline bool isAlpha(char c) { return isUpper(c) || isLower(c); }
-static inline bool isAlphanumeric(char c) { return isAlpha(c) || isDigit(c); }
+CSTL_STATIC CSTL_INLINE bool isUpper(char c) { return c>='A' && c<='Z'; }
+CSTL_STATIC CSTL_INLINE bool isLower(char c) { return c>='a' && c<='z'; }
+CSTL_STATIC CSTL_INLINE bool isDigit(char c) { return c >= '0' && c <= '9'; }
+CSTL_STATIC CSTL_INLINE bool isAlpha(char c) { return isUpper(c) || isLower(c); }
+CSTL_STATIC CSTL_INLINE bool isAlphanumeric(char c) { return isAlpha(c) || isDigit(c); }
 
-static inline char toLower(char c) {
+CSTL_STATIC CSTL_INLINE char toLower(char c) {
     if(c >= 'A' && c <= 'Z') 
         return 'a' + (c - 'A');
     return c;
 }
 
-static inline char toUpper(char c) {
+CSTL_STATIC CSTL_INLINE char toUpper(char c) {
     if(c >= 'a' && c <= 'z') 
         return 'A' + (c - 'a');
     return c;
 }
 
-static inline bool isWhitespace(char c) {
+CSTL_STATIC CSTL_INLINE bool isWhitespace(char c) {
     if(c == ' '  || c == '\t' || c == '\n' || c == '\r' || c == '\f' || c == '\v')
         return true; 
     return false;
 }
 
-static inline bool isLetter(char c) {
+CSTL_STATIC CSTL_INLINE bool isLetter(char c) {
     return  (c >= 'a' && c <= 'z') || 
             (c >= 'A' && c <= 'Z') || 
             (c == '_') ;
 }
 
-static inline bool isHexDigit(char c) {
+CSTL_STATIC CSTL_INLINE bool isHexDigit(char c) {
     return isDigit(c)                   ||
            CSTL_IS_BETWEEN(c, 'a', 'f') ||
            CSTL_IS_BETWEEN(c, 'A', 'F'); 
 }
 
-static inline Int32 digitToInt(char c) { return isDigit(c) ? c-'0' : c-'W'; }
+CSTL_STATIC CSTL_INLINE Int32 digitToInt(char c) { return isDigit(c) ? c-'0' : c-'W'; }
 
-static inline Int32 hexDigitToInt(char c) {
+CSTL_STATIC CSTL_INLINE Int32 hexDigitToInt(char c) {
     if(isDigit(c))
         return digitToInt(c);
 
@@ -76,7 +76,7 @@ static inline Int32 hexDigitToInt(char c) {
     return -1; 
 }
 
-static inline void strToLower(char* str) {
+CSTL_STATIC CSTL_INLINE void strToLower(char* str) {
     if(!str) return; 
     while(*str) {
         *str = toLower(*str);
@@ -84,7 +84,7 @@ static inline void strToLower(char* str) {
     }
 }
 
-static inline void strToUpper(char* str) {
+CSTL_STATIC CSTL_INLINE void strToUpper(char* str) {
     if(!str) return; 
     while(*str) {
         *str = toUpper(*str);

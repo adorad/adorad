@@ -50,14 +50,14 @@ Lexer* lexer_init(const char* buffer);
 char lexer_next(Lexer* lexer);
 // Returns the previous `n` elements in the Lexical buffer.
 // This is non-destructive -- the buffer offset is not updated.
-static inline char lexer_prev(Lexer* lexer, UInt32 n);
+CSTL_STATIC CSTL_INLINE char lexer_prev(Lexer* lexer, UInt32 n);
 // "Look ahead" `n` characters in the Lexical buffer.
 // It _does not_ increment the buffer offset.
-static inline char lexer_peek(Lexer* lexer, UInt32 n);
+CSTL_STATIC CSTL_INLINE char lexer_peek(Lexer* lexer, UInt32 n);
 // lexer_peek_curr() returns the current element in the Lexical Buffer.
-static inline char lexer_peek_curr(Lexer* lexer);
+CSTL_STATIC CSTL_INLINE char lexer_peek_curr(Lexer* lexer);
 
-static inline bool lexer_is_EOF(Lexer* lexer);
+CSTL_STATIC CSTL_INLINE bool lexer_is_EOF(Lexer* lexer);
 
 #ifndef LEXER_MACROS_
 #define LEXER_MACROS_
@@ -126,15 +126,15 @@ typedef enum {
 
 TokenKind lexer_error(Lexer* lexer, const char* message);
 
-static inline bool isBuiltinOperator(char c);
-static inline bool isIdentifier(char c);
-static inline bool isNewLine(Lexer* lexer, char c);
-static inline bool isSlashComment(char c1, char c2);
-static inline bool isHashComment(char c);
-static inline bool isComment(char c1, char c2);
-static inline bool isSemicolon(char c);
-static inline bool isString(char c);
-static inline bool isMacro(char c);
+CSTL_STATIC CSTL_INLINE bool isBuiltinOperator(char c);
+CSTL_STATIC CSTL_INLINE bool isIdentifier(char c);
+CSTL_STATIC CSTL_INLINE bool isNewLine(Lexer* lexer, char c);
+CSTL_STATIC CSTL_INLINE bool isSlashComment(char c1, char c2);
+CSTL_STATIC CSTL_INLINE bool isHashComment(char c);
+CSTL_STATIC CSTL_INLINE bool isComment(char c1, char c2);
+CSTL_STATIC CSTL_INLINE bool isSemicolon(char c);
+CSTL_STATIC CSTL_INLINE bool isString(char c);
+CSTL_STATIC CSTL_INLINE bool isMacro(char c);
 
 TokenKind lexer_lex_comment(Lexer* lexer);
 TokenKind lexer_lex_string(Lexer* lexer); 

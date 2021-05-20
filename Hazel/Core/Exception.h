@@ -121,7 +121,7 @@ namespace Hazel {
 // namespace {
 
 // // std::function<string(void)>* GetFetchStackTrace() {
-// //     static std::function<string(void)> func = []() {
+// //     CSTL_STATIC std::function<string(void)> func = []() {
 // //         return get_backtrace(/*frames_to_skip=*/1);
 // //     };
 // //     return &func;

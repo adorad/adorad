@@ -241,37 +241,37 @@ const char* value(Token token);
 void token_reset_token(Token* token);
 
 // Returns the token corresponding to a single character
-static TokenKind token_onechar(char c);
+CSTL_STATIC TokenKind token_onechar(char c);
 // Returns the token corresponding to two characters
-static TokenKind token_twochar(char c1, char c2);
+CSTL_STATIC TokenKind token_twochar(char c1, char c2);
 // Returns the token corresponding to three characters
-static TokenKind token_threechar(char c1, char c2, char c3);
+CSTL_STATIC TokenKind token_threechar(char c1, char c2, char c3);
 
 const char* token_toString(Token* token);
-static inline bool token_isJumpStatement(Token* token);
-static inline bool token_isLoopStatement(Token* token);
-static inline bool token_isFlowStatement(Token* token);
-static inline bool token_isMatchStatement(Token* token);
-static inline bool token_isExpressionStatement(Token* token);
-static inline bool token_isPrimaryExpressionStatement(Token* token);
-static inline bool token_isDeclStatement(Token* token);
-static inline bool token_isSpecial(Token* token);
-static inline bool token_isLiteral(Token* token);
-static inline bool token_isKeyword(Token* token);
-static inline bool token_isOperator(Token* token);
-static inline bool token_isComparisonOperator(Token* token);
-static inline bool token_isAssignmentOperator(Token* token);
-static inline bool token_isDelimiter(Token* token);
-static inline bool token_isArrow(Token* token);
-static inline bool token_isBitwise(Token* token); 
-static inline bool token_isSeparator(Token* token);
-static inline bool token_isIdentifier(Token* token);
-static inline bool token_isEOF(Token* token);
-static inline bool token_isNULL(Token* token);
-static inline bool token_isIllegal(Token* token);
-static inline bool token_isMacro(Token* token);
-static inline bool token_isImport(Token* token);
-static inline bool token_isInclude(Token* token);
-static inline bool token_isSemiColon(Token* token);
+CSTL_STATIC CSTL_INLINE bool token_isJumpStatement(Token* token);
+CSTL_STATIC CSTL_INLINE bool token_isLoopStatement(Token* token);
+CSTL_STATIC CSTL_INLINE bool token_isFlowStatement(Token* token);
+CSTL_STATIC CSTL_INLINE bool token_isMatchStatement(Token* token);
+CSTL_STATIC CSTL_INLINE bool token_isExpressionStatement(Token* token);
+CSTL_STATIC CSTL_INLINE bool token_isPrimaryExpressionStatement(Token* token);
+CSTL_STATIC CSTL_INLINE bool token_isDeclStatement(Token* token);
+CSTL_STATIC CSTL_INLINE bool token_isSpecial(Token* token);
+CSTL_STATIC CSTL_INLINE bool token_isLiteral(Token* token);
+CSTL_STATIC CSTL_INLINE bool token_isKeyword(Token* token);
+CSTL_STATIC CSTL_INLINE bool token_isOperator(Token* token);
+CSTL_STATIC CSTL_INLINE bool token_isComparisonOperator(Token* token);
+CSTL_STATIC CSTL_INLINE bool token_isAssignmentOperator(Token* token);
+CSTL_STATIC CSTL_INLINE bool token_isDelimiter(Token* token);
+CSTL_STATIC CSTL_INLINE bool token_isArrow(Token* token);
+CSTL_STATIC CSTL_INLINE bool token_isBitwise(Token* token); 
+CSTL_STATIC CSTL_INLINE bool token_isSeparator(Token* token);
+CSTL_STATIC CSTL_INLINE bool token_isIdentifier(Token* token);
+CSTL_STATIC CSTL_INLINE bool token_isEOF(Token* token);
+CSTL_STATIC CSTL_INLINE bool token_isNULL(Token* token);
+CSTL_STATIC CSTL_INLINE bool token_isIllegal(Token* token);
+CSTL_STATIC CSTL_INLINE bool token_isMacro(Token* token);
+CSTL_STATIC CSTL_INLINE bool token_isImport(Token* token);
+CSTL_STATIC CSTL_INLINE bool token_isInclude(Token* token);
+CSTL_STATIC CSTL_INLINE bool token_isSemiColon(Token* token);
 
 #endif // _HAZEL_TOKEN_H
