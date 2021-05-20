@@ -15,6 +15,7 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #define CSTL_TYPES_H
 
 #include <Hazel/Core/Debug.h>
+#include <Hazel/Core/Compilers.h>
 
 // Base Types (similar to the Types in the Hazel Language) ==========================================
 #if defined(CSTL_COMPILER_MSVC)
