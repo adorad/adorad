@@ -16,6 +16,7 @@ test.py
 hazeloutput.txt
 hazeltestoutput.txt
 HazelCommentDesign.txt
+Makefile
 
 # PyPi 
 dist/*
