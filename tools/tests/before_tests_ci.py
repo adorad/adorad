@@ -16,6 +16,12 @@ SOURCEROOT = os.path.join(ROOT, 'Hazel')
 # The `HazelInternalTests` folder will be created by this script
 DESTINATIONROOT = os.path.join(ROOT, 'HazelInternalTests')
 
+# Acceptable directories to remove external linkage
+# We cannot remove it globally as it affects CSTL as well - and results in the `multiple definitions` error
+ACCEPTABLE_REMOVEABLE_DIRS = (
+    'Lexer', 'Tokens'
+)
+
 def main():
     # List of all folders that this script has created
     MKDIRS = [] 
@@ -40,6 +46,9 @@ def main():
 
             filepath = os.path.join(root, file)
             destpath = os.path.join(destroot, file)
+            if(file.endswith('Hazel.h')):
+                destpath = os.path.join(destroot, 'HazelInternalTests.h')
+
             # print(filepath)
             print(f"[INFO] Copying {destpath}")
 
@@ -47,16 +56,22 @@ def main():
             shutil.copy(filepath, destpath)
             copied += 1
 
-            # Replace static, inline, extern ... 
+            # Replace static, inline, extern ...
+            
             with open(destpath) as f:
                 s = f.read()
 
-                s = s.replace('static inline ', '')
-                s = s.replace('static ', '')
-                s = s.replace('inline ', '')
-                s = s.replace('extern ', '')
-                s = s.replace('"C" {', 'extern "C" {')
+                s = s.replace("Hazel", 'HazelInternalTests')
+
+                if root.endswith(ACCEPTABLE_REMOVEABLE_DIRS):
+                    s = s.replace('static inline ', '')
+                    s = s.replace('static ', '')
+                    s = s.replace('inline ', '')
+                    s = s.replace('extern ', '')
+                    s = s.replace('"C" {', 'extern "C" {')
+
                 s = s.replace('// "C"', '// extern "C"')
+                
             f.close()
 
             # Write the changes back to disk
