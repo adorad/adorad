@@ -35,34 +35,39 @@ Lexer* lexer_init(const char* buffer) {
     return lexer;
 }
 
+static void lexer_print_stats(Lexer* lexer) {
+    printf("    Char: %c\n", lexer->buffer[lexer->offset]);
+    printf("    Offset: %d\n", lexer->offset);
+    printf("    Lineno: %d\n", lexer->location.lineno);
+    printf("    Colno: %d\n", lexer->location.colno);
+}
+
 // Returns the curent character in the Lexical Buffer and advances to the next element
-// It does this by incrementing the buffer offset
-// Handles new line characters
-// inline char lexer_next(Lexer* lexer) {
-char lexer_next(Lexer* lexer) {
+// It does this by incrementing the buffer offset.
+// This will ideally _never_ return newline characters
+static inline char lexer_next(Lexer* lexer) {
     if(lexer->offset + 1 > lexer->buffer_capacity) {
         return nullchar; 
     } else {
-        char c = lexer->buffer[lexer->offset++];
-        // If `c` and the next few characters are newlines, skip over them
-        // The function must return a pure character (not newline, etc)
-        // for(;;) {
-        //     if(isNewLine(lexer, c)) {
-        //         LEXER_RESET_COLNO;
-        //         LEXER_INCREMENT_OFFSET;
-        //     } else {
-        //         L;
-        //         break;
-        //     }
-        // }
+        // Get current character
+        char c = lexer->buffer[lexer->offset];
+
+        // If current character is a newline, are there more newlines?
+        // If so, skip them
+        while(c == '\n') {
+            c = lexer->buffer[++lexer->offset];
+            LEXER_RESET_COLNO;
+        }
+        // When newlines are hit, colno will always have to be 
         LEXER_INCREMENT_COLNO;
+        // Return the previous char
         return (char)lexer->buffer[lexer->offset];
     }
 }
 
 // Advance `n` characters in the Lexical Buffer
 // inline char lexer_next_n(Lexer* lexer, UInt32 n) {
-char lexer_next_n(Lexer* lexer, UInt32 n) {
+static inline char lexer_next_n(Lexer* lexer, UInt32 n) {
     if(lexer->offset + n > lexer->buffer_capacity) {
         return nullchar;
     } else {

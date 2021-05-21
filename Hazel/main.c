@@ -10,18 +10,20 @@ int main(int argc, const char* const argv[]) {
     // }
 
     // if(strcmp(argv[1], "compile") == 0) {
-    Lexer* lexer = calloc(1, sizeof(Lexer)); 
-	char* buffer = readFile("test/LexerDemo.hzl");
-	lexer = lexer_init(buffer); 
+	// char* buffer = readFile("test/LexerDemo.hzl");
+    char* buffer = "abcdefghijklmnopqrstuvwxyz";
+	Lexer* lexer = lexer_init(buffer); 
     printf("Lexer buffer: \n%s\n", lexer->buffer);
     printf("--------------\n");
     
-    // TokenKind t = lexer_lex_comment(lexer);
+    char ch = lexer_next(lexer);
+    printf("FIRST: %c\n", ch);
+    ch = lexer_next(lexer);
+    printf("Character received: %c\n", ch);
+    lexer_print_stats(lexer);
 
     // Delete when done 
     free(lexer); 
-    free(buffer);
 
-    // printf("Aren't we supposed to work? \n");
     return 0; 
 }
