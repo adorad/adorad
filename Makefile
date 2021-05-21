@@ -48,6 +48,7 @@ CC = gcc
 
 
 all :
+	$(MAKE) internaltest
 	$(CC) $(objects) $(flags) -o $(exec) -I .
 	echo Compiled Hazel!
 	echo ----------------------------------------
