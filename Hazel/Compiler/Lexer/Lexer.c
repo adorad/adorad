@@ -38,7 +38,7 @@ Lexer* lexer_init(const char* buffer) {
 // Returns the curent character in the Lexical Buffer and advances to the next element
 // It does this by incrementing the buffer offset
 // Handles new line characters
-// CSTL_INLINE char lexer_next(Lexer* lexer) {
+// inline char lexer_next(Lexer* lexer) {
 char lexer_next(Lexer* lexer) {
     if(lexer->offset + 1 > lexer->buffer_capacity) {
         return nullchar; 
@@ -61,7 +61,7 @@ char lexer_next(Lexer* lexer) {
 }
 
 // Advance `n` characters in the Lexical Buffer
-// CSTL_INLINE char lexer_next_n(Lexer* lexer, UInt32 n) {
+// inline char lexer_next_n(Lexer* lexer, UInt32 n) {
 char lexer_next_n(Lexer* lexer, UInt32 n) {
     if(lexer->offset + n > lexer->buffer_capacity) {
         return nullchar;

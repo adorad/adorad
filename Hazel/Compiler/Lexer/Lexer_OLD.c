@@ -41,13 +41,13 @@
 
 // // Returns the current character in the Lexical Buffer and advances to the next element.
 // // It does this by incrementing the buffer offset.
-// CSTL_INLINE char lexer_next(Lexer* lexer) {
+// inline char lexer_next(Lexer* lexer) {
 //     LEXER_INCREMENT_COLNO;
 //     return (char)lexer->buffer[lexer->offset++];
 // }
 
 // // Advance `n` elements in the Lexical Buffer
-// // CSTL_INLINE char lexer_next_n(Lexer* lexer, UInt32 n) {
+// // inline char lexer_next_n(Lexer* lexer, UInt32 n) {
 // //     int i = 0;
 // //     while(i!=n) 
 // //         LEXER_INCREMENT_COLNO;
@@ -61,7 +61,7 @@
 
 // // Returns the previous `n` elements in the Lexical buffer.
 // // This is non-destructive -- the buffer offset is not updated.
-// CSTL_STATIC CSTL_INLINE char lexer_prev(Lexer* lexer, UInt32 n) {
+// static inline char lexer_prev(Lexer* lexer, UInt32 n) {
 //     if(lexer->offset - n >= 0) {
 //         return (char)lexer->buffer[lexer->offset - n];
 //     } else  {
@@ -71,7 +71,7 @@
 
 // // "Look ahead" `n` characters in the Lexical buffer.
 // // It _does not_ increment the buffer offset.
-// CSTL_INLINE char lexer_peek(Lexer* lexer, UInt32 n) {
+// inline char lexer_peek(Lexer* lexer, UInt32 n) {
 //     if(lexer->offset + n <= lexer->buffer_capacity) {
 //         return (char)lexer->buffer[lexer->offset + n];
 //     } else {
@@ -80,21 +80,21 @@
 // }
 
 // // lexer_peek_curr() returns the current element in the Lexical Buffer
-// CSTL_INLINE char lexer_peek_curr(Lexer* lexer) {
+// inline char lexer_peek_curr(Lexer* lexer) {
 //     return (char)lexer->buffer[lexer->offset];
 // }
 
 // // Check if the current Lexer state is at EOF
-// CSTL_INLINE bool lexer_is_EOF(Lexer* lexer) { return lexer->offset >= lexer->buffer_capacity; }
+// inline bool lexer_is_EOF(Lexer* lexer) { return lexer->offset >= lexer->buffer_capacity; }
 
 
 // // Finalize a Token
-// CSTL_INLINE void lexer_finalize_token(Lexer* lexer, TokenKind __tok) {
+// inline void lexer_finalize_token(Lexer* lexer, TokenKind __tok) {
 // 	lexer->token.type = __tok; 
 // 	lexer->token.location.fname = lexer->location.fname;
 // }
 
-// CSTL_STATIC CSTL_INLINE bool isNewLine(Lexer* lexer, char c) {
+// static inline bool isNewLine(Lexer* lexer, char c) {
 //     // Carriage Return: U+000D (UTF-8 in hex: 0D)
 //     // Line Feed: U+000A (UTF-8 in hex: 0A)
 //     // CR+LF: CR (U+000D) followed by LF (U+000A) (UTF-8 in hex: 0D0A)
@@ -113,15 +113,15 @@
 //     return false; 
 // }
 
-// CSTL_STATIC CSTL_INLINE bool isComment(char c1, char c2) { return isSlashComment(c1, c2) || c1 == '#'  || c2 == '#'; }
-// CSTL_STATIC CSTL_INLINE bool isSlashComment(char c1, char c2) { return (c1 == '/' && (c2 == '*' || c2 == '/')); }
-// CSTL_STATIC CSTL_INLINE bool isString(char c) { return (c == '"' || c == '\'');}
+// static inline bool isComment(char c1, char c2) { return isSlashComment(c1, c2) || c1 == '#'  || c2 == '#'; }
+// static inline bool isSlashComment(char c1, char c2) { return (c1 == '/' && (c2 == '*' || c2 == '/')); }
+// static inline bool isString(char c) { return (c == '"' || c == '\'');}
 // // Returns true if [c] is the beginning of a Macro (In Hazel, macros begin with the `@` sign)
-// CSTL_STATIC CSTL_INLINE bool isMacro(char c) { return c == '@';}
+// static inline bool isMacro(char c) { return c == '@';}
 // // Returns true if [c] is a valid (non-initial) identifier
-// CSTL_STATIC CSTL_INLINE bool isIdentifier(char c) { return isAlpha(c) || isDigit(c) || c == '_'; }
+// static inline bool isIdentifier(char c) { return isAlpha(c) || isDigit(c) || c == '_'; }
 
-// CSTL_STATIC CSTL_INLINE bool isBuiltinOperator(char c) {
+// static inline bool isBuiltinOperator(char c) {
 //     // Parenthesis
 //     // { } [ ] ( )
 //     // Punctuation

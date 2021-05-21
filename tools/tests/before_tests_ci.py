@@ -51,9 +51,9 @@ def main():
             with open(destpath) as f:
                 s = f.read()
 
-                s = s.replace('CSTL_STATIC CSTL_INLINE ', '')
-                s = s.replace('CSTL_STATIC ', '')
-                s = s.replace('CSTL_INLINE ', '')
+                s = s.replace('static inline ', '')
+                s = s.replace('static ', '')
+                s = s.replace('inline ', '')
                 s = s.replace('extern ', '')
                 s = s.replace('"C" {', 'extern "C" {')
                 s = s.replace('// "C"', '// extern "C"')

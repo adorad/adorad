@@ -44,7 +44,7 @@ void token_reset_token(Token* token) {
 }
 
 // Returns the token corresponding to a single character
-CSTL_STATIC TokenKind token_onechar(char c) {
+static TokenKind token_onechar(char c) {
     switch(c) {
         // Operators
         case '+': return PLUS;
@@ -85,7 +85,7 @@ CSTL_STATIC TokenKind token_onechar(char c) {
 }
 
 // Returns the token corresponding to two characters
-CSTL_STATIC TokenKind token_twochar(char c1, char c2) {
+static TokenKind token_twochar(char c1, char c2) {
     switch(c1) {
         case '+':
             if(c2 == '+') return PLUS_PLUS;
@@ -144,7 +144,7 @@ CSTL_STATIC TokenKind token_twochar(char c1, char c2) {
 }
 
 // Returns the token corresponding to three characters
-CSTL_STATIC TokenKind token_threechar(char c1, char c2, char c3) {
+static TokenKind token_threechar(char c1, char c2, char c3) {
     switch(c1) {
         case '<':
             if(c2 == '<' && c3 == '=') return LBITSHIFT_EQUALS;
@@ -323,31 +323,31 @@ const char* token_toString(Token* token) {
     }
 }
 
-CSTL_INLINE bool token_isJumpStatement(Token* token) {
+inline bool token_isJumpStatement(Token* token) {
 	// Break (BREAK)
 	// Continue (CONTINUE)
 	// Return (RETURN)
 	return (token->type == BREAK || token->type == CONTINUE || token->type == RETURN); 
 } 
 
-CSTL_INLINE bool token_isLoopStatement(Token* token) {
+inline bool token_isLoopStatement(Token* token) {
 	// While (WHILE)
 	// For (FOR)
 	return (token->type == WHILE || token->type == FOR); 
 } 
 
-CSTL_INLINE bool token_isFlowStatement(Token* token) {
+inline bool token_isFlowStatement(Token* token) {
 	// If 
 	// Match 
 	return (token->type == IF || token->type == MATCH); 
 } 
 
-CSTL_INLINE bool token_isMatchStatement(Token* token) {
+inline bool token_isMatchStatement(Token* token) {
 	// Declarations used in match-case 
 	return (token->type == MATCH || token->type == CASE || token->type == DEFAULT); 
 } 
 
-CSTL_INLINE bool token_isExpressionStatement(Token* token) {
+inline bool token_isExpressionStatement(Token* token) {
 	// Postfix Operations: isPrimaryExpressionStatement or module (for files)
 	// Unary Ops: PLUS, MINUS, EXCLAMATION, NOT
 	// RAISE 
@@ -355,9 +355,9 @@ CSTL_INLINE bool token_isExpressionStatement(Token* token) {
             token->type == MINUS || token->type == EXCLAMATION || token->type == NOT || token->type == RAISE); 
 } 
 
-CSTL_INLINE bool token_isPrimaryExpressionStatement(Token* token) {
+inline bool token_isPrimaryExpressionStatement(Token* token) {
 	// Literals (numbers, Strings)
-	// CSTL_INLINE booletoken_ans (TRUE, FALSE)
+	// inline booletoken_ans (TRUE, FALSE)
 	// IDENTIFIER
 	// 'null' 
 	// FUNC
@@ -369,7 +369,7 @@ CSTL_INLINE bool token_isPrimaryExpressionStatement(Token* token) {
 			token->type == RPAREN); 
 } 
 
-CSTL_INLINE bool token_isDeclStatement(Token* token) {
+inline bool token_isDeclStatement(Token* token) {
 	// Variable Declaration (with types + "Any") 
 	// Function Declaration (FUNC)
 	// Class/Struct Declaration (CLASS and STRUCT)
@@ -380,74 +380,74 @@ CSTL_INLINE bool token_isDeclStatement(Token* token) {
 			token->type == ENUM || token->type == MODULE || token->type == SEMICOLON); 
 } 
 
-CSTL_INLINE bool token_isSpecial(Token* token) {
+inline bool token_isSpecial(Token* token) {
 	return (token->type == TOK_ID || token->type == TOK_EOF || token->type == TOK_ILLEGAL || token->type == COMMENT); 
 }
 
-CSTL_INLINE bool token_isLiteral(Token* token) {
+inline bool token_isLiteral(Token* token) {
 	return token->type > TOK___LITERALS_BEGIN && token->type < TOK___LITERALS_END; 
 }
 
-CSTL_INLINE bool token_isKeyword(Token* token) {
+inline bool token_isKeyword(Token* token) {
 	return token->type > TOK___KEYWORDS_BEGIN && token->type < TOK___KEYWORDS_END; 
 }
 
-CSTL_INLINE bool token_isOperator(Token* token) {
+inline bool token_isOperator(Token* token) {
 	return token->type > TOK___OPERATORS_BEGIN && token->type < TOK___OPERATORS_END; 
 }
 
-CSTL_INLINE bool token_isComparisonOperator(Token* token) {
+inline bool token_isComparisonOperator(Token* token) {
 	return token->type > TOK___COMP_OPERATORS_BEGIN && token->type < TOK___COMP_OPERATORS_END; 
 }
 
-CSTL_INLINE bool token_isAssignmentOperator(Token* token) {
+inline bool token_isAssignmentOperator(Token* token) {
 	return token->type > TOK___ASSIGNMENT_OPERATORS_BEGIN && token->type < TOK___ASSIGNMENT_OPERATORS_END; 
 }
 
-CSTL_INLINE bool token_isDelimiter(Token* token) {
+inline bool token_isDelimiter(Token* token) {
 	return token->type > TOK___DELIMITERS_OPERATORS_BEGIN && token->type < TOK___DELIMITERS_OPERATORS_END;
 }
 
-CSTL_INLINE bool token_isArrow(Token* token) {
+inline bool token_isArrow(Token* token) {
 	return token->type > TOK___ARROW_OPERATORS_BEGIN && token->type < TOK___ARROW_OPERATORS_END;
 }
 
-CSTL_INLINE bool token_isBitwise(Token* token) {
+inline bool token_isBitwise(Token* token) {
 	return token->type > TOK___BITWISE_OPERATORS_BEGIN && token->type < TOK___BITWISE_OPERATORS_END;
 }
 
-CSTL_INLINE bool token_isSeparator(Token* token) {
+inline bool token_isSeparator(Token* token) {
 	return token->type > TOK___SEPARATORS_BEGIN && token->type < TOK___SEPARATORS_END;
 }
 
-CSTL_INLINE bool token_isIdentifier(Token* token) {
+inline bool token_isIdentifier(Token* token) {
 	return token->type == IDENTIFIER; 
 }
 
-CSTL_INLINE bool token_isEOF(Token* token) {
+inline bool token_isEOF(Token* token) {
 	return token->type == TOK_EOF; 
 }
 
-CSTL_INLINE bool token_isNULL(Token* token) {
+inline bool token_isNULL(Token* token) {
 	return token->type == TOK_NULL; 
 }
 
-CSTL_INLINE bool token_isIllegal(Token* token) {
+inline bool token_isIllegal(Token* token) {
 	return token->type == TOK_ILLEGAL; 
 }
 
-CSTL_INLINE bool token_isMacro(Token* token) {
+inline bool token_isMacro(Token* token) {
 	return token->type == MACRO; 
 }
 
-CSTL_INLINE bool token_isImport(Token* token) {
+inline bool token_isImport(Token* token) {
 	return token->type == IMPORT; 
 }
 
-CSTL_INLINE bool token_isInclude(Token* token) {
+inline bool token_isInclude(Token* token) {
 	return token->type == INCLUDE; 
 }
 
-CSTL_INLINE bool token_isSemiColon(Token* token) {
+inline bool token_isSemiColon(Token* token) {
 	return token->type == SEMICOLON; 
 }
