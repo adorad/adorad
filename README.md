@@ -41,7 +41,7 @@
 - [Built-in ORM](https://github.com/hazel-lang/Hazel/blob/master/doc/docs.md#orm)
 - C backend
 
-
+<!--
 ## Interactive Shell
 
 ```shell
@@ -106,21 +106,21 @@ The Hazel core APIs (the standard modules) will still have minor changes until t
 APIs will grow after that, but without breaking existing code.
 
 Our guarantee: Hazel is always going to be lightweight, portable and *extremely* fast. 
+-->
 
-
-## Installing Hazel from source
+## Installing Hazel from Source
 
 ### Linux, macOS, Windows, *BSD, Solaris, WSL, Android, Raspbian
 
 ```shell
 git clone https://github.com/hazel-lang/Hazel
 cd Hazel
-make
+cmake -S . -B build
 ```
 
-That's it! Now you have a Hazel executable at `[path to Hazel repo]/Hazel`. 
-`[path to Hazel repo]` can be anywhere.
-
+That's it! Now you have a Hazel executable at `[path to Hazel repo]/build/Hazel`. 
+<!-- `[path to Hazel repo]` can be anywhere. -->
+<!--
 (On Windows `make` means running `make.bat`, so make sure you use `cmd.exe`)
 
 Now you can try `./hazel run examples/hello_world.hzl` (`hazel.exe` on Windows).
@@ -167,7 +167,7 @@ NB: there is no need to run `hazel symlink` more than once - Hazel will continue
 restarts and so on. 
 
 You only need to run it again, if you decide to move the Hazel repo folder somewhere else.
-
+-->
 <!-- ### Docker
 
 <details><summary>Expand Docker instructions</summary>
@@ -190,7 +190,7 @@ docker run --rm -it vlang:latest
 
 </details> -->
 
-
+<!--
 ### Testing and running the examples
 
 Make sure Hazel can compile itself:
@@ -229,11 +229,12 @@ sudo apt install libatomic1
 Fedora/CentOS/RH:
 sudo dnf install libatomic-static
 ```
-
+-->
 ## Troubleshooting
-
-Please see the [Troubleshooting](https://github.com/hazel-lang/Hazel/wiki/Troubleshooting) section on our [wiki page](https://github.com/hazel-lang/Hazel/wiki)
-
+Please file an issue in GitHub [here](https://github.com/HazelLang/Hazel/issues)
+<!--
+Please see the [Troubleshooting](https://github.com/HazelLang/Hazel/wiki/Troubleshooting) section on our [wiki page](https://github.com/hazel-lang/Hazel/wiki)
+-->
 
 [TwitterBadge]: https://twitter.com/jasmcaus
 [TwitterUrl]: https://img.shields.io/twitter/follow/jasmcaus.svg?style=flatl&label=Follow&logo=twitter&logoColor=white&color=1da1f2
