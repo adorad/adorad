@@ -9,6 +9,18 @@ int main(int argc, const char* const argv[]) {
     //     return 1;
     // }
 
+    puts("    Hazel Language 0.0.1 (May 22 2021 02:39:23)");
+    puts("    GCC version: 9.3.0 on Windows");
+    puts("    All engines are a go!");
+
+    while(true) {
+        printf("hazel> ");
+        char buffer[20];
+        fgets(buffer, 20, stdin);
+        printf(buffer);
+        // printf("\n");
+    }
+
     // if(strcmp(argv[1], "compile") == 0) {
 	// char* buffer = readFile("test/LexerDemo.hzl");
     char* buffer = "abcdefghijklmnopqrstuvwxyz";

@@ -61,7 +61,8 @@ def main():
             with open(destpath) as f:
                 s = f.read()
 
-                s = s.replace("Hazel", 'HazelInternalTests')
+                s = s.replace('Hazel', 'HazelInternalTests')
+                s = s.replace('HazelInternalTests Language', 'Hazel Language')
 
                 if root.endswith(ACCEPTABLE_REMOVEABLE_DIRS):
                     s = s.replace('static inline ', '')

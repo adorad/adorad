@@ -112,6 +112,7 @@ static TokenKind token_twochar(char c1, char c2) {
             if(c2 == '&') return AND_AND;
             if(c2 == '^') return AND_NOT;
             if(c2 == '=') return AND_EQUALS;
+            break;
         case '|':
             if(c2 == '|') return OR_OR;
             if(c2 == '=') return OR_EQUALS;

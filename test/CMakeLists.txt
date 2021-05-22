@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.15 FATAL_ERROR)
 
 # Hazel's Internal Tests
 # We use the Muon, a custom unit testing framework built by Jason Dsouza <@jasmcaus>

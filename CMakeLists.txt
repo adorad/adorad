@@ -1,10 +1,19 @@
-cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.15 FATAL_ERROR)
 project(
     Hazel 
     DESCRIPTION "The Hazel Programming Language"
     VERSION 1.0.0
     LANGUAGES C
 )
+
+# CMake's FATAL_ERROR is ignored on CMake versions >2.6 
+# Hence we explicitely check for correct enforcement of CMake configurations.
+if (${CMAKE_VERSION} VERSION_LESS "3.15")
+    message(
+        ERROR "You are currently on CMake Version ${CMAKE_VERSION}, but Hazel supports CMake 3.15 above."
+        "Please update your CMake installation."
+    )
+endif()
 
     
 # Use compiler ID "AppleClang" instead of "Clang" for XCode.
