@@ -119,7 +119,7 @@ cmake -S . -B build
 ```
 
 That's it! Now you have a Hazel executable at `[path to Hazel repo]/build/Hazel`. 
-`[path to Hazel repo]` can be anywhere.
+<!-- `[path to Hazel repo]` can be anywhere. -->
 <!--
 (On Windows `make` means running `make.bat`, so make sure you use `cmd.exe`)
 
@@ -231,7 +231,7 @@ sudo dnf install libatomic-static
 ```
 -->
 ## Troubleshooting
-Please file an issue in GitHub [here](https://github.com/HazelLang/Hazel/issues
+Please file an issue in GitHub [here](https://github.com/HazelLang/Hazel/issues)
 <!--
 Please see the [Troubleshooting](https://github.com/HazelLang/Hazel/wiki/Troubleshooting) section on our [wiki page](https://github.com/hazel-lang/Hazel/wiki)
 -->
