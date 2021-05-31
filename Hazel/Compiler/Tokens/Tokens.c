@@ -137,8 +137,10 @@ static TokenKind token_twochar(char c1, char c2) {
             break;
         case '~':
             if(c2 == '=') return TILDA_EQUALS;
+            break;
         case '.':
             if(c2 == '.') return DDOT;
+            break;
     }
     // We should never get here
     return TOK_ILLEGAL;

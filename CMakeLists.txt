@@ -49,11 +49,16 @@ endif()
 
 # Break in case of popular CMake configuration mistakes
 if(NOT CMAKE_SIZEOF_VOID_P GREATER 0)
-    message(FATAL_ERROR "CMake failed to determine the bitness of the target platform. Check your CMake and compiler        
+    message(FATAL_ERROR "CMake failed to determine the bitness of the target platform. Check your CMake and compiler       
             installation. If you are cross-compiling, ensure that your CMake toolchain file correctly sets the 
             compiler details")
 endif()
 
+# Determine if Hazel is built as a subproject (using add_subdirectory) or if it is the main project being built
+set(IS_MAIN_PROJECT OFF)
+if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
+    set(IS_MAIN_PROJECT ON)
+endif()
 
 option(HAZEL_BUILD_TESTS "Build Hazel test binaries" ON)
 option(HAZEL_BUILD_STATIC_LIB "Build Hazel Static Library " OFF)
@@ -67,10 +72,13 @@ if(HAZEL_BUILD_TESTS)
     endif()
 endif()
 
-# ------ CMake build directories ------
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY  ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY  ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY  ${CMAKE_BINARY_DIR}/bin)
+# ------ Options ------
+set(HAZEL_ROOT_DIR                    ${CMAKE_CURRENT_SOURCE_DIR})
+set(HAZEL_BIN_DIR                     ${CMAKE_CURRENT_SOURCE_DIR}/build/bin)
+set(HAZEL_LIB_DIR                     ${CMAKE_CURRENT_SOURCE_DIR}/build/lib)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY   ${HAZEL_BIN_DIR})
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY   ${HAZEL_LIB_DIR})
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY   ${HAZEL_LIB_DIR})
 
 
 # ------Compiler and linker options ------
