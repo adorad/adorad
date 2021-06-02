@@ -144,13 +144,18 @@ typedef Int32 Rune;
 // The same thing as size_t 
 // Ull --> size_t
 // Ll  --> ptrdiff_t
-#if defined(_MSC_VER) && !defined(_WIN64)
-    typedef unsigned int Ull;
-    typedef int          Ll;
+#if defined(_MSC_VER)
+    #if !defined(_WIN64)
+        typedef unsigned int Ull;
+        typedef int          Ll;
+    #else 
+        typedef UInt64  Ull;
+        typedef Int64   Ll;
+    #endif // _WIN64
 #else
     typedef UInt64  Ull;
     typedef Int64   Ll;
-#endif
+#endif // _MSC_VER
 
 // (U)Intptr is only here for semantic reasons really as this library will only support 32/64 bit OSes.
 // Are there any modern OSes (not 16 bit) where Intptr != ptrdiff_t/Ll ?

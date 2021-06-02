@@ -14,6 +14,7 @@ FetchContent_Declare(
     URL https://github.com/jasmcaus/Muon/archive/dev.zip
 )
 FetchContent_MakeAvailable(Muon)
+# add_subdirectory("F:/Documents/Dev/Github/Muon" "Muon" EXCLUDE_FROM_ALL)
 
 enable_testing()
 include(CTest)
