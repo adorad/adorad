@@ -13,19 +13,6 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 
 #include <Hazel/Compiler/Lexer/Lexer.h>
 
-/*
-    Lexer:
-    In lexer phase, the source code is decomposed into its simplest "tokens". 
-
-    Newlines are converted to newline tokens
-
- * INSPIRATION: https://github.com/JHG777000/marshmallow/blob/master/src/marshmallow_parser.c
-
-*/
-
-// 
-// ================ Lexer Stuff ================
-// 
 Lexer* lexer_init(const char* buffer) {
     Lexer* lexer = calloc(1, sizeof(Lexer));
     lexer->buffer = buffer; 
@@ -44,8 +31,8 @@ static void lexer_print_stats(Lexer* lexer) {
 
 // Returns the curent character in the Lexical Buffer and advances to the next element
 // It does this by incrementing the buffer offset.
-static inline char lexer_next(Lexer* lexer) {
-    if(lexer->offset + 1 > lexer->buffer_capacity) {
+static inline char lexer_advance(Lexer* lexer) {
+    if(lexer->offset >= lexer->buffer_capacity) {
         return nullchar; 
     } else {
         LEXER_INCREMENT_COLNO;
@@ -54,21 +41,38 @@ static inline char lexer_next(Lexer* lexer) {
 }
 
 // Advance `n` characters in the Lexical Buffer
-static inline char lexer_next_n(Lexer* lexer, UInt32 n) {
-    if(lexer->offset + n > lexer->buffer_capacity) {
+static inline char lexer_advance_n(Lexer* lexer, UInt32 n) {
+    // The '>=' is here because offset and buffer_capacity are off by 1 (0-index vs 1-index respectively)
+    if(lexer->offset + n >= lexer->buffer_capacity) {
         return nullchar;
     } else {
-        char c;
-        for(int i=0; i<=n; i++) {
-            c = (char)lexer->buffer[lexer->offset];
-            if(c == '\n') {
-                LEXER_RESET_COLNO;
-                LEXER_INCREMENT_OFFSET;
-            } else {
-                LEXER_INCREMENT_COLNO;
-                LEXER_INCREMENT_OFFSET;
-            }
-        }
-        return c;
+        lexer->location.colno += n;
+        lexer->offset += n;
+        return (char)lexer->buffer[lexer->offset];
+    }
+}
+
+// Returns the previous `n` elements in the Lexical buffer.
+// This is non-destructive -- the buffer offset is not updated.
+static inline char lexer_prev(Lexer* lexer, UInt32 n) {
+    if(lexer->offset == 0) {
+        return nullchar;
+    } else {
+        return (char)lexer->buffer[lexer->offset-1];
+    }
+}
+
+// Returns the current element in the Lexical Buffer.
+static inline char lexer_peek(Lexer* lexer) {
+    return (char)lexer->buffer[lexer->offset];
+}
+
+// "Look ahead" `n` characters in the Lexical buffer.
+// It _does not_ increment the buffer offset.
+static inline char lexer_peek_n(Lexer* lexer, UInt32 n) {
+    if(lexer->offset + n >= lexer->buffer_capacity) {
+        return nullchar;
+    } else {
+        return (char)lexer->buffer[lexer->offset+1];
     }
 }

@@ -43,21 +43,24 @@ typedef struct Lexer {
     Location location;      // Location of the source code
 } Lexer;
 
-
-// Constructor 
 Lexer* lexer_init(const char* buffer);
 static void lexer_print_stats(Lexer* lexer);
+
 // Returns the current character in the Lexical Buffer and advances to the next element.
 // It does this by incrementing the buffer offset.
-static inline char lexer_next(Lexer* lexer);
+static inline char lexer_advance(Lexer* lexer);
+// Advance `n` characters in the Lexical Buffer
+static inline char lexer_advance_n(Lexer* lexer, UInt32 n);
+
 // Returns the previous `n` elements in the Lexical buffer.
 // This is non-destructive -- the buffer offset is not updated.
 static inline char lexer_prev(Lexer* lexer, UInt32 n);
+
+// Returns the current element in the Lexical Buffer.
+static inline char lexer_peek(Lexer* lexer);
 // "Look ahead" `n` characters in the Lexical buffer.
 // It _does not_ increment the buffer offset.
-static inline char lexer_peek(Lexer* lexer, UInt32 n);
-// lexer_peek_curr() returns the current element in the Lexical Buffer.
-static inline char lexer_peek_curr(Lexer* lexer);
+static inline char lexer_peek_n(Lexer* lexer, UInt32 n);
 
 static inline bool lexer_is_EOF(Lexer* lexer);
 
@@ -94,26 +97,26 @@ static inline bool lexer_is_EOF(Lexer* lexer);
     // Reset a Lexer Token
     #define LEXER_RESET_TOKEN                                       \
         /* CHECK THIS */                                            \
-        lexer->token.type = TOK_ILLEGAL;                        \
+        lexer->token.type = TOK_ILLEGAL;                            \
         /* TODO(jasmcaus): Verify this is accurate */               \
-        lexer->token.value = lexer->buffer + lexer->offset; \
+        lexer->token.value = lexer->buffer + lexer->offset;         \
         lexer->token.location = lexer->location
 
     // Reset the buffer 
     #define LEXER_RESET_BUFFER        \
-        lexer->buffer= "";          \
+        lexer->buffer= "";            \
         lexer->buffer_capacity = 0
 
     // Reset the Lexer state
     #define LEXER_RESET               \
-        lexer->buffer= "";          \
-        lexer->buffer_capacity = 0; \
-        lexer->offset = 0;          \
+        lexer->buffer= "";            \
+        lexer->buffer_capacity = 0;   \
+        lexer->offset = 0;            \
         LEXER_LOCATION_INIT
 
-    #define LEXER_LOCATION_INIT           \
-        lexer->location.lineno = 1;   \
-        lexer->location.colno = 1;    \
+    #define LEXER_LOCATION_INIT        \
+        lexer->location.lineno = 1;    \
+        lexer->location.colno = 1;     \
         lexer->location.fname = ""
 
 #endif // LEXER_MACROS_
