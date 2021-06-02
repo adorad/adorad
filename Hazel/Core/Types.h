@@ -140,9 +140,39 @@ typedef Int32 Rune;
 #define Float64_MAX 1.7976931348623157e+308
 
 // The same thing as size_t 
-typedef UInt64     Ull;
-// The same thing as ptrdiff_t
-typedef Int64      Ll;
+// Ull --> size_t
+// Ll  --> ptrdiff_t
+#if defined(_MSC_VER) && !defined(_WIN64)
+    typedef unsigned int Ull;
+    typedef int          Ll;
+#else
+    typedef UInt64  Ull;
+    typedef Int64   Ll;
+#endif
+
+// (U)Intptr is only here for semantic reasons really as this library will only support 32/64 bit OSes.
+// Are there any modern OSes (not 16 bit) where Intptr != ptrdiff_t/Ll ?
+#if defined(_WIN64)
+    typedef signed    __int64    Intptr;
+    typedef unsigned  __int64    UIntptr;
+#elif defined(_WIN32)
+    // To mark types changing their size, e.g. Intptr
+    #ifndef _W64
+        #if !defined(__midl) && (defined(_X86_) || defined(_M_IX86)) && _MSC_VER >= 1300
+            #define _W64 __w64
+        #else
+            #define _W64
+        #endif 
+    #endif
+
+    typedef _W64 signed int     Intptr;
+    typedef _W64 unsigned int   UIntptr;
+#else
+    typedef  uintptr_t   UIntptr;
+    typedef  intptr_t    Intptr;
+#endif
+
+CSTL_DEBUG_CHECK(sizeof(UIntptr) == sizeof(Intptr));
 
 // More Useful Types
 #define nullchar '\0' 
@@ -159,7 +189,6 @@ typedef Int64      Ll;
     #endif // __cplusplus
 #endif 
 
-
 // bool is a basic type in C++ and not C
 // We could just have used <stdbool.h> but I prefer this as it results in a smaller binary
 #ifndef __cplusplus
@@ -167,30 +196,5 @@ typedef Int64      Ll;
     static const bool false = 0;
     static const bool true  = 1;
 #endif 
-
-// (U)Intptr is only here for semantic reasons really as this library will only support 32/64 bit OSes.
-// Are there any modern OSes (not 16 bit) where Intptr != ptrdiff_t/Ll ?
-#if defined(_WIN64)
-    typedef signed    __int64    Intptr;
-    typedef unsigned  __int64    UIntptr;
-
-#elif defined(_WIN32)
-    // To mark types changing their size, e.g. Intptr
-    #ifndef _W64
-        #if !defined(__midl) && (defined(_X86_) || defined(_M_IX86)) && _MSC_VER >= 1300
-            #define _W64 __w64
-        #else
-            #define _W64
-        #endif
-    #endif
-
-    typedef _W64 signed int     Intptr;
-    typedef _W64 unsigned int   UIntptr;
-#else
-    typedef  uintptr_t   UIntptr;
-    typedef  intptr_t    Intptr;
-#endif
-
-CSTL_DEBUG_CHECK(sizeof(UIntptr) == sizeof(Intptr));
 
 #endif // CSTL_TYPES_H
