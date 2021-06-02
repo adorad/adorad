@@ -46,7 +46,7 @@ typedef struct Lexer {
 
 // Constructor 
 Lexer* lexer_init(const char* buffer);
-void lexer_print_stats(Lexer* lexer);
+static void lexer_print_stats(Lexer* lexer);
 // Returns the current character in the Lexical Buffer and advances to the next element.
 // It does this by incrementing the buffer offset.
 static inline char lexer_next(Lexer* lexer);

@@ -35,7 +35,7 @@ Lexer* lexer_init(const char* buffer) {
     return lexer;
 }
 
-void lexer_print_stats(Lexer* lexer) {
+static void lexer_print_stats(Lexer* lexer) {
     printf("    Char: %c\n", lexer->buffer[lexer->offset]);
     printf("    Offset: %d\n", lexer->offset);
     printf("    Lineno: %d\n", lexer->location.lineno);
