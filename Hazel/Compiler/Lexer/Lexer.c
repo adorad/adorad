@@ -35,7 +35,7 @@ Lexer* lexer_init(const char* buffer) {
     return lexer;
 }
 
-static void lexer_print_stats(Lexer* lexer) {
+void lexer_print_stats(Lexer* lexer) {
     printf("    Char: %c\n", lexer->buffer[lexer->offset]);
     printf("    Offset: %d\n", lexer->offset);
     printf("    Lineno: %d\n", lexer->location.lineno);
@@ -44,35 +44,31 @@ static void lexer_print_stats(Lexer* lexer) {
 
 // Returns the curent character in the Lexical Buffer and advances to the next element
 // It does this by incrementing the buffer offset.
-// This will ideally _never_ return newline characters
 static inline char lexer_next(Lexer* lexer) {
     if(lexer->offset + 1 > lexer->buffer_capacity) {
         return nullchar; 
     } else {
-        // Get current character
-        char c = lexer->buffer[lexer->offset];
-
-        // If current character is a newline, are there more newlines?
-        // If so, skip them
-        while(c == '\n') {
-            c = lexer->buffer[++lexer->offset];
-            LEXER_RESET_COLNO;
-        }
-        // When newlines are hit, colno will always have to be 
         LEXER_INCREMENT_COLNO;
-        // Return the previous char
-        return (char)lexer->buffer[lexer->offset];
+        return (char)lexer->buffer[lexer->offset++];
     }
 }
 
 // Advance `n` characters in the Lexical Buffer
-// inline char lexer_next_n(Lexer* lexer, UInt32 n) {
 static inline char lexer_next_n(Lexer* lexer, UInt32 n) {
     if(lexer->offset + n > lexer->buffer_capacity) {
         return nullchar;
     } else {
-        lexer->location.colno += n;
-        lexer->offset += n;
-        return (char)lexer->buffer[lexer->offset];
+        char c;
+        for(int i=0; i<=n; i++) {
+            c = (char)lexer->buffer[lexer->offset];
+            if(c == '\n') {
+                LEXER_RESET_COLNO;
+                LEXER_INCREMENT_OFFSET;
+            } else {
+                LEXER_INCREMENT_COLNO;
+                LEXER_INCREMENT_OFFSET;
+            }
+        }
+        return c;
     }
 }

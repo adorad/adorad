@@ -8,14 +8,13 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 11)
 
 message("--------- [INFO] Fetching Muon from GitHub")
-
-include(FetchContent)
-FetchContent_Declare(
-    Muon
-    URL https://github.com/jasmcaus/Muon/archive/dev.zip
-)
-
-FetchContent_MakeAvailable(Muon)
+# include(FetchContent)
+# FetchContent_Declare(
+#     Muon
+#     URL https://github.com/jasmcaus/Muon/archive/dev.zip
+# )
+# FetchContent_MakeAvailable(Muon)
+add_subdirectory("F:/Documents/Dev/Github/Muon" Muon EXCLUDE_FROM_ALL)
 
 enable_testing()
 include(CTest)
@@ -52,6 +51,7 @@ endif()
 target_include_directories(
     libHazelInternalTests PUBLIC 
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../HazelInternalTests>
     $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}>
     # This is here out of convenience. You might break a test or two if this is removed.
     $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}>
@@ -60,8 +60,11 @@ target_include_directories(
 
 # Build the executable
 # main.c (or whatever demo file you want to link against)
-add_executable(HazelInternalStatic ${CMAKE_CURRENT_SOURCE_DIR}/../HazelInternalTests/main.c)
-target_link_libraries(HazelInternalStatic libHazelInternalTests)
+add_executable(
+    HazelInternalWithMain 
+    ${CMAKE_CURRENT_SOURCE_DIR}/../HazelInternalTests/main.c
+)
+target_link_libraries(HazelInternalWithMain libHazelInternalTests)
 
 # Installation
 install(TARGETS libHazelInternalTests DESTINATION lib)

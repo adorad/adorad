@@ -17,25 +17,25 @@ int main(int argc, const char* const argv[]) {
         printf("hazel> ");
         char buffer[20];
         fgets(buffer, 20, stdin);
-        printf(buffer);
+        printf("%s", buffer);
         // printf("\n");
     }
 
     // if(strcmp(argv[1], "compile") == 0) {
 	// char* buffer = readFile("test/LexerDemo.hzl");
-    char* buffer = "abcdefghijklmnopqrstuvwxyz";
-	Lexer* lexer = lexer_init(buffer); 
-    printf("Lexer buffer: \n%s\n", lexer->buffer);
-    printf("--------------\n");
+    // char* buffer = "abcdefghijklmnopqrstuvwxyz";
+	// Lexer* lexer = lexer_init(buffer); 
+    // printf("Lexer buffer: \n%s\n", lexer->buffer);
+    // printf("--------------\n");
     
-    char ch = lexer_next(lexer);
-    printf("FIRST: %c\n", ch);
-    ch = lexer_next(lexer);
-    printf("Character received: %c\n", ch);
-    lexer_print_stats(lexer);
+    // // char ch = lexer_next(lexer);
+    // printf("FIRST: %c\n", ch);
+    // // ch = lexer_next(lexer);
+    // printf("Character received: %c\n", ch);
+    // // lexer_print_stats(lexer);
 
     // Delete when done 
-    free(lexer); 
+    // free(lexer); 
 
     return 0; 
 }

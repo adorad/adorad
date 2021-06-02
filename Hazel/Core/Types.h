@@ -18,6 +18,16 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #include <Hazel/Core/Compilers.h>
 
 // Base Types (similar to the Types in the Hazel Language) ==========================================
+// typedef unsigned char       UInt8; 
+// typedef          char       Int8;  
+// typedef unsigned short      UInt16;
+// typedef signed short        Int16; 
+// typedef unsigned int        UInt32;
+// typedef signed int          Int32; 
+// typedef unsigned long long  UInt64;
+// typedef long long           Int64; 
+// typedef float               Float32; 
+// typedef double              Float64; 
 #if defined(CSTL_COMPILER_MSVC)
     #if _MSVC_VER < 1300 
         typedef unsigned char     UInt8;
@@ -55,14 +65,6 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
     typedef int64_t   Int64; 
 #endif // Hazel Basic Types 
 
-// <windows.h> declares a typedef float FLOAT for its internal usage. 
-// We need to be polite and respect that :)
-// NOTE: <windows.h> is declared in Muon during Hazel's Internal Tests
-// #if defined(_WIN32) || defined(__WIN32__) || defined(__WINDOWS__)
-//     #define Float32     float
-// #else 
-//     typedef float  Float32; 
-// #endif // _WIN32
 typedef float  Float32; 
 typedef double Float64; 
 
@@ -169,8 +171,9 @@ typedef Int64      Ll;
 // (U)Intptr is only here for semantic reasons really as this library will only support 32/64 bit OSes.
 // Are there any modern OSes (not 16 bit) where Intptr != ptrdiff_t/Ll ?
 #if defined(_WIN64)
-    typedef signed   __int64    Intptr;
-    typedef unsigned __int64    UIntptr;
+    typedef signed    __int64    Intptr;
+    typedef unsigned  __int64    UIntptr;
+
 #elif defined(_WIN32)
     // To mark types changing their size, e.g. Intptr
     #ifndef _W64

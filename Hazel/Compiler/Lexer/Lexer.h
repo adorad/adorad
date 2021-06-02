@@ -38,7 +38,6 @@ typedef struct Lexer {
     UInt32 offset;          // current buffer offset (in Bytes) 
                             // offset of the beginning of the line (no. of chars b/w the beginning of the Lexical Buffer
                             // and the beginning of the line)
-                            // Sometimes called the buffer position
 
     Token token;            // current token
     Location location;      // Location of the source code
@@ -47,7 +46,7 @@ typedef struct Lexer {
 
 // Constructor 
 Lexer* lexer_init(const char* buffer);
-static void lexer_print_stats(Lexer* lexer);
+void lexer_print_stats(Lexer* lexer);
 // Returns the current character in the Lexical Buffer and advances to the next element.
 // It does this by incrementing the buffer offset.
 static inline char lexer_next(Lexer* lexer);
