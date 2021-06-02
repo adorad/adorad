@@ -31,7 +31,7 @@ jobs:
 
       - name: CMake
         run: |
-          cmake -S . -B build -D CMAKE_BUILD_TYPE=${{ matrix.build_type }} -DMUON_BUILDTESTS=On
+          cmake -S . -B build -D CMAKE_BUILD_TYPE=${{ matrix.build_type }} -DHAZEL_BUILDTESTS=On
 
       - name: Build 
         run: |
