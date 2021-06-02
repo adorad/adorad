@@ -17,17 +17,19 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #include <Hazel/Core/Debug.h>
 #include <Hazel/Core/Compilers.h>
 
-// Base Types (similar to the Types in the Hazel Language) ==========================================
-// typedef unsigned char       UInt8; 
-// typedef          char       Int8;  
-// typedef unsigned short      UInt16;
-// typedef signed short        Int16; 
-// typedef unsigned int        UInt32;
-// typedef signed int          Int32; 
-// typedef unsigned long long  UInt64;
-// typedef long long           Int64; 
-// typedef float               Float32; 
-// typedef double              Float64; 
+// Base Types
+/*
+typedef unsigned char       UInt8; 
+typedef          char       Int8;  
+typedef unsigned short      UInt16;
+typedef signed short        Int16; 
+typedef unsigned int        UInt32;
+typedef signed int          Int32; 
+typedef unsigned long long  UInt64;
+typedef long long           Int64; 
+typedef float               Float32; 
+typedef double              Float64; 
+*/
 #if defined(CSTL_COMPILER_MSVC)
     #if _MSVC_VER < 1300 
         typedef unsigned char     UInt8;
