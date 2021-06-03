@@ -21,16 +21,18 @@ Token* token_init(void) {
     token->tok_bytes = 0; 
     token->tok_length = 0; 
     token->value = "";
-    token_location_init(token);
+    token->lineno = 1;
+    token->colno = 1; 
+    token->fname = ""; 
 
     return token;
 }
 
 // Initialize/Reset a token's location
 void token_location_init(Token* token) {
-    token->location.lineno = 0; 
-    token->location.colno = 0; 
-    token->location.fname = "";
+    token->lineno = 0; 
+    token->colno = 0; 
+    token->fname = "";
 }
 
 // Reset a Token instance

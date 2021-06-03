@@ -24,8 +24,8 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 /*
     Hazel's Lexer is built in such a way that no (or negligible) memory allocations are necessary during usage. 
 
-    In order to be able to not allocate any memory during tokenization, STRINGs and NUMBERs are just sanity checked but _not_
-    converted - it is the responsibility of the Parser to perform the right conversion.
+    In order to be able to not allocate any memory during tokenization, STRINGs and NUMBERs are just sanity checked
+    but _not_ converted - it is the Parser's responsibility to perform the right conversion.
 
     In case of a scan error, ILLEGAL is returned and the error details can be extracted from the token itself.
 
@@ -40,7 +40,9 @@ typedef struct Lexer {
                             // and the beginning of the line)
 
     Token token;            // current token
-    Location location;      // Location of the source code
+    UInt32 lineno;     // the line number in the source where the token occured
+    UInt32 colno;      // the column number
+    const char* fname; // the file name
 } Lexer;
 
 Lexer* lexer_init(const char* buffer);
@@ -76,18 +78,18 @@ static inline bool lexer_is_EOF(Lexer* lexer);
     #define LEXER_DECREMENT_TOK_LENGTH   --lexer->token.tok_length 
 
     // Reset the line
-    #define LEXER_RESET_LINENO           lexer->location.lineno = 0
+    #define LEXER_RESET_LINENO           lexer->lineno = 0
     // Reset the column number 
-    #define LEXER_RESET_COLNO            lexer->location.colno = 0
+    #define LEXER_RESET_COLNO            lexer->colno = 0
 
     // Increment the line number
-    #define LEXER_INCREMENT_LINENO       ++lexer->location.lineno; LEXER_RESET_COLNO
+    #define LEXER_INCREMENT_LINENO       ++lexer->lineno; LEXER_RESET_COLNO
     // Decrement the lineno
-    #define LEXER_DECREMENT_LINENO       --lexer->location.lineno; LEXER_RESET_COLNO
+    #define LEXER_DECREMENT_LINENO       --lexer->lineno; LEXER_RESET_COLNO
     // Increment the column number
-    #define LEXER_INCREMENT_COLNO        ++lexer->location.colno 
+    #define LEXER_INCREMENT_COLNO        ++lexer->colno 
     // Decrement the colno
-    #define LEXER_DECREMENT_COLNO        --lexer->location.colno
+    #define LEXER_DECREMENT_COLNO        --lexer->colno
 
     // Increment the Lexical Buffer offset
     #define LEXER_INCREMENT_OFFSET       ++lexer->offset; LEXER_INCREMENT_COLNO
@@ -112,12 +114,9 @@ static inline bool lexer_is_EOF(Lexer* lexer);
         lexer->buffer= "";            \
         lexer->buffer_capacity = 0;   \
         lexer->offset = 0;            \
-        LEXER_LOCATION_INIT
-
-    #define LEXER_LOCATION_INIT        \
-        lexer->location.lineno = 1;    \
-        lexer->location.colno = 1;     \
-        lexer->location.fname = ""
+        lexer->lineno = 1;            \
+        lexer->colno = 1;             \
+        lexer->fname = ""
 
 #endif // LEXER_MACROS_
 

@@ -18,7 +18,6 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 
 #include <Hazel/Core/Misc.h>
 #include <Hazel/Core/Types.h> 
-#include <Hazel/Compiler/Lexer/Location.h>
 
 
 // Tokens.h defines constants representing the lexical tokens of the Hazel programming language and basic operations on 
@@ -230,12 +229,13 @@ typedef struct {
     UInt32 tok_bytes;   // Token length (in bytes)
     UInt32 tok_length;  // Token length (UTF-8)
     const char* value;  // Token value
-    Location location;  // Location of the source file
+    UInt32 lineno;     // the line number in the source where the token occured
+    UInt32 colno;      // the column number
+    const char* fname; // the file name
 } Token;
 
 // Create a basic (ILLEGAL) token
 Token* token_init(void);
-void token_location_init(Token* token);
 // Get the token value 
 const char* value(Token token);
 // Reset a Token instance

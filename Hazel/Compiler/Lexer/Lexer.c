@@ -18,15 +18,17 @@ Lexer* lexer_init(const char* buffer) {
     lexer->buffer = buffer; 
     lexer->buffer_capacity = strlen(buffer);
     lexer->offset = 0;
-    LEXER_LOCATION_INIT;
+    lexer->lineno = 1;
+    lexer->colno = 1;
+    lexer->fname = "";
     return lexer;
 }
 
 static void lexer_print_stats(Lexer* lexer) {
     printf("    Char: %c\n", lexer->buffer[lexer->offset]);
     printf("    Offset: %d\n", lexer->offset);
-    printf("    Lineno: %d\n", lexer->location.lineno);
-    printf("    Colno: %d\n", lexer->location.colno);
+    printf("    Lineno: %d\n", lexer->lineno);
+    printf("    Colno: %d\n", lexer->colno);
 }
 
 // Returns the curent character in the Lexical Buffer and advances to the next element
@@ -46,7 +48,7 @@ static inline char lexer_advance_n(Lexer* lexer, UInt32 n) {
     if(lexer->offset + n >= lexer->buffer_capacity) {
         return nullchar;
     } else {
-        lexer->location.colno += n;
+        lexer->colno += n;
         lexer->offset += n;
         return (char)lexer->buffer[lexer->offset];
     }
