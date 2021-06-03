@@ -17,7 +17,7 @@ TEST(Lexer, Init) {
 }
 
 // Without newline in buffer
-TEST(Lexer, advance) {
+TEST(Lexer, advance_without_newline) {
     char* buffer = "abcdefghijklmnopqrstuvwxyz0123456789";
     Lexer* lexer = lexer_init(buffer);
     
@@ -28,6 +28,25 @@ TEST(Lexer, advance) {
         CHECK_EQ(lexer->location.colno, i+2);
         CHECK_EQ(lexer->location.lineno, 1);
     }
+}
+
+// With newline in buffer
+TEST(Lexer, advance_with_newline) {
+    char* buffer = "a\nb\ncdefghijklmnopqrstuvwxyz0123456789";
+    Lexer* lexer = lexer_init(buffer);
+    
+    CHECK_STREQ(lexer->buffer, buffer);
+    CHECK_EQ(lexer_advance(lexer), 'a');
+    CHECK_EQ(lexer->offset, 1);
+    CHECK_EQ(lexer->location.colno, 2);
+    CHECK_EQ(lexer->location.lineno, 1);
+
+    // Hit a newline
+    CHECK_STREQ(lexer->buffer, buffer);
+    CHECK_EQ(lexer_advance(lexer), '\n');
+    CHECK_EQ(lexer->offset, 2);
+    CHECK_EQ(lexer->location.colno, 3);
+    CHECK_EQ(lexer->location.lineno, 1);
 }
 
 TEST(Lexer, advance_n) {
