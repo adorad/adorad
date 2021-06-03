@@ -8,13 +8,13 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 11)
 
 message("--------- [INFO] Fetching Muon from GitHub")
-include(FetchContent)
-FetchContent_Declare(
-    Muon
-    URL https://github.com/jasmcaus/Muon/archive/dev.zip
-)
-FetchContent_MakeAvailable(Muon)
-# add_subdirectory("F:/Documents/Dev/Github/Muon" "Muon" EXCLUDE_FROM_ALL)
+# include(FetchContent)
+# FetchContent_Declare(
+#     Muon
+#     URL https://github.com/jasmcaus/Muon/archive/dev.zip
+# )
+# FetchContent_MakeAvailable(Muon)
+add_subdirectory("F:/Documents/Dev/Github/Muon" "Muon" EXCLUDE_FROM_ALL)
 
 enable_testing()
 include(CTest)

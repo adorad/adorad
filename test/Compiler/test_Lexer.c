@@ -10,8 +10,10 @@ TEST(Lexer, Init) {
     CHECK_EQ(lexer->buffer_capacity, strlen(buffer));
     CHECK_EQ(lexer->offset, 0);
     CHECK_EQ(lexer->lineno, 1);
+    CHECK_EQ(lexer->is_inside_str, false);
     CHECK_EQ(lexer->colno, 1);
     CHECK_STREQ(lexer->fname, "");
+    CHECK_EQ(lexer->is_inside_str, false);
 
     free(lexer);
 }
@@ -27,6 +29,7 @@ TEST(Lexer, advance_without_newline) {
         CHECK_EQ(lexer->offset, i+1);
         CHECK_EQ(lexer->colno, i+2);
         CHECK_EQ(lexer->lineno, 1);
+        CHECK_EQ(lexer->is_inside_str, false);
     }
 }
 
@@ -40,6 +43,7 @@ TEST(Lexer, advance_with_newline) {
     CHECK_EQ(lexer->offset, 1);
     CHECK_EQ(lexer->colno, 2);
     CHECK_EQ(lexer->lineno, 1);
+    CHECK_EQ(lexer->is_inside_str, false);
 
     // Hit a newline
     CHECK_STREQ(lexer->buffer, buffer);
@@ -47,6 +51,7 @@ TEST(Lexer, advance_with_newline) {
     CHECK_EQ(lexer->offset, 2);
     CHECK_EQ(lexer->colno, 3);
     CHECK_EQ(lexer->lineno, 1);
+    CHECK_EQ(lexer->is_inside_str, false);
 }
 
 TEST(Lexer, advance_n) {
@@ -59,6 +64,7 @@ TEST(Lexer, advance_n) {
     CHECK_EQ(lexer->offset, 4);
     CHECK_EQ(lexer->colno, 5);
     CHECK_EQ(lexer->lineno, 1);
+    CHECK_EQ(lexer->is_inside_str, false);
 
     // Go ahead 1 char
     char f = lexer_advance_n(lexer, 1); // 'f'
@@ -66,6 +72,7 @@ TEST(Lexer, advance_n) {
     CHECK_EQ(lexer->offset, 5);
     CHECK_EQ(lexer->colno, 6);
     CHECK_EQ(lexer->lineno, 1);
+    CHECK_EQ(lexer->is_inside_str, false);
 
     // Go ahead 3 chars
     char i = lexer_advance_n(lexer, 3); // 'i'
@@ -73,6 +80,7 @@ TEST(Lexer, advance_n) {
     CHECK_EQ(lexer->offset, 8);
     CHECK_EQ(lexer->colno, 9);
     CHECK_EQ(lexer->lineno, 1);
+    CHECK_EQ(lexer->is_inside_str, false);
 
     // Go ahead 7 chars
     char p = lexer_advance_n(lexer, 7); // 'p'
@@ -80,6 +88,7 @@ TEST(Lexer, advance_n) {
     CHECK_EQ(lexer->offset, 15);
     CHECK_EQ(lexer->colno, 16);
     CHECK_EQ(lexer->lineno, 1);
+    CHECK_EQ(lexer->is_inside_str, false);
     
     // Go ahead 10 chars
     char z = lexer_advance_n(lexer, 10); // 'z'
@@ -87,6 +96,7 @@ TEST(Lexer, advance_n) {
     CHECK_EQ(lexer->offset, 25);
     CHECK_EQ(lexer->colno, 26);
     CHECK_EQ(lexer->lineno, 1);
+    CHECK_EQ(lexer->is_inside_str, false);
 
     // Go ahead 10 chars
     char nine = lexer_advance_n(lexer, 10); // '9'
@@ -94,6 +104,7 @@ TEST(Lexer, advance_n) {
     CHECK_EQ(lexer->offset, 35);
     CHECK_EQ(lexer->colno, 36);
     CHECK_EQ(lexer->lineno, 1);
+    CHECK_EQ(lexer->is_inside_str, false);
 
     // Go ahead 1 char (end of buff cap)
     char eof1 = lexer_advance_n(lexer, 1);
@@ -102,6 +113,7 @@ TEST(Lexer, advance_n) {
     CHECK_EQ(lexer->offset, 35);
     CHECK_EQ(lexer->colno, 36);
     CHECK_EQ(lexer->lineno, 1);
+    CHECK_EQ(lexer->is_inside_str, false);
 
     // Go ahead 4 more chars (end of cap)
     char eof2 = lexer_advance_n(lexer, 4);
@@ -110,4 +122,5 @@ TEST(Lexer, advance_n) {
     CHECK_EQ(lexer->offset, 35);
     CHECK_EQ(lexer->colno, 36);
     CHECK_EQ(lexer->lineno, 1);
+    CHECK_EQ(lexer->is_inside_str, false);
 }
