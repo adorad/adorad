@@ -138,6 +138,7 @@ static inline bool isSemicolon(char c);
 static inline bool isString(char c);
 static inline bool isMacro(char c);
 
+inline char* lex_identifier(Lexer* lexer);
 TokenKind lexer_lex_comment(Lexer* lexer);
 TokenKind lexer_lex_string(Lexer* lexer); 
 TokenKind lexer_lex_operator(Lexer* lexer);
