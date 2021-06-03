@@ -21,6 +21,7 @@ Lexer* lexer_init(const char* buffer) {
     lexer->lineno = 1;
     lexer->colno = 1;
     lexer->fname = "";
+    lexer->is_inside_str = false;
     return lexer;
 }
 

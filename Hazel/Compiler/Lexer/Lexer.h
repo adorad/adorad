@@ -36,13 +36,15 @@ typedef struct Lexer {
     const char* buffer;     // the Lexical buffer
     UInt32 buffer_capacity; // current buffer capacity (in Bytes)
     UInt32 offset;          // current buffer offset (in Bytes) 
-                            // offset of the beginning of the line (no. of chars b/w the beginning of the Lexical Buffer
-                            // and the beginning of the line)
+                            // offset of the curr char (no. of chars b/w the beginning of the Lexical Buffer
+                            // and the curr char)
 
     Token token;            // current token
     UInt32 lineno;          // the line number in the source where the token occured
     UInt32 colno;           // the column number
-    const char* fname;      // the file name
+    const char* fname;      // /path/to/file.hzl
+
+    bool is_inside_str;     // set to true inside a string
 } Lexer;
 
 Lexer* lexer_init(const char* buffer);

@@ -230,7 +230,7 @@ typedef struct {
     const char* value;  // Token value
     UInt32 lineno;     // the line number in the source where the token occured
     UInt32 colno;      // the column number
-    const char* fname; // the file name
+    const char* fname; // /path/to/file.hzl
 } Token;
 
 // Create a basic (ILLEGAL) token

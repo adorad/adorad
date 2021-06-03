@@ -197,11 +197,16 @@ CSTL_DEBUG_CHECK(sizeof(UIntptr) == sizeof(Intptr));
 #endif 
 
 // bool is a basic type in C++ and not C
-// We could just have used <stdbool.h> but I prefer this as it results in a smaller binary
-#ifndef __cplusplus
-    typedef Bool8 bool;
-    static const bool false = 0;
-    static const bool true  = 1;
-#endif 
+#ifndef Bool_types_defined
+#define Bool_types_defined
+    #ifdef __cplusplus
+        #define false  false
+        #define true   true
+    #else
+        typedef Bool32 bool;
+        static const bool false = 0;
+        static const bool true = 1;
+    #endif // __cplusplus   
+#endif // Bool_types_defined
 
 #endif // CSTL_TYPES_H
