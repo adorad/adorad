@@ -76,6 +76,22 @@ static inline char lexer_peek_n(Lexer* lexer, UInt32 n) {
     if(lexer->offset + n >= lexer->buffer_capacity) {
         return nullchar;
     } else {
-        return (char)lexer->buffer[lexer->offset+1];
+        return (char)lexer->buffer[lexer->offset+n];
     }
+}
+
+#define MAX_IDENTIFIER_SIZE     250
+// Scan an identifier
+inline char* lex_identifier(Lexer* lexer) {
+    char ident[MAX_IDENTIFIER_SIZE];
+    char ch = lexer->buffer[lexer->offset];
+    int prevcurr_offset = lexer->offset;
+
+    while(isLetter(ch) || isDigit(ch)) {
+        ch = lexer_advance(lexer);
+    }
+
+    // Remember to null-terminate!
+    strncpy(ident, lexer->buffer, lexer->offset-prevcurr_offset);
+    return ident;
 }
