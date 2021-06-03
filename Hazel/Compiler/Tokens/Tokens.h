@@ -226,7 +226,6 @@ typedef enum {
 typedef struct {
     TokenKind type;     // Token Type
     UInt32 offset;      // Offset of the first character of the Token
-    UInt32 tok_bytes;   // Token length (in bytes)
     UInt32 tok_length;  // Token length (UTF-8)
     const char* value;  // Token value
     UInt32 lineno;     // the line number in the source where the token occured

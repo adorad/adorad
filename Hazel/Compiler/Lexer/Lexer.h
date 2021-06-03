@@ -40,9 +40,9 @@ typedef struct Lexer {
                             // and the beginning of the line)
 
     Token token;            // current token
-    UInt32 lineno;     // the line number in the source where the token occured
-    UInt32 colno;      // the column number
-    const char* fname; // the file name
+    UInt32 lineno;          // the line number in the source where the token occured
+    UInt32 colno;           // the column number
+    const char* fname;      // the file name
 } Lexer;
 
 Lexer* lexer_init(const char* buffer);
@@ -68,10 +68,6 @@ static inline bool lexer_is_EOF(Lexer* lexer);
 
 #ifndef LEXER_MACROS_
 #define LEXER_MACROS_
-    // Increment Token Bytes
-    #define LEXER_INCREMENT_TOK_BYTES    ++lexer->token.tok_bytes
-    // Decrement Token Bytes
-    #define LEXER_DECREMENT_TOK_BYTES    --lexer->token.tok_bytes 
     // Increment Token Length
     #define LEXER_INCREMENT_TOK_LENGTH   ++lexer->token.tok_length
     // Decrement Token Length

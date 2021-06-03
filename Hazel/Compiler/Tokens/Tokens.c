@@ -18,7 +18,6 @@ Token* token_init(void) {
     Token* token = calloc(1, sizeof(Token));
     token->type = TOK_ILLEGAL; 
     token->offset = 0; 
-    token->tok_bytes = 0; 
     token->tok_length = 0; 
     token->value = "";
     token->lineno = 1;
@@ -28,21 +27,15 @@ Token* token_init(void) {
     return token;
 }
 
-// Initialize/Reset a token's location
-void token_location_init(Token* token) {
-    token->lineno = 0; 
-    token->colno = 0; 
-    token->fname = "";
-}
-
 // Reset a Token instance
 void token_reset_token(Token* token) {
     token->type = TOK_ILLEGAL; 
     token->offset = 0; 
-    token->tok_bytes = 0; 
     token->tok_length = 0; 
     token->value = "";
-    token_location_init(token);
+    token->lineno = 0; 
+    token->colno = 0; 
+    token->fname = "";
 }
 
 // Returns the token corresponding to a single character
