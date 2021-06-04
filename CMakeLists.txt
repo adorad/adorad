@@ -173,7 +173,7 @@ endif()
 set(BUILD_SHARED_LIBS OFF)
 
 # ------ Main Build ------
-add_subdirectory(Hazel)
+add_subdirectory(hazel)
 
 if(HAZEL_BUILD_TESTS)
     add_subdirectory(test)
