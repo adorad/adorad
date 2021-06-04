@@ -1,9 +1,10 @@
 r"""
-    This script essentially `copies` the entire folder of Hazel and into a new directory that is used solely by CMake
-    during CI. 
-    It removes all instances of `static`, `inline`, `extern` or any other keywords that might result in internal linkage and thus break Hazel's C Compiler Tests. 
-    With this internal linkage, it is IMPOSSIBLE to externally test a method used in the compiler. An example for this would be 
-    `lexer_next()` or `lexer_next_n()` which _need_ to be inlined and statically linked for performance reasons.
+    This script essentially `copies` the entire folder of Hazel and into a new directory that is used solely by 
+    CMake during CI. 
+    It removes all instances of `static`, `inline`, `extern` or any other keywords that might result in internal 
+    linkage and thus break Hazel's C Compiler Tests. 
+    With this internal linkage, it is IMPOSSIBLE to externally test a method used in the compiler. An example for 
+    this would be `lexer_next()` or `lexer_next_n()` which _need_ to be inlined and statically linked for performance reasons.
 """
 
 import os 
@@ -12,14 +13,14 @@ ospd = os.path.dirname
 # Navigate to root folder
 # ../../../
 ROOT = ospd(ospd(ospd(os.path.abspath(__file__))))
-SOURCEROOT = os.path.join(ROOT, 'Hazel')
+SOURCEROOT = os.path.join(ROOT, 'hazel')
 # The `HazelInternalTests` folder will be created by this script
 DESTINATIONROOT = os.path.join(ROOT, 'HazelInternalTests')
 
 # Acceptable directories to remove external linkage
 # We cannot remove it globally as it affects CSTL as well - and results in the `multiple definitions` error
 ACCEPTABLE_REMOVEABLE_DIRS = (
-    'Lexer', 'Tokens'
+    'lexer', 'tokens', 'ast', 'parser',
 )
 
 def main():
@@ -46,7 +47,7 @@ def main():
 
             filepath = os.path.join(root, file)
             destpath = os.path.join(destroot, file)
-            if(file.endswith('Hazel.h')):
+            if(file.endswith('hazel.h')):
                 destpath = os.path.join(destroot, 'HazelInternalTests.h')
 
             # print(filepath)
@@ -61,7 +62,7 @@ def main():
             with open(destpath) as f:
                 s = f.read()
 
-                s = s.replace('Hazel', 'HazelInternalTests')
+                s = s.replace('hazel', 'HazelInternalTests')
                 s = s.replace('HazelInternalTests Language', 'Hazel Language')
 
                 if root.endswith(ACCEPTABLE_REMOVEABLE_DIRS):
