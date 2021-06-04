@@ -50,9 +50,6 @@ def main():
             if(file.endswith('hazel.h')):
                 destpath = os.path.join(destroot, 'HazelInternalTests.h')
 
-            if(file.endswith('main.c')):
-                continue 
-
             # print(filepath)
             print(f"[INFO] Copying {destpath}")
 
@@ -66,6 +63,7 @@ def main():
 
                 s = s.replace('hazel', 'HazelInternalTests')
                 s = s.replace('HazelInternalTests Language', 'Hazel Language')
+                s = s.replace('Hazel.h', 'HazelInternalTests.h')
 
                 if root.endswith(ACCEPTABLE_REMOVEABLE_DIRS):
                     s = s.replace('static inline ', '')
