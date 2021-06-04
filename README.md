@@ -1,13 +1,13 @@
 <div align="center">
 <!-- <p>
-    <img width="80" src="https://raw.githubusercontent.com/hazel-lang/Hazel-logo/master/dist/hazel-logo.svg?sanitize=true">
+    <img width="80" src="https://raw.githubusercontent.com/HazelLang/Hazel-logo/master/dist/hazel-logo.svg?sanitize=true">
 </p> -->
 <h1>The Hazel Language</h1>
 
-[Hazel](https://github.com/hazel-lang/Hazel) |
-[Documentation](https://github.com/hazel-lang/Hazel/blob/master/doc/docs.md) |
-[Contributing](https://github.com/hazel-lang/Hazel/blob/master/CONTRIBUTING.md) |
-[Compiler design](https://github.com/hazel-lang/Hazel/blob/master/COMPILER.md)
+[Hazel](https://github.com/HazelLang/Hazel) |
+[Documentation](https://github.com/HazelLang/hazel/blob/master/doc/docs.md) |
+[Contributing](https://github.com/HazelLang/hazel/blob/master/CONTRIBUTING.md) |
+[Compiler design](https://github.com/HazelLang/hazel/blob/master/COMPILER.md)
 
 </div>
 <div align="center">
@@ -38,7 +38,7 @@
 - Built-in Vision library
 - Easy cross compilation
 - REPL
-- [Built-in ORM](https://github.com/hazel-lang/Hazel/blob/master/doc/docs.md#orm)
+- [Built-in ORM](https://github.com/HazelLang/hazel/blob/master/doc/docs.md#orm)
 - C backend
 
 <!--
@@ -113,7 +113,7 @@ Our guarantee: Hazel is always going to be lightweight, portable and *extremely*
 ### Linux, macOS, Windows, *BSD, Solaris, WSL, Android, Raspbian
 
 ```shell
-git clone https://github.com/hazel-lang/Hazel
+git clone https://github.com/HazelLang/Hazel
 cd Hazel
 cmake -S . -B build
 ```
@@ -173,7 +173,7 @@ You only need to run it again, if you decide to move the Hazel repo folder somew
 <details><summary>Expand Docker instructions</summary>
 
 ```bash
-git clone https://github.com/hazel-lang/Hazel
+git clone https://github.com/HazelLang/Hazel
 cd v
 docker build -t vlang .
 docker run --rm -it vlang:latest
@@ -182,7 +182,7 @@ docker run --rm -it vlang:latest
 ### Docker with Alpine/musl
 
 ```bash
-git clone https://github.com/hazel-lang/Hazel
+git clone https://github.com/HazelLang/Hazel
 cd v
 docker build -t vlang --file=Dockerfile.alpine .
 docker run --rm -it vlang:latest
@@ -231,9 +231,9 @@ sudo dnf install libatomic-static
 ```
 -->
 ## Troubleshooting
-Please file an issue in GitHub [here](https://github.com/HazelLang/Hazel/issues)
+Please file an issue in GitHub [here](https://github.com/HazelLang/hazel/issues)
 <!--
-Please see the [Troubleshooting](https://github.com/HazelLang/Hazel/wiki/Troubleshooting) section on our [wiki page](https://github.com/hazel-lang/Hazel/wiki)
+Please see the [Troubleshooting](https://github.com/HazelLang/hazel/wiki/Troubleshooting) section on our [wiki page](https://github.com/HazelLang/hazel/wiki)
 -->
 
 [TwitterBadge]: https://twitter.com/jasmcaus

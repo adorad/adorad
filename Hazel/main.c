@@ -1,4 +1,4 @@
-#include <Hazel/Hazel.h>
+#include <hazel/Hazel.h>
 
 int main(int argc, const char* const argv[]) {
     // C - Example: 

@@ -2,7 +2,7 @@
 #ifndef CSTL_MATH_H
 #define CSTL_MATH_H
 
-#include <Hazel/Core/Types.h>
+#include <hazel/core/types.h>
 
 #ifdef __cplusplus
 extern "C" {

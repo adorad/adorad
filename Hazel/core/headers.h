@@ -3,7 +3,7 @@ _ _    _           ______   _______
 | |  | |    /\    /___  /   |  ____|| |    
 | |__| |   /  \      / /    | |__   | |       Hazel - The Fast, Expressive & Elegant Programming Language
 |  __  |  / /\ \    / /     |  __|  | |       Languages: C, C++, and Assembly
-| |  | | / ____ \  / /___   | |____ | |____   https://github.com/HazelLang/Hazel/
+| |  | | / ____ \  / /___   | |____ | |____   https://github.com/HazelLang/hazel/
 |_|_ |_|/_/    \_\/_______\ |______|_\______|
 
 Licensed under the MIT License <http://opensource.org/licenses/MIT>
@@ -14,7 +14,7 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #ifndef CSTL_HEADERS_H
 #define CSTL_HEADERS_H
 
-#include <Hazel/Core/OS.h>
+#include <hazel/core/OS.h>
 
 
 // Headers ==========================================
@@ -79,7 +79,7 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 
     // #include <sys/stat.h>
     // #include <sys/time.h>
-    // #include <sys/Types.h>
+    // #include <sys/types.h>
     // #include <time.h>
     // #include <unistd.h>
 
@@ -103,7 +103,7 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
     // #include <sys/sysctl.h>
     // #include <pthread_np.h>
     // #include <sys/cpuset.h>
-    // #include <sys/Types.h>
+    // #include <sys/types.h>
     // #include <sys/socket.h>
     // #include <sys/uio.h>
 

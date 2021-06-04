@@ -1,8 +1,8 @@
 #ifndef CSTL_EXCEPTION_H
 #define CSTL_EXCEPTION_H 
 
-#include <Hazel/Core/String.h>
-#include <Hazel/Core/Types.h>
+#include <hazel/core/String.h>
+#include <hazel/core/types.h>
 
 #ifdef __cplusplus
 namespace Hazel {

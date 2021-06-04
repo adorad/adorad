@@ -3,7 +3,7 @@ _ _    _           ______   _______
 | |  | |    /\    /___  /   |  ____|| |    
 | |__| |   /  \      / /    | |__   | |       Hazel - The Fast, Expressive & Elegant Programming Language
 |  __  |  / /\ \    / /     |  __|  | |       Languages: C, C++, and Assembly
-| |  | | / ____ \  / /___   | |____ | |____   https://github.com/HazelLang/Hazel/
+| |  | | / ____ \  / /___   | |____ | |____   https://github.com/HazelLang/hazel/
 |_|_ |_|/_/    \_\/_______\ |______|_\______|
 
 Licensed under the MIT License <http://opensource.org/licenses/MIT>
@@ -14,10 +14,10 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #ifndef CSTL_TYPES_H
 #define CSTL_TYPES_H
 
-#include <Hazel/Core/Debug.h>
-#include <Hazel/Core/Compilers.h>
+#include <hazel/core/debug.h>
+#include <hazel/core/compilers.h>
 
-// Base Types
+// Base types/
 /*
 typedef unsigned char       UInt8; 
 typedef          char       Int8;  
@@ -65,7 +65,7 @@ typedef double              Float64;
     typedef int32_t   Int32; 
     typedef uint64_t  UInt64; 
     typedef int64_t   Int64; 
-#endif // Hazel Basic Types 
+#endif // Hazel Basic types/ 
 
 typedef float  Float32; 
 typedef double Float64; 
@@ -181,7 +181,7 @@ typedef Int32 Rune;
 
 CSTL_DEBUG_CHECK(sizeof(UIntptr) == sizeof(Intptr));
 
-// More Useful Types
+// More Useful types/
 #define nullchar '\0' 
  
 #ifndef null 

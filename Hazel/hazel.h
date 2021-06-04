@@ -3,7 +3,7 @@ _ _    _           ______   _______
 | |  | |    /\    /___  /   |  ____|| |    
 | |__| |   /  \      / /    | |__   | |       Hazel - The Fast, Expressive & Elegant Programming Language
 |  __  |  / /\ \    / /     |  __|  | |       Languages: C, C++, and Assembly
-| |  | | / ____ \  / /___   | |____ | |____   https://github.com/HazelLang/Hazel/
+| |  | | / ____ \  / /___   | |____ | |____   https://github.com/HazelLang/hazel/
 |_|_ |_|/_/    \_\/_______\ |______|_\______|
 
 Licensed under the MIT License <http://opensource.org/licenses/MIT>
@@ -14,8 +14,8 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 // Includes all the files needed for Hazel compilation
 
 // This ALWAYS needs to be right at the top 
-#include <Hazel/Core/HCore.h> 
+#include <hazel/core/hcore.h> 
 
-#include <Hazel/Compiler/Types/Types.h> 
-#include <Hazel/Compiler/Lexer/Lexer.h>
-#include <Hazel/Compiler/Tokens/Tokens.h> 
+#include <hazel/compiler/types/types.h> 
+#include <hazel/compiler/lexer/lexer.h>
+#include <hazel/compiler/tokens/tokens.h> 

@@ -3,7 +3,7 @@ _ _    _           ______   _______
 | |  | |    /\    /___  /   |  ____|| |    
 | |__| |   /  \      / /    | |__   | |       Hazel - The Fast, Expressive & Elegant Programming Language
 |  __  |  / /\ \    / /     |  __|  | |       Languages: C, C++, and Assembly
-| |  | | / ____ \  / /___   | |____ | |____   https://github.com/HazelLang/Hazel/
+| |  | | / ____ \  / /___   | |____ | |____   https://github.com/HazelLang/hazel/
 |_|_ |_|/_/    \_\/_______\ |______|_\______|
 
 Licensed under the MIT License <http://opensource.org/licenses/MIT>
@@ -40,7 +40,7 @@ CREDITS
     methods are individually built into their separate object files.
     Thus, you will end up with the "Multiple definition of `function`" error. 
 
-    If you need to use an individual file, either include this file (HCore.h) _once_ or pick and choose what you need - 
+    If you need to use an individual file, either include this file (hcore.h) _once_ or pick and choose what you need - 
     being explicit never hurts. 
 
     For the development of the Hazel Language, it is required (otherwise you'll run into compilation problems such as the 
@@ -50,21 +50,21 @@ CREDITS
 */
 
 #ifndef CSTL_USING_CUSTOM_GENERATED_MACROS
-    #include <Hazel/Core/CMake_Macros.h>
+    #include <hazel/core/cmake_macros.h>
 #endif // CSTL_USING_CUSTOM_GENERATED_MACROS
 
-#include <Hazel/Core/Headers.h>
-#include <Hazel/Core/Clock.h>
-#include <Hazel/Core/Compilers.h>
-#include <Hazel/Core/CPUs.h>
-#include <Hazel/Core/Debug.h>
-#include <Hazel/Core/Misc.h>
-#include <Hazel/Core/Types.h>
-#include <Hazel/Core/Exception.h>
-#include <Hazel/Core/IO.h>
-#include <Hazel/Core/Memory.h>
-#include <Hazel/Core/OS.h>
-#include <Hazel/Core/Math.h>
-#include <Hazel/Core/String.h>
+#include <hazel/core/headers.h>
+#include <hazel/core/clock.h>
+#include <hazel/core/compilers.h>
+#include <hazel/core/cpu.h>
+#include <hazel/core/debug.h>
+#include <hazel/core/misc.h>
+#include <hazel/core/types.h>
+#include <hazel/core/exception.h>
+#include <hazel/core/io.h>
+#include <hazel/core/memory.h>
+#include <hazel/core/os.h>
+#include <hazel/core/math.h>
+#include <hazel/core/string.h>
 
 #endif // _CSTL_CORE_CSTL_H

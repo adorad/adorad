@@ -13,7 +13,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(HAZEL_BUILD_SHARED_LIB ${BUILD_SHARED_LIBS}) # used in ../CMake/cmake_macros.h.in
 configure_file(
     ${CMAKE_SOURCE_DIR}/CMake/cmake_macros.h.in
-    ${CMAKE_SOURCE_DIR}/Hazel/Core/CMake_Macros.h
+    ${CMAKE_SOURCE_DIR}/hazel/core/CMake_Macros.h
 )
 
 #
@@ -22,10 +22,10 @@ configure_file(
 # Note that this library must have _minimal_ dependencies 
 # _DO NOT_ add `main.c` here (we're building a library, remember?)
 file(GLOB LIBHAZEL_SOURCES
-    Compiler/IO/*.c
-    Compiler/Lexer/*.c
-    Compiler/Tokens/*.c
-    Compiler/Types/*.c
+    compiler/io/*.c
+    compiler/lexer/*.c
+    compiler/tokens/*.c
+    compiler/types/*.c
 )
 file(GLOB_RECURSE HAZEL_HEADERS *.h)
 
@@ -107,10 +107,10 @@ install(
     FILES_MATCHING PATTERN "*.h"
 )
 
-# Hazel/Core/CMake_Macros.h --> include/Hazel/Core/Macros/CMake_Macros.h
+# hazel/core/CMake_Macros.h --> include/hazel/core/Macros/CMake_Macros.h
 install(
-    FILES ${CMAKE_BINARY_DIR}/Hazel/Core/CMake_Macros.h
-    DESTINATION include/Hazel/Core/Macros
+    FILES ${CMAKE_BINARY_DIR}/hazel/core/CMake_Macros.h
+    DESTINATION include/hazel/core/Macros
 )
 
 # For CSTL_BUILD_SHARED_LIB, see Core/Export.h

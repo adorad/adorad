@@ -3,7 +3,7 @@ _ _    _           ______   _______
 | |  | |    /\    /___  /   |  ____|| |    
 | |__| |   /  \      / /    | |__   | |       Hazel - The Fast, Expressive & Elegant Programming Language
 |  __  |  / /\ \    / /     |  __|  | |       Languages: C, C++, and Assembly
-| |  | | / ____ \  / /___   | |____ | |____   https://github.com/HazelLang/Hazel/
+| |  | | / ____ \  / /___   | |____ | |____   https://github.com/HazelLang/hazel/
 |_|_ |_|/_/    \_\/_______\ |______|_\______|
 
 Licensed under the MIT License <http://opensource.org/licenses/MIT>
@@ -14,8 +14,8 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #ifndef CSTL_CLOCK_H
 #define CSTL_CLOCK_H
 
-// #include <Hazel/Core/Misc.h>
-// #include <Hazel/Core/Types.h>
+// #include <hazel/core/Misc.h>
+// #include <hazel/core/types.h>
 
 
 // Time ==========================================

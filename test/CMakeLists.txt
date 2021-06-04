@@ -34,10 +34,10 @@ file(GLOB
 # Note: This only happens during the CI phase and _should not_ run whenever an external library needs to 
 # link to Hazel
 file(GLOB HAZEL_INTERNALTEST_SOURCES
-    ${CMAKE_CURRENT_SOURCE_DIR}/../HazelInternalTests/Compiler/IO/*.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/../HazelInternalTests/Compiler/Lexer/*.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/../HazelInternalTests/Compiler/Tokens/*.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/../HazelInternalTests/Compiler/Types/*.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../HazelInternalTests/compiler/io/*.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../HazelInternalTests/compiler/lexer/*.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../HazelInternalTests/compiler/tokens/*.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../HazelInternalTests/compiler/types/*.c
 )
 file(GLOB_RECURSE HAZEL_INTERNALTEST_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/../HazelInternalTests/*.h)
 

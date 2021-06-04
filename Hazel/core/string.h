@@ -3,7 +3,7 @@ _ _    _           ______   _______
 | |  | |    /\    /___  /   |  ____|| |    
 | |__| |   /  \      / /    | |__   | |       Hazel - The Fast, Expressive & Elegant Programming Language
 |  __  |  / /\ \    / /     |  __|  | |       Languages: C, C++, and Assembly
-| |  | | / ____ \  / /___   | |____ | |____   https://github.com/HazelLang/Hazel/
+| |  | | / ____ \  / /___   | |____ | |____   https://github.com/HazelLang/hazel/
 |_|_ |_|/_/    \_\/_______\ |______|_\______|
 
 Licensed under the MIT License <http://opensource.org/licenses/MIT>
@@ -14,15 +14,10 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #ifndef CSTL_STRING_H
 #define CSTL_STRING_H
 
-#include <Hazel/Core/Types.h>
-#include <Hazel/Core/Math.h>
+#include <hazel/core/types.h>
+#include <hazel/core/Math.h>
 
 // UTF8 Inspiration: https://github.com/sheredom/utf8.h/blob/master/utf8.h
-
-#ifdef __cplusplus
-namespace Hazel {
-#endif
-
 
 // Char Things ==========================================
 static inline bool isUpper(char c) { return c>='A' && c<='Z'; }
@@ -91,10 +86,6 @@ static inline void strToUpper(char* str) {
         str++;
     }
 }
-
-#ifdef __cplusplus
-} // namespace Hazel
-#endif
 
 
 #endif // CSTL_STRING_H
