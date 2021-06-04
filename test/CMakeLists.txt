@@ -8,13 +8,13 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 11)
 
 message("--------- [INFO] Fetching Tau from GitHub")
-# include(FetchContent)
-# FetchContent_Declare(
-#     Tau
-#     URL https://github.com/jasmcaus/Tau/archive/dev.zip
-# )
-# FetchContent_MakeAvailable(Tau)
-add_subdirectory("F:/Documents/Dev/Github/Tau" "Tau" EXCLUDE_FROM_ALL)
+include(FetchContent)
+FetchContent_Declare(
+    Tau
+    URL https://github.com/jasmcaus/Tau/archive/dev.zip
+)
+FetchContent_MakeAvailable(Tau)
+# add_subdirectory("F:/Documents/Dev/Github/Tau" "Tau" EXCLUDE_FROM_ALL)
 
 enable_testing()
 include(CTest)
