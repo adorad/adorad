@@ -10,10 +10,10 @@ set(CMAKE_C_STANDARD_REQUIRED TRUE)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Configure the Macro file 
-set(HAZEL_BUILD_SHARED_LIB ${BUILD_SHARED_LIBS}) # used in ../CMake/cmake_macros.h.in
+set(HAZEL_BUILD_SHARED_LIB ${BUILD_SHARED_LIBS}) # used in ../cmake/cmake_macros.h.in
 configure_file(
-    ${CMAKE_SOURCE_DIR}/CMake/cmake_macros.h.in
-    ${CMAKE_SOURCE_DIR}/hazel/core/CMake_Macros.h
+    ${CMAKE_SOURCE_DIR}/cmake/cmake_macros.h.in
+    ${CMAKE_SOURCE_DIR}/hazel/core/cmake_macros.h
 )
 
 #
@@ -107,10 +107,10 @@ install(
     FILES_MATCHING PATTERN "*.h"
 )
 
-# hazel/core/CMake_Macros.h --> include/hazel/core/Macros/CMake_Macros.h
+# hazel/core/CMake_Macros.h --> include/hazel/core/CMake_Macros.h
 install(
-    FILES ${CMAKE_BINARY_DIR}/hazel/core/CMake_Macros.h
-    DESTINATION include/hazel/core/Macros
+    FILES ${CMAKE_BINARY_DIR}/hazel/core/cmake_macros.h
+    DESTINATION include/hazel/core/macros
 )
 
 # For CSTL_BUILD_SHARED_LIB, see Core/Export.h
