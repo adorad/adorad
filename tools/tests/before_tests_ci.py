@@ -50,6 +50,9 @@ def main():
             if(file.endswith('hazel.h')):
                 destpath = os.path.join(destroot, 'HazelInternalTests.h')
 
+            if(file.endswith('main.c')):
+                continue 
+
             # print(filepath)
             print(f"[INFO] Copying {destpath}")
 
@@ -58,7 +61,6 @@ def main():
             copied += 1
 
             # Replace static, inline, extern ...
-            
             with open(destpath) as f:
                 s = f.read()
 
@@ -73,7 +75,6 @@ def main():
                     s = s.replace('"C" {', 'extern "C" {')
 
                 s = s.replace('// "C"', '// extern "C"')
-                
             f.close()
 
             # Write the changes back to disk
