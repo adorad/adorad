@@ -63,7 +63,7 @@ def main():
 
                 s = s.replace('hazel', 'HazelInternalTests')
                 s = s.replace('HazelInternalTests Language', 'Hazel Language')
-                s = s.replace('Hazel.h', 'HazelInternalTests.h')
+                s = s.replace('hazel.h', 'HazelInternalTests.h')
 
                 if root.endswith(ACCEPTABLE_REMOVEABLE_DIRS):
                     s = s.replace('static inline ', '')
