@@ -14,7 +14,7 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #ifndef CSTL_HEADERS_H
 #define CSTL_HEADERS_H
 
-#include <hazel/core/OS.h>
+#include <hazel/core/os.h>
 
 
 // Headers ==========================================
