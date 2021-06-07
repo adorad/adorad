@@ -25,6 +25,8 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
     #define CSTL_DEBUG_CHECK(cond)             CSTL_DEBUG_CHECK1(cond, __LINE__)
 #endif
 
+// This macro is similar to the ones used in Tau, the C/C++ Testing Framework I wrote on a whim!
+// See: https://github.com/jasmcaus/tau
 #ifdef NDEBUG
     #define CSTL_CHECK(cond, msg)                                   \
         do {                                                        \
