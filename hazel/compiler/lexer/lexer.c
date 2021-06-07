@@ -12,6 +12,7 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 */
 
 #include <hazel/compiler/lexer/lexer.h>
+#include <stdarg.h>
 
 // These macros are used in the switch() statements below during the Lexing of Hazel source files.
 #define WHITESPACE \
@@ -44,6 +45,16 @@ Lexer* lexer_init(const char* buffer) {
     lexer->fname = "";
     lexer->is_inside_str = false;
     return lexer;
+}
+
+// Report an error and exit
+void lexer_error(Lexer* lexer, const char* format, ...) {
+    va_list vl;
+    va_start(vl, format);
+    vfprintf(stderr, format, vl);
+    fprintf(stderr, "\n");
+    va_end(vl);
+    exit(1);
 }
 
 static void lexer_print_stats(Lexer* lexer) {
@@ -101,32 +112,62 @@ static inline char lexer_peek_n(Lexer* lexer, UInt32 n) {
     }
 }
 
-#define MAX_IDENTIFIER_SIZE     250
+#define MAX_TOKEN_SIZE     250
+
+// Skip whitespace
+static void lexer_skip_whitespace(Lexer* lexer) {
+    char ch = LEXER_CURR_CHAR;
+    while(true) {
+        switch(ch) {
+            case WHITESPACE:
+                ch = lexer_advance(lexer); break;
+        }
+    }
+}
+
+// Scan a comment (single line)
+static inline char* lexer_lex_comment(Lexer* lexer) {
+    char* comment = (char*)malloc(sizeof(char) * MAX_TOKEN_SIZE);
+    char ch = LEXER_CURR_CHAR;
+    int prev_offset = lexer->offset;
+    while(ch != '\n') {
+        ch = lexer_advance(lexer);
+    }
+
+    strncpy(comment, lexer->buffer, lexer->offset - prev_offset);
+    return comment;
+}
+
 // Scan an identifier
-inline char* lex_identifier(Lexer* lexer) {
-    char ident[MAX_IDENTIFIER_SIZE];
-    char ch = lexer->buffer[lexer->offset];
+static inline char* lexer_lex_identifier(Lexer* lexer) {
+    char* ident = (char*)malloc(sizeof(char) * MAX_TOKEN_SIZE);
+    char ch = LEXER_CURR_CHAR;
     int prev_offset = lexer->offset;
 
     while(isLetter(ch) || isDigit(ch)) {
         ch = lexer_advance(lexer);
     }
 
-    // Remember to null-terminate!
     strncpy(ident, lexer->buffer, lexer->offset - prev_offset);
     return ident;
 }
 
-inline char lexer_number(Lexer* lexer) {
-    char num[MAX_IDENTIFIER_SIZE];
-    char ch = lexer->buffer[lexer->offset];
+static inline char* lexer_lex_number(Lexer* lexer) {
+    char* num = (char*)malloc(sizeof(char) * MAX_TOKEN_SIZE);
+    char ch = LEXER_CURR_CHAR;
     int prev_offset = lexer->offset;
 
     while(isDigit(ch)) {
         ch = lexer_advance(lexer);
     }
 
-    // Remember to null-terminate!
     strncpy(num, lexer->buffer, lexer->offset - prev_offset);
     return num;
+}
+
+// Lex the Source files
+static void lexer_lex(Lexer* lexer) {
+    while(lexer->offset < lexer->buffer_capacity) {
+
+    }
 }

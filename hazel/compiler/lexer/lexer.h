@@ -70,6 +70,9 @@ static inline bool lexer_is_EOF(Lexer* lexer);
 
 #ifndef LEXER_MACROS_
 #define LEXER_MACROS_
+    // Get current character in the Lexcial buffer
+    // NB: This does not increase the offset
+    #define LEXER_CURR_CHAR              lexer->buffer[lexer->offset]
     // Increment Token Length
     #define LEXER_INCREMENT_TOK_LENGTH   ++lexer->token.tok_length
     // Decrement Token Length
@@ -118,36 +121,6 @@ static inline bool lexer_is_EOF(Lexer* lexer);
 
 #endif // LEXER_MACROS_
 
-// A List of Compiler Pragmas recorded for functions. 
-// Options are used as bits in a bitmask
-// These set of values are intended to be the same as the Hazel Compiler
-typedef enum {
-    COMPILER_NOINLINE = 1 << 0, // Do not inline
-    COMPILER_NOTINHEAP = 1 << 1, // Type not in heap
-} CompilerPragmas;
-
-TokenKind lexer_error(Lexer* lexer, const char* message);
-
-static inline bool isBuiltinOperator(char c);
-static inline bool isIdentifier(char c);
-static inline bool isNewLine(Lexer* lexer, char c);
-static inline bool isSlashComment(char c1, char c2);
-static inline bool isHashComment(char c);
-static inline bool isComment(char c1, char c2);
-static inline bool isSemicolon(char c);
-static inline bool isString(char c);
-static inline bool isMacro(char c);
-
-inline char* lex_identifier(Lexer* lexer);
-TokenKind lexer_lex_comment(Lexer* lexer);
-TokenKind lexer_lex_string(Lexer* lexer); 
-TokenKind lexer_lex_operator(Lexer* lexer);
-TokenKind lexer_lex_separator(Lexer* lexer);
-TokenKind lexer_lex_delimiter(Lexer* lexer);
-TokenKind lexer_lex_macro(Lexer* lexer);
-TokenKind lexer_lex_keywords(Lexer* lexer);
-TokenKind lexer_lex_char(Lexer* lexer); 
-TokenKind lexer_lex_digit(Lexer* lexer); 
-TokenKind lexer_lex_token_id(Lexer* lexer); 
+void lexer_error(Lexer* lexer, const char* format, ...);
 
 #endif // _HAZEL_LEXER_H
