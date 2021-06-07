@@ -21,7 +21,7 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
     // NOTE(jasmcaus): Token pasting madness!!
     #define CSTL_DEBUG_CHECK2(cond, line)      CSTL_DEBUG_CHECK3(cond, static_assertion_at_line_##line)
     #define CSTL_DEBUG_CHECK1(cond, line)      CSTL_DEBUG_CHECK2(cond, line)
-    #define CSTL_DEBUG_CHECK(cond)             CSTL_DEBUG_CHECK1(cond, __LINE__)
+    #define CSTL_CHECK(cond)                   CSTL_DEBUG_CHECK1(cond, __LINE__)
 #endif
 
 #endif // CSTL_DEBUG_H
