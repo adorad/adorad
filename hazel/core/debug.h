@@ -16,12 +16,28 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 
 // ========================= Debug + Asserts =========================
 
+// This macro is only for simple assertion checks (that don't require a message to STDOUT).
+// Note that this is not recommended. Use CSTL_CHECK instead
+// If a condition fails, this raises a compilation error (negative index) --> 0*2 == 0 + (-1) == -1!
 #ifndef CSTL_DEBUG_CHECK
-    #define CSTL_DEBUG_CHECK3(cond, msg)       typedef char static_assertion_##msg[(!!(cond))*2-1]
     // NOTE(jasmcaus): Token pasting madness!!
-    #define CSTL_DEBUG_CHECK2(cond, line)      CSTL_DEBUG_CHECK3(cond, static_assertion_at_line_##line)
-    #define CSTL_DEBUG_CHECK1(cond, line)      CSTL_DEBUG_CHECK2(cond, line)
-    #define CSTL_CHECK(cond)                   CSTL_DEBUG_CHECK1(cond, __LINE__)
+    #define CSTL_DEBUG_CHECK1(cond, line)      typedef char static_assertion_at_line_##line[(!!(cond))*2-1]
+    #define CSTL_DEBUG_CHECK(cond)             CSTL_DEBUG_CHECK1(cond, __LINE__)
 #endif
+
+#ifdef NDEBUG
+    #define CSTL_CHECK(cond, msg)                                   \
+        do {                                                        \
+            if(!(cond)) {                                           \
+                printf("%s:%u:", __FILE__, __LINE__);               \
+                printf("\033[1;31m FAILED: %s", msg);               \
+                printf("\033[0m\n");                                \
+                exit(1);                                            \
+            }                                                       \
+        }                                                           \
+        while(0)
+#else 
+    #define CSTL_CHECK
+#endif // NDEBUG
 
 #endif // CSTL_DEBUG_H
