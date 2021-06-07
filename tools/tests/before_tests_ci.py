@@ -42,7 +42,7 @@ def main():
         for file in files:
             # CMakeLists.txt is not required to be copied
             # TODO(jasmcaus): Maybe change this?
-            if file.endswith('.txt'):
+            if not file.endswith(('.c', '.cpp', '.h', '.hpp')):
                 continue
 
             filepath = os.path.join(root, file)
