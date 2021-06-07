@@ -13,6 +13,27 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 
 #include <hazel/compiler/lexer/lexer.h>
 
+// These macros are used in the switch() statements below during the Lexing of Hazel source files.
+#define WHITESPACE \
+    ' ': case '\r': case '\t': case '\n'
+
+#define DIGIT_NO_ZERO  \
+    '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9'
+
+#define DIGIT \
+    '0': case DIGIT
+
+#define HEX_AND_DIGIT \
+    'a': case 'b': case 'c': case 'd': case 'e': case 'f': case 'A': case 'B': case 'C': case 'D': case 'E': case 'F': \
+    case DIGIT
+
+#define ALPHA_EXCEPT_HEX \
+         'g': case 'h': case 'i': case 'j': case 'k': case 'l': case 'm': case 'n': case 'o': case 'p': case 'q': \
+    case 'r': case 's': case 't': case 'u': case 'v': case 'w': case 'x': case 'y': case 'z': case 'G': case 'H': \
+    case 'I': case 'J': case 'K': case 'L': case 'M': case 'N': case 'O': case 'P': case 'Q': case 'R': case 'S': \
+    case 'T': case 'U': case 'V': case 'W': case 'X': case 'Y': case 'Z'
+
+
 Lexer* lexer_init(const char* buffer) {
     Lexer* lexer = calloc(1, sizeof(Lexer));
     lexer->buffer = buffer; 
@@ -85,13 +106,27 @@ static inline char lexer_peek_n(Lexer* lexer, UInt32 n) {
 inline char* lex_identifier(Lexer* lexer) {
     char ident[MAX_IDENTIFIER_SIZE];
     char ch = lexer->buffer[lexer->offset];
-    int prevcurr_offset = lexer->offset;
+    int prev_offset = lexer->offset;
 
     while(isLetter(ch) || isDigit(ch)) {
         ch = lexer_advance(lexer);
     }
 
     // Remember to null-terminate!
-    strncpy(ident, lexer->buffer, lexer->offset-prevcurr_offset);
+    strncpy(ident, lexer->buffer, lexer->offset - prev_offset);
     return ident;
+}
+
+inline char lexer_number(Lexer* lexer) {
+    char num[MAX_IDENTIFIER_SIZE];
+    char ch = lexer->buffer[lexer->offset];
+    int prev_offset = lexer->offset;
+
+    while(isDigit(ch)) {
+        ch = lexer_advance(lexer);
+    }
+
+    // Remember to null-terminate!
+    strncpy(num, lexer->buffer, lexer->offset - prev_offset);
+    return num;
 }
