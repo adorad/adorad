@@ -22,9 +22,9 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
     '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9'
 
 #define DIGIT \
-    '0': case DIGIT
+    '0': case DIGIT_NO_ZERO
 
-#define HEX_AND_DIGIT \
+#define HEX_DIGIT \
     'a': case 'b': case 'c': case 'd': case 'e': case 'f': case 'A': case 'B': case 'C': case 'D': case 'E': case 'F': \
     case DIGIT
 
@@ -34,6 +34,8 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
     case 'I': case 'J': case 'K': case 'L': case 'M': case 'N': case 'O': case 'P': case 'Q': case 'R': case 'S': \
     case 'T': case 'U': case 'V': case 'W': case 'X': case 'Y': case 'Z'
 
+#define ALPHA \
+         HEX_DIGIT: case ALPHA_EXCEPT_HEX
 
 Lexer* lexer_init(const char* buffer) {
     Lexer* lexer = calloc(1, sizeof(Lexer));
@@ -167,7 +169,34 @@ static inline char* lexer_lex_number(Lexer* lexer) {
 
 // Lex the Source files
 static void lexer_lex(Lexer* lexer) {
-    while(lexer->offset < lexer->buffer_capacity) {
-
+    // Some UTF8 text may start with a 3-byte 'BOM' marker sequence. If it exists, skip over them because they 
+    // are useless bytes. Generally, it is not recommended to add BOM markers to UTF8 texts, but it's not 
+    // uncommon (especially on Windows).
+    if(lexer->buffer[0] == (char)0xef && lexer->buffer[1] == (char)0xbb && lexer->buffer[2] == (char)0xbf) {
+        lexer_advance_n(lexer, 3);
     }
+
+    char ch = nullchar;
+    TokenKind token = TOK_ILLEGAL;
+    while(lexer->offset < lexer->buffer_capacity) {
+        ch = LEXER_CURR_CHAR;
+        token = TOK_ILLEGAL;
+
+        switch(ch) {
+            case nullchar: goto lex_eof;
+            case WHITESPACE: break;
+            // Identifier
+            case ALPHA: case '_': lexer_lex_identifier(lexer); break;
+        } // switch
+
+        LEXER_INCREMENT_OFFSET_ONLY;
+        if(ch == '\n') {
+            LEXER_RESET_COLNO;
+            LEXER_INCREMENT_LINENO;
+        } else {
+            LEXER_INCREMENT_COLNO;
+        }
+    } // while
+
+lex_eof:;
 }

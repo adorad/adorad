@@ -97,6 +97,11 @@ static inline bool lexer_is_EOF(Lexer* lexer);
     // Decrement the Lexical Buffer offset
     #define LEXER_DECREMENT_OFFSET       --lexer->offset; LEXER_DECREMENT_COLNO
 
+    // Increment the Lexical Buffer offset without affecting `colno`
+    #define LEXER_INCREMENT_OFFSET_ONLY       ++lexer->offset;
+    // Decrement the Lexical Buffer offset without affecting `colno`
+    #define LEXER_DECREMENT_OFFSET_ONLY       --lexer->offset;
+
     // Reset a Lexer Token
     #define LEXER_RESET_TOKEN                                       \
         /* CHECK THIS */                                            \
@@ -122,5 +127,14 @@ static inline bool lexer_is_EOF(Lexer* lexer);
 #endif // LEXER_MACROS_
 
 void lexer_error(Lexer* lexer, const char* format, ...);
+
+// Scan a comment (single line)
+static inline char* lexer_lex_comment(Lexer* lexer);
+// Scan an identifier
+static inline char* lexer_lex_identifier(Lexer* lexer);
+// Scan a digit
+static inline char* lexer_lex_number(Lexer* lexer);
+// Lex the Source files
+static void lexer_lex(Lexer* lexer);
 
 #endif // _HAZEL_LEXER_H
