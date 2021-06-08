@@ -61,10 +61,11 @@ target_include_directories(
 # Build the executable
 # main.c (or whatever demo file you want to link against)
 add_executable(
-    HazelInternalWithMain 
+    HazelInternalTestsWithMain 
+    # maininternaltests.c is renamed to `main.c` in tools/tests/before_tests_ci.py
     ${CMAKE_CURRENT_SOURCE_DIR}/../HazelInternalTests/main.c
 )
-target_link_libraries(HazelInternalWithMain libHazelInternalTests)
+target_link_libraries(HazelInternalTestsWithMain libHazelInternalTests)
 
 # Installation
 install(TARGETS libHazelInternalTests DESTINATION lib)

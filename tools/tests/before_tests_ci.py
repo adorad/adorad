@@ -47,8 +47,17 @@ def main():
 
             filepath = os.path.join(root, file)
             destpath = os.path.join(destroot, file)
+            # We don't need the `main.c` file that comes with Hazel (that's used to build the Static/Shared library and 
+            # because of internal linkage, we cannot test certain methods of the Compiler)
+            # So, we rename `maininternaltests.c` to `main.c` only inside this testing context
+            if file.endswith('main.c'):
+                continue
+
             if(file.endswith('hazel.h')):
                 destpath = os.path.join(destroot, 'HazelInternalTests.h')
+            
+            if(file.endswith('maininternaltests.c')):
+                destpath = os.path.join(destroot, 'main.c')
 
             # print(filepath)
             print(f"[INFO] Copying {destpath}")
