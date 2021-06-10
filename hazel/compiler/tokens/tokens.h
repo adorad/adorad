@@ -248,7 +248,7 @@ static TokenKind token_twochar(char c1, char c2);
 // Returns the token corresponding to three characters
 static TokenKind token_threechar(char c1, char c2, char c3);
 
-const char* token_toString(Token* token);
+const char* token_toString(TokenKind kind);
 static inline bool token_isJumpStatement(Token* token);
 static inline bool token_isLoopStatement(Token* token);
 static inline bool token_isFlowStatement(Token* token);

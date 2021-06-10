@@ -1,5 +1,6 @@
 """ Multiline comment
-# This is a comment
+# This is a Python comment
+// This is a Hazel comment
 func input(Int in) -> Bool {
     print("Hello World");
 }

@@ -23,16 +23,17 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 
 #define HEX_DIGIT \
     'a': case 'b': case 'c': case 'd': case 'e': case 'f': case 'A': case 'B': case 'C': case 'D': case 'E': case 'F': \
-    case DIGIT
+    case '0': case DIGIT_NON_ZERO
 
-#define ALPHA_EXCEPT_HEX \
+#define ALPHA_EXCEPT_A_F \
          'g': case 'h': case 'i': case 'j': case 'k': case 'l': case 'm': case 'n': case 'o': case 'p': case 'q': \
     case 'r': case 's': case 't': case 'u': case 'v': case 'w': case 'x': case 'y': case 'z': case 'G': case 'H': \
     case 'I': case 'J': case 'K': case 'L': case 'M': case 'N': case 'O': case 'P': case 'Q': case 'R': case 'S': \
     case 'T': case 'U': case 'V': case 'W': case 'X': case 'Y': case 'Z'
 
 #define ALPHA \
-         HEX_DIGIT: case ALPHA_EXCEPT_HEX
+        'a': case 'b': case 'c': case 'd': case 'e': case 'f': case 'A': case 'B': case 'C': case 'D': case 'E': \
+        case 'F': case ALPHA_EXCEPT_A_F
 
 Lexer* lexer_init(const char* buffer) {
     Lexer* lexer = (Lexer*)calloc(1, sizeof(Lexer));
@@ -56,7 +57,7 @@ Lexer* lexer_init(const char* buffer) {
 static void lexer_tokenlist_append(Lexer* lexer, Token* token) {
     if(lexer->num_tokens >= lexer->tokenList_cap) {
         lexer->tokenList = (Token*)realloc(lexer->tokenList, sizeof(Token) * (2 * TOKENLIST_ALLOC_SIZE));
-        if(lexer->tokenList = null) {
+        if(lexer->tokenList == null) {
             fprintf(stderr, "Cannot realloc more memory. Memory full.");
         }
         lexer->tokenList_cap += TOKENLIST_ALLOC_SIZE;
@@ -134,7 +135,10 @@ static inline char lexer_peek_n(Lexer* lexer, UInt32 n) {
 }
 
 static void lexer_maketoken(Lexer* lexer, TokenKind kind) {
-    Token* token;
+    Token* token = (Token*)calloc(1, sizeof(Token));
+    if(token == null) {
+        fprintf(stderr, "Could not allocate memory. Memory full.");
+    }
     token->kind = kind;
     token->offset = lexer->offset;
     token->colno = lexer->colno;
@@ -145,16 +149,12 @@ static void lexer_maketoken(Lexer* lexer, TokenKind kind) {
 }
 
 // Scan a comment (single line)
-// static inline void lexer_lex_sl_comment(Lexer* lexer) {
-//     char ch = LEXER_CURR_CHAR;
-//     int prev_offset 
-//     while(ch && ch != '\n') {
-//         ch = lexer_advance(lexer);
-//     }
-
-//     strncpy(comment, lexer->buffer, lexer->offset - prev_offset);
-//     return comment;
-// }
+static inline void lexer_lex_sl_comment(Lexer* lexer) {
+    char ch = LEXER_CURR_CHAR;
+    while(ch && ch != '\n') {
+        ch = lexer_advance(lexer);
+    }
+}
 
 // Scan a comment (multi-line)
 static inline void lexer_lex_ml_comment(Lexer* lexer) {
@@ -192,27 +192,27 @@ static inline char lexer_lex_esc_char(Lexer* lexer) {
 }
 
 // Scan an identifier
-static inline char* lexer_lex_identifier(Lexer* lexer) {
+static inline void lexer_lex_identifier(Lexer* lexer) {
     // char* ident = (char*)malloc(sizeof(char) * MAX_TOKEN_SIZE);
     char ch = LEXER_CURR_CHAR;
-    int prev_offset = lexer->offset;
+    // int prev_offset = lexer->offset;
 
     while(isLetter(ch) || isDigit(ch)) {
         ch = lexer_advance(lexer);
     }
 
-    int offset_diff = lexer->offset - prev_offset;
-    if(offset_diff != 0) {
-        char* ident = (char*)malloc(sizeof(char) * offset_diff);
-        strncpy(ident, lexer->buffer, offset_diff);
-        return ident;
-    } else {
-        return nullchar;
-    }
+    lexer_maketoken(lexer, IDENTIFIER);
+    // int offset_diff = lexer->offset - prev_offset;
+    // if(offset_diff != 0) {
+    //     char* ident = (char*)malloc(sizeof(char) * offset_diff);
+    //     strncpy(ident, lexer->buffer, offset_diff);
+    //     return ident;
+    // } else {
+    //     return nullchar;
+    // }
 }
 
-static inline char* lexer_lex_number(Lexer* lexer) {
-    char* num = (char*)malloc(sizeof(char) * MAX_TOKEN_SIZE);
+static inline void lexer_lex_digit(Lexer* lexer) {
     char ch = LEXER_CURR_CHAR;
     int prev_offset = lexer->offset;
 
@@ -220,8 +220,9 @@ static inline char* lexer_lex_number(Lexer* lexer) {
         ch = lexer_advance(lexer);
     }
 
-    strncpy(num, lexer->buffer, lexer->offset - prev_offset);
-    return num;
+    // Integer for now
+    // (TODO) Add more base types
+    lexer_maketoken(lexer, INTEGER);
 }
 
 // Lex the Source files
@@ -251,10 +252,14 @@ static void lexer_lex(Lexer* lexer) {
 
         switch(curr) {
             case nullchar: goto lex_eof;
-            case WHITESPACE_NO_NEWLINE: break;
-            case NEWLINE:
+            // The `-1` is there to prevent an ILLEGAL token kind from being appended to `lexer->tokenList`
+            // NB: Whitespace as a token is useless for our case (will this change later?)
+            case WHITESPACE_NO_NEWLINE: LEXER_INCREMENT_OFFSET; tokenkind = -1; break;
+            case '\n':
                 LEXER_INCREMENT_OFFSET_ONLY;
+                LEXER_INCREMENT_LINENO;
                 LEXER_RESET_COLNO;
+                tokenkind = -1;
                 break;
             // Identifier
             case ALPHA: case '_': lexer_lex_identifier(lexer); break;
@@ -328,6 +333,7 @@ static void lexer_lex(Lexer* lexer) {
                         tokenkind = SLASH; break;
                 }
                 break;
+            case '#': LEXER_INCREMENT_OFFSET; tokenkind = HASH_SIGN; break;
             case '!':
                 switch(next) {
                     case '=':
@@ -421,6 +427,7 @@ static void lexer_lex(Lexer* lexer) {
                     default:
                         tokenkind = TILDA; break;
                 }
+                break;
             case '.':
                 switch(next) {
                     case '.':
@@ -430,7 +437,7 @@ static void lexer_lex(Lexer* lexer) {
                         if(c == '.') {
                             LEXER_INCREMENT_OFFSET; tokenkind = ELLIPSIS;
                         } else {
-                            token = DDOT;
+                            tokenkind = DDOT;
                         }
                         break;
 
@@ -449,23 +456,16 @@ static void lexer_lex(Lexer* lexer) {
             case '?': tokenkind = QUESTION; break;
             case '@': tokenkind = MACRO; break;
             default:
-                fprintf(stderr, "SyntaxError: Invalid character `%c` at %s:%d:%d", ch, lexer->fname, lexer->lineno,
+                fprintf(stderr, "SyntaxError: Invalid character `%c` at %s:%d:%d\n", curr, lexer->fname, lexer->lineno,
                 lexer->colno);
                 break;
         } // switch(ch)
 
+        if(tokenkind == -1) continue;
         lexer_maketoken(lexer, tokenkind);
-
-        LEXER_INCREMENT_OFFSET_ONLY;
-        if(ch == '\n') {
-            LEXER_RESET_COLNO;
-            LEXER_INCREMENT_LINENO;
-        } else {
-            LEXER_INCREMENT_COLNO;
-        }
     } // while
 
 lex_eof:;
 
-    lexer_maketoken(lexer, TOK_EOF, "TOK_EOF");
+    lexer_maketoken(lexer, TOK_EOF);
 }

@@ -141,7 +141,7 @@ static inline bool lexer_is_EOF(Lexer* lexer);
 void lexer_error(Lexer* lexer, const char* format, ...);
 
 // Make a token
-static void lexer_maketoken(Lexer* lexer, Token* token);
+static void lexer_maketoken(Lexer* lexer, TokenKind kind);
 
 // Scan a comment (single line)
 static inline void lexer_lex_sl_comment(Lexer* lexer);
@@ -152,9 +152,9 @@ static inline char lexer_lex_char(Lexer* lexer);
 // Scan an escape char
 static inline char lexer_lex_esc_char(Lexer* lexer);
 // Scan an identifier
-static inline char* lexer_lex_identifier(Lexer* lexer);
+static inline void lexer_lex_identifier(Lexer* lexer);
 // Scan a digit
-static inline char* lexer_lex_number(Lexer* lexer);
+static inline void lexer_lex_number(Lexer* lexer);
 // Lex the Source files
 static void lexer_lex(Lexer* lexer);
 
