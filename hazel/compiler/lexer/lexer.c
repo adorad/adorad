@@ -273,16 +273,11 @@ static void lexer_lex(Lexer* lexer) {
             case '=':
                 switch(next) {
                     case '=':
-                        LEXER_INCREMENT_OFFSET;
-                        tokenkind = EQUALS_EQUALS;
-                        break;
+                        LEXER_INCREMENT_OFFSET; tokenkind = EQUALS_EQUALS; break;
                     case '>':
-                        LEXER_INCREMENT_OFFSET;
-                        tokenkind = EQUALS_ARROW;
-                        break;
+                        LEXER_INCREMENT_OFFSET; tokenkind = EQUALS_ARROW; break;
                     default: 
-                        tokenkind = EQUALS;
-                        break;
+                        tokenkind = EQUALS; break;
                 }
                 break;
             case '+':
@@ -290,16 +285,11 @@ static void lexer_lex(Lexer* lexer) {
                     // This might be removed at some point. 
                     // '++' serves no purpose since Hazel doesn't (and won't) support pointer arithmetic.
                     case '+':
-                        LEXER_INCREMENT_OFFSET;
-                        tokenkind = PLUS_PLUS;
-                        break;
+                        LEXER_INCREMENT_OFFSET; tokenkind = PLUS_PLUS; break;
                     case '=':
-                        LEXER_INCREMENT_OFFSET;
-                        tokenkind  = PLUS_EQUALS;
-                        break;
+                        LEXER_INCREMENT_OFFSET; tokenkind  = PLUS_EQUALS; break;
                     default:
-                        tokenkind = PLUS;
-                        break;
+                        tokenkind = PLUS; break;
                 }
                 break;
             case '-':
@@ -307,34 +297,23 @@ static void lexer_lex(Lexer* lexer) {
                     // This might be removed at some point. 
                     // '--' serves no purpose since Hazel doesn't (and won't) support pointer arithmetic.
                     case '-':
-                        LEXER_INCREMENT_OFFSET;
-                        tokenkind = MINUS_MINUS;
-                        break;
+                        LEXER_INCREMENT_OFFSET; tokenkind = MINUS_MINUS; break;
                     case '=':
-                        LEXER_INCREMENT_OFFSET;
-                        tokenkind = MINUS_EQUALS;
-                        break;
+                        LEXER_INCREMENT_OFFSET; tokenkind = MINUS_EQUALS; break;
                     case '>':
-                        LEXER_INCREMENT_OFFSET;
-                        tokenkind = RARROW;
-                        break;
+                        LEXER_INCREMENT_OFFSET; tokenkind = RARROW; break;
                     default: 
-                        tokenkind = MINUS;
-                        break;
+                        tokenkind = MINUS; break;
                 } 
                 break;
             case '*':
                 switch(next) {
                     case '*':
-                        LEXER_INCREMENT_OFFSET;
-                        tokenkind = MULT_MULT;
-                        break;
+                        LEXER_INCREMENT_OFFSET; tokenkind = MULT_MULT; break;
                     case '=':
-                        LEXER_INCREMENT_OFFSET;
-                        tokenkind = MULT_EQUALS;
-                        break;
+                        LEXER_INCREMENT_OFFSET; tokenkind = MULT_EQUALS; break;
                     default:
-                        tokenkind = MULT;
+                        tokenkind = MULT; break;
                 }
                 break;
             case '/':
@@ -344,144 +323,104 @@ static void lexer_lex(Lexer* lexer) {
                     case '/': lexer_lex_sl_comment(lexer); break;
                     case '*': lexer_lex_ml_comment(lexer); break;
                     case '=':
-                        LEXER_INCREMENT_OFFSET;
-                        tokenkind = SLASH_EQUALS;
-                        break;
+                        LEXER_INCREMENT_OFFSET; tokenkind = SLASH_EQUALS; break;
                     default: 
-                        tokenkind = SLASH;
-                        break;
+                        tokenkind = SLASH; break;
                 }
                 break;
             case '!':
                 switch(next) {
                     case '=':
-                        LEXER_INCREMENT_OFFSET;
-                        tokenkind = EXCLAMATION_EQUALS;
-                        break;
+                        LEXER_INCREMENT_OFFSET; tokenkind = EXCLAMATION_EQUALS; break;
                     default:
-                        tokenkind = MINUS_MINUS;
-                        break;
+                        tokenkind = MINUS_MINUS; break;
                 }
                 break;
             case '%':
                 switch(next) {
                     case '%': 
-                        LEXER_INCREMENT_OFFSET;
-                        tokenkind = MOD_MOD;
-                        break;
+                        LEXER_INCREMENT_OFFSET; tokenkind = MOD_MOD; break;
                     case '=':
-                        LEXER_INCREMENT_OFFSET;
-                        tokenkind = MOD_EQUALS;
-                        break;
+                        LEXER_INCREMENT_OFFSET; tokenkind = MOD_EQUALS; break;
                     default:
-                        tokenkind = MOD;
-                        break;
+                        tokenkind = MOD; break;
                 }
                 break;
             case '&':
                 switch(next) {
                     case '&':
-                        LEXER_INCREMENT_OFFSET;
-                        tokenkind = AND_AND;
-                        break;
+                        LEXER_INCREMENT_OFFSET; tokenkind = AND_AND; break;
                     case '^':
-                        LEXER_INCREMENT_OFFSET;
-                        tokenkind = AND_NOT;
-                        break;
+                        LEXER_INCREMENT_OFFSET; tokenkind = AND_NOT; break;
                     case '=':
-                        LEXER_INCREMENT_OFFSET;
-                        tokenkind = AND_EQUALS;
-                        break;
+                        LEXER_INCREMENT_OFFSET; tokenkind = AND_EQUALS; break;
                     default:
-                        tokenkind = AND;
-                        break;
+                        tokenkind = AND; break;
                 }
                 break;
             case '|':
                 switch(next) {
                     case '|':
-                        LEXER_INCREMENT_OFFSET;
-                        tokenkind = OR_OR;
-                        break;
+                        LEXER_INCREMENT_OFFSET; tokenkind = OR_OR; break;
                     case '=':
-                        LEXER_INCREMENT_OFFSET;
-                        tokenkind = OR_EQUALS;
-                        break;
+                        LEXER_INCREMENT_OFFSET; tokenkind = OR_EQUALS; break;
                     default:
-                        tokenkind = OR;
-                        break;
+                        tokenkind = OR; break;
                 }
                 break;
             case '^':
                 switch(next) {
                     case '=':
-                        LEXER_INCREMENT_OFFSET;
-                        tokenkind = XOR_EQUALS;
-                        break;
+                        LEXER_INCREMENT_OFFSET; tokenkind = XOR_EQUALS; break;
                     default:
-                        tokenkind = XOR;
-                        break;
+                        tokenkind = XOR; break;
                 }
                 break;
             case '<':
                 switch(next) {
                     case '=':
-                        LEXER_INCREMENT_OFFSET;
-                        tokenkind = LESS_THAN_OR_EQUAL_TO;
-                        break;
+                        LEXER_INCREMENT_OFFSET; tokenkind = LESS_THAN_OR_EQUAL_TO; break;
                     case '-':
-                        LEXER_INCREMENT_OFFSET;
-                        tokenkind = LARROW;
-                        break;
+                        LEXER_INCREMENT_OFFSET; tokenkind = LARROW; break;
                     case '<':
                         LEXER_INCREMENT_OFFSET;
                         char c = lexer_peek(lexer);
 
                         if(c == '=') {
-                            LEXER_INCREMENT_OFFSET;
-                            tokenkind = LBITSHIFT_EQUALS;
+                            LEXER_INCREMENT_OFFSET; tokenkind = LBITSHIFT_EQUALS;
                         } else {
                             tokenkind = LBITSHIFT;
                         }
                         break;
                     default:
-                        tokenkind = LESS_THAN;
-                        break;
+                        tokenkind = LESS_THAN; break;
                 }
                 break;
             case '>':
                 switch(next) {
                     case '=':
-                        LEXER_INCREMENT_OFFSET;
-                        tokenkind = GREATER_THAN_OR_EQUAL_TO;
-                        break;
+                        LEXER_INCREMENT_OFFSET; tokenkind = GREATER_THAN_OR_EQUAL_TO; break;
                     case '>':
                         LEXER_INCREMENT_OFFSET;
                         char c = lexer_peek(lexer);
 
                         if(c == '=') {
-                            LEXER_INCREMENT_OFFSET;
-                            tokenkind = RBITSHIFT_EQUALS;
+                            LEXER_INCREMENT_OFFSET; tokenkind = RBITSHIFT_EQUALS;
                         } else {
                             tokenkind = RBITSHIFT;
                         }
                         break;
                     default:
-                        tokenkind = GREATER_THAN;
-                        break;
+                        tokenkind = GREATER_THAN; break;
                 }
                 break;
             case '~':
                 switch(next) {
                     case '=':
-                        LEXER_INCREMENT_OFFSET;
-                        tokenkind = TILDA_EQUALS;
+                        LEXER_INCREMENT_OFFSET; tokenkind = TILDA_EQUALS; break;
                     default:
-                        tokenkind = TILDA;
+                        tokenkind = TILDA; break;
                 }
-            case '?':
-                tokenkind = QUESTION;
-                break;
             case '.':
                 switch(next) {
                     case '.':
@@ -489,31 +428,26 @@ static void lexer_lex(Lexer* lexer) {
                         char c = lexer_peek(lexer);
 
                         if(c == '.') {
-                            LEXER_INCREMENT_OFFSET;
-                            tokenkind = ELLIPSIS;
+                            LEXER_INCREMENT_OFFSET; tokenkind = ELLIPSIS;
                         } else {
                             token = DDOT;
                         }
                         break;
 
                     default:
-                        tokenkind = DOT;
-                        break;
+                        tokenkind = DOT; break;
                 }
                 break;
             case ':':
                 switch(next) {
                     case ':':
-                        LEXER_INCREMENT_OFFSET;
-                        tokenkind = COLON_COLON;
-                        break;
+                        LEXER_INCREMENT_OFFSET; tokenkind = COLON_COLON; break;
                     default:
-                        tokenkind = COLON;
-                        break;
+                        tokenkind = COLON; break;
                 }
                 break;
+            case '?': tokenkind = QUESTION; break;
             case '@': tokenkind = MACRO; break;
-
             default:
                 fprintf(stderr, "SyntaxError: Invalid character `%c` at %s:%d:%d", ch, lexer->fname, lexer->lineno,
                 lexer->colno);
