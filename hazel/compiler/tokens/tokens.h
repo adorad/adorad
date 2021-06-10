@@ -142,13 +142,14 @@ TOKENKIND(TOK___OPERATORS_END, ""), \
 \
     /* Separators */ \
 TOKENKIND(TOK___SEPARATORS_BEGIN, ""), \
-    TOKENKIND(COLON,     ":"),   \
-    TOKENKIND(SEMICOLON, ";"),   \
-    TOKENKIND(COMMA,     ","),   \
-    TOKENKIND(DOT,       "."),   \
-    TOKENKIND(DDOT,      ".."),  \
-    TOKENKIND(ELLIPSIS,  "..."), \
-    TOKENKIND(BACKSLASH, "\\"),  \
+    TOKENKIND(COLON,       ":"),   \
+    TOKENKIND(COLON_COLON, "::"),  \
+    TOKENKIND(SEMICOLON,   ";"),   \
+    TOKENKIND(COMMA,       ","),   \
+    TOKENKIND(DOT,         "."),   \
+    TOKENKIND(DDOT,        ".."),  \
+    TOKENKIND(ELLIPSIS,    "..."), \
+    TOKENKIND(BACKSLASH,   "\\"),  \
 TOKENKIND(TOK___SEPARATORS_END, ""), \
 \
     /* Keywords */                    \
@@ -224,13 +225,13 @@ typedef enum {
     Main Token Struct 
 */
 typedef struct {
-    TokenKind type;     // Token Type
+    TokenKind kind;     // Token Kind
     UInt32 offset;      // Offset of the first character of the Token
     UInt32 tok_length;  // Token length (UTF-8)
     const char* value;  // Token value
-    UInt32 lineno;     // the line number in the source where the token occured
-    UInt32 colno;      // the column number
-    const char* fname; // /path/to/file.hzl
+    UInt32 lineno;      // the line number in the source where the token occured
+    UInt32 colno;       // the column number
+    const char* fname;  // /path/to/file.hzl
 } Token;
 
 // Create a basic (ILLEGAL) token

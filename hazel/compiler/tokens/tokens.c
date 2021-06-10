@@ -159,8 +159,8 @@ static TokenKind token_threechar(char c1, char c2, char c3) {
 }
 
 // Convert a Token to its respective String representation
-const char* token_toString(Token* token) {
-    switch(token->type) {
+const char* token_toString(TokenKind kind) {
+    switch(kind) {
         // Special (internal usage only)
         case TOK_EOF: return "TOK_EOF";
         case TOK_NULL: return "TOK_NULL";
@@ -257,6 +257,7 @@ const char* token_toString(Token* token) {
 
         // Separators
         case COLON: return ":";  
+        case COLON_COLON: return "::";  
         case SEMICOLON: return ";";  
         case COMMA: return ":";  
         case DOT: return ".";  
