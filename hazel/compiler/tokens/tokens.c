@@ -16,7 +16,7 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 // Token constructor
 Token* token_init(void) {
     Token* token = calloc(1, sizeof(Token));
-    token->type = TOK_ILLEGAL; 
+    token->kind = TOK_ILLEGAL; 
     token->offset = 0; 
     token->tok_length = 0; 
     token->value = "";
@@ -29,7 +29,7 @@ Token* token_init(void) {
 
 // Reset a Token instance
 void token_reset_token(Token* token) {
-    token->type = TOK_ILLEGAL; 
+    token->kind = TOK_ILLEGAL; 
     token->offset = 0; 
     token->tok_length = 0; 
     token->value = "";
@@ -326,32 +326,32 @@ inline bool token_isJumpStatement(Token* token) {
 	// Break (BREAK)
 	// Continue (CONTINUE)
 	// Return (RETURN)
-	return (token->type == BREAK || token->type == CONTINUE || token->type == RETURN); 
+	return (token->kind == BREAK || token->kind == CONTINUE || token->kind == RETURN); 
 } 
 
 inline bool token_isLoopStatement(Token* token) {
 	// While (WHILE)
 	// For (FOR)
-	return (token->type == WHILE || token->type == FOR); 
+	return (token->kind == WHILE || token->kind == FOR); 
 } 
 
 inline bool token_isFlowStatement(Token* token) {
 	// If 
 	// Match 
-	return (token->type == IF || token->type == MATCH); 
+	return (token->kind == IF || token->kind == MATCH); 
 } 
 
 inline bool token_isMatchStatement(Token* token) {
 	// Declarations used in match-case 
-	return (token->type == MATCH || token->type == CASE || token->type == DEFAULT); 
+	return (token->kind == MATCH || token->kind == CASE || token->kind == DEFAULT); 
 } 
 
 inline bool token_isExpressionStatement(Token* token) {
 	// Postfix Operations: isPrimaryExpressionStatement or module (for files)
 	// Unary Ops: PLUS, MINUS, EXCLAMATION, NOT
 	// RAISE 
-	return (token_isPrimaryExpressionStatement(token) || token->type == MODULE || token->type == PLUS || 
-            token->type == MINUS || token->type == EXCLAMATION || token->type == NOT || token->type == RAISE); 
+	return (token_isPrimaryExpressionStatement(token) || token->kind == MODULE || token->kind == PLUS || 
+            token->kind == MINUS || token->kind == EXCLAMATION || token->kind == NOT || token->kind == RAISE); 
 } 
 
 inline bool token_isPrimaryExpressionStatement(Token* token) {
@@ -362,10 +362,10 @@ inline bool token_isPrimaryExpressionStatement(Token* token) {
 	// FUNC
 	// ILLEGAL
 	// '(' expression ')'
-	return (token->type == INTEGER || token->type == BIN_INT || token->type == HEX_INT || token->type == IMAG || 
-			token->type == TOK_FLOAT || token->type == RUNE || token->type == STRING || token->type == IDENTIFIER || 
-			token->type == TOK_NULL || token->type == FUNC || token->type == TOK_ILLEGAL || token->type == LPAREN || 
-			token->type == RPAREN); 
+	return (token->kind == INTEGER || token->kind == BIN_INT || token->kind == HEX_INT || token->kind == IMAG || 
+			token->kind == TOK_FLOAT || token->kind == RUNE || token->kind == STRING || token->kind == IDENTIFIER || 
+			token->kind == TOK_NULL || token->kind == FUNC || token->kind == TOK_ILLEGAL || token->kind == LPAREN || 
+			token->kind == RPAREN); 
 } 
 
 inline bool token_isDeclStatement(Token* token) {
@@ -375,78 +375,78 @@ inline bool token_isDeclStatement(Token* token) {
 	// Enum Declaration (ENUM)
 	// Module Declaration (MODULE)
 	// Empty Declaration (SEMICOLON)
-	return (token->type == ANY || token->type == FUNC || token->type == CLASS || token->type == STRUCT || 
-			token->type == ENUM || token->type == MODULE || token->type == SEMICOLON); 
+	return (token->kind == ANY || token->kind == FUNC || token->kind == CLASS || token->kind == STRUCT || 
+			token->kind == ENUM || token->kind == MODULE || token->kind == SEMICOLON); 
 } 
 
 inline bool token_isSpecial(Token* token) {
-	return (token->type == TOK_ID || token->type == TOK_EOF || token->type == TOK_ILLEGAL || token->type == COMMENT); 
+	return (token->kind == TOK_ID || token->kind == TOK_EOF || token->kind == TOK_ILLEGAL || token->kind == COMMENT); 
 }
 
 inline bool token_isLiteral(Token* token) {
-	return token->type > TOK___LITERALS_BEGIN && token->type < TOK___LITERALS_END; 
+	return token->kind > TOK___LITERALS_BEGIN && token->kind < TOK___LITERALS_END; 
 }
 
 inline bool token_isKeyword(Token* token) {
-	return token->type > TOK___KEYWORDS_BEGIN && token->type < TOK___KEYWORDS_END; 
+	return token->kind > TOK___KEYWORDS_BEGIN && token->kind < TOK___KEYWORDS_END; 
 }
 
 inline bool token_isOperator(Token* token) {
-	return token->type > TOK___OPERATORS_BEGIN && token->type < TOK___OPERATORS_END; 
+	return token->kind > TOK___OPERATORS_BEGIN && token->kind < TOK___OPERATORS_END; 
 }
 
 inline bool token_isComparisonOperator(Token* token) {
-	return token->type > TOK___COMP_OPERATORS_BEGIN && token->type < TOK___COMP_OPERATORS_END; 
+	return token->kind > TOK___COMP_OPERATORS_BEGIN && token->kind < TOK___COMP_OPERATORS_END; 
 }
 
 inline bool token_isAssignmentOperator(Token* token) {
-	return token->type > TOK___ASSIGNMENT_OPERATORS_BEGIN && token->type < TOK___ASSIGNMENT_OPERATORS_END; 
+	return token->kind > TOK___ASSIGNMENT_OPERATORS_BEGIN && token->kind < TOK___ASSIGNMENT_OPERATORS_END; 
 }
 
 inline bool token_isDelimiter(Token* token) {
-	return token->type > TOK___DELIMITERS_OPERATORS_BEGIN && token->type < TOK___DELIMITERS_OPERATORS_END;
+	return token->kind > TOK___DELIMITERS_OPERATORS_BEGIN && token->kind < TOK___DELIMITERS_OPERATORS_END;
 }
 
 inline bool token_isArrow(Token* token) {
-	return token->type > TOK___ARROW_OPERATORS_BEGIN && token->type < TOK___ARROW_OPERATORS_END;
+	return token->kind > TOK___ARROW_OPERATORS_BEGIN && token->kind < TOK___ARROW_OPERATORS_END;
 }
 
 inline bool token_isBitwise(Token* token) {
-	return token->type > TOK___BITWISE_OPERATORS_BEGIN && token->type < TOK___BITWISE_OPERATORS_END;
+	return token->kind > TOK___BITWISE_OPERATORS_BEGIN && token->kind < TOK___BITWISE_OPERATORS_END;
 }
 
 inline bool token_isSeparator(Token* token) {
-	return token->type > TOK___SEPARATORS_BEGIN && token->type < TOK___SEPARATORS_END;
+	return token->kind > TOK___SEPARATORS_BEGIN && token->kind < TOK___SEPARATORS_END;
 }
 
 inline bool token_isIdentifier(Token* token) {
-	return token->type == IDENTIFIER; 
+	return token->kind == IDENTIFIER; 
 }
 
 inline bool token_isEOF(Token* token) {
-	return token->type == TOK_EOF; 
+	return token->kind == TOK_EOF; 
 }
 
 inline bool token_isNULL(Token* token) {
-	return token->type == TOK_NULL; 
+	return token->kind == TOK_NULL; 
 }
 
 inline bool token_isIllegal(Token* token) {
-	return token->type == TOK_ILLEGAL; 
+	return token->kind == TOK_ILLEGAL; 
 }
 
 inline bool token_isMacro(Token* token) {
-	return token->type == MACRO; 
+	return token->kind == MACRO; 
 }
 
 inline bool token_isImport(Token* token) {
-	return token->type == IMPORT; 
+	return token->kind == IMPORT; 
 }
 
 inline bool token_isInclude(Token* token) {
-	return token->type == INCLUDE; 
+	return token->kind == INCLUDE; 
 }
 
 inline bool token_isSemiColon(Token* token) {
-	return token->type == SEMICOLON; 
+	return token->kind == SEMICOLON; 
 }
