@@ -39,7 +39,7 @@
 //     return lexer;
 // }
 
-// // Returns the current character in the Lexical Buffer and advances to the next element.
+// // Returns the current character in the Lexical Buffer and advances to the curr element.
 // // It does this by incrementing the buffer offset.
 // inline char lexer_next(Lexer* lexer) {
 //     LEXER_INCREMENT_COLNO;
@@ -207,23 +207,23 @@
 //     LEXER_INCREMENT_TOK_LENGTH;
 
 //     // Do not change the declaration order of _next_ and _curr_
-//     char next = lexer_next(lexer); 
-//     char curr = lexer_peek_curr(lexer); 
+//     char curr = lexer_next(lexer); 
+//     char next  = lexer_peek_curr(lexer); 
 //     TokenKind token = TOK_ILLEGAL; 
 
-//     switch(next) {
+//     switch(curr) {
 //         // '='
 //         case '=':
 //             // '=='
-//             if(curr == '=') {
+//             if(next  == '=') {
 //                 LEXER_INCREMENT_OFFSET;
 //                 LEXER_INCREMENT_TOK_LENGTH;
 
 //                 // 
 //                 // Uncomment the following ONLY if Hazel ends up supporting '==='
-//                 // curr = lexer_peek_curr(lexer); 
+//                 // next  = lexer_peek_curr(lexer); 
 //                 // // '===' 
-//                 // if(curr == '=') {
+//                 // if(next  == '=') {
 //                 //     INCREMENT_OFFSET;
 //                 //     INCREMENT_TOKENLENGTH;
 //                 //     token = EQUALS_EQUALS_EQUALS;
@@ -235,7 +235,7 @@
 //             } 
             
 //             // '=>'
-//             if(curr == '>') {
+//             if(next  == '>') {
 //                 LEXER_INCREMENT_OFFSET;
 //                 LEXER_INCREMENT_TOK_LENGTH;
 //                 token = EQUALS_ARROW;
@@ -250,14 +250,14 @@
 //             // '++' serves no purpose for us since we don't support pointer arithmetic
 //             // 
 //             // '++'
-//             if(curr == '+') {
+//             if(next  == '+') {
 //                 LEXER_INCREMENT_OFFSET;
 //                 LEXER_INCREMENT_TOK_LENGTH;
 //                 token = PLUS_PLUS;
 //             }
 
 //             // '+='
-//             if(curr == '=') {
+//             if(next  == '=') {
 //                 LEXER_INCREMENT_OFFSET; 
 //                 LEXER_INCREMENT_TOK_LENGTH;
 
@@ -273,21 +273,21 @@
 //             // '--' serves no purpose for us since we don't support pointer arithmetic
 //             // 
 //             // '--'
-//             if(curr == '-') {
+//             if(next  == '-') {
 //                 LEXER_INCREMENT_OFFSET;
 //                 LEXER_INCREMENT_TOK_LENGTH;
 //                 token = MINUS_MINUS;
 //             }
 
 //             // '->'
-//             if(curr == '>') {
+//             if(next  == '>') {
 //                 LEXER_INCREMENT_OFFSET;
 //                 LEXER_INCREMENT_TOK_LENGTH;
 //                 token = RARROW;
 //             }
 
 //             // '-='
-//             if(curr == '=') {
+//             if(next  == '=') {
 //                 LEXER_INCREMENT_OFFSET; 
 //                 LEXER_INCREMENT_TOK_LENGTH;
 
@@ -300,14 +300,14 @@
 //         // '*'
 //         case '*':
 //             // '**'
-//             if(curr == '*') {
+//             if(next  == '*') {
 //                 LEXER_INCREMENT_OFFSET;
 //                 LEXER_INCREMENT_TOK_LENGTH;
 //                 token = MULT_MULT;
 //             }
 
 //             // '*='
-//             if(curr == '=') {
+//             if(next  == '=') {
 //                 LEXER_INCREMENT_OFFSET; 
 //                 LEXER_INCREMENT_TOK_LENGTH;
 
@@ -320,14 +320,14 @@
 //         // '/'
 //         case '/':
 //             // '//'
-//             if(curr == '/') {
+//             if(next  == '/') {
 //                 LEXER_INCREMENT_OFFSET;
 //                 LEXER_INCREMENT_TOK_LENGTH;
 //                 token = SLASH_SLASH;
 //             }
 
 //             // '/='
-//             if(curr == '=') {
+//             if(next  == '=') {
 //                 LEXER_INCREMENT_OFFSET; 
 //                 LEXER_INCREMENT_TOK_LENGTH;
 
@@ -340,7 +340,7 @@
 //         // '!'
 //         case '!':
 //             // '!='
-//             if(curr == '=') {
+//             if(next  == '=') {
 //                 LEXER_INCREMENT_OFFSET; 
 //                 LEXER_INCREMENT_TOK_LENGTH;
 
@@ -353,14 +353,14 @@
 //         // '%'
 //         case '%':
 //             // '%%'
-//             if(curr == '%') {
+//             if(next  == '%') {
 //                 LEXER_INCREMENT_OFFSET;
 //                 LEXER_INCREMENT_TOK_LENGTH;
 //                 token = MOD_MOD;
 //             }
 
 //             // '%='
-//             if(curr == '=') {
+//             if(next  == '=') {
 //                 LEXER_INCREMENT_OFFSET; 
 //                 LEXER_INCREMENT_TOK_LENGTH;
 
@@ -373,21 +373,21 @@
 //         // '&'
 //         case '&':
 //             // '&&'
-//             if(curr == '&') {
+//             if(next  == '&') {
 //                 LEXER_INCREMENT_OFFSET;
 //                 LEXER_INCREMENT_TOK_LENGTH;
 //                 token = AND_AND;
 //             }
 
 //             // '&^'
-//             if(curr == '^') {
+//             if(next  == '^') {
 //                 LEXER_INCREMENT_OFFSET;
 //                 LEXER_INCREMENT_TOK_LENGTH;
 //                 token = AND_NOT;
 //             }
 
 //             // '&='
-//             if(curr == '=') {
+//             if(next  == '=') {
 //                 LEXER_INCREMENT_OFFSET; 
 //                 LEXER_INCREMENT_TOK_LENGTH;
 
@@ -400,14 +400,14 @@
 //         // '|'
 //         case '|':
 //             // '||'
-//             if(curr == '|') {
+//             if(next  == '|') {
 //                 LEXER_INCREMENT_OFFSET;
 //                 LEXER_INCREMENT_TOK_LENGTH;
 //                 token = OR_OR;
 //             }
 
 //             // '|='
-//             if(curr == '=') {
+//             if(next  == '=') {
 //                 LEXER_INCREMENT_OFFSET; 
 //                 LEXER_INCREMENT_TOK_LENGTH;
 
@@ -420,7 +420,7 @@
 //         // '^'
 //         case '^':
 //             // '^='
-//             if(curr == '=') {
+//             if(next  == '=') {
 //                 LEXER_INCREMENT_OFFSET; 
 //                 LEXER_INCREMENT_TOK_LENGTH;
 
@@ -438,7 +438,7 @@
 //         // '<'
 //         case '<':
 //             // '<='
-//             if(curr == '=') {
+//             if(next  == '=') {
 //                 LEXER_INCREMENT_OFFSET; 
 //                 LEXER_INCREMENT_TOK_LENGTH;
 
@@ -446,7 +446,7 @@
 //             }
 
 //             // '<-'
-//             else if(curr == '-') {
+//             else if(next  == '-') {
 //                 LEXER_INCREMENT_OFFSET; 
 //                 LEXER_INCREMENT_TOK_LENGTH;
 
@@ -454,13 +454,13 @@
 //             }
 
 //             // '<<'
-//             else if(curr == '<') {
+//             else if(next  == '<') {
 //                 LEXER_INCREMENT_OFFSET;
 //                 LEXER_INCREMENT_TOK_LENGTH;
 
 //                 // '<<='
-//                 curr = lexer_peek_curr(lexer);
-//                 if(curr == '=') {
+//                 next  = lexer_peek_curr(lexer);
+//                 if(next  == '=') {
 //                     LEXER_INCREMENT_OFFSET;
 //                     LEXER_INCREMENT_TOK_LENGTH;
 //                     token = LBITSHIFT_EQUALS;
@@ -475,7 +475,7 @@
 //         // '>'
 //         case '>':
 //             // '>='
-//             if(curr == '=') {
+//             if(next  == '=') {
 //                 LEXER_INCREMENT_OFFSET; 
 //                 LEXER_INCREMENT_TOK_LENGTH;
 
@@ -483,13 +483,13 @@
 //             } 
 
 //             // '>>'
-//             else if(curr == '>') {
+//             else if(next  == '>') {
 //                 LEXER_INCREMENT_OFFSET;
 //                 LEXER_INCREMENT_TOK_LENGTH;
 
 //                 // '>>='
-//                 curr = lexer_peek_curr(lexer);
-//                 if(curr == '=') {
+//                 next  = lexer_peek_curr(lexer);
+//                 if(next  == '=') {
 //                     LEXER_INCREMENT_OFFSET;
 //                     LEXER_INCREMENT_TOK_LENGTH;
 //                     token = RBITSHIFT_EQUALS;
@@ -504,7 +504,7 @@
 //         // '~'
 //         case '~':
 //             // '~='
-//             if(curr == '=') {
+//             if(next  == '=') {
 //                 LEXER_INCREMENT_OFFSET; 
 //                 LEXER_INCREMENT_TOK_LENGTH;
 
@@ -531,21 +531,21 @@
 //     LEXER_INCREMENT_TOK_LENGTH;
 
 //     // Do not change the declaration order of _next_ and _curr_
-//     char next = lexer_next(lexer); 
-//     char curr = lexer_peek_curr(lexer); 
+//     char curr = lexer_next(lexer); 
+//     char next  = lexer_peek_curr(lexer); 
 //     TokenKind token = TOK_ILLEGAL; 
 
 //     switch(next) {
 //         // '.'
 //         case '.':
 //             // '..'
-//             if(curr == '.') {
+//             if(next  == '.') {
 //                 LEXER_INCREMENT_OFFSET;
 //                 LEXER_INCREMENT_TOK_LENGTH;
 
 //                 // '...'
-//                 curr = lexer_peek_curr(lexer);
-//                 if(curr == '.') {
+//                 next  = lexer_peek_curr(lexer);
+//                 if(next  == '.') {
 //                     LEXER_INCREMENT_OFFSET;
 //                     LEXER_INCREMENT_TOK_LENGTH;
 //                     token = ELLIPSIS;
@@ -577,8 +577,8 @@
 //     LEXER_INCREMENT_TOK_LENGTH;
 
 //     // Do not change the declaration order of _next_ and _curr_
-//     char next = lexer_next(lexer); 
-//     char curr = lexer_peek_curr(lexer); 
+//     char curr = lexer_next(lexer); 
+//     char next  = lexer_peek_curr(lexer); 
 //     TokenKind token = TOK_ILLEGAL; 
 
 //     switch(next) {       
@@ -604,8 +604,8 @@
 //     LEXER_INCREMENT_TOK_LENGTH;
 //     TokenKind token = TOK_ILLEGAL;
 
-//     char curr = lexer_peek_curr(lexer); 
-//     if(curr == '@')
+//     char next  = lexer_peek_curr(lexer); 
+//     if(next  == '@')
 //         token = MACRO;
 
 //     lexer_finalize_token(lexer, token);

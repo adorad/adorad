@@ -22,8 +22,8 @@ int main(int argc, const char* const argv[]) {
     //     // printf("\n");
     // }
 
-	char* buffer = readFile("test/LexerDemo.hzl");
-    // char* buffer = "abcdefghijklmnopqrstuvwxyz";
+	// char* buffer = readFile("test/LexerDemo.hzl");
+    char* buffer = "0123456789abcdefghijklmnopqrstuvwxyz";
 	Lexer* lexer = lexer_init(buffer); 
     printf("Lexer buffer: \n%s\n", lexer->buffer);
     printf("--------------\n");
