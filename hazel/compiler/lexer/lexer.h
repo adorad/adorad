@@ -40,33 +40,22 @@ typedef struct Lexer {
                             // and the curr char)
 
     Token token;            // current token
+    Token* tokenList;       // list of tokens
+    UInt64 tokenList_cap;   // allocated capacity of `tokenList`(changes whenever we run out of memory and realloc)
+    UInt64 num_tokens;      // number of tokens in `tokenList`. This is used when appending tokens to `tokenList`
     UInt32 lineno;          // the line number in the source where the token occured
     UInt32 colno;           // the column number
     const char* fname;      // /path/to/file.hzl
 
     bool is_inside_str;     // set to true inside a string
+    int nest_level;         // used to infer if we're inside many `{}`s
 } Lexer;
 
-Lexer* lexer_init(const char* buffer);
-static void lexer_print_stats(Lexer* lexer);
-
-// Returns the current character in the Lexical Buffer and advances to the next element.
-// It does this by incrementing the buffer offset.
-static inline char lexer_advance(Lexer* lexer);
-// Advance `n` characters in the Lexical Buffer
-static inline char lexer_advance_n(Lexer* lexer, UInt32 n);
-
-// Returns the previous `n` elements in the Lexical buffer.
-// This is non-destructive -- the buffer offset is not updated.
-static inline char lexer_prev(Lexer* lexer, UInt32 n);
-
-// Returns the current element in the Lexical Buffer.
-static inline char lexer_peek(Lexer* lexer);
-// "Look ahead" `n` characters in the Lexical buffer.
-// It _does not_ increment the buffer offset.
-static inline char lexer_peek_n(Lexer* lexer, UInt32 n);
-
-static inline bool lexer_is_EOF(Lexer* lexer);
+// This macro defines how many tokens we initially expect in Lexer->tokenList. 
+// When this limit is reached, we realloc using this same constant
+#define TOKENLIST_ALLOC_SIZE   4096
+// Maximum length of an individual token
+#define MAX_TOKEN_SIZE         250
 
 #ifndef LEXER_MACROS_
 #define LEXER_MACROS_
@@ -126,10 +115,42 @@ static inline bool lexer_is_EOF(Lexer* lexer);
 
 #endif // LEXER_MACROS_
 
+Lexer* lexer_init(const char* buffer);
+static void lexer_tokenlist_append(Lexer* lexer, Token* tk);
+static void lexer_free(Lexer* lexer);
+static void lexer_print_stats(Lexer* lexer);
+
+// Returns the current character in the Lexical Buffer and advances to the next element.
+// It does this by incrementing the buffer offset.
+static inline char lexer_advance(Lexer* lexer);
+// Advance `n` characters in the Lexical Buffer
+static inline char lexer_advance_n(Lexer* lexer, UInt32 n);
+
+// Returns the previous `n` elements in the Lexical buffer.
+// This is non-destructive -- the buffer offset is not updated.
+static inline char lexer_prev(Lexer* lexer, UInt32 n);
+
+// Returns the current element in the Lexical Buffer.
+static inline char lexer_peek(Lexer* lexer);
+// "Look ahead" `n` characters in the Lexical buffer.
+// It _does not_ increment the buffer offset.
+static inline char lexer_peek_n(Lexer* lexer, UInt32 n);
+
+static inline bool lexer_is_EOF(Lexer* lexer);
+
 void lexer_error(Lexer* lexer, const char* format, ...);
 
+// Make a token
+static void lexer_maketoken(Lexer* lexer, Token* token);
+
 // Scan a comment (single line)
-static inline char* lexer_lex_comment(Lexer* lexer);
+static inline void lexer_lex_sl_comment(Lexer* lexer);
+// Scan a comment (multi line)
+static inline void lexer_lex_ml_comment(Lexer* lexer);
+// Scan a character
+static inline char lexer_lex_char(Lexer* lexer);
+// Scan an escape char
+static inline char lexer_lex_esc_char(Lexer* lexer);
 // Scan an identifier
 static inline char* lexer_lex_identifier(Lexer* lexer);
 // Scan a digit
