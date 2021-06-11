@@ -28,7 +28,7 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
         #define CSTL_OS_OSX 1
     #endif
 
-#elif defined(__unix__)
+#elif defined(unix) || defined(__unix__) || defined(__unix) || defined(__APPLE__)
     #ifndef CSTL_OS_UNIX
         #define CSTL_OS_UNIX 1
     #endif
@@ -46,6 +46,9 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
     #else 
         #error This Unix Operating System in not supported by Hazel.
     #endif 
+
+#elif defined(_gnu_linux_) || defined(__linux__) && !defined(CSTL_OS_LINUX)
+    #define CSTL_OS_LINUX 1
 
 #elif defined(__NetBSD__)
     #define CSTL_OS_NETBSD

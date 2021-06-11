@@ -45,9 +45,11 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
             #define WIN32_MEAN_AND_LEAN 1
             #define VC_EXTRALEAN        1
         #endif
-        // #pragma warning(push, 0)
-        //     #include <Windows.h>
-        // #pragma warning(pop)
+        
+        #pragma warning(push, 0)
+            #include <Windows.h>
+            // #include <io.h>
+        #pragma warning(pop)
         #undef NOMINMAX
 
         #if !defined(CSTL_WINDOWS_H_INCLUDED)
