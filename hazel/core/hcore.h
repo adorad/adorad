@@ -60,7 +60,6 @@ CREDITS
 #include <hazel/core/debug.h>
 #include <hazel/core/misc.h>
 #include <hazel/core/types.h>
-#include <hazel/core/exception.h>
 #include <hazel/core/io.h>
 #include <hazel/core/memory.h>
 #include <hazel/core/os.h>

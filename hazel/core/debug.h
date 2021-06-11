@@ -19,14 +19,14 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 
 // ========================= Debug + Asserts =========================
 // Enable the use of the non-standard keyword __attribute__ to silence warnings under some compilers
-// #if defined(__GNUC__) || defined(__clang__)
-//     #define CSTL_ATTRIBUTE_(attr)    __attribute__((attr))
-// #else
-//     #define CSTL_ATTRIBUTE_(attr)
-// #endif // __GNUC__
+#if defined(__GNUC__) || defined(__clang__)
+    #define CSTL_ATTRIBUTE_(attr)    __attribute__((attr))
+#else
+    #define CSTL_ATTRIBUTE_(attr)
+#endif // __GNUC__
 
-// static inline int CSTL_ATTRIBUTE_(format (printf, 2, 3))
-// cstlPrintf(int colour, const char* fmt, ...);
+static inline int CSTL_ATTRIBUTE_(format (printf, 2, 3))
+cstlPrintf(int colour, const char* fmt, ...);
 
 // This macro is only for simple assertion checks (that don't require a message to STDOUT).
 // Note that this is not recommended. Use CSTL_CHECK instead
@@ -37,7 +37,7 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
     #define CSTL_DEBUG_CHECK(cond)             CSTL_DEBUG_CHECK1(cond, __LINE__)
 #endif
 
-/*
+
 // This macro is similar to the ones used in Tau, the C/C++ Testing Framework I wrote on a whim!
 // See: https://github.com/jasmcaus/tau
 #ifdef NDEBUG
@@ -117,5 +117,5 @@ cstlPrintf(int colour, const char* fmt, ...) {
     return n;
 #endif // CSTL_UNIX_
 }
-*/
+
 #endif // CSTL_DEBUG_H
