@@ -216,10 +216,18 @@ TOKENKIND(TOK___KEYWORDS_END, ""),    \
 
 
 typedef enum {
-    #define TOKENKIND(tok, str)     tok
+    #define TOKENKIND(kind, str)     kind
         ALLTOKENS
     #undef TOKENKIND
 } TokenKind; 
+
+// String representation of a TokenKind
+// To access the string representation of a TokenKind object, simply use `tokenHash[tokenkind]`
+static const char* tokenHash[] = {
+    #define TOKENKIND(kind, str)    str
+        ALLTOKENS
+    #undef TOKENKIND
+};
 
 /*
     Main Token Struct 
