@@ -1,4 +1,4 @@
-""" Multiline comment
+/* Multiline comment */
 # This is a Python comment
 // This is a Hazel comment
 func input(Int in) -> Bool {

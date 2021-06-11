@@ -13,6 +13,14 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 
 #include <hazel/compiler/tokens/tokens.h>
 
+// String representation of a TokenKind
+// To access the string representation of a TokenKind object, simply use `tokenHash[tokenkind]`
+static const char* tokenHash[] = {
+    #define TOKENKIND(kind, str)    str
+        ALLTOKENS
+    #undef TOKENKIND
+};
+
 // Token constructor
 Token* token_init(void) {
     Token* token = calloc(1, sizeof(Token));

@@ -59,7 +59,7 @@ typedef struct Lexer {
 
 #ifndef LEXER_MACROS_
 #define LEXER_MACROS_
-    // Get current character in the Lexcial buffer
+    // Get the current character in the Lexical buffer
     // NB: This does not increase the offset
     #define LEXER_CURR_CHAR              lexer->buffer[lexer->offset]
     // Increment Token Length
@@ -124,7 +124,7 @@ static void lexer_print_stats(Lexer* lexer);
 // It does this by incrementing the buffer offset.
 static inline char lexer_advance(Lexer* lexer);
 // Advance `n` characters in the Lexical Buffer
-static inline char lexer_advance_n(Lexer* lexer, UInt32 n);
+static inline char lexer_advancen(Lexer* lexer, UInt32 n);
 
 // Returns the previous `n` elements in the Lexical buffer.
 // This is non-destructive -- the buffer offset is not updated.
@@ -134,7 +134,7 @@ static inline char lexer_prev(Lexer* lexer, UInt32 n);
 static inline char lexer_peek(Lexer* lexer);
 // "Look ahead" `n` characters in the Lexical buffer.
 // It _does not_ increment the buffer offset.
-static inline char lexer_peek_n(Lexer* lexer, UInt32 n);
+static inline char lexer_peekn(Lexer* lexer, UInt32 n);
 
 static inline bool lexer_is_EOF(Lexer* lexer);
 
@@ -142,15 +142,19 @@ void lexer_error(Lexer* lexer, const char* format, ...);
 
 // Make a token
 static void lexer_maketoken(Lexer* lexer, TokenKind kind);
+// Make a string token
+static void lexer_makestrtoken(Lexer* lexer, char* value);
 
 // Scan a comment (single line)
 static inline void lexer_lex_sl_comment(Lexer* lexer);
 // Scan a comment (multi line)
 static inline void lexer_lex_ml_comment(Lexer* lexer);
 // Scan a character
-static inline char lexer_lex_char(Lexer* lexer);
+static inline void lexer_lex_char(Lexer* lexer);
 // Scan an escape char
-static inline char lexer_lex_esc_char(Lexer* lexer);
+static inline void lexer_lex_esc_char(Lexer* lexer);
+// Scan a string
+static inline void lexer_lex_string(Lexer* lexer);
 // Scan an identifier
 static inline void lexer_lex_identifier(Lexer* lexer);
 // Scan a digit

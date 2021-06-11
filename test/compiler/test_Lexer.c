@@ -62,12 +62,12 @@ TEST(Lexer, advance_with_newline) {
     CHECK_EQ(lexer->is_inside_str, false);
 }
 
-TEST(Lexer, advance_n) {
+TEST(Lexer, advancen) {
     char* buffer = "abcdefghijklmnopqrstuvwxyz0123456789";
     Lexer* lexer = lexer_init(buffer);
     
     // Go ahead 4 chars
-    char e = lexer_advance_n(lexer, 4); // should be 'e'
+    char e = lexer_advancen(lexer, 4); // should be 'e'
     CHECK_EQ(e, 'e');
     CHECK_EQ(lexer->tokenList_cap, TOKENLIST_ALLOC_SIZE);
     CHECK_EQ(lexer->num_tokens, 0);
@@ -77,7 +77,7 @@ TEST(Lexer, advance_n) {
     CHECK_EQ(lexer->is_inside_str, false);
 
     // Go ahead 1 char
-    char f = lexer_advance_n(lexer, 1); // 'f'
+    char f = lexer_advancen(lexer, 1); // 'f'
     CHECK_EQ(f, 'f');
     CHECK_EQ(lexer->tokenList_cap, TOKENLIST_ALLOC_SIZE);
     CHECK_EQ(lexer->num_tokens, 0);
@@ -87,7 +87,7 @@ TEST(Lexer, advance_n) {
     CHECK_EQ(lexer->is_inside_str, false);
 
     // Go ahead 3 chars
-    char i = lexer_advance_n(lexer, 3); // 'i'
+    char i = lexer_advancen(lexer, 3); // 'i'
     CHECK_EQ(i, 'i');
     CHECK_EQ(lexer->tokenList_cap, TOKENLIST_ALLOC_SIZE);
     CHECK_EQ(lexer->num_tokens, 0);
@@ -97,7 +97,7 @@ TEST(Lexer, advance_n) {
     CHECK_EQ(lexer->is_inside_str, false);
 
     // Go ahead 7 chars
-    char p = lexer_advance_n(lexer, 7); // 'p'
+    char p = lexer_advancen(lexer, 7); // 'p'
     CHECK_EQ(p, 'p');
     CHECK_EQ(lexer->tokenList_cap, TOKENLIST_ALLOC_SIZE);
     CHECK_EQ(lexer->num_tokens, 0);
@@ -107,7 +107,7 @@ TEST(Lexer, advance_n) {
     CHECK_EQ(lexer->is_inside_str, false);
     
     // Go ahead 10 chars
-    char z = lexer_advance_n(lexer, 10); // 'z'
+    char z = lexer_advancen(lexer, 10); // 'z'
     CHECK_EQ(z, 'z');
     CHECK_EQ(lexer->tokenList_cap, TOKENLIST_ALLOC_SIZE);
     CHECK_EQ(lexer->num_tokens, 0);
@@ -117,7 +117,7 @@ TEST(Lexer, advance_n) {
     CHECK_EQ(lexer->is_inside_str, false);
 
     // Go ahead 10 chars
-    char nine = lexer_advance_n(lexer, 10); // '9'
+    char nine = lexer_advancen(lexer, 10); // '9'
     CHECK_EQ(nine, '9');
     CHECK_EQ(lexer->tokenList_cap, TOKENLIST_ALLOC_SIZE);
     CHECK_EQ(lexer->num_tokens, 0);
@@ -127,7 +127,7 @@ TEST(Lexer, advance_n) {
     CHECK_EQ(lexer->is_inside_str, false);
 
     // Go ahead 1 char (end of buff cap)
-    char eof1 = lexer_advance_n(lexer, 1);
+    char eof1 = lexer_advancen(lexer, 1);
     CHECK_EQ(eof1, nullchar);
     // Options should remain the same
     CHECK_EQ(lexer->tokenList_cap, TOKENLIST_ALLOC_SIZE);
@@ -138,7 +138,7 @@ TEST(Lexer, advance_n) {
     CHECK_EQ(lexer->is_inside_str, false);
 
     // Go ahead 4 more chars (end of cap)
-    char eof2 = lexer_advance_n(lexer, 4);
+    char eof2 = lexer_advancen(lexer, 4);
     CHECK_EQ(eof2, nullchar);
     // Options should remain the same
     CHECK_EQ(lexer->tokenList_cap, TOKENLIST_ALLOC_SIZE);

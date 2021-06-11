@@ -152,9 +152,9 @@ TOKENKIND(TOK___SEPARATORS_BEGIN, ""), \
     TOKENKIND(BACKSLASH,   "\\"),  \
 TOKENKIND(TOK___SEPARATORS_END, ""), \
 \
-    /* Keywords */                    \
+    /* Keywords */ \
 TOKENKIND(TOK___KEYWORDS_BEGIN, ""),  \
-    TOKENKIND(KEYWORD,    ""), /* Token Classification*/ \
+    TOKENKIND(KEYWORD,   ""), /* Token Classification*/ \
     TOKENKIND(ANY,       "any"),      \
     TOKENKIND(AS,        "as"),       \
     TOKENKIND(BEGIN,     "begin"),    \
@@ -167,7 +167,7 @@ TOKENKIND(TOK___KEYWORDS_BEGIN, ""),  \
     TOKENKIND(CONTINUE,  "continue"), \
     TOKENKIND(DO,        "do"),       \
     /* TOKENKIND(DEF, "def"), */      \
-    TOKENKIND(DECL,      "decl"),  \
+    TOKENKIND(DECL,      "decl"),     \
     TOKENKIND(DEFAULT,   "default"),  \
     TOKENKIND(ENUM,      "enum"),     \
     TOKENKIND(ELSE,      "else"),     \
@@ -197,7 +197,7 @@ TOKENKIND(TOK___KEYWORDS_BEGIN, ""),  \
     TOKENKIND(NO_INLINE, "noinline"), \
     TOKENKIND(NOT,       "not"),      \
     TOKENKIND(NOT_IN,    "notin"),    \
-    TOKENKIND(PRAGMA,    "pragma"),    \
+    TOKENKIND(PRAGMA,    "pragma"),   \
     TOKENKIND(RAISE,     "raise"),    \
     TOKENKIND(RANGE,     "range"),    \
     TOKENKIND(RETURN,    "return"),   \
@@ -215,24 +215,13 @@ TOKENKIND(TOK___KEYWORDS_END, ""),    \
 \
     TOKENKIND(TOK_COUNT, "")
 
-
 typedef enum {
     #define TOKENKIND(kind, str)     kind
         ALLTOKENS
     #undef TOKENKIND
-} TokenKind; 
+} TokenKind;
 
-// String representation of a TokenKind
-// To access the string representation of a TokenKind object, simply use `tokenHash[tokenkind]`
-static const char* tokenHash[] = {
-    #define TOKENKIND(kind, str)    str
-        ALLTOKENS
-    #undef TOKENKIND
-};
-
-/*
-    Main Token Struct 
-*/
+// Main Token Struct 
 typedef struct {
     TokenKind kind;     // Token Kind
     UInt32 offset;      // Offset of the first character of the Token
