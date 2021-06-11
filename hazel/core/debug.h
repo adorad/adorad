@@ -14,7 +14,19 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #ifndef CSTL_DEBUG_H
 #define CSTL_DEBUG_H
 
+#include <stdarg.h>
+#include <stdio.h>
+
 // ========================= Debug + Asserts =========================
+// Enable the use of the non-standard keyword __attribute__ to silence warnings under some compilers
+// #if defined(__GNUC__) || defined(__clang__)
+//     #define CSTL_ATTRIBUTE_(attr)    __attribute__((attr))
+// #else
+//     #define CSTL_ATTRIBUTE_(attr)
+// #endif // __GNUC__
+
+// static inline int CSTL_ATTRIBUTE_(format (printf, 2, 3))
+// cstlPrintf(int colour, const char* fmt, ...);
 
 // This macro is only for simple assertion checks (that don't require a message to STDOUT).
 // Note that this is not recommended. Use CSTL_CHECK instead
@@ -25,29 +37,23 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
     #define CSTL_DEBUG_CHECK(cond)             CSTL_DEBUG_CHECK1(cond, __LINE__)
 #endif
 
+/*
 // This macro is similar to the ones used in Tau, the C/C++ Testing Framework I wrote on a whim!
 // See: https://github.com/jasmcaus/tau
 #ifdef NDEBUG
-    #define CSTL_CHECK(cond, msg)                                   \
-        do {                                                        \
-            if(!(cond)) {                                           \
-                printf("%s:%u:", __FILE__, __LINE__);               \
-                printf("\033[1;31m FAILED: %s", msg);               \
-                printf("\033[0m\n");                                \
-                exit(1);                                            \
-            }                                                       \
-        }                                                           \
+    #define CSTL_CHECK(cond, ...)                                              \
+        do {                                                                   \
+            if(!(cond)) {                                                      \
+                cstlPrintf(CSTL_ERROR, "%s:%u: FAILED ", __FILE__, __LINE__);  \
+                cstlPrintf(CSTL_ERROR, __VA_ARGS__);                           \
+                exit(1);                                                       \
+            }                                                                  \
+        }                                                                      \
         while(0)
 #else 
-    #define CSTL_CHECK
+    #define CSTL_CHECK(cond, ...)  (void*)0
 #endif // NDEBUG
 
-// Enable the use of the non-standard keyword __attribute__ to silence warnings under some compilers
-#if defined(__GNUC__) || defined(__clang__)
-    #define CSTL_ATTRIBUTE_(attr)    __attribute__((attr))
-#else
-    #define CSTL_ATTRIBUTE_(attr)
-#endif // __GNUC__
 
 #define CSTL_ERROR      1
 #define CSTL_SUCCESS    2
@@ -55,8 +61,6 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #define CSTL_CYAN       4
 #define CSTL_BOLD       5
 
-static inline int CSTL_ATTRIBUTE_(format (printf, 2, 3))
-cstlPrintf(int colour, const char* fmt, ...);
 static inline int CSTL_ATTRIBUTE_(format (printf, 2, 3))
 cstlPrintf(int colour, const char* fmt, ...) {
     va_list args;
@@ -113,5 +117,5 @@ cstlPrintf(int colour, const char* fmt, ...) {
     return n;
 #endif // CSTL_UNIX_
 }
-
+*/
 #endif // CSTL_DEBUG_H
