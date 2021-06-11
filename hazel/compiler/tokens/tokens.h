@@ -197,6 +197,7 @@ TOKENKIND(TOK___KEYWORDS_BEGIN, ""),  \
     TOKENKIND(NO_INLINE, "noinline"), \
     TOKENKIND(NOT,       "not"),      \
     TOKENKIND(NOT_IN,    "notin"),    \
+    TOKENKIND(PRAGMA,    "pragma"),    \
     TOKENKIND(RAISE,     "raise"),    \
     TOKENKIND(RANGE,     "range"),    \
     TOKENKIND(RETURN,    "return"),   \
