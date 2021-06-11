@@ -12,6 +12,7 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 */
 
 #include <hazel/compiler/lexer/lexer.h>
+#include <hazel/core/debug.h>
 #include <stdarg.h>
 
 // These macros are used in the switch() statements below during the Lexing of Hazel source files.
@@ -57,9 +58,7 @@ Lexer* lexer_init(const char* buffer) {
 static void lexer_tokenlist_append(Lexer* lexer, Token* token) {
     if(lexer->num_tokens >= lexer->tokenList_cap) {
         lexer->tokenList = (Token*)realloc(lexer->tokenList, sizeof(Token) * (2 * TOKENLIST_ALLOC_SIZE));
-        if(lexer->tokenList == null) {
-            fprintf(stderr, "Cannot realloc more memory. Memory full.");
-        }
+        CSTL_CHECK_NULL(lexer->tokenList, "Cannot realloc more memory. Memory full.");
         lexer->tokenList_cap += TOKENLIST_ALLOC_SIZE;
     }
     lexer->tokenList[lexer->num_tokens++] = *token;
@@ -140,7 +139,7 @@ static void lexer_maketoken(Lexer* lexer, TokenKind kind) {
         fprintf(stderr, "Could not allocate memory. Memory full.");
     }
     if(kind == STRING)
-        cstlPrintf(CSTL_WARN, "For string tokens, use `lexer_makestrtoken instead\n");
+        CSTL_WARN("For string tokens, use `lexer_makestrtoken instead\n");
     token->kind = kind;
     token->offset = lexer->offset;
     token->colno = lexer->colno;
@@ -210,10 +209,23 @@ static inline void lexer_lex_esc_char(Lexer* lexer) {
 // Scan a string
 static inline void lexer_lex_string(Lexer* lexer) {
     // We already know that the curr char is a quote (`"`), so we skip over it
-    // CSTL_CHECK(LEXER_CURR_CHAR == '"', "Expected `\"`, got `%c`", LEXER_CURR_CHAR);
+    CSTL_CHECK_EQ(LEXER_CURR_CHAR, '"');
     char ch = lexer_advance(lexer);
+    char* value = (char*)calloc(1, sizeof(char) * MAX_TOKEN_SIZE);
+    int prev_offset = lexer->offset;
 
-    
+    while(ch != '"') {
+        if(ch == '\\') {
+            lexer_lex_esc_char(lexer); 
+        } else {
+            ch = lexer_advance(lexer);
+        }
+    }
+    CSTL_CHECK_EQ(LEXER_CURR_CHAR, '"');
+    int offset_diff = lexer->offset - prev_offset;
+    // offset_diff should never be 0 because we already handle the `""` case in `lexer_lex()`
+    CSTL_CHECK_NE(offset_diff, 0);
+    lexer_makestrtoken(lexer, value);
 }
 
 // Scan an identifier

@@ -53,6 +53,7 @@ if(HAZEL_BUILD_STATIC_LIB)
             $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}>
         $<INSTALL_INTERFACE:include>
     )
+
     # Build the executable
     # main.c (or whatever demo file you want to link against)
     add_executable(HazelStatic ${CMAKE_CURRENT_SOURCE_DIR}/main.c)
@@ -85,6 +86,7 @@ if(HAZEL_BUILD_SHARED_LIB)
             $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}>
             $<INSTALL_INTERFACE:include>
         )
+
 
         # Build the executable
         # main.c (or whatever demo file you want to link against) =

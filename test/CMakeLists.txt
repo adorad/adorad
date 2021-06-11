@@ -7,14 +7,15 @@ cmake_minimum_required(VERSION 3.20 FATAL_ERROR)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 11)
 
+# Fetch Tau, our custom C/C++ testing library
 message("--------- [INFO] Fetching Tau from GitHub")
 include(FetchContent)
 FetchContent_Declare(
     Tau
-    URL https://github.com/jasmcaus/Tau/archive/dev.zip
+    URL https://github.com/jasmcaus/tau/archive/dev.zip
 )
 FetchContent_MakeAvailable(Tau)
-# add_subdirectory("F:/Documents/Dev/Github/Tau" "Tau" EXCLUDE_FROM_ALL)
+# add_subdirectory("F:/Documents/Dev/Github/tau" "Tau" EXCLUDE_FROM_ALL)
 
 enable_testing()
 include(CTest)
