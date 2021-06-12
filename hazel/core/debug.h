@@ -416,8 +416,8 @@ static inline int cstlShouldDecomposeMacro(char const* actual, char const* expec
 
 #define CSTL_CHECK(...)      CSTL_CHECK_MACRO_CHOOSER(__VA_ARGS__)(__VA_ARGS__)
 
-#define CSTL_CHECK_NULL(val,...)       CSTL_CHECK(val == null, __VA_ARGS__)
-#define CSTL_CHECK_NOT_NULL(val,...)   CSTL_CHECK(val != null, __VA_ARGS__)
+#define CSTL_CHECK_NULL(val,...)       CSTL_CHECK((val) == null, __VA_ARGS__)
+#define CSTL_CHECK_NOT_NULL(val,...)   CSTL_CHECK((val) != null, __VA_ARGS__)
 
 #define CSTL_WARN(msg)     \
     cstlColouredPrintf(CSTL_COLOUR_WARN, "%s:%u:\nWARNING: %s\n", __FILE__, __LINE__, #msg)

@@ -242,7 +242,7 @@ static inline void lexer_lex_string(Lexer* lexer) {
     CSTL_CHECK_NE(offset_diff, 0);
     // `offset_diff - 1` so as to ignore the closing quote `"` from being copied into `str_value`
     substr(str_value, lexer->buffer, prev_offset, offset_diff - 1);
-    return lexer_makestrtoken(lexer, str_value);
+    lexer_makestrtoken(lexer, str_value);
 }
 
 // Scan an identifier
@@ -259,7 +259,7 @@ static inline void lexer_lex_identifier(Lexer* lexer) {
     int offset_diff = lexer->offset - prev_offset;
     CSTL_CHECK_NE(offset_diff, 0);
     substr(ident, lexer->buffer, prev_offset - 1, offset_diff);
-    return lexer_makeidenttoken(lexer, ident);
+    lexer_makeidenttoken(lexer, ident);
 }
 
 static inline void lexer_lex_digit(Lexer* lexer) {
