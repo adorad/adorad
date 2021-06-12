@@ -1,19 +1,17 @@
 #include <hazel/hazel.h>
 
-Token* sendtoken(TokenKind kind) {
-    Token* token = (Token*)calloc(1, sizeof(Token));
-    if(token == null) {
-        fprintf(stderr, "Could not allocate memory. Memory full.");
-    }
-    // printf("INSIDE MAKETOKEN\n");
-    token->kind = kind;
-    token->offset = 0;
-    token->colno = 0;
-    token->lineno = 0;
-    token->fname = 0;
-    token->value = token_toString(kind);
-    return token;
-}
+// static void lex_identifier(Lexer* lexer) {
+//     char ch = lexer->buffer[lexer->offset];
+//     printf("Char 1 = %c\nCurr char: \n", ch);
+//     int i = 0;
+//     while(ch == '_' || isalnum(ch)) {
+//         printf("%c ", ch);
+//         ch = lexer_advance(lexer);
+//         ++i;
+//     }
+//     printf("\nChar 2 = %d\n", (int)ch);
+//     printf("i = %d\n", i);
+// }
 
 int main(int argc, const char* const argv[]) {
     // C - Example: 
@@ -42,11 +40,12 @@ int main(int argc, const char* const argv[]) {
 	Lexer* lexer = lexer_init(buffer); 
     printf("Lexer buffer: \n%s\n", lexer->buffer);
     printf("--------------\n");
+    // lexer_lex_identifier(lexer);
     lexer_lex(lexer);
-    printf("Number of tokens = %d\n", lexer->num_tokens);
-    for(int i=0; i<lexer->num_tokens; i++) {
-        printf("TOKEN<%s>:%d:%d\n", lexer->tokenList[i].value, lexer->tokenList[i].lineno, lexer->tokenList[i].colno);
-    }
+    // printf("Number of tokens = %d\n", lexer->num_tokens);
+    // for(int i=0; i<lexer->num_tokens; i++) {
+    //     printf("TOKENKIND(%s) && TOKENVALUE(%s)\n", token_toString(lexer->tokenList[i].kind), lexer->tokenList[i].value);
+    // }
 
     return 0; 
 }

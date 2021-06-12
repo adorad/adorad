@@ -237,7 +237,7 @@ static inline int cstlShouldDecomposeMacro(char const* actual, char const* expec
     
 #else
     // If we're here, this means that the Compiler does not support overloadable methods
-    #define CSTL_OVERLOAD_PRINTER(...)                                                              \
+    #define CSTL_OVERLOAD_PRINTER(...)                                                             \
         printf("Error: Your compiler does not support overloadable methods.");                     \
         printf("If you think this was an error, please file an issue on Tau's Github repo."   )
 #endif // CSTL_OVERLOADABLE
@@ -245,30 +245,29 @@ static inline int cstlShouldDecomposeMacro(char const* actual, char const* expec
 // ifCondFailsThenPrint is the string representation of the opposite of the truthy value of `cond`
 // For example, if `cond` is "!=", then `ifCondFailsThenPrint` will be `==`
 #if defined(CSTL_CAN_USE_OVERLOADABLES)
-    #define __CSTLCMP__(actual, expected, cond, space, macroName)                              \
-        do {                                                                                   \
-            if(!((actual)cond(expected))) {                                                    \
-                printf("%s:%u: ", __FILE__, __LINE__);                                         \
-                cstlColouredPrintf(CSTL_COLOUR_ERROR, "FAILED\n");                             \
-                if(cstlShouldDecomposeMacro(#actual, #expected, 0)) {                          \
-                    cstlColouredPrintf(CSTL_COLOUR_CYAN, "  In macro : ");                     \
-                    cstlColouredPrintf(CSTL_COLOUR_CYAN, "%s( %s, %s )\n",                     \
-                                                                #macroName,                    \
-                                                                #actual, #expected);           \
-                }                                                                              \
-                printf("  Expected : %s", #actual);                                            \
-                printf(" %s ", #cond space);                                                   \
-                if(is_char == 1) CSTL_OVERLOAD_PRINTER((char)expected);                        \
-                else CSTL_OVERLOAD_PRINTER(expected);                                          \
-                printf("\n");                                                                  \
-                                                                                               \
-                printf("    Actual : %s", #actual);                                            \
-                printf(" == ");                                                                \
-                CSTL_OVERLOAD_PRINTER(actual);                                                 \
-                printf("\n");                                                                  \
-                CSTL_ABORT();                                                                  \
-            }                                                                                  \
-        }                                                                                      \
+    #define __CSTLCMP__(actual, expected, cond, space, macroName)                        \
+        do {                                                                             \
+            if(!((actual)cond(expected))) {                                              \
+                printf("%s:%u: ", __FILE__, __LINE__);                                   \
+                cstlColouredPrintf(CSTL_COLOUR_ERROR, "FAILED\n");                       \
+                if(cstlShouldDecomposeMacro(#actual, #expected, 0)) {                    \
+                    cstlColouredPrintf(CSTL_COLOUR_CYAN, "  In macro : ");               \
+                    cstlColouredPrintf(CSTL_COLOUR_CYAN, "%s( %s, %s )\n",               \
+                                                                #macroName,              \
+                                                                #actual, #expected);     \
+                }                                                                        \
+                printf("  Expected : %s", #actual);                                      \
+                printf(" %s ", #cond space);                                             \
+                CSTL_OVERLOAD_PRINTER(expected);                                         \
+                printf("\n");                                                            \
+                                                                                         \
+                printf("    Actual : %s", #actual);                                      \
+                printf(" == ");                                                          \
+                CSTL_OVERLOAD_PRINTER(actual);                                           \
+                printf("\n");                                                            \
+                CSTL_ABORT();                                                            \
+            }                                                                            \
+        }                                                                                \
         while(0)
 
 // CSTL_OVERLOAD_PRINTER does not work on some compilers
@@ -300,72 +299,67 @@ static inline int cstlShouldDecomposeMacro(char const* actual, char const* expec
 #endif // CSTL_CAN_USE_OVERLOADABLES
 
 #define __CSTLCMP_STR__(actual, expected, cond, ifCondFailsThenPrint, actualPrint, macroName)       \
-    do {                                                                                                        \
-        if(strcmp(actual, expected) cond 0) {                                                                   \
-            printf("%s:%u: ", __FILE__, __LINE__);                                                              \
-            cstlColouredPrintf(CSTL_COLOUR_ERROR, "FAILED\n");                                               \
-            if(cstlShouldDecomposeMacro(#actual, #expected, 1)) {                                                \
-                    cstlColouredPrintf(CSTL_COLOUR_CYAN, "  In macro : ");                                 \
-                    cstlColouredPrintf(CSTL_COLOUR_CYAN, "%s( %s, %s )\n",                                 \
-                                                                #macroName,                                     \
-                                                                #actual, #expected);                            \
-                }                                                                                               \
-            printf("  Expected : \"%s\" %s \"%s\"\n", actual, #ifCondFailsThenPrint, expected);                 \
-            printf("    Actual : %s\n", #actualPrint);                                                          \
-            CSTL_ABORT();                                                                                        \
-            return;                                                                                             \
-        }                                                                                                       \
-    }                                                                                                           \
+    do {                                                                                            \
+        if(strcmp(actual, expected) cond 0) {                                                       \
+            printf("%s:%u: ", __FILE__, __LINE__);                                                  \
+            cstlColouredPrintf(CSTL_COLOUR_ERROR, "FAILED\n");                                      \
+            if(cstlShouldDecomposeMacro(#actual, #expected, 1)) {                                   \
+                    cstlColouredPrintf(CSTL_COLOUR_CYAN, "  In macro : ");                          \
+                    cstlColouredPrintf(CSTL_COLOUR_CYAN, "%s( %s, %s )\n",                          \
+                                                                #macroName,                         \
+                                                                #actual, #expected);                \
+                }                                                                                   \
+            printf("  Expected : \"%s\" %s \"%s\"\n", actual, #ifCondFailsThenPrint, expected);     \
+            printf("    Actual : %s\n", #actualPrint);                                              \
+            CSTL_ABORT();                                                                           \
+            return;                                                                                 \
+        }                                                                                           \
+    }                                                                                               \
     while(0)  
 
-#define __CSTLCMP_STRN__(actual, expected, n, cond, ifCondFailsThenPrint, actualPrint, macroName)  \
-    do {                                                                                                        \
-        if(CSTL_CAST(int, n) < 0) {                                                                              \
-            cstlColouredPrintf(CSTL_COLOUR_ERROR, "`n` cannot be negative\n");                               \
-            CSTL_ABORT;                                                                                          \
-        }                                                                                                       \
-        if(strncmp(actual, expected, n) cond 0) {                                                               \
-            printf("%s:%u: ", __FILE__, __LINE__);                                                              \
-            cstlColouredPrintf(CSTL_COLOUR_ERROR, "FAILED\n");                                               \
-            if(cstlShouldDecomposeMacro(#actual, #expected, 1)) {                                                \
-                    cstlColouredPrintf(CSTL_COLOUR_CYAN, "  In macro : ");                                 \
-                    cstlColouredPrintf(CSTL_COLOUR_CYAN, "%s( %s, %s, %s)\n",                              \
-                                                                #macroName,                                     \
-                                                                #actual, #expected, #n);                        \
-                }                                                                                               \
-            printf("  Expected : \"%.*s\" %s \"%.*s\"\n", CSTL_CAST(int, n), actual,                             \
-                                                              #ifCondFailsThenPrint,                            \
-                                                              CSTL_CAST(int, n), expected);                      \
-            printf("    Actual : %s\n", #actualPrint);                                                          \
-            CSTL_ABORT();                                                                                        \
-            return;                                                                                             \
-        }                                                                                                       \
-    }                                                                                                           \
+#define __CSTLCMP_STRN__(actual, expected, n, cond, ifCondFailsThenPrint, actualPrint, macroName)    \
+    do {                                                                                             \
+        if(CSTL_CAST(int, n) < 0) {                                                                  \
+            cstlColouredPrintf(CSTL_COLOUR_ERROR, "`n` cannot be negative\n");                       \
+            CSTL_ABORT;                                                                              \
+        }                                                                                            \
+        if(strncmp(actual, expected, n) cond 0) {                                                    \
+            printf("%s:%u: ", __FILE__, __LINE__);                                                   \
+            cstlColouredPrintf(CSTL_COLOUR_ERROR, "FAILED\n");                                       \
+            if(cstlShouldDecomposeMacro(#actual, #expected, 1)) {                                    \
+                    cstlColouredPrintf(CSTL_COLOUR_CYAN, "  In macro : ");                           \
+                    cstlColouredPrintf(CSTL_COLOUR_CYAN, "%s( %s, %s, %s)\n",                        \
+                                                                #macroName,                          \
+                                                                #actual, #expected, #n);             \
+                }                                                                                    \
+            printf("  Expected : \"%.*s\" %s \"%.*s\"\n", CSTL_CAST(int, n), actual,                 \
+                                                              #ifCondFailsThenPrint,                 \
+                                                              CSTL_CAST(int, n), expected);          \
+            printf("    Actual : %s\n", #actualPrint);                                               \
+            CSTL_ABORT();                                                                            \
+            return;                                                                                  \
+        }                                                                                            \
+    }                                                                                                \
     while(0)  
 
 
-#define __CSTLCMP_TF(cond, actual, expected, negateSign, macroName)     \
+#define __CSTLCMP_TF(cond, actual, expected, negateSign, macroName)                 \
     do {                                                                            \
         if(negateSign(cond)) {                                                      \
             printf("%s:%u: ", __FILE__, __LINE__);                                  \
-            cstlColouredPrintf(CSTL_COLOUR_ERROR, "FAILED\n");                   \
-            if(cstlShouldDecomposeMacro(#actual, null, 0)) {                     \
-                    cstlColouredPrintf(CSTL_COLOUR_CYAN, "  In macro : ");     \
-                    cstlColouredPrintf(CSTL_COLOUR_CYAN, "%s( %s )\n",         \
+            cstlColouredPrintf(CSTL_COLOUR_ERROR, "FAILED\n");                      \
+            if(cstlShouldDecomposeMacro(#actual, null, 0)) {                        \
+                    cstlColouredPrintf(CSTL_COLOUR_CYAN, "  In macro : ");          \
+                    cstlColouredPrintf(CSTL_COLOUR_CYAN, "%s( %s )\n",              \
                                                                 #macroName,         \
                                                                 #cond);             \
                 }                                                                   \
             printf("  Expected : %s\n", #expected);                                 \
             printf("    Actual : %s\n", #actual);                                   \
-            CSTL_ABORT();                                                            \
+            CSTL_ABORT();                                                           \
         }                                                                           \
     } while(0)
 
-/**
-############################################
-          CHECK Macros
-############################################
-*/
 #define CSTL_CHECK_EQ(actual, expected)     __CSTLCMP__(actual, expected, ==, "", CSTL_CHECK_EQ)
 #define CSTL_CHECK_NE(actual, expected)     __CSTLCMP__(actual, expected, !=, "", CSTL_CHECK_NE)
 #define CSTL_CHECK_LT(actual, expected)     __CSTLCMP__(actual, expected, < , " ", CSTL_CHECK_LT)
@@ -387,19 +381,19 @@ static inline int cstlShouldDecomposeMacro(char const* actual, char const* expec
 #define CSTL_CHECK_FALSE(cond)     __CSTLCMP_TF(cond, true, false, , CSTL_CHECK_FALSE)
 
 #define __CSTL_CHECK__(cond, macroName, ...)                                             \
-    do {                                                                                       \
-        if(!(cond)) {                                                                          \
-            printf("%s:%u: ", __FILE__, __LINE__);                                             \
-            if((sizeof(char[]){__VA_ARGS__}) <= 1)                                             \
-                cstlColouredPrintf(CSTL_COLOUR_ERROR, "FAILED");                            \
-            else                                                                               \
-                cstlColouredPrintf(CSTL_COLOUR_ERROR, __VA_ARGS__);                         \
-            printf("\n");                                                                      \
-            printf("The following assertion failed: \n");                                      \
-            cstlColouredPrintf(CSTL_COLOUR_CYAN, "    %s( %s )\n", #macroName, #cond);    \
-            CSTL_ABORT();                                                                       \
-        }                                                                                      \
-    }                                                                                          \
+    do {                                                                                 \
+        if(!(cond)) {                                                                    \
+            printf("%s:%u: ", __FILE__, __LINE__);                                       \
+            if((sizeof(char[]){__VA_ARGS__}) <= 1)                                       \
+                cstlColouredPrintf(CSTL_COLOUR_ERROR, "FAILED");                         \
+            else                                                                         \
+                cstlColouredPrintf(CSTL_COLOUR_ERROR, __VA_ARGS__);                      \
+            printf("\n");                                                                \
+            printf("The following assertion failed: \n");                                \
+            cstlColouredPrintf(CSTL_COLOUR_CYAN, "    %s( %s )\n", #macroName, #cond);   \
+            CSTL_ABORT();                                                                \
+        }                                                                                \
+    }                                                                                    \
     while(0)
 
 // This is a little hack that allows a form of "polymorphism" to a macro - it allows a user to optionally pass
@@ -425,7 +419,7 @@ static inline int cstlShouldDecomposeMacro(char const* actual, char const* expec
 #define CSTL_CHECK_NULL(val,...)       CSTL_CHECK(val == null, __VA_ARGS__)
 #define CSTL_CHECK_NOT_NULL(val,...)   CSTL_CHECK(val != null, __VA_ARGS__)
 
-#define CSTL_WARN(msg)                                                        \
+#define CSTL_WARN(msg)     \
     cstlColouredPrintf(CSTL_COLOUR_WARN, "%s:%u:\nWARNING: %s\n", __FILE__, __LINE__, #msg)
 
 #endif // CSTL_DEBUG_H
