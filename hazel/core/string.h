@@ -16,6 +16,7 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 
 #include <hazel/core/types.h>
 #include <hazel/core/math.h>
+#include <hazel/core/debug.h>
 
 // UTF8 Inspiration: https://github.com/sheredom/utf8.h/blob/master/utf8.h
 
@@ -87,5 +88,13 @@ static inline void strToUpper(char* str) {
     }
 }
 
+// Get a substring
+static inline void substr(char* destination, char* source, int begin, int end) {
+    CSTL_CHECK_NOT_NULL(destination, "`destination` cannot be null");
+    CSTL_CHECK_NOT_NULL(source, "`source` cannot be null");
+    CSTL_CHECK_LT(begin, end);
+    CSTL_CHECK_GE(begin, 0);
+    strncpy(destination, &(source[begin]), end);
+}
 
 #endif // CSTL_STRING_H
