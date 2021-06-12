@@ -88,7 +88,7 @@ static inline void strToUpper(char* str) {
     }
 }
 
-// Get a substring
+// Get a substring from `source` and copies it into `destination`
 static inline void substr(char* destination, char* source, int begin, int end) {
     CSTL_CHECK_NOT_NULL(destination, "`destination` cannot be null");
     CSTL_CHECK_NOT_NULL(source, "`source` cannot be null");
