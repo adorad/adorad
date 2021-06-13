@@ -11,7 +11,7 @@ SPDX-License-Identifier: MIT
 Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 */
 
-#include <hazel/compiler/tokens/tokens.h>
+#include <hazel/compiler/tokens.h>
 
 // String representation of a TokenKind
 // To access the string representation of a TokenKind object, simply use `tokenHash[tokenkind]`

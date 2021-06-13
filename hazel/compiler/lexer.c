@@ -11,7 +11,7 @@ SPDX-License-Identifier: MIT
 Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 */
 
-#include <hazel/compiler/lexer/lexer.h>
+#include <hazel/compiler/lexer.h>
 #include <hazel/core/debug.h>
 #include <hazel/core/string.h>
 #include <stdarg.h>

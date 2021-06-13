@@ -35,10 +35,7 @@ file(GLOB
 # Note: This only happens during the CI phase and _should not_ run whenever an external library needs to 
 # link to Hazel
 file(GLOB HAZEL_INTERNALTEST_SOURCES
-    ${CMAKE_CURRENT_SOURCE_DIR}/../HazelInternalTests/compiler/io/*.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/../HazelInternalTests/compiler/lexer/*.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/../HazelInternalTests/compiler/tokens/*.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/../HazelInternalTests/compiler/types/*.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../HazelInternalTests/compiler/*.c
 )
 file(GLOB_RECURSE HAZEL_INTERNALTEST_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/../HazelInternalTests/*.h)
 
@@ -79,7 +76,7 @@ foreach(source ${HAZEL_INTERNAL_TESTS_SOURCES})
     get_filename_component(testcase ${source} NAME_WE)
     add_executable(
         ${testcase} # without file extension
-        ${source}   # With file extension
+        ${source}   # with file extension
     )
 
     # Link HazelInternalTests with libHazelInternalTests and Tau

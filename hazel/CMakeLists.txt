@@ -22,10 +22,7 @@ configure_file(
 # Note that this library must have _minimal_ dependencies 
 # _DO NOT_ add `main.c` here (we're building a library, remember?)
 file(GLOB LIBHAZEL_SOURCES
-    compiler/io/*.c
-    compiler/lexer/*.c
-    compiler/tokens/*.c
-    compiler/types/*.c
+    compiler/*.c
 )
 file(GLOB_RECURSE HAZEL_HEADERS *.h)
 

@@ -19,7 +19,7 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #include <hazel/core/misc.h>
 #include <hazel/core/types.h>
 #include <hazel/core/string.h> 
-#include <hazel/compiler/tokens/tokens.h>
+#include <hazel/compiler/tokens.h>
 
 /*
     Hazel's Lexer is built in such a way that no (or negligible) memory allocations are necessary during usage. 
