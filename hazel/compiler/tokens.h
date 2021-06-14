@@ -42,6 +42,7 @@ TOKENKIND(TOK___LITERALS_BEGIN, ""), \
     TOKENKIND(INTEGER,      "INTEGER"),       \
     TOKENKIND(BIN_INT,      "BIN_INT"),       \
     TOKENKIND(HEX_INT,      "HEX_INT"),       \
+    TOKENKIND(OCT_INT,      "OCT_INT"),       \
     TOKENKIND(INT8_LIT,     "INT8_LIT"),      \
     TOKENKIND(INT16_LIT,    "INT16_LIT"),     \
     TOKENKIND(INT32_LIT,    "INT32_LIT"),     \

@@ -180,6 +180,7 @@ const char* token_toString(TokenKind kind) {
         case INTEGER: return "INTEGER";
         case BIN_INT: return "BIN_INT";
         case HEX_INT: return "HEX_INT";
+        case OCT_INT: return "OCT_INT";
         case INT8_LIT: return "INT8_LIT";
         case INT16_LIT: return "INT16_LIT";
         case INT32_LIT: return "INT32_LIT";
