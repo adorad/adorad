@@ -141,11 +141,7 @@ static inline bool lexer_is_EOF(Lexer* lexer);
 void lexer_error(Lexer* lexer, const char* format, ...);
 
 // Make a token
-static void lexer_maketoken(Lexer* lexer, TokenKind kind);
-// Make a string token
-static void lexer_makestrtoken(Lexer* lexer, char* value);
-// Make an Identifier Token
-static void lexer_makeidenttoken(Lexer* lexer, char* ident_value);
+static void lexer_maketoken(Lexer* lexer, TokenKind kind, char* value);
 
 // Scan a comment (single line)
 static inline void lexer_lex_sl_comment(Lexer* lexer);

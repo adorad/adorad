@@ -18,22 +18,27 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 
 // These macros are used in the switch() statements below during the Lexing of Hazel source files.
 #define WHITESPACE_NO_NEWLINE \
-    ' ': case '\r': case '\t'
+    ' ': case '\r': case '\t': case '\v': case '\f'
 
 #define DIGIT_NON_ZERO  \
     '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9'
 
+#define DIGIT \
+    '0': case DIGIT_NON_ZERO
+
 #define HEX_DIGIT \
     'a': case 'b': case 'c': case 'd': case 'e': case 'f': case 'A': case 'B': case 'C': case 'D': case 'E': case 'F': \
-    case '0': case DIGIT_NON_ZERO
+    case DIGIT
+
+#define ALPHA_EXCEPT_B_O_X \
+         'a': case 'c': case 'd': case 'e': case 'f': case 'g': case 'h': case 'i': case 'j': case 'k': case 'l': \
+    case 'm': case 'n': case 'p': case 'q': case 'r': case 's': case 't': case 'u': case 'v': case 'w': case 'y': \
+    case 'z': case 'A': case 'C': case 'D': case 'E': case 'F': case 'G': case 'H': case 'I': case 'J': case 'K': \
+    case 'L': case 'M': case 'N':case 'P': case 'Q': case 'R': case 'S': case 'T': case 'U': case 'V': case 'W':  \
+    case 'Y': case 'Z'  \
 
 #define ALPHA \
-         'a': case 'b': case 'c': case 'd': case 'e': case 'f': case 'g': case 'h': case 'i': case 'j': \
-    case 'k': case 'l': case 'm': case 'n': case 'o': case 'p': case 'q': case 'r': case 's': case 't': \
-    case 'u': case 'v': case 'w': case 'x': case 'y': case 'z': case 'A': case 'B': case 'C': case 'D': \
-    case 'E': case 'F': case 'G': case 'H': case 'I': case 'J': case 'K': case 'L': case 'M': case 'N': \
-    case 'O': case 'P': case 'Q': case 'R': case 'S': case 'T': case 'U': case 'V': case 'W': case 'X': \
-    case 'Y': case 'Z'                                                                                  \
+         'b': case 'o': case 'x': case 'B': case 'O': case 'X': case ALPHA_EXCEPT_B_O_X
 
 
 Lexer* lexer_init(const char* buffer) {
@@ -72,8 +77,9 @@ static void lexer_free(Lexer* lexer) {
 void lexer_error(Lexer* lexer, const char* format, ...) {
     va_list vl;
     va_start(vl, format);
+    fprintf(stderr, "SyntaxError: ");
     vfprintf(stderr, format, vl);
-    fprintf(stderr, "\n");
+    fprintf(stderr, " at %s:%d:%d\n", lexer->fname, lexer->lineno,lexer->colno);
     va_end(vl);
     exit(1);
 }
@@ -133,47 +139,25 @@ static inline char lexer_peekn(Lexer* lexer, UInt32 n) {
     }
 }
 
-static inline void lexer_maketoken(Lexer* lexer, TokenKind kind) {  
+static inline void lexer_maketoken(Lexer* lexer, TokenKind kind, char* value) {  
     Token* token = (Token*)calloc(1, sizeof(Token));
     CSTL_CHECK_NOT_NULL(token, "Could not allocate memory. Memory full.");
 
-    if(kind == STRING)
-        CSTL_WARN("For string tokens, use `lexer_makestrtoken instead\n");
+    if(value == null && (kind == STRING || kind == IDENTIFIER || kind == INTEGER || kind == HEX_INT || 
+                         kind == BIN_INT || kind == OCT_INT))
+        CSTL_WARN("Expected a token value. Got `null`\n");
+
+    if(value == null)
+        value = token_toString(kind);
+
     token->kind = kind;
     token->offset = lexer->offset;
     token->colno = lexer->colno;
     token->lineno = lexer->lineno;
     token->fname = lexer->fname;
-    token->value = token_toString(kind);
+    token->value = value;
+    
     lexer_tokenlist_append(lexer, token);
-}
-
-// Make a String token 
-static inline void lexer_makestrtoken(Lexer* lexer, char* str_value) {
-    Token* token = (Token*)calloc(1, sizeof(Token));
-    CSTL_CHECK_NOT_NULL(token, "Could not allocate memory. Memory full.");
-    token->kind = STRING;
-    token->offset = lexer->offset;
-    token->colno = lexer->colno;
-    token->lineno = lexer->lineno;
-    token->fname = lexer->fname;
-    token->value = str_value;
-    lexer_tokenlist_append(lexer, token);
-    // free(str_value);
-}
-
-// Make an Identifier Token
-static void lexer_makeidenttoken(Lexer* lexer, char* ident_value) {
-    Token* token = (Token*)calloc(1, sizeof(Token));
-    CSTL_CHECK_NOT_NULL(token, "Could not allocate memory. Memory full.");
-    token->kind = IDENTIFIER;
-    token->offset = lexer->offset;
-    token->colno = lexer->colno;
-    token->lineno = lexer->lineno;
-    token->fname = lexer->fname;
-    token->value = ident_value;
-    lexer_tokenlist_append(lexer, token);
-    // free(ident_value);
 }
 
 // Scan a comment (single line)
@@ -230,26 +214,27 @@ static inline void lexer_lex_string(Lexer* lexer) {
 
     while(ch != '"') {
         if(ch == '\\') {
-            lexer_lex_esc_char(lexer); 
+            // lexer_lex_esc_char(lexer);
+            ch = lexer_advance(lexer);
         } else {
             ch = lexer_advance(lexer);
         }
     }
-    printf("Current char = `%c`\n", ch);
     CSTL_CHECK_EQ(ch, '"');
     int offset_diff = lexer->offset - prev_offset;
     // offset_diff should never be 0 because we already handle the `""` case in `lexer_lex()`
     CSTL_CHECK_NE(offset_diff, 0);
     // `offset_diff - 1` so as to ignore the closing quote `"` from being copied into `str_value`
     substr(str_value, lexer->buffer, prev_offset, offset_diff - 1);
-    lexer_makestrtoken(lexer, str_value);
+    CSTL_CHECK_NOT_NULL(str_value, "str_value must not be null");
+    lexer_maketoken(lexer, STRING, str_value);
 }
 
 // Scan an identifier
 static inline void lexer_lex_identifier(Lexer* lexer) {
     // When this function is called, we alread know that the first character statisfies the `case ALPHA`
     // in `lexer_lex()`, we need to substring from the previous char as well.
-    char* ident = (char*)calloc(MAX_TOKEN_SIZE, sizeof(char));
+    char* ident_value = (char*)calloc(MAX_TOKEN_SIZE, sizeof(char));
     char ch = lexer_advance(lexer);
     int prev_offset = lexer->offset - 1;
 
@@ -258,21 +243,112 @@ static inline void lexer_lex_identifier(Lexer* lexer) {
     }
     int offset_diff = lexer->offset - prev_offset;
     CSTL_CHECK_NE(offset_diff, 0);
-    substr(ident, lexer->buffer, prev_offset - 1, offset_diff);
-    lexer_makeidenttoken(lexer, ident);
+    substr(ident_value, lexer->buffer, prev_offset - 1, offset_diff);
+    CSTL_CHECK_NOT_NULL(ident_value, "ident_value must not be null");
+    lexer_maketoken(lexer, IDENTIFIER, ident_value);
 }
 
 static inline void lexer_lex_digit(Lexer* lexer) {
-    char ch = LEXER_CURR_CHAR;
-    int prev_offset = lexer->offset;
+    // 0x... --> Hexadecimal
+    // 0o... --> Octal
+    // 0b... --> Binary
+    // This cannot be `lexer_advance(lexer)` because we enter here from `lexer_lex()` where we already
+    // know that the first char is a digit value. 
+    // This value needs to be captured as well in `token->value`
+    char ch = lexer_prev(lexer, 1);
+    int prev_offset = lexer->offset - 1;
+    TokenKind tokenkind = TOK_ILLEGAL;
+    char* digit_value = (char*)calloc(MAX_TOKEN_SIZE, sizeof(char));
+    int base = 0;
 
+    CSTL_CHECK_TRUE(isDigit(ch));
     while(isDigit(ch)) {
+        // Hex, Octal, or Binary?
+        if(ch == '0') {
+            ch = lexer_advance(lexer);
+            switch(ch) {
+                // Hex
+                case 'x': case 'X':;
+                    // Skip [xX]
+                    ch = lexer_advance(lexer);
+                    int hexcount = 0;
+                    while(isHexDigit(ch)) {
+                        ++hexcount; 
+                        ch = lexer_advance(lexer);
+                    }
+                    if(hexcount == 0) {
+                        lexer_error(lexer, "Expected hexadecimal digits after `0x`");
+                    }
+                    tokenkind = HEX_INT;
+                    break;
+                // Binary
+                case 'b': case 'B':
+                    // Skip [bB]
+                    ch = lexer_advance(lexer);
+                    int bincount = 0;
+                    while(isBinaryDigit(ch)) {
+                        ++bincount; 
+                        ch = lexer_advance(lexer);
+                    }
+                    if(bincount == 0) {
+                        lexer_error(lexer, "Expected binary digits after `0b`");
+                    }
+                    tokenkind = BIN_INT;
+                    break;
+                // Octal
+                // Depart from the (error-prone) C-style octals with an inital zero e.g 0123
+                // Instead, we support the `0o` or `0O` prefix, like 0o123
+                case 'o': case 'O':
+                    // Skip [oO]
+                    ch = lexer_advance(lexer);
+                    int octcount = 0;
+                    while(isOctalDigit(ch)) {
+                        ++octcount; 
+                        ch = lexer_advance(lexer);
+                    }
+                    if(octcount == 0) {
+                        lexer_error(lexer, "Expected octal digits after `0o`");
+                    }
+                    tokenkind = OCT_INT;
+                    break;
+                case ALPHA_EXCEPT_B_O_X:
+                    // Error
+                    lexer_error(lexer, "Invalid character `%c`. Hazel currently supports [xXbBoO] after `0`", ch);
+                    break;
+                default:
+                    // An integer?
+                    lexer_error(lexer, "Cannot have an integer beginning with `0`");                    
+            } // switch(ch)
+        }
+        // Fractions, or Integer?
+        else {
+            // Normal Floats
+            if(ch == '.' || ch == '_') {
+                ch = lexer_advance(lexer);
+            }
+            // Exponents (Float)
+            else if(ch == 'e' || ch == 'E') {
+                // Skip over [eE]
+                ch = lexer_advance(lexer);
+                if(ch == '+' || ch == '-') 
+                    ch = lexer_advance(lexer);
+                if(isDigit(ch)) {
+                    ch = lexer_advance(lexer);
+                } else {
+                    lexer_error(lexer, "Invalid character after exponent. Expected a digit, got `%c`");
+                }
+            }
+            // Imaginary
+            else if(ch == 'j' || ch == 'J') {
+            }
+        }
         ch = lexer_advance(lexer);
     }
 
-    // Integer for now
-    // (TODO) Add more base types
-    return lexer_maketoken(lexer, INTEGER);
+    CSTL_CHECK_NE(tokenkind, TOK_ILLEGAL);
+    CSTL_CHECK_NOT_NULL(digit_value, "digit_value must not be null");
+    substr(digit_value, lexer->buffer, prev_offset, lexer->offset - prev_offset - 1);
+    return lexer_maketoken(lexer, tokenkind, digit_value);
 }
 
 // Lex the Source files
@@ -315,11 +391,11 @@ static void lexer_lex(Lexer* lexer) {
             // Identifier
             case ALPHA: case '_': tokenkind = -1; lexer_lex_identifier(lexer); break;
             // Do _NOT_ include '0' because that clashes with `nullchar`
-            case DIGIT_NON_ZERO: tokenkind = -1; lexer_lex_digit(lexer); break;
+            case DIGIT: tokenkind = -1; lexer_lex_digit(lexer); break;
             case '"': 
                 switch(next) {
                     // Empty String literal 
-                    case '"': LEXER_INCREMENT_OFFSET; lexer_makestrtoken(lexer, "\"\""); break;
+                    case '"': LEXER_INCREMENT_OFFSET; lexer_maketoken(lexer, STRING,  "\"\""); break;
                     default: tokenkind = -1; lexer_lex_string(lexer); break;
                 }
                 break;
@@ -468,17 +544,15 @@ static void lexer_lex(Lexer* lexer) {
             case '?': tokenkind = QUESTION; break;
             case '@': tokenkind = MACRO; break;
             default:
-                fprintf(stderr, "SyntaxError: Invalid character `%c` at %s:%d:%d\n", curr, lexer->fname, 
-                                                                                           lexer->lineno,
-                                                                                           lexer->colno);
+                lexer_error(lexer, "Invalid character `%c`", curr);
                 break;
         } // switch(ch)
 
         if(tokenkind == -1) continue;
-        lexer_maketoken(lexer, tokenkind);
+        lexer_maketoken(lexer, tokenkind, null);
     } // while
 
 lex_eof:;
 
-    lexer_maketoken(lexer, TOK_EOF);
+    lexer_maketoken(lexer, TOK_EOF, null);
 }

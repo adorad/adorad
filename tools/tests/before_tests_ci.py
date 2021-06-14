@@ -20,7 +20,7 @@ DESTINATIONROOT = os.path.join(ROOT, 'HazelInternalTests')
 # Acceptable directories to remove external linkage
 # We cannot remove it globally as it affects CSTL as well - and results in the `multiple definitions` error
 ACCEPTABLE_REMOVEABLE_DIRS = (
-    'lexer', 'tokens', 'ast', 'parser',
+    'compiler',
 )
 
 def main():
