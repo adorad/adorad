@@ -148,3 +148,77 @@ TEST(Lexer, advancen) {
     CHECK_EQ(lexer->lineno, 1);
     CHECK_EQ(lexer->is_inside_str, false);
 }
+
+static Token* create_token(TokenKind kind, UInt32 offset, char* value, UInt32 line, UInt32 col, char* fname) {
+    Token* token = calloc(1, sizeof(Token));
+    token->kind = kind;
+    token->offset = offset;
+    token->value = value;
+    token->lineno = line;
+    token->colno = col;
+    token->fname = fname;
+    return token;
+}
+
+typedef struct {
+    Token* token;
+    int pos;
+    int cap;   
+} LexerTestArr;
+
+LexerTestArr* LexerTestArr_alloc(int n) {
+    LexerTestArr* lta = (LexerTestArr*)calloc(n, sizeof(LexerTestArr));
+    lta->token = (Token*)calloc(n, sizeof(LexerTestArr));
+    lta->pos = 0;
+    lta->cap = n;
+    return lta;
+}
+
+void LexerTestArr_append(LexerTestArr* lta, TokenKind kind, UInt32 offset, char* value, UInt32 line, UInt32 col, char* fname) {
+    if(lta->pos >= lta->cap) {
+        lta->token = (Token*)realloc(lta->token, sizeof(LexerTestArr) * (2 * 20));
+        CHECK_NULL(lta->token);
+        lta->cap += 20;
+    }
+    Token* token = create_token(kind, offset, value, line, col, fname);
+    lta->token[lta->pos++] = *token;
+}
+
+void LexerTestArr_free(LexerTestArr* lta) {
+    free(lta->token);
+    free(lta);
+    lta->pos = 0;
+    lta->cap = 0;
+}
+
+TEST(Lexer, lexer_lex_bin_digits) {
+    char* buffer = "0b1010101\n0b111001001\n0b101010101010101010\n0b111111111111111111\n0b192210192";
+    int nbin_digits = 5;
+    Lexer* lexer = lexer_init(buffer);
+
+    // LexerTestArr
+    LexerTestArr* lta = LexerTestArr_alloc(nbin_digits);
+    LexerTestArr_append(lta, BIN_INT, 0, "0b1010101", 1, 1, "");
+    LexerTestArr_append(lta, BIN_INT, 10, "0b111001001", 2, 1, "");
+    LexerTestArr_append(lta, BIN_INT, 22, "0b101010101010101010", 3, 1, "");
+    LexerTestArr_append(lta, BIN_INT, 43, "0b111111111111111111", 4, 1, "");
+    LexerTestArr_append(lta, BIN_INT, 64, "0b192210192", 5, 1, "");
+
+    // Call lexer_lex()
+    lexer_lex(lexer);
+
+    CHECK_EQ(lexer->num_tokens, nbin_digits);
+    CHECK_EQ(lta->cap, nbin_digits);
+
+    for(int i = 0; i<nbin_digits; i++) {
+        CHECK_EQ(lexer->tokenList->kind, lta->token->kind);
+        CHECK_EQ(lexer->tokenList->offset, lta->token->offset);
+        CHECK_EQ(lexer->tokenList->lineno, lta->token->lineno);
+        CHECK_EQ(lexer->tokenList->colno, lta->token->colno);
+        CHECK_STREQ(lexer->tokenList->value, lta->token->value);
+        CHECK_STREQ(lexer->tokenList->value, lta->token->value);
+    }
+
+    lexer_free(lexer);
+    LexerTestArr_free(lta);
+}

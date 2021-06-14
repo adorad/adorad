@@ -317,7 +317,8 @@ static inline void lexer_lex_digit(Lexer* lexer) {
                     break;
                 default:
                     // An integer?
-                    lexer_error(lexer, "Cannot have an integer beginning with `0`");                    
+                    // lexer_error(lexer, "Cannot have an integer beginning with `0`");     
+                    break;               
             } // switch(ch)
         }
         // Fractions, or Integer?
