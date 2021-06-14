@@ -53,7 +53,8 @@ typedef struct Lexer {
 
 // This macro defines how many tokens we initially expect in Lexer->tokenList. 
 // When this limit is reached, we realloc using this same constant
-#define TOKENLIST_ALLOC_SIZE   4096
+// #define TOKENLIST_ALLOC_SIZE   4096
+#define TOKENLIST_ALLOC_SIZE   4096*4
 // Maximum length of an individual token
 #define MAX_TOKEN_SIZE         250
 
@@ -118,7 +119,6 @@ typedef struct Lexer {
 Lexer* lexer_init(const char* buffer);
 static void lexer_tokenlist_append(Lexer* lexer, Token* tk);
 static void lexer_free(Lexer* lexer);
-static void lexer_print_stats(Lexer* lexer);
 
 // Returns the current character in the Lexical Buffer and advances to the next element.
 // It does this by incrementing the buffer offset.

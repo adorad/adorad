@@ -1,4 +1,5 @@
 #include <hazel/hazel.h>
+#include <time.h>
 
 int main(int argc, const char* const argv[]) {
     // C - Example: 
@@ -24,13 +25,18 @@ int main(int argc, const char* const argv[]) {
 	char* buffer = readFile("test/LexerDemo.hzl");
     // char* buffer = "0123456789abcdefghijklmnopqrstuvwxyz";
 	Lexer* lexer = lexer_init(buffer); 
-    printf("-- LEXER_BUFFER: \n%s\n", lexer->buffer);
+    // printf("-- LEXER_BUFFER: \n%s\n", lexer->buffer);
     printf("--------------\n");
+
+    clock_t st, end, total;
+    st = clock();
     lexer_lex(lexer);
+    end = clock();
     printf("Number of tokens = %d\n", lexer->num_tokens);
-    for(int i=0; i<lexer->num_tokens; i++) {
-        printf("TOKEN(%s, %s)\n", token_toString(lexer->tokenList[i].kind), lexer->tokenList[i].value);
-    }
+    // for(int i=0; i<lexer->num_tokens; i++) {
+    //     printf("TOKEN(%s, %s)\n", token_toString(lexer->tokenList[i].kind), lexer->tokenList[i].value);
+    // }
+    printf("Total time = %lf\n", (double)((end-st)/CLOCKS_PER_SEC));
 
     return 0; 
 }

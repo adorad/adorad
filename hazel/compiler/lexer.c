@@ -63,7 +63,7 @@ Lexer* lexer_init(const char* buffer) {
 static void lexer_tokenlist_append(Lexer* lexer, Token* token) {
     if(lexer->num_tokens >= lexer->tokenList_cap) {
         lexer->tokenList = (Token*)realloc(lexer->tokenList, sizeof(Token) * (2 * TOKENLIST_ALLOC_SIZE));
-        CSTL_CHECK_NULL(lexer->tokenList, "Cannot realloc more memory. Memory full.");
+        CSTL_CHECK_NOT_NULL(lexer->tokenList, "Cannot realloc more memory. Memory full.");
         lexer->tokenList_cap += TOKENLIST_ALLOC_SIZE;
     }
     lexer->tokenList[lexer->num_tokens++] = *token;
@@ -82,13 +82,6 @@ void lexer_error(Lexer* lexer, const char* format, ...) {
     fprintf(stderr, " at %s:%d:%d\n", lexer->fname, lexer->lineno,lexer->colno);
     va_end(vl);
     exit(1);
-}
-
-static void lexer_print_stats(Lexer* lexer) {
-    printf("    Char: %c\n", lexer->buffer[lexer->offset]);
-    printf("    Offset: %d\n", lexer->offset);
-    printf("    Lineno: %d\n", lexer->lineno);
-    printf("    Colno: %d\n", lexer->colno);
 }
 
 // Returns the curent character in the Lexical Buffer and advances to the next element
@@ -384,7 +377,6 @@ static void lexer_lex(Lexer* lexer) {
             // case WHITESPACE_NO_NEWLINE: LEXER_INCREMENT_OFFSET; tokenkind = -1; break;
             case WHITESPACE_NO_NEWLINE: tokenkind = -1; break;
             case '\n':
-                // LEXER_INCREMENT_OFFSET_ONLY;
                 LEXER_INCREMENT_LINENO;
                 LEXER_RESET_COLNO;
                 tokenkind = -1;
@@ -409,7 +401,6 @@ static void lexer_lex(Lexer* lexer) {
             case '}': tokenkind = RBRACE; break;
             case '(': tokenkind = LPAREN; break;
             case ')': tokenkind = RPAREN; break;
-            
             case '=':
                 switch(next) {
                     case '=': LEXER_INCREMENT_OFFSET; tokenkind = EQUALS_EQUALS; break;
@@ -492,7 +483,8 @@ static void lexer_lex(Lexer* lexer) {
                 switch(next) {
                     case '=': LEXER_INCREMENT_OFFSET; tokenkind = LESS_THAN_OR_EQUAL_TO; break;
                     case '-': LEXER_INCREMENT_OFFSET; tokenkind = LARROW; break;
-                    case '<': LEXER_INCREMENT_OFFSET;
+                    case '<': 
+                        LEXER_INCREMENT_OFFSET;
                         char c = lexer_peek(lexer);
                         if(c == '=') {
                             LEXER_INCREMENT_OFFSET; tokenkind = LBITSHIFT_EQUALS;
@@ -506,7 +498,8 @@ static void lexer_lex(Lexer* lexer) {
             case '>':
                 switch(next) {
                     case '=': LEXER_INCREMENT_OFFSET; tokenkind = GREATER_THAN_OR_EQUAL_TO; break;
-                    case '>': LEXER_INCREMENT_OFFSET;
+                    case '>': 
+                        LEXER_INCREMENT_OFFSET;
                         char c = lexer_peek(lexer);
                         if(c == '=') {
                             LEXER_INCREMENT_OFFSET; tokenkind = RBITSHIFT_EQUALS;
@@ -525,7 +518,8 @@ static void lexer_lex(Lexer* lexer) {
                 break;
             case '.':
                 switch(next) {
-                    case '.': LEXER_INCREMENT_OFFSET;
+                    case '.': 
+                        LEXER_INCREMENT_OFFSET;
                         char c = lexer_peek(lexer);
                         if(c == '.') {
                             LEXER_INCREMENT_OFFSET; tokenkind = ELLIPSIS;
@@ -533,6 +527,9 @@ static void lexer_lex(Lexer* lexer) {
                             tokenkind = DDOT;
                         }
                         break;
+                    // Fractions are possible here:
+                    // Eg: `.0192` or `.9983838`
+                    case DIGIT: tokenkind = -1; lexer_lex_digit(lexer); break;
                     default: tokenkind = DOT; break;
                 }
                 break;
