@@ -132,7 +132,7 @@ static inline char lexer_peekn(Lexer* lexer, UInt32 n) {
     }
 }
 
-static inline void lexer_maketoken(Lexer* lexer, TokenKind kind, char* value) {  
+static Token* lexer_maketoken(Lexer* lexer, TokenKind kind, char* value) {  
     Token* token = (Token*)calloc(1, sizeof(Token));
     CSTL_CHECK_NOT_NULL(token, "Could not allocate memory. Memory full.");
 
@@ -150,7 +150,8 @@ static inline void lexer_maketoken(Lexer* lexer, TokenKind kind, char* value) {
     token->fname = lexer->fname;
     token->value = value;
     
-    lexer_tokenlist_append(lexer, token);
+    // lexer_tokenlist_append(lexer, token);
+    return token;
 }
 
 // Scan a comment (single line)

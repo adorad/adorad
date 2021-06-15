@@ -28,15 +28,28 @@ int main(int argc, const char* const argv[]) {
     // printf("-- LEXER_BUFFER: \n%s\n", lexer->buffer);
     printf("--------------\n");
 
-    clock_t st, end, total;
-    st = clock();
-    lexer_lex(lexer);
-    end = clock();
-    printf("Number of tokens = %d\n", lexer->num_tokens);
+    cstlVector* vec = vec_new(sizeof(Token), 40);
+    Token* token = lexer_maketoken(lexer, EQUALS, null);
+    printf("First, token = %d\n", token->kind);
+    printf("No segfault 1\n");
+    vec->push(vec, token);
+    printf("Should print\n");
+    printf("vec->size = %d\n",vec->size);
+    for(int i = 0; i< vec->size; i++) {
+        printf(" i = %d\n", i);
+        Token* tok = vec_at(vec, i);
+        printf("%d", tok->kind);
+    }
+
+    // clock_t st, end, total;
+    // st = clock();
+    // lexer_lex(lexer);
+    // end = clock();
+    // printf("Number of tokens = %d\n", lexer->num_tokens);
     // for(int i=0; i<lexer->num_tokens; i++) {
     //     printf("TOKEN(%s, %s)\n", token_toString(lexer->tokenList[i].kind), lexer->tokenList[i].value);
     // }
-    printf("Total time = %lf\n", (double)((end-st)/CLOCKS_PER_SEC));
+    // printf("Total time = %lf\n", (double)((end-st)/CLOCKS_PER_SEC));
 
     return 0; 
 }

@@ -7,9 +7,10 @@
 // but because CSTL is of great use and importance in the Hazel Programming Language (which needs these
 // many or even more tokens) stored without worrying about `realloc` each time
 #define VEC_INIT_ALLOC_CAP  4096
+#define VECTOR_AT_MACRO(v, i) ((void *)((char *) (v)->internal.data + (i) * (v)->internal.objsize))
 
 typedef struct {
-    void* data;       // pointer to the underlying memory
+    void** data;      // pointer to the underlying memory
     UInt64 capacity;  // allocated memory capacity (no. of elements)
     UInt64 size;      // number of elements currently in `vec`
     UInt64 objsize;   // size of each element in bytes
@@ -120,7 +121,7 @@ static void* vec_at(cstlVector* vec, UInt64 elem) {
     if(elem > vec->internal.size)
         return null;
 
-    return (void*)((char*)vec->internal.data + elem * sizeof(cstlVector));
+    return VECTOR_AT_MACRO(vec, elem);
 }
 
 // Return a pointer to first element in `vec`
@@ -199,6 +200,7 @@ static bool vec_push(cstlVector* vec, const void* data) {
 
     if(vec->internal.size + 1 > vec->internal.capacity) {
         bool result = vec_grow(vec, vec->internal.size + 1);
+        printf("Grow here! Result = %d\n", result);
         if(!result)
             return false;
     }
@@ -206,7 +208,9 @@ static bool vec_push(cstlVector* vec, const void* data) {
     CSTL_CHECK_GT(vec->internal.objsize, 0);
 
     if(vec->internal.data != null) {
-        memcpy(vec_at(vec, vec->internal.size), data, vec->internal.objsize);
+        printf("No segfault here 3\n");
+        printf("vec_at = %p\n", vec_at(vec, vec->internal.size));
+        memcpy(VECTOR_AT_MACRO(vec, vec->internal.size), data, vec->internal.objsize);
     }
 
     vec->internal.size++;
