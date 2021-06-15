@@ -228,33 +228,33 @@ static bool vec_pop(cstlVector* vec) {
 // Grow the capacity of `vec` to at least `capacity`.
 // If more space is needed, grow `vec` to `capacity`, but at least by a factor of 1.5.
 static bool vec_grow(cstlVector* vec, UInt64 capacity) {
-	void* newdata;
-	UInt64 newcapacity;
+    void* newdata;
+    UInt64 newcapacity;
 
-	CSTL_CHECK_NOT_NULL(vec, "Expected not null");
-	CSTL_CHECK_NOT_NULL(vec->internal.data, "Expected not null");
+    CSTL_CHECK_NOT_NULL(vec, "Expected not null");
+    CSTL_CHECK_NOT_NULL(vec->internal.data, "Expected not null");
 
-	if (capacity <= vec->internal.capacity)
-		return true;
+    if (capacity <= vec->internal.capacity)
+        return true;
 
-	CSTL_CHECK_GT(vec->internal.objsize,  0);
+    CSTL_CHECK_GT(vec->internal.objsize,  0);
     CSTL_CHECK_LT(capacity, (UInt64)-1/vec->internal.objsize);
 
     // Grow small vectors by a factor of 2, and 1.5 for larger ones
-	if (vec->internal.capacity < 4096 / vec->internal.objsize) {
-		newcapacity = vec->internal.capacity + vec->internal.capacity + 1;
-	} else {
-		newcapacity = vec->internal.capacity + vec->internal.capacity / 2 + 1;
-	}
+    if (vec->internal.capacity < 4096 / vec->internal.objsize) {
+        newcapacity = vec->internal.capacity + vec->internal.capacity + 1;
+    } else {
+        newcapacity = vec->internal.capacity + vec->internal.capacity / 2 + 1;
+    }
 
-	if (capacity > newcapacity || newcapacity >= (size_t) -1 / vec->internal.objsize)
-		newcapacity = capacity;
+    if (capacity > newcapacity || newcapacity >= (size_t) -1 / vec->internal.objsize)
+        newcapacity = capacity;
 
-	newdata = realloc(vec->internal.data, newcapacity * vec->internal.objsize);
+    newdata = realloc(vec->internal.data, newcapacity * vec->internal.objsize);
     CSTL_CHECK_NOT_NULL(newdata, "Expected not null");
 
-	vec->internal.data = newdata;
-	vec->internal.capacity = newcapacity;
+    vec->internal.data = newdata;
+    vec->internal.capacity = newcapacity;
 
-	return true;
+    return true;
 }
