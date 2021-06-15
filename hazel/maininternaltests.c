@@ -28,20 +28,20 @@ int main(int argc, const char* const argv[]) {
     // printf("-- LEXER_BUFFER: \n%s\n", lexer->buffer);
     printf("--------------\n");
 
-    cstlVector* vec = vec_new(sizeof(Token), 40);
-    vec->push(vec, lexer_maketoken(lexer, EQUALS, null));
-    vec->push(vec, lexer_maketoken(lexer, EQUALS, null));
-    vec->push(vec, lexer_maketoken(lexer, EQUALS, null));
-    vec->push(vec, lexer_maketoken(lexer, EQUALS, null));
-    vec->push(vec, lexer_maketoken(lexer, EQUALS, null));
-    vec->push(vec, lexer_maketoken(lexer, EQUALS, null));
-    vec->push(vec, lexer_maketoken(lexer, EQUALS, null));
-    vec->push(vec, lexer_maketoken(lexer, EQUALS, null));
-    
-    for(int i = 0; i < vec->size(vec); i++) {
-        Token* tok = vec_at(vec, i);
-        printf("%d\n", tok->kind);
-    }
+    // cstlVector* vec = vec_new(sizeof(Token), 40);
+    // vec->push(vec, lexer_maketoken(lexer, EQUALS, null));
+    // vec->push(vec, lexer_maketoken(lexer, EQUALS, null));
+    // vec->push(vec, lexer_maketoken(lexer, EQUALS, null));
+    // vec->push(vec, lexer_maketoken(lexer, EQUALS, null));
+    // vec->push(vec, lexer_maketoken(lexer, EQUALS, null));
+    // vec->push(vec, lexer_maketoken(lexer, EQUALS, null));
+    // vec->push(vec, lexer_maketoken(lexer, EQUALS, null));
+    // vec->push(vec, lexer_maketoken(lexer, EQUALS, null));
+
+    // for(int i = 0; i < vec->size(vec); i++) {
+    //     Token* tok = vec_at(vec, i);
+    //     printf("%d\n", tok->kind);
+    // }
 
     // clock_t st, end, total;
     // st = clock();
