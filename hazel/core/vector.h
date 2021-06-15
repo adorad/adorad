@@ -86,16 +86,16 @@ static cstlVector* vec_new(UInt64 objsize, UInt64 capacity) {
     vec->internal.size = 0;
     vec->internal.objsize = objsize;
 
-    vec->at = vec_at;
-    vec->size = vec_size;
-    vec->push = vec_push;
-    vec->pop = vec_pop;
-    vec->begin = vec_begin;
-    vec->end = vec_end;
-    vec->is_empty = vec_is_empty;
-    vec->reserve = vec_reserve;
-    vec->clear = vec_clear;
-    vec->free = vec_delete;
+    vec->at = &vec_at;
+    vec->size = &vec_size;
+    vec->push = &vec_push;
+    vec->pop = &vec_pop;
+    vec->begin = &vec_begin;
+    vec->end = &vec_end;
+    vec->is_empty = &vec_is_empty;
+    vec->reserve = &vec_reserve;
+    vec->clear = &vec_clear;
+    vec->free = &vec_delete;
 
     return vec;
 } 
@@ -200,7 +200,6 @@ static bool vec_push(cstlVector* vec, const void* data) {
 
     if(vec->internal.size + 1 > vec->internal.capacity) {
         bool result = vec_grow(vec, vec->internal.size + 1);
-        printf("Grow here! Result = %d\n", result);
         if(!result)
             return false;
     }
@@ -208,8 +207,6 @@ static bool vec_push(cstlVector* vec, const void* data) {
     CSTL_CHECK_GT(vec->internal.objsize, 0);
 
     if(vec->internal.data != null) {
-        printf("No segfault here 3\n");
-        printf("vec_at = %p\n", vec_at(vec, vec->internal.size));
         memcpy(VECTOR_AT_MACRO(vec, vec->internal.size), data, vec->internal.objsize);
     }
 

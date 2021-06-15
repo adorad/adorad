@@ -29,16 +29,18 @@ int main(int argc, const char* const argv[]) {
     printf("--------------\n");
 
     cstlVector* vec = vec_new(sizeof(Token), 40);
-    Token* token = lexer_maketoken(lexer, EQUALS, null);
-    printf("First, token = %d\n", token->kind);
-    printf("No segfault 1\n");
-    vec->push(vec, token);
-    printf("Should print\n");
-    printf("vec->size = %d\n",vec->size);
-    for(int i = 0; i< vec->size; i++) {
-        printf(" i = %d\n", i);
+    vec->push(vec, lexer_maketoken(lexer, EQUALS, null));
+    vec->push(vec, lexer_maketoken(lexer, EQUALS, null));
+    vec->push(vec, lexer_maketoken(lexer, EQUALS, null));
+    vec->push(vec, lexer_maketoken(lexer, EQUALS, null));
+    vec->push(vec, lexer_maketoken(lexer, EQUALS, null));
+    vec->push(vec, lexer_maketoken(lexer, EQUALS, null));
+    vec->push(vec, lexer_maketoken(lexer, EQUALS, null));
+    vec->push(vec, lexer_maketoken(lexer, EQUALS, null));
+    
+    for(int i = 0; i < vec->size(vec); i++) {
         Token* tok = vec_at(vec, i);
-        printf("%d", tok->kind);
+        printf("%d\n", tok->kind);
     }
 
     // clock_t st, end, total;
