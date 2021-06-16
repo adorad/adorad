@@ -16,7 +16,6 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #include <stdarg.h>
 #include <string.h>
 #include <stdio.h>
-#include <hazel/core/compilers.h>
 #include <hazel/core/os.h>
 #include <hazel/core/headers.h>
 #include <hazel/core/misc.h>
