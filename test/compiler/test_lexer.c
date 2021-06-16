@@ -1,7 +1,7 @@
 #include <HazelInternalTests/HazelInternalTests.h>
 #include <tau/tau.h>
 TAU_MAIN()
-
+ 
 TEST(Lexer, Init) {
     char* buffer = "0123456789abcdefghijklmnopqrstuvwxyz";
     Lexer* lexer = lexer_init(buffer);
