@@ -3,6 +3,14 @@
 #include <hazel/core/types.h>
 #include <hazel/core/debug.h>
 
+// Sources
+// 
+//      1. https://github.com/bigstronkcodeman/C-Generic-Dynamic-Arrays/blob/main/dynarray.c
+//      2. https://github.com/Naitsirc98/C-Vector/blob/master/Vector/Vector/src/vector/vector.c
+//      3. https://github.com/bamless/cvector/blob/master/vector.c
+//      4. https://github.com/nothings/stb/blob/master/stb_c_lexer.h
+ 
+
 // We require this to be a large number, much more than what you might eventually use for more projects,
 // but because CSTL is of great use and importance in the Hazel Programming Language (which needs these
 // many or even more tokens) stored without worrying about `realloc` each time
