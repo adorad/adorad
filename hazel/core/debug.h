@@ -5,6 +5,7 @@ _ _    _           ______   _______
 |  __  |  / /\ \    / /     |  __|  | |       Languages: C, C++, and Assembly
 | |  | | / ____ \  / /___   | |____ | |____   https://github.com/HazelLang/hazel/
 |_|_ |_|/_/    \_\/_______\ |______|_\______|
+
 Licensed under the MIT License <http://opensource.org/licenses/MIT>
 SPDX-License-Identifier: MIT
 Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
@@ -19,6 +20,9 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #include <hazel/core/os.h>
 #include <hazel/core/headers.h>
 #include <hazel/core/misc.h>
+#include <hazel/core/compilers.h>
+
+CSTL_DISABLE_DEBUG_WARNINGS
 
 // ========================= Debug + Asserts =========================
 // This macro is only for simple assertion checks (that don't require a message to STDOUT).
@@ -29,17 +33,6 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
     #define CSTL_DEBUG_CHECK1(cond, line)      typedef char static_assertion_at_line_##line[(!!(cond))*2-1]
     #define CSTL_DEBUG_CHECK(cond)             CSTL_DEBUG_CHECK1(cond, __LINE__)
 #endif
-
-
-#if defined(__cplusplus)
-    #include <exception>
-#endif //__cplusplus
-
-#if defined(__cplusplus)
-    #define CSTL_ABORT()     std::abort()
-#else
-    #define CSTL_ABORT()     exit(1)
-#endif //__cplusplus
 
 // Enable the use of the non-standard keyword __attribute__ to silence warnings under some compilers
 #if defined(__GNUC__) || defined(CSTL_COMPILER_CLANG)
@@ -64,6 +57,7 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
     #define CSTL_UNUSED   __attribute__((unused))
 #endif // CSTL_COMPILER_MSVC
 
+#define CSTL_ABORT()     exit(1)
 
 #define CSTL_COLOUR_ERROR     1
 #define CSTL_COLOUR_SUCCESS   2
@@ -82,7 +76,7 @@ cstlColouredPrintf(int colour, const char* fmt, ...) {
     va_start(args, fmt);
     vsnprintf(buffer, sizeof(buffer), fmt, args);
     va_end(args);
-    buffer[sizeof(buffer)-1] = '\0';
+    buffer[sizeof(buffer) - 1] = '\0';
 
 #ifdef CSTL_OS_UNIX
     {
@@ -93,7 +87,7 @@ cstlColouredPrintf(int colour, const char* fmt, ...) {
             case CSTL_COLOUR_WARN:     str = "\033[1;33m"; break;
             case CSTL_COLOUR_CYAN:     str = "\033[1;36m"; break;
             case CSTL_COLOUR_BOLD:     str = "\033[1m"; break;
-            default:            str = "\033[0m"; break;
+            default:                   str = "\033[0m"; break;
         }
         printf("%s", str);
         n = printf("%s", buffer);
@@ -116,7 +110,7 @@ cstlColouredPrintf(int colour, const char* fmt, ...) {
             case CSTL_COLOUR_WARN:       attr = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY; break;
             case CSTL_COLOUR_BOLD:       attr = FOREGROUND_BLUE | FOREGROUND_GREEN |FOREGROUND_RED | 
                                          FOREGROUND_INTENSITY; break;
-            default:              attr = 0; break;
+            default:                      attr = 0; break;
         }
         if(attr != 0)
             SetConsoleTextAttribute(h, attr);
@@ -148,7 +142,7 @@ static inline int cstlShouldDecomposeMacro(char const* actual, char const* expec
     // name/expression (i.e for a value, we search through each character verifying that each is a digit
     // - for floats, we allow a maximum of 1 '.' char)
     if(!isStringCmp) {
-        for(int i=0; i < strlen(actual); i++) {
+        for(int i = 0; i < strlen(actual); i++) {
             if(CSTL_isDigit(actual[i])) { numActualDigits++; }
             else if(actual[i] == '.') { 
                 dots++; 
@@ -158,13 +152,15 @@ static inline int cstlShouldDecomposeMacro(char const* actual, char const* expec
         }
         // Do the same for `expected`
         dots = 0;
-        for(int i=0; i < strlen(expected); i++) {
+        for(int i = 0; i < strlen(expected); i++) {
             if(CSTL_isDigit(expected[i])) { numExpectedDigits++; }
             else if(expected[i] == '.') { 
                 dots++; 
-                if(dots > 1) { return 1; }
+                if(dots > 1) 
+                    return 1;
             }
-            else { return 1; }
+            else 
+                return 1;
         }
     } 
     // Inside a string comparison, we search for common expression tokens like the following:
@@ -177,6 +173,9 @@ static inline int cstlShouldDecomposeMacro(char const* actual, char const* expec
     }
     return 0;
 }
+
+#define STR(x) #x
+#define XSTR(x) STR(x)
 
 #ifdef CSTL_OVERLOADABLE
     #ifndef CSTL_CAN_USE_OVERLOADABLES
@@ -192,22 +191,22 @@ static inline int cstlShouldDecomposeMacro(char const* actual, char const* expec
     CSTL_WEAK CSTL_OVERLOADABLE void CSTL_OVERLOAD_PRINTER(long unsigned int i);
     CSTL_WEAK CSTL_OVERLOADABLE void CSTL_OVERLOAD_PRINTER(const void* p);
 
-    CSTL_WEAK CSTL_OVERLOADABLE void CSTL_OVERLOAD_PRINTER(float f) { printf("%f", CSTL_CAST(double, f));    }
-    CSTL_WEAK CSTL_OVERLOADABLE void CSTL_OVERLOAD_PRINTER(double d) { printf("%f", d);    }
-    CSTL_WEAK CSTL_OVERLOADABLE void CSTL_OVERLOAD_PRINTER(long double d) { printf("%Lf", d);    }
-    CSTL_WEAK CSTL_OVERLOADABLE void CSTL_OVERLOAD_PRINTER(int i) { printf("%d", i);    }
-    CSTL_WEAK CSTL_OVERLOADABLE void CSTL_OVERLOAD_PRINTER(unsigned int i) { printf("%u", i);    }
-    CSTL_WEAK CSTL_OVERLOADABLE void CSTL_OVERLOAD_PRINTER(long int i) { printf("%ld", i);    }
-    CSTL_WEAK CSTL_OVERLOADABLE void CSTL_OVERLOAD_PRINTER(long unsigned int i) { printf("%lu", i);    }
-    CSTL_WEAK CSTL_OVERLOADABLE void CSTL_OVERLOAD_PRINTER(const void* p) { printf("%p", p);    }
+    CSTL_WEAK CSTL_OVERLOADABLE void CSTL_OVERLOAD_PRINTER(float f) { printf("%f", CSTL_CAST(double, f)); }
+    CSTL_WEAK CSTL_OVERLOADABLE void CSTL_OVERLOAD_PRINTER(double d) { printf("%f", d); }
+    CSTL_WEAK CSTL_OVERLOADABLE void CSTL_OVERLOAD_PRINTER(long double d) { printf("%Lf", d); }
+    CSTL_WEAK CSTL_OVERLOADABLE void CSTL_OVERLOAD_PRINTER(int i) { printf("%d", i); }
+    CSTL_WEAK CSTL_OVERLOADABLE void CSTL_OVERLOAD_PRINTER(unsigned int i) { printf("%u", i); }
+    CSTL_WEAK CSTL_OVERLOADABLE void CSTL_OVERLOAD_PRINTER(long int i) { printf("%ld", i); }
+    CSTL_WEAK CSTL_OVERLOADABLE void CSTL_OVERLOAD_PRINTER(long unsigned int i) { printf("%lu", i); }
+    CSTL_WEAK CSTL_OVERLOADABLE void CSTL_OVERLOAD_PRINTER(const void* p) { printf("%p", p); }
 
     // long long is in C++ only
     #if defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901L) || defined(__cplusplus) && (__cplusplus >= 201103L)
         CSTL_WEAK CSTL_OVERLOADABLE void CSTL_OVERLOAD_PRINTER(long long int i);
         CSTL_WEAK CSTL_OVERLOADABLE void CSTL_OVERLOAD_PRINTER(long long unsigned int i);
 
-        CSTL_WEAK CSTL_OVERLOADABLE void CSTL_OVERLOAD_PRINTER(long long int i) { printf("%lld", i);    }
-        CSTL_WEAK CSTL_OVERLOADABLE void CSTL_OVERLOAD_PRINTER(long long unsigned int i) { printf("%llu", i);    }
+        CSTL_WEAK CSTL_OVERLOADABLE void CSTL_OVERLOAD_PRINTER(long long int i) { printf("%lld", i); }
+        CSTL_WEAK CSTL_OVERLOADABLE void CSTL_OVERLOAD_PRINTER(long long unsigned int i) { printf("%llu", i); }
     #endif // __STDC_VERSION__
 
 #elif defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 201112L)
@@ -238,7 +237,7 @@ static inline int cstlShouldDecomposeMacro(char const* actual, char const* expec
     // If we're here, this means that the Compiler does not support overloadable methods
     #define CSTL_OVERLOAD_PRINTER(...)                                                             \
         printf("Error: Your compiler does not support overloadable methods.");                     \
-        printf("If you think this was an error, please file an issue on Tau's Github repo."   )
+        printf("If you think this was an error, please file an issue on Hazel's Github repo."   )
 #endif // CSTL_OVERLOADABLE
 
 // ifCondFailsThenPrint is the string representation of the opposite of the truthy value of `cond`
@@ -420,5 +419,7 @@ static inline int cstlShouldDecomposeMacro(char const* actual, char const* expec
 
 #define CSTL_WARN(msg)     \
     cstlColouredPrintf(CSTL_COLOUR_WARN, "%s:%u:\nWARNING: %s\n", __FILE__, __LINE__, #msg)
+
+CSTL_DISABLE_DEBUG_WARNINGS_POP
 
 #endif // CSTL_DEBUG_H
