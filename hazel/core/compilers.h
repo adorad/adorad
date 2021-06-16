@@ -126,7 +126,7 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
     /* Clang */                                                                                       \
     CSTL_CLANG_SUPPRESS_WARNING_PUSH                                                                  \
     CSTL_CLANG_SUPPRESS_WARNING("-Wdisabled-macro-expansion")                                         \
-    CSTL_CLANG_SUPPRESS_WARNING("-Wlanguage-extension-token")                                         \
+    /**CSTL_CLANG_SUPPRESS_WARNING("-Wlanguage-extension-token")                                         */\
     CSTL_CLANG_SUPPRESS_WARNING("-Wc++98-compat")                                                     \
     CSTL_CLANG_SUPPRESS_WARNING("-Wc++98-compat-pedantic")                                            \
     CSTL_CLANG_SUPPRESS_WARNING("-Wfloat-equal")                                                      \
