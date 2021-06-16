@@ -22,7 +22,7 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #include <hazel/core/misc.h>
 #include <hazel/core/compilers.h>
 
-CSTL_DISABLE_DEBUG_WARNINGS
+// CSTL_DISABLE_DEBUG_WARNINGS
 
 // ========================= Debug + Asserts =========================
 // This macro is only for simple assertion checks (that don't require a message to STDOUT).
@@ -420,6 +420,6 @@ static inline int cstlShouldDecomposeMacro(char const* actual, char const* expec
 #define CSTL_WARN(msg)     \
     cstlColouredPrintf(CSTL_COLOUR_WARN, "%s:%u:\nWARNING: %s\n", __FILE__, __LINE__, #msg)
 
-CSTL_DISABLE_DEBUG_WARNINGS_POP
+// CSTL_DISABLE_DEBUG_WARNINGS_POP
 
 #endif // CSTL_DEBUG_H
