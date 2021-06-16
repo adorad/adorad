@@ -121,8 +121,71 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
     CSTL_MSVC_SUPPRESS_WARNING(4100)                                                                  \
     CSTL_MSVC_SUPPRESS_WARNING(4201)                                                                  \
     CSTL_MSVC_SUPPRESS_WARNING(5045)                                                                  \
-    CSTL_MSVC_SUPPRESS_WARNING(5105)                                                                  
-
+    CSTL_MSVC_SUPPRESS_WARNING(5105)                                                                  \
+                                                                                                      \
+    /* Clang */                                                                                       \
+    CSTL_CLANG_SUPPRESS_WARNING_PUSH                                                                  \
+    CSTL_CLANG_SUPPRESS_WARNING("-Wdisabled-macro-expansion")                                         \
+    /**CSTL_CLANG_SUPPRESS_WARNING("-Wlanguage-extension-token")                                         */\
+    CSTL_CLANG_SUPPRESS_WARNING("-Wc++98-compat")                                                     \
+    CSTL_CLANG_SUPPRESS_WARNING("-Wc++98-compat-pedantic")                                            \
+    CSTL_CLANG_SUPPRESS_WARNING("-Wfloat-equal")                                                      \
+    CSTL_CLANG_SUPPRESS_WARNING("-Wmissing-variable-declarations")                                    \
+    CSTL_CLANG_SUPPRESS_WARNING("-Wreserved-id-macro")                                                \
+    CSTL_CLANG_SUPPRESS_WARNING("-Wunknown-pragmas")                                                  \
+    CSTL_CLANG_SUPPRESS_WARNING("-Wstrict-overflow")                                                  \
+    CSTL_CLANG_SUPPRESS_WARNING("-Wstrict-aliasing")                                                  \
+    CSTL_CLANG_SUPPRESS_WARNING("-Wsign-compare")                                                     \
+    CSTL_CLANG_SUPPRESS_WARNING("-Wsign-conversion")                                                  \
+    CSTL_CLANG_SUPPRESS_WARNING("-Wunused-macros")                                                    \
+    CSTL_CLANG_SUPPRESS_WARNING("-Wunused-function")                                                  \
+    CSTL_CLANG_SUPPRESS_WARNING("-Wunused-variable")                                                  \
+    CSTL_CLANG_SUPPRESS_WARNING("-Wunused-result")                                                    \
+    CSTL_CLANG_SUPPRESS_WARNING("-Wunused-parameter")                                                 \
+    CSTL_CLANG_SUPPRESS_WARNING("-Wunused-local-typedefs")                                            \
+    CSTL_CLANG_SUPPRESS_WARNING("-Wswitch")                                                           \
+    CSTL_CLANG_SUPPRESS_WARNING("-Wswitch-enum")                                                      \
+    CSTL_CLANG_SUPPRESS_WARNING("-Wswitch-default")                                                   \
+    CSTL_CLANG_SUPPRESS_WARNING("-Wformat")                                                           \
+    CSTL_CLANG_SUPPRESS_WARNING("-Wformat-extra-args")                                                \
+    CSTL_CLANG_SUPPRESS_WARNING("-Wignored-qualifiers")                                               \
+    CSTL_CLANG_SUPPRESS_WARNING("-Wuninitialized")                                                    \
+    CSTL_CLANG_SUPPRESS_WARNING("-Wunused-const-variable")                                            \
+    CSTL_CLANG_SUPPRESS_WARNING("-Wnewline-eof")                                                      \
+    CSTL_CLANG_SUPPRESS_WARNING("-Wdeprecated-declarations")                                          \
+                                                                                                      \
+    /* GCC */                                                                                         \
+    CSTL_GCC_SUPPRESS_WARNING_PUSH                                                                    \
+    CSTL_GCC_SUPPRESS_WARNING("-Wunknown-pragmas")                                                    \
+    CSTL_GCC_SUPPRESS_WARNING("-Wpragmas")                                                            \
+    CSTL_GCC_SUPPRESS_WARNING("-Wmaybe-uninitialized")                                                \
+    CSTL_GCC_SUPPRESS_WARNING("-Wmultistatement-macros")                                              \
+    CSTL_GCC_SUPPRESS_WARNING("-Wdiscarded-qualifiers")                                               \
+    CSTL_GCC_SUPPRESS_WARNING("-Wdisabled-macro-expansion")                                           \
+    CSTL_GCC_SUPPRESS_WARNING("-Wlanguage-extension-token")                                           \
+    CSTL_GCC_SUPPRESS_WARNING("-Wc++98-compat")                                                       \
+    CSTL_GCC_SUPPRESS_WARNING("-Wc++98-compat-pedantic")                                              \
+    CSTL_GCC_SUPPRESS_WARNING("-Wfloat-equal")                                                        \
+    CSTL_GCC_SUPPRESS_WARNING("-Wmissing-variable-declarations")                                      \
+    CSTL_GCC_SUPPRESS_WARNING("-Wreserved-id-macro")                                                  \
+    CSTL_GCC_SUPPRESS_WARNING("-Wunknown-pragmas")                                                    \
+    CSTL_GCC_SUPPRESS_WARNING("-Wstrict-overflow")                                                    \
+    CSTL_GCC_SUPPRESS_WARNING("-Wstrict-aliasing")                                                    \
+    CSTL_GCC_SUPPRESS_WARNING("-Wsign-compare")                                                       \
+    CSTL_GCC_SUPPRESS_WARNING("-Wsign-conversion")                                                    \
+    CSTL_GCC_SUPPRESS_WARNING("-Wunused-macros")                                                      \
+    CSTL_GCC_SUPPRESS_WARNING("-Wunused-function")                                                    \
+    CSTL_GCC_SUPPRESS_WARNING("-Wunused-variable")                                                    \
+    CSTL_GCC_SUPPRESS_WARNING("-Wunused-result")                                                      \
+    CSTL_GCC_SUPPRESS_WARNING("-Wunused-parameter")                                                   \
+    CSTL_GCC_SUPPRESS_WARNING("-Wunused-local-typedefs")                                              \
+    CSTL_GCC_SUPPRESS_WARNING("-Wswitch")                                                             \
+    CSTL_GCC_SUPPRESS_WARNING("-Wswitch-enum")                                                        \
+    CSTL_GCC_SUPPRESS_WARNING("-Wswitch-default")                                                     \
+    CSTL_GCC_SUPPRESS_WARNING("-Wformat")                                                             \
+    CSTL_GCC_SUPPRESS_WARNING("-Wformat-extra-args")                                                  \
+    CSTL_GCC_SUPPRESS_WARNING("-Wsuggest-attribute=format")                                           \
+    CSTL_GCC_SUPPRESS_WARNING("-Wdeprecated-declarations")
 #endif // CSTL_DISABLE_DEBUG_WARNINGS
 
 #ifndef CSTL_DISABLE_DEBUG_WARNINGS_POP
