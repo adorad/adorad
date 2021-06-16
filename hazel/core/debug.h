@@ -20,6 +20,7 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #include <hazel/core/os.h>
 #include <hazel/core/headers.h>
 #include <hazel/core/misc.h>
+#include <hazel/core/compilers.h>
 
 // ========================= Debug + Asserts =========================
 // This macro is only for simple assertion checks (that don't require a message to STDOUT).
@@ -140,6 +141,10 @@ static inline int CSTL_isDigit(char c) { return c >= '0' && c <= '9'; }
 // This helps mitigate the ``warning: ISO C++ forbids converting a string constant to 'char*'``
 // See: https://stackoverflow.com/questions/20944784/why-is-conversion-from-string-constant-to-char-valid-in-c-but-invalid-in-c/20944858
 static inline int cstlShouldDecomposeMacro(char const* actual, char const* expected, int isStringCmp) {
+    #ifdef CSTL_COMPILER_MSVC
+        __pragma(warning(push))
+        __pragma(warning(disable : 4388)) // Signed/Unsigned mismatch
+    #endif // CSTL_COMPILER_MSVC
     // Signal that the macro can be further decomposed if either of the following symbols are present
     int dots = 0;
     int numActualDigits = 0;
@@ -149,7 +154,7 @@ static inline int cstlShouldDecomposeMacro(char const* actual, char const* expec
     // name/expression (i.e for a value, we search through each character verifying that each is a digit
     // - for floats, we allow a maximum of 1 '.' char)
     if(!isStringCmp) {
-        for(int i=0; i < strlen(actual); i++) {
+        for(int i = 0; i < strlen(actual); i++) {
             if(CSTL_isDigit(actual[i])) { numActualDigits++; }
             else if(actual[i] == '.') { 
                 dots++; 
@@ -159,13 +164,15 @@ static inline int cstlShouldDecomposeMacro(char const* actual, char const* expec
         }
         // Do the same for `expected`
         dots = 0;
-        for(int i=0; i < strlen(expected); i++) {
+        for(int i = 0; i < strlen(expected); i++) {
             if(CSTL_isDigit(expected[i])) { numExpectedDigits++; }
             else if(expected[i] == '.') { 
                 dots++; 
-                if(dots > 1) { return 1; }
+                if(dots > 1) 
+                    return 1;
             }
-            else { return 1; }
+            else 
+                return 1;
         }
     } 
     // Inside a string comparison, we search for common expression tokens like the following:
@@ -176,6 +183,9 @@ static inline int cstlShouldDecomposeMacro(char const* actual, char const* expec
             return 1;
         }
     }
+    #ifdef CSTL_COMPILER_MSVC
+        __pragma(warning(pop))
+    #endif // CSTL_COMPILER_MSVC
     return 0;
 }
 
@@ -258,12 +268,12 @@ static inline int cstlShouldDecomposeMacro(char const* actual, char const* expec
                 }                                                                        \
                 printf("  Expected : %s", #actual);                                      \
                 printf(" %s ", #cond space);                                             \
-                CSTL_OVERLOAD_PRINTER(expected);                                         \
+                CSTL_OVERLOAD_PRINTER(expected);                                       \
                 printf("\n");                                                            \
                                                                                          \
                 printf("    Actual : %s", #actual);                                      \
                 printf(" == ");                                                          \
-                CSTL_OVERLOAD_PRINTER(actual);                                           \
+                CSTL_OVERLOAD_PRINTER(actual);                                         \
                 printf("\n");                                                            \
                 CSTL_ABORT();                                                            \
             }                                                                            \
