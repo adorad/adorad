@@ -56,7 +56,6 @@ Lexer* lexer_init(const char* buffer) {
     lexer->lineno = 1;
     lexer->colno = 1;
     lexer->fname = "";
-    lexer->is_inside_str = false;
     return lexer;
 }
 
@@ -242,9 +241,9 @@ static inline void lexer_lex_identifier(Lexer* lexer) {
 }
 
 static inline void lexer_lex_digit(Lexer* lexer) {
-    // 0x... --> Hexadecimal
-    // 0o... --> Octal
-    // 0b... --> Binary
+    // 0x... --> Hexadecimal ("0x"|"0X")[0-9A-Fa-f_]+
+    // 0o... --> Octal       ("0o"|"0O")[0-7_]+
+    // 0b... --> Binary      ("0b"|"0B")[01_]+
     // This cannot be `lexer_advance(lexer)` because we enter here from `lexer_lex()` where we already
     // know that the first char is a digit value. 
     // This value needs to be captured as well in `token->value`
@@ -252,7 +251,6 @@ static inline void lexer_lex_digit(Lexer* lexer) {
     int prev_offset = lexer->offset - 1;
     TokenKind tokenkind = TOK_ILLEGAL;
     char* digit_value = (char*)calloc(MAX_TOKEN_SIZE, sizeof(char));
-    int base = 0;
 
     CSTL_CHECK_TRUE(isDigit(ch));
     while(isDigit(ch)) {
@@ -270,7 +268,7 @@ static inline void lexer_lex_digit(Lexer* lexer) {
                         ch = lexer_advance(lexer);
                     }
                     if(hexcount == 0) {
-                        lexer_error(lexer, "Expected hexadecimal digits after `0x`");
+                        lexer_error(lexer, "Expected hexadecimal digits [0-9A-Fa-f] after `0x`");
                     }
                     tokenkind = HEX_INT;
                     break;
@@ -284,7 +282,7 @@ static inline void lexer_lex_digit(Lexer* lexer) {
                         ch = lexer_advance(lexer);
                     }
                     if(bincount == 0) {
-                        lexer_error(lexer, "Expected binary digits after `0b`");
+                        lexer_error(lexer, "Expected binary digit [0-1] after `0b`");
                     }
                     tokenkind = BIN_INT;
                     break;
@@ -300,7 +298,7 @@ static inline void lexer_lex_digit(Lexer* lexer) {
                         ch = lexer_advance(lexer);
                     }
                     if(octcount == 0) {
-                        lexer_error(lexer, "Expected octal digits after `0o`");
+                        lexer_error(lexer, "Expected octal digits [0-7] after `0o`");
                     }
                     tokenkind = OCT_INT;
                     break;
@@ -339,10 +337,10 @@ static inline void lexer_lex_digit(Lexer* lexer) {
         ch = lexer_advance(lexer);
     }
 
-    CSTL_CHECK_NE(tokenkind, TOK_ILLEGAL);
-    CSTL_CHECK_NOT_NULL(digit_value, "digit_value must not be null");
+    CSTL_CHECK(tokenkind != TOK_ILLEGAL);
     substr(digit_value, lexer->buffer, prev_offset, lexer->offset - prev_offset - 1);
-    return lexer_maketoken(lexer, tokenkind, digit_value);
+    CSTL_CHECK_NOT_NULL(digit_value, "digit_value must not be null");
+    lexer_maketoken(lexer, tokenkind, digit_value);
 }
 
 // Lex the Source files
