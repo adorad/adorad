@@ -21,7 +21,6 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #include <hazel/core/headers.h>
 #include <hazel/core/misc.h>
 #include <hazel/core/compilers.h>
-#include <hazel/core/types.h>
 
 CSTL_DISABLE_DEBUG_WARNINGS
 
@@ -82,7 +81,7 @@ cstlColouredPrintf(int colour, const char* fmt, ...) {
     va_start(args, fmt);
     vsnprintf(buffer, sizeof(buffer), fmt, args);
     va_end(args);
-    buffer[sizeof(buffer) - 1] = nullchar;
+    buffer[sizeof(buffer) - 1] = '\0';
 
 #ifdef CSTL_OS_UNIX
     {
