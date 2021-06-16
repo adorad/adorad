@@ -62,43 +62,31 @@ typedef struct Lexer {
 #define LEXER_MACROS_
     // Get the current character in the Lexical buffer
     // NB: This does not increase the offset
-    #define LEXER_CURR_CHAR              lexer->buffer[lexer->offset]
-    // Increment Token Length
-    #define LEXER_INCREMENT_TOK_LENGTH   ++lexer->token.tok_length
-    // Decrement Token Length
-    #define LEXER_DECREMENT_TOK_LENGTH   --lexer->token.tok_length 
+    #define LEXER_CURR_CHAR                   lexer->buffer[lexer->offset]
 
     // Reset the line
-    #define LEXER_RESET_LINENO           lexer->lineno = 0
+    #define LEXER_RESET_LINENO                lexer->lineno = 0
     // Reset the column number 
-    #define LEXER_RESET_COLNO            lexer->colno = 0
+    #define LEXER_RESET_COLNO                 lexer->colno = 0
 
     // Increment the line number
-    #define LEXER_INCREMENT_LINENO       ++lexer->lineno; LEXER_RESET_COLNO
+    #define LEXER_INCREMENT_LINENO            ++lexer->lineno; LEXER_RESET_COLNO
     // Decrement the lineno
-    #define LEXER_DECREMENT_LINENO       --lexer->lineno; LEXER_RESET_COLNO
+    #define LEXER_DECREMENT_LINENO            --lexer->lineno; LEXER_RESET_COLNO
     // Increment the column number
-    #define LEXER_INCREMENT_COLNO        ++lexer->colno 
+    #define LEXER_INCREMENT_COLNO             ++lexer->colno 
     // Decrement the colno
-    #define LEXER_DECREMENT_COLNO        --lexer->colno
+    #define LEXER_DECREMENT_COLNO             --lexer->colno
 
     // Increment the Lexical Buffer offset
-    #define LEXER_INCREMENT_OFFSET       ++lexer->offset; LEXER_INCREMENT_COLNO
+    #define LEXER_INCREMENT_OFFSET            ++lexer->offset; LEXER_INCREMENT_COLNO
     // Decrement the Lexical Buffer offset
-    #define LEXER_DECREMENT_OFFSET       --lexer->offset; LEXER_DECREMENT_COLNO
+    #define LEXER_DECREMENT_OFFSET            --lexer->offset; LEXER_DECREMENT_COLNO
 
     // Increment the Lexical Buffer offset without affecting `colno`
     #define LEXER_INCREMENT_OFFSET_ONLY       ++lexer->offset;
     // Decrement the Lexical Buffer offset without affecting `colno`
     #define LEXER_DECREMENT_OFFSET_ONLY       --lexer->offset;
-
-    // Reset a Lexer Token
-    #define LEXER_RESET_TOKEN                                       \
-        /* CHECK THIS */                                            \
-        lexer->token.type = TOK_ILLEGAL;                            \
-        /* TODO(jasmcaus): Verify this is accurate */               \
-        lexer->token.value = lexer->buffer + lexer->offset;         \
-        lexer->token.location = lexer->location
 
     // Reset the buffer 
     #define LEXER_RESET_BUFFER        \
@@ -107,7 +95,7 @@ typedef struct Lexer {
 
     // Reset the Lexer state
     #define LEXER_RESET               \
-        lexer->buffer= "";            \
+        lexer->buffer = "";           \
         lexer->buffer_capacity = 0;   \
         lexer->offset = 0;            \
         lexer->lineno = 1;            \
@@ -135,8 +123,6 @@ static inline char lexer_peek(Lexer* lexer);
 // "Look ahead" `n` characters in the Lexical buffer.
 // It _does not_ increment the buffer offset.
 static inline char lexer_peekn(Lexer* lexer, UInt32 n);
-
-static inline bool lexer_is_EOF(Lexer* lexer);
 
 void lexer_error(Lexer* lexer, const char* format, ...);
 
