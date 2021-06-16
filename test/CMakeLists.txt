@@ -62,7 +62,7 @@ add_executable(
     HazelInternalTestsWithMain 
     # maininternaltests.c is renamed to `main.c` in tools/tests/before_tests_ci.py
     ${CMAKE_CURRENT_SOURCE_DIR}/../HazelInternalTests/main.c
-) 
+)
 target_link_libraries(HazelInternalTestsWithMain libHazelInternalTests)
 
 # Installation

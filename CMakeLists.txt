@@ -60,12 +60,12 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
     set(IS_MAIN_PROJECT ON)
 endif()
 
-option(HAZEL_BUILD_TESTS "Build Hazel test binaries" OFF)
+option(HAZEL_BUILDTESTS "Build Hazel test binaries" OFF)
 option(HAZEL_BUILD_STATIC_LIB "Build Hazel Static Library " OFF)
 option(HAZEL_BUILD_SHARED_LIB "Build Hazel Shared Library " OFF)
 option(BUILD_DOCS "Build Hazel documentation" OFF)
 
-if(HAZEL_BUILD_TESTS)
+if(HAZEL_BUILDTESTS)
     # We need at least a Static Library to build and link with Hazel's Internal Tests
     if(NOT HAZEL_BUILD_STATIC_LIB)
         set(HAZEL_BUILD_STATIC_LIB ON)
@@ -181,6 +181,6 @@ set(BUILD_SHARED_LIBS OFF)
 # ------ Main Build ------
 add_subdirectory(hazel)
 
-if(HAZEL_BUILD_TESTS)
+if(HAZEL_BUILDTESTS)
     add_subdirectory(test)
 endif()
