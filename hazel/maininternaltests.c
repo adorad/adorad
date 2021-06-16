@@ -25,7 +25,7 @@ int main(int argc, const char* const argv[]) {
 	char* buffer = readFile("test/LexerDemo.hzl");
     // char* buffer = "0123456789abcdefghijklmnopqrstuvwxyz";
 	Lexer* lexer = lexer_init(buffer); 
-    // printf("-- LEXER_BUFFER: \n%s\n", lexer->buffer);
+    printf("-- LEXER_BUFFER: \n%s\n", lexer->buffer);
     printf("--------------\n");
 
     // cstlVector* vec = vec_new(sizeof(Token), 40);
