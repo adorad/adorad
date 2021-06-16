@@ -114,6 +114,7 @@ if(NOT MSVC)
         string(APPEND CMAKE_C_FLAGS " -Wno-ignored-qualifiers")
         string(APPEND CMAKE_C_FLAGS " -Wno-newline-eof")
         string(APPEND CMAKE_C_FLAGS " -Wno-reserved-id-macro")
+        string(APPEND CMAKE_C_FLAGS " -Wno-deprecated-declarations")
     endif()
 
     string(APPEND CMAKE_C_FLAGS " -Wall")
