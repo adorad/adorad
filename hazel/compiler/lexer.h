@@ -142,7 +142,7 @@ static inline void lexer_lex_string(Lexer* lexer);
 // Scan an identifier
 static inline void lexer_lex_identifier(Lexer* lexer);
 // Scan a digit
-static inline void lexer_lex_number(Lexer* lexer);
+static inline void lexer_lex_digit(Lexer* lexer);
 // Lex the Source files
 static void lexer_lex(Lexer* lexer);
 

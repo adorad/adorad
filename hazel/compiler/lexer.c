@@ -112,7 +112,7 @@ static inline char lexer_prev(Lexer* lexer, UInt32 n) {
     if(lexer->offset == 0) {
         return nullchar;
     } else {
-        return (char)lexer->buffer[lexer->offset-1];
+        return (char)lexer->buffer[lexer->offset - n];
     }
 }
 
@@ -202,7 +202,7 @@ static inline void lexer_lex_string(Lexer* lexer) {
 
     char ch = lexer_advance(lexer);
     char* str_value = (char*)calloc(MAX_TOKEN_SIZE, sizeof(char));
-    int prev_offset = lexer->offset - 1;
+    UInt32 prev_offset = lexer->offset - 1;
 
     while(ch != '"') {
         if(ch == '\\') {
@@ -213,7 +213,7 @@ static inline void lexer_lex_string(Lexer* lexer) {
         }
     }
     CSTL_CHECK_EQ(ch, '"');
-    int offset_diff = lexer->offset - prev_offset;
+    UInt32 offset_diff = lexer->offset - prev_offset;
     // offset_diff should never be 0 because we already handle the `""` case in `lexer_lex()`
     CSTL_CHECK_NE(offset_diff, 0);
     // `offset_diff - 1` so as to ignore the closing quote `"` from being copied into `str_value`
@@ -228,12 +228,12 @@ static inline void lexer_lex_identifier(Lexer* lexer) {
     // in `lexer_lex()`, we need to substring from the previous char as well.
     char* ident_value = (char*)calloc(MAX_TOKEN_SIZE, sizeof(char));
     char ch = lexer_advance(lexer);
-    int prev_offset = lexer->offset - 1;
+    UInt32 prev_offset = lexer->offset - 1;
 
     while(isLetter(ch) || isDigit(ch)) {
         ch = lexer_advance(lexer);
     }
-    int offset_diff = lexer->offset - prev_offset;
+    UInt32 offset_diff = lexer->offset - prev_offset;
     CSTL_CHECK_NE(offset_diff, 0);
     substr(ident_value, lexer->buffer, prev_offset - 1, offset_diff);
     CSTL_CHECK_NOT_NULL(ident_value, "ident_value must not be null");
@@ -248,7 +248,7 @@ static inline void lexer_lex_digit(Lexer* lexer) {
     // know that the first char is a digit value. 
     // This value needs to be captured as well in `token->value`
     char ch = lexer_prev(lexer, 1);
-    int prev_offset = lexer->offset - 1;
+    UInt32 prev_offset = lexer->offset - 1;
     TokenKind tokenkind = TOK_ILLEGAL;
     char* digit_value = (char*)calloc(MAX_TOKEN_SIZE, sizeof(char));
 

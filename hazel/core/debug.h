@@ -81,7 +81,7 @@ cstlColouredPrintf(int colour, const char* fmt, ...) {
     va_start(args, fmt);
     vsnprintf(buffer, sizeof(buffer), fmt, args);
     va_end(args);
-    buffer[sizeof(buffer)-1] = '\0';
+    buffer[sizeof(buffer) - 1] = nullchar;
 
 #ifdef CSTL_OS_UNIX
     {
@@ -92,7 +92,7 @@ cstlColouredPrintf(int colour, const char* fmt, ...) {
             case CSTL_COLOUR_WARN:     str = "\033[1;33m"; break;
             case CSTL_COLOUR_CYAN:     str = "\033[1;36m"; break;
             case CSTL_COLOUR_BOLD:     str = "\033[1m"; break;
-            default:            str = "\033[0m"; break;
+            default:                   str = "\033[0m"; break;
         }
         printf("%s", str);
         n = printf("%s", buffer);
@@ -115,7 +115,7 @@ cstlColouredPrintf(int colour, const char* fmt, ...) {
             case CSTL_COLOUR_WARN:       attr = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY; break;
             case CSTL_COLOUR_BOLD:       attr = FOREGROUND_BLUE | FOREGROUND_GREEN |FOREGROUND_RED | 
                                          FOREGROUND_INTENSITY; break;
-            default:              attr = 0; break;
+            default:                      attr = 0; break;
         }
         if(attr != 0)
             SetConsoleTextAttribute(h, attr);
@@ -194,10 +194,7 @@ static inline int cstlShouldDecomposeMacro(char const* actual, char const* expec
         #define CSTL_CAN_USE_OVERLOADABLES
     #endif // CSTL_CAN_USE_OVERLOADABLES
 
-    #pragma message "Value of CSTL_COMPILER_CLANG = " XSTR(CSTL_COMPILER_CLANG)
-    #pragma message "Value of CSTL_COMPILER_MSVC = " XSTR(CSTL_COMPILER_MSVC)
-    #pragma message "Value of CSTL_WEAK = " XSTR(CSTL_WEAK)
-    #pragma message "Value of CSTL_OVERLOADABLE = " XSTR(CSTL_OVERLOADABLE)
+    #pragma message "Value of CSTL_WEAK CSTL_OVERLOADABLE = " XSTR(CSTL_WEAK CSTL_OVERLOADABLE)
 
     CSTL_WEAK CSTL_OVERLOADABLE void CSTL_OVERLOAD_PRINTER(float f);
     CSTL_WEAK CSTL_OVERLOADABLE void CSTL_OVERLOAD_PRINTER(double d);
@@ -254,7 +251,7 @@ static inline int cstlShouldDecomposeMacro(char const* actual, char const* expec
     // If we're here, this means that the Compiler does not support overloadable methods
     #define CSTL_OVERLOAD_PRINTER(...)                                                             \
         printf("Error: Your compiler does not support overloadable methods.");                     \
-        printf("If you think this was an error, please file an issue on Tau's Github repo."   )
+        printf("If you think this was an error, please file an issue on Hazel's Github repo."   )
 #endif // CSTL_OVERLOADABLE
 
 // ifCondFailsThenPrint is the string representation of the opposite of the truthy value of `cond`
