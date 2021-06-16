@@ -12,6 +12,7 @@ out/*
 HazelInternalTests/*
 test.c
 test.h
+test.txt
 test.py
 hazeloutput.txt
 hazeltestoutput.txt
