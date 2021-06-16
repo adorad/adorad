@@ -34,9 +34,6 @@ CSTL_DISABLE_DEBUG_WARNINGS
     #define CSTL_DEBUG_CHECK(cond)             CSTL_DEBUG_CHECK1(cond, __LINE__)
 #endif
 
-#define STR(x) #x
-#define XSTR(x) STR(x)
-
 // Enable the use of the non-standard keyword __attribute__ to silence warnings under some compilers
 #if defined(__GNUC__) || defined(CSTL_COMPILER_CLANG)
     #define CSTL_ATTRIBUTE_(attr)    __attribute__((attr))
@@ -188,6 +185,9 @@ static inline int cstlShouldDecomposeMacro(char const* actual, char const* expec
     #endif // CSTL_COMPILER_MSVC
     return 0;
 }
+
+#define STR(x) #x
+#define XSTR(x) STR(x)
 
 #ifdef CSTL_OVERLOADABLE
     #ifndef CSTL_CAN_USE_OVERLOADABLES
