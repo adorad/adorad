@@ -22,6 +22,8 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #include <hazel/core/misc.h>
 #include <hazel/core/compilers.h>
 
+CSTL_DISABLE_DEBUG_WARNINGS
+
 // ========================= Debug + Asserts =========================
 // This macro is only for simple assertion checks (that don't require a message to STDOUT).
 // Note that this is not recommended. Use CSTL_CHECK instead
@@ -32,16 +34,8 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
     #define CSTL_DEBUG_CHECK(cond)             CSTL_DEBUG_CHECK1(cond, __LINE__)
 #endif
 
-
-#if defined(__cplusplus)
-    #include <exception>
-#endif //__cplusplus
-
-#if defined(__cplusplus)
-    #define CSTL_ABORT()     std::abort()
-#else
-    #define CSTL_ABORT()     exit(1)
-#endif //__cplusplus
+#define STR(x) #x
+#define XSTR(x) STR(x)
 
 // Enable the use of the non-standard keyword __attribute__ to silence warnings under some compilers
 #if defined(__GNUC__) || defined(CSTL_COMPILER_CLANG)
@@ -51,20 +45,26 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #endif // __GNUC__
 
 #ifdef __cplusplus
+    #pragma message "INSIDE FIRST OVERLOADABLE DECLARATION"
     // On C++, default to its polymorphism capabilities
     #define CSTL_OVERLOADABLE
 #elif defined(CSTL_COMPILER_CLANG)
+    #pragma message "INSIDE ELSE OVERLOADABLE DECLARATION"
     // If we're still in C, use the __attribute__ keyword for Clang
     #define CSTL_OVERLOADABLE   __attribute__((overloadable))
 #endif // __cplusplus
 
 #if defined(CSTL_COMPILER_MSVC) || defined(__cplusplus)
+    #pragma message "INSIDE FIRST WEAK DECLARATION "
     #define CSTL_WEAK     inline
     #define CSTL_UNUSED
 #else
+    #pragma message "INSIDE ELSE WEAK DECLARATION"
     #define CSTL_WEAK     __attribute__((weak))
     #define CSTL_UNUSED   __attribute__((unused))
 #endif // CSTL_COMPILER_MSVC
+
+#define CSTL_ABORT()     exit(1)
 
 
 #define CSTL_COLOUR_ERROR     1
@@ -194,6 +194,11 @@ static inline int cstlShouldDecomposeMacro(char const* actual, char const* expec
         #define CSTL_CAN_USE_OVERLOADABLES
     #endif // CSTL_CAN_USE_OVERLOADABLES
 
+    #pragma message "Value of CSTL_COMPILER_CLANG = " XSTR(CSTL_COMPILER_CLANG)
+    #pragma message "Value of CSTL_COMPILER_MSVC = " XSTR(CSTL_COMPILER_MSVC)
+    #pragma message "Value of CSTL_WEAK = " XSTR(CSTL_WEAK)
+    #pragma message "Value of CSTL_OVERLOADABLE = " XSTR(CSTL_OVERLOADABLE)
+
     CSTL_WEAK CSTL_OVERLOADABLE void CSTL_OVERLOAD_PRINTER(float f);
     CSTL_WEAK CSTL_OVERLOADABLE void CSTL_OVERLOAD_PRINTER(double d);
     CSTL_WEAK CSTL_OVERLOADABLE void CSTL_OVERLOAD_PRINTER(long double d);
@@ -203,22 +208,22 @@ static inline int cstlShouldDecomposeMacro(char const* actual, char const* expec
     CSTL_WEAK CSTL_OVERLOADABLE void CSTL_OVERLOAD_PRINTER(long unsigned int i);
     CSTL_WEAK CSTL_OVERLOADABLE void CSTL_OVERLOAD_PRINTER(const void* p);
 
-    CSTL_WEAK CSTL_OVERLOADABLE void CSTL_OVERLOAD_PRINTER(float f) { printf("%f", CSTL_CAST(double, f));    }
-    CSTL_WEAK CSTL_OVERLOADABLE void CSTL_OVERLOAD_PRINTER(double d) { printf("%f", d);    }
-    CSTL_WEAK CSTL_OVERLOADABLE void CSTL_OVERLOAD_PRINTER(long double d) { printf("%Lf", d);    }
-    CSTL_WEAK CSTL_OVERLOADABLE void CSTL_OVERLOAD_PRINTER(int i) { printf("%d", i);    }
-    CSTL_WEAK CSTL_OVERLOADABLE void CSTL_OVERLOAD_PRINTER(unsigned int i) { printf("%u", i);    }
-    CSTL_WEAK CSTL_OVERLOADABLE void CSTL_OVERLOAD_PRINTER(long int i) { printf("%ld", i);    }
-    CSTL_WEAK CSTL_OVERLOADABLE void CSTL_OVERLOAD_PRINTER(long unsigned int i) { printf("%lu", i);    }
-    CSTL_WEAK CSTL_OVERLOADABLE void CSTL_OVERLOAD_PRINTER(const void* p) { printf("%p", p);    }
+    CSTL_WEAK CSTL_OVERLOADABLE void CSTL_OVERLOAD_PRINTER(float f) { printf("%f", CSTL_CAST(double, f)); }
+    CSTL_WEAK CSTL_OVERLOADABLE void CSTL_OVERLOAD_PRINTER(double d) { printf("%f", d); }
+    CSTL_WEAK CSTL_OVERLOADABLE void CSTL_OVERLOAD_PRINTER(long double d) { printf("%Lf", d); }
+    CSTL_WEAK CSTL_OVERLOADABLE void CSTL_OVERLOAD_PRINTER(int i) { printf("%d", i); }
+    CSTL_WEAK CSTL_OVERLOADABLE void CSTL_OVERLOAD_PRINTER(unsigned int i) { printf("%u", i); }
+    CSTL_WEAK CSTL_OVERLOADABLE void CSTL_OVERLOAD_PRINTER(long int i) { printf("%ld", i); }
+    CSTL_WEAK CSTL_OVERLOADABLE void CSTL_OVERLOAD_PRINTER(long unsigned int i) { printf("%lu", i); }
+    CSTL_WEAK CSTL_OVERLOADABLE void CSTL_OVERLOAD_PRINTER(const void* p) { printf("%p", p); }
 
     // long long is in C++ only
     #if defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901L) || defined(__cplusplus) && (__cplusplus >= 201103L)
         CSTL_WEAK CSTL_OVERLOADABLE void CSTL_OVERLOAD_PRINTER(long long int i);
         CSTL_WEAK CSTL_OVERLOADABLE void CSTL_OVERLOAD_PRINTER(long long unsigned int i);
 
-        CSTL_WEAK CSTL_OVERLOADABLE void CSTL_OVERLOAD_PRINTER(long long int i) { printf("%lld", i);    }
-        CSTL_WEAK CSTL_OVERLOADABLE void CSTL_OVERLOAD_PRINTER(long long unsigned int i) { printf("%llu", i);    }
+        CSTL_WEAK CSTL_OVERLOADABLE void CSTL_OVERLOAD_PRINTER(long long int i) { printf("%lld", i); }
+        CSTL_WEAK CSTL_OVERLOADABLE void CSTL_OVERLOAD_PRINTER(long long unsigned int i) { printf("%llu", i); }
     #endif // __STDC_VERSION__
 
 #elif defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 201112L)
@@ -431,5 +436,7 @@ static inline int cstlShouldDecomposeMacro(char const* actual, char const* expec
 
 #define CSTL_WARN(msg)     \
     cstlColouredPrintf(CSTL_COLOUR_WARN, "%s:%u:\nWARNING: %s\n", __FILE__, __LINE__, #msg)
+
+CSTL_DISABLE_DEBUG_WARNINGS_POP
 
 #endif // CSTL_DEBUG_H
