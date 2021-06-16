@@ -21,6 +21,7 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #include <hazel/core/headers.h>
 #include <hazel/core/misc.h>
 #include <hazel/core/compilers.h>
+#include <hazel/core/types.h>
 
 CSTL_DISABLE_DEBUG_WARNINGS
 
