@@ -103,7 +103,7 @@ typedef struct Lexer {
 
 #endif // LEXER_MACROS_
 
-Lexer* lexer_init(const char* buffer);
+Lexer* lexer_init(const char* buffer, const char* fname);
 static void lexer_tokenlist_append(Lexer* lexer, Token* tk);
 static void lexer_free(Lexer* lexer);
 

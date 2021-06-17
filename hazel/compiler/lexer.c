@@ -51,7 +51,7 @@ static const char* tokenHash[] = {
          'b': case 'o': case 'x': case 'B': case 'O': case 'X': case ALPHA_EXCEPT_B_O_X
 
 
-Lexer* lexer_init(const char* buffer) {
+Lexer* lexer_init(const char* buffer, const char* fname) {
     Lexer* lexer = (Lexer*)calloc(1, sizeof(Lexer));
     lexer->buffer = buffer; 
     lexer->buffer_capacity = strlen(buffer);
@@ -60,10 +60,13 @@ Lexer* lexer_init(const char* buffer) {
     // Tokens
     lexer->tokenList = vec_new(sizeof(Token), TOKENLIST_ALLOC_CAPACITY);
 
+    if(!fname)
+        fname = "";
+
     // Location
     lexer->lineno = 1;
     lexer->colno = 1;
-    lexer->fname = "";
+    lexer->fname = fname;
     return lexer;
 }
 
@@ -79,9 +82,9 @@ static void lexer_free(Lexer* lexer) {
 void lexer_error(Lexer* lexer, const char* format, ...) {
     va_list vl;
     va_start(vl, format);
-    fprintf(stderr, "SyntaxError: ");
+    fprintf(stderr, "%sSyntaxError: ", "\033[1;31m");
     vfprintf(stderr, format, vl);
-    fprintf(stderr, " at %s:%d:%d\n", lexer->fname, lexer->lineno,lexer->colno);
+    fprintf(stderr, " at %s:%d:%d%s\n", lexer->fname, lexer->lineno,lexer->colno, "\033[0m");
     va_end(vl);
     exit(1);
 }
@@ -89,34 +92,32 @@ void lexer_error(Lexer* lexer, const char* format, ...) {
 // Returns the curent character in the Lexical Buffer and advances to the next element
 // It does this by incrementing the buffer offset.
 static inline char lexer_advance(Lexer* lexer) {
-    if(lexer->offset >= lexer->buffer_capacity) {
+    if(lexer->offset >= lexer->buffer_capacity)
         return nullchar; 
-    } else {
-        LEXER_INCREMENT_COLNO;
-        return (char)lexer->buffer[lexer->offset++];
-    }
+    
+    LEXER_INCREMENT_COLNO;
+    return (char)lexer->buffer[lexer->offset++];
 }
 
 // Advance `n` characters in the Lexical Buffer
 static inline char lexer_advancen(Lexer* lexer, UInt32 n) {
     // The '>=' is here because offset and buffer_capacity are off by 1 (0-index vs 1-index respectively)
-    if(lexer->offset + n >= lexer->buffer_capacity) {
+    if(lexer->offset + n >= lexer->buffer_capacity)
         return nullchar;
-    } else {
-        lexer->colno += n;
-        lexer->offset += n;
-        return (char)lexer->buffer[lexer->offset];
-    }
+    
+    lexer->colno += n;
+    lexer->offset += n;
+    return (char)lexer->buffer[lexer->offset];
 }
 
 // Returns the previous `n` elements in the Lexical buffer.
 // This is non-destructive -- the buffer offset is not updated.
 static inline char lexer_prev(Lexer* lexer, UInt32 n) {
-    if(lexer->offset == 0) {
+    if(lexer->offset == 0)
         return nullchar;
-    } else {
-        return (char)lexer->buffer[lexer->offset - n];
-    }
+
+    return (char)lexer->buffer[lexer->offset - n];
+
 }
 
 // Returns the current element in the Lexical Buffer.
@@ -127,11 +128,10 @@ static inline char lexer_peek(Lexer* lexer) {
 // "Look ahead" `n` characters in the Lexical buffer.
 // It _does not_ increment the buffer offset.
 static inline char lexer_peekn(Lexer* lexer, UInt32 n) {
-    if(lexer->offset + n >= lexer->buffer_capacity) {
+    if(lexer->offset + n >= lexer->buffer_capacity)
         return nullchar;
-    } else {
-        return (char)lexer->buffer[lexer->offset + n];
-    }
+    
+    return (char)lexer->buffer[lexer->offset + n];
 }
 
 static void lexer_maketoken(Lexer* lexer, TokenKind kind, char* value) {  
