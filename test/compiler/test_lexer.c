@@ -4,7 +4,7 @@ TAU_MAIN()
  
 TEST(Lexer, Init) {
     char* buffer = "0123456789abcdefghijklmnopqrstuvwxyz";
-    Lexer* lexer = lexer_init(buffer);
+    Lexer* lexer = lexer_init(buffer, null);
 
     CHECK_STRNEQ(lexer->buffer, "");
     CHECK_EQ(lexer->buffer_capacity, strlen(buffer));
@@ -21,7 +21,7 @@ TEST(Lexer, Init) {
 // Without newline in buffer
 TEST(Lexer, advance_without_newline) {
     char* buffer = "abcdefghijklmnopqrstuvwxyz0123456789";
-    Lexer* lexer = lexer_init(buffer);
+    Lexer* lexer = lexer_init(buffer, null);
     
     for(UInt32 i=0; i < strlen(buffer); i++) {
         CHECK_STREQ(lexer->buffer, buffer);
@@ -37,7 +37,7 @@ TEST(Lexer, advance_without_newline) {
 // With newline in buffer
 TEST(Lexer, advance_with_newline) {
     char* buffer = "a\nb\ncdefghijklmnopqrstuvwxyz0123456789";
-    Lexer* lexer = lexer_init(buffer);
+    Lexer* lexer = lexer_init(buffer, null);
     
     CHECK_STREQ(lexer->buffer, buffer);
     CHECK_EQ(lexer_advance(lexer), 'a');
@@ -59,7 +59,7 @@ TEST(Lexer, advance_with_newline) {
 
 TEST(Lexer, advancen) {
     char* buffer = "abcdefghijklmnopqrstuvwxyz0123456789";
-    Lexer* lexer = lexer_init(buffer);
+    Lexer* lexer = lexer_init(buffer, null);
     
     // Go ahead 4 chars
     char e = lexer_advancen(lexer, 4); // should be 'e'
@@ -179,7 +179,7 @@ TEST(Lexer, advancen) {
 // TEST(Lexer, lexer_lex_digits) {
 //     char* buffer = "car = 0b1010101\nvar = 0xDeadBeef\nbar = 0o72626457263\nhar = 0b111111111111111111\nlar = 0x28300293";
 //     int nbin_digits = 15;
-//     Lexer* lexer = lexer_init(buffer);
+//     Lexer* lexer = lexer_init(buffer, null);
 
 //     // LexerTestArr
 //     LexerTestArr* lta = LexerTestArr_alloc(nbin_digits);
