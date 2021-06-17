@@ -37,7 +37,8 @@ int main(int argc, const char* const argv[]) {
     // printf("count = %d\n", count);
     end = now();
     double total = duration(st, end);
-    // printf("Number of tokens = %d\n", lexer->tokenList->size(lexer->tokenList));
+    printf("Number of tokens = %d\n", lexer->tokenList->size(lexer->tokenList));
+    printf("Total allocated memory (in bytes) = %d\n", lexer->tokenList->internal.objsize * lexer->tokenList->size(lexer->tokenList));
     // for(UInt64 i=0; i < lexer->tokenList->size(lexer->tokenList); i++) {
     //     Token* tok = lexer->tokenList->at(lexer->tokenList, i);
     //     printf("TOKEN(%s, \"%s\")\n", token_toString(tok->kind), tok->value);
