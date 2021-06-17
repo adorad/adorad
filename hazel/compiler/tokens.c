@@ -22,14 +22,15 @@ static const char* tokenHash[] = {
 };
 
 // Token constructor
-Token* token_init(void) {
+Token* token_init() {
     Token* token = calloc(1, sizeof(Token));
-    token->kind = TOK_ILLEGAL; 
-    token->offset = 0; 
+    token->kind = TOK_ILLEGAL;
+    token->offset = 0;
     token->value = "";
+    token->start = 0;
     token->lineno = 1;
-    token->colno = 1; 
-    token->fname = ""; 
+    token->colno = 1;
+    token->fname = "";
 
     return token;
 }

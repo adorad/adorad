@@ -227,6 +227,7 @@ typedef struct {
     TokenKind kind;     // Token Kind
     UInt32 offset;      // Offset of the first character of the Token
     const char* value;  // Token value
+    UInt32 start;       // Starting offset of the token (used in substring-ing tokens of length >1)
     UInt32 lineno;      // the line number in the source where the token occured
     UInt32 colno;       // the column number
     const char* fname;  // /path/to/file.hzl
