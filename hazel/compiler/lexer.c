@@ -16,6 +16,16 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #include <hazel/core/string.h>
 #include <stdarg.h>
 
+// String representation of a TokenKind
+// To access the string representation of a TokenKind object, simply use `tokenHash[tokenkind]`
+// NB: This is here as opposed to in `tokens.[hc]` because it isn't used there and simply leads to more headaches
+// (multiple redefinition errors yada yada)
+static const char* tokenHash[] = {
+    #define TOKENKIND(kind, str)    str
+        ALLTOKENS
+    #undef TOKENKIND
+};
+
 // These macros are used in the switch() statements below during the Lexing of Hazel source files.
 #define WHITESPACE_NO_NEWLINE \
     ' ': case '\r': case '\t': case '\v': case '\f'
@@ -213,6 +223,22 @@ static inline void lexer_lex_string(Lexer* lexer) {
     lexer_maketoken(lexer, STRING, str_value);
 }
 
+// Returns whether `value` is a keyword or an identifier
+static inline TokenKind lexer_is_keyword_or_identifier(char* value) {
+    // Search `tokenHash` for a match for `value`. 
+    // If we can't find one, we assume an identifier
+    bool has_found_keyword = false;
+    for(int tokenkind = TOK___KEYWORDS_BEGIN; tokenkind < TOK___KEYWORDS_END; tokenkind++) {
+        if(strcmp(tokenHash[tokenkind], value) == 0) {
+            // Found a match
+            return tokenkind;
+        }
+    }
+
+    // If we're still here, we haven't found a keyword match
+    return IDENTIFIER;
+}
+
 // Scan an identifier
 static inline void lexer_lex_identifier(Lexer* lexer) {
     // When this function is called, we alread know that the first character statisfies the `case ALPHA`.
@@ -230,8 +256,11 @@ static inline void lexer_lex_identifier(Lexer* lexer) {
     UInt32 offset_diff = lexer->offset - prev_offset;
     CSTL_CHECK_NE(offset_diff, 0);
     substr(ident_value, lexer->buffer, prev_offset - 1, offset_diff);
-    CSTL_CHECK_NOT_NULL(ident_value, "ident_value must not be null");       
-    lexer_maketoken(lexer, IDENTIFIER, ident_value);
+    CSTL_CHECK_NOT_NULL(ident_value, "ident_value must not be null");
+
+    // Determine if a keyword or just a regular identifier
+    TokenKind tokenkind = lexer_is_keyword_or_identifier(ident_value);
+    lexer_maketoken(lexer, tokenkind, ident_value);
 }
 
 static inline void lexer_lex_digit(Lexer* lexer) {

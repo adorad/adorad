@@ -9,7 +9,7 @@ TEST(Lexer, Init) {
     CHECK_STRNEQ(lexer->buffer, "");
     CHECK_EQ(lexer->buffer_capacity, strlen(buffer));
     CHECK_EQ(lexer->tokenList->capacity(lexer->tokenList), TOKENLIST_ALLOC_CAPACITY);
-    CHECK_EQ(lexer->num_tokens, 0);
+    CHECK_EQ(lexer->tokenList->size(lexer->tokenList), 0);
     CHECK_EQ(lexer->offset, 0);
     CHECK_EQ(lexer->lineno, 1);
     CHECK_EQ(lexer->colno, 1);
@@ -27,7 +27,7 @@ TEST(Lexer, advance_without_newline) {
         CHECK_STREQ(lexer->buffer, buffer);
         CHECK_EQ(lexer_advance(lexer), lexer->buffer[lexer->offset-1]);
         CHECK_EQ(lexer->tokenList->capacity(lexer->tokenList), TOKENLIST_ALLOC_CAPACITY);
-        CHECK_EQ(lexer->num_tokens, 0);
+        CHECK_EQ(lexer->tokenList->size(lexer->tokenList), 0);
         CHECK_EQ(lexer->offset, i+1);
         CHECK_EQ(lexer->colno, i+2);
         CHECK_EQ(lexer->lineno, 1);
@@ -43,7 +43,7 @@ TEST(Lexer, advance_with_newline) {
     CHECK_EQ(lexer_advance(lexer), 'a');
     CHECK_EQ(lexer->offset, 1);
     CHECK_EQ(lexer->tokenList->capacity(lexer->tokenList), TOKENLIST_ALLOC_CAPACITY);
-    CHECK_EQ(lexer->num_tokens, 0);
+    CHECK_EQ(lexer->tokenList->size(lexer->tokenList), 0);
     CHECK_EQ(lexer->colno, 2);
     CHECK_EQ(lexer->lineno, 1);
 
@@ -52,7 +52,7 @@ TEST(Lexer, advance_with_newline) {
     CHECK_EQ(lexer_advance(lexer), '\n');
     CHECK_EQ(lexer->offset, 2);
     CHECK_EQ(lexer->tokenList->capacity(lexer->tokenList), TOKENLIST_ALLOC_CAPACITY);
-    CHECK_EQ(lexer->num_tokens, 0);
+    CHECK_EQ(lexer->tokenList->size(lexer->tokenList), 0);
     CHECK_EQ(lexer->colno, 3);
     CHECK_EQ(lexer->lineno, 1);
 }
@@ -65,7 +65,7 @@ TEST(Lexer, advancen) {
     char e = lexer_advancen(lexer, 4); // should be 'e'
     CHECK_EQ(e, 'e');
     CHECK_EQ(lexer->tokenList->capacity(lexer->tokenList), TOKENLIST_ALLOC_CAPACITY);
-    CHECK_EQ(lexer->num_tokens, 0);
+    CHECK_EQ(lexer->tokenList->size(lexer->tokenList), 0);
     CHECK_EQ(lexer->offset, 4);
     CHECK_EQ(lexer->colno, 5);
     CHECK_EQ(lexer->lineno, 1);
@@ -74,7 +74,7 @@ TEST(Lexer, advancen) {
     char f = lexer_advancen(lexer, 1); // 'f'
     CHECK_EQ(f, 'f');
     CHECK_EQ(lexer->tokenList->capacity(lexer->tokenList), TOKENLIST_ALLOC_CAPACITY);
-    CHECK_EQ(lexer->num_tokens, 0);
+    CHECK_EQ(lexer->tokenList->size(lexer->tokenList), 0);
     CHECK_EQ(lexer->offset, 5);
     CHECK_EQ(lexer->colno, 6);
     CHECK_EQ(lexer->lineno, 1);
@@ -83,7 +83,7 @@ TEST(Lexer, advancen) {
     char i = lexer_advancen(lexer, 3); // 'i'
     CHECK_EQ(i, 'i');
     CHECK_EQ(lexer->tokenList->capacity(lexer->tokenList), TOKENLIST_ALLOC_CAPACITY);
-    CHECK_EQ(lexer->num_tokens, 0);
+    CHECK_EQ(lexer->tokenList->size(lexer->tokenList), 0);
     CHECK_EQ(lexer->offset, 8);
     CHECK_EQ(lexer->colno, 9);
     CHECK_EQ(lexer->lineno, 1);
@@ -92,7 +92,7 @@ TEST(Lexer, advancen) {
     char p = lexer_advancen(lexer, 7); // 'p'
     CHECK_EQ(p, 'p');
     CHECK_EQ(lexer->tokenList->capacity(lexer->tokenList), TOKENLIST_ALLOC_CAPACITY);
-    CHECK_EQ(lexer->num_tokens, 0);
+    CHECK_EQ(lexer->tokenList->size(lexer->tokenList), 0);
     CHECK_EQ(lexer->offset, 15);
     CHECK_EQ(lexer->colno, 16);
     CHECK_EQ(lexer->lineno, 1);
@@ -101,7 +101,7 @@ TEST(Lexer, advancen) {
     char z = lexer_advancen(lexer, 10); // 'z'
     CHECK_EQ(z, 'z');
     CHECK_EQ(lexer->tokenList->capacity(lexer->tokenList), TOKENLIST_ALLOC_CAPACITY);
-    CHECK_EQ(lexer->num_tokens, 0);
+    CHECK_EQ(lexer->tokenList->size(lexer->tokenList), 0);
     CHECK_EQ(lexer->offset, 25);
     CHECK_EQ(lexer->colno, 26);
     CHECK_EQ(lexer->lineno, 1);
@@ -110,7 +110,7 @@ TEST(Lexer, advancen) {
     char nine = lexer_advancen(lexer, 10); // '9'
     CHECK_EQ(nine, '9');
     CHECK_EQ(lexer->tokenList->capacity(lexer->tokenList), TOKENLIST_ALLOC_CAPACITY);
-    CHECK_EQ(lexer->num_tokens, 0);
+    CHECK_EQ(lexer->tokenList->size(lexer->tokenList), 0);
     CHECK_EQ(lexer->offset, 35);
     CHECK_EQ(lexer->colno, 36);
     CHECK_EQ(lexer->lineno, 1);
@@ -120,7 +120,7 @@ TEST(Lexer, advancen) {
     CHECK_EQ(eof1, nullchar);
     // Options should remain the same
     CHECK_EQ(lexer->tokenList->capacity(lexer->tokenList), TOKENLIST_ALLOC_CAPACITY);
-    CHECK_EQ(lexer->num_tokens, 0);
+    CHECK_EQ(lexer->tokenList->size(lexer->tokenList), 0);
     CHECK_EQ(lexer->offset, 35);
     CHECK_EQ(lexer->colno, 36);
     CHECK_EQ(lexer->lineno, 1);
@@ -130,7 +130,7 @@ TEST(Lexer, advancen) {
     CHECK_EQ(eof2, nullchar);
     // Options should remain the same
     CHECK_EQ(lexer->tokenList->capacity(lexer->tokenList), TOKENLIST_ALLOC_CAPACITY);
-    CHECK_EQ(lexer->num_tokens, 0);
+    CHECK_EQ(lexer->tokenList->size(lexer->tokenList), 0);
     CHECK_EQ(lexer->offset, 35);
     CHECK_EQ(lexer->colno, 36);
     CHECK_EQ(lexer->lineno, 1);
@@ -202,7 +202,7 @@ TEST(Lexer, advancen) {
 //     // Call lexer_lex()
 //     lexer_lex(lexer);
 
-//     CHECK_EQ(lexer->num_tokens, nbin_digits + 1);
+//     CHECK_EQ(lexer->tokenList->size(lexer->tokenList), nbin_digits + 1);
 //     CHECK_EQ(lta->cap, nbin_digits);
 
 //     for(int i = 0; i<nbin_digits; i++) {

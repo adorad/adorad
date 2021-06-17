@@ -237,7 +237,7 @@ typedef struct {
 Token* token_init(void);
 // Reset a Token instance
 void token_reset_token(Token* token);
-
+// Convert a Token to its respective String representation
 char* token_toString(TokenKind kind);
 
 #endif // _HAZEL_TOKEN_H

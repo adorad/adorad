@@ -21,6 +21,7 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #include <hazel/core/string.h> 
 #include <hazel/core/vector.h>
 #include <hazel/compiler/tokens.h>
+
 /*
     Hazel's Lexer is built in such a way that no (or negligible) memory allocations are necessary during usage. 
 
@@ -137,6 +138,8 @@ static inline void lexer_lex_char(Lexer* lexer);
 static inline void lexer_lex_esc_char(Lexer* lexer);
 // Scan a string
 static inline void lexer_lex_string(Lexer* lexer);
+// Returns whether `value` is a keyword or an identifier
+static inline TokenKind lexer_is_keyword_or_identifier(char* value);
 // Scan an identifier
 static inline void lexer_lex_identifier(Lexer* lexer);
 // Scan a digit
