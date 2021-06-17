@@ -14,8 +14,6 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #ifndef _CSTL_IO_H
 #define _CSTL_IO_H
 
-#ifndef __cplusplus
-
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -23,10 +21,8 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 char* readFile(const char* fname) {
     FILE* file = fopen(fname, "rb"); 
     
-    if(!file) { 
+    if(!file)
         printf("Could not open file: <%s>\n", fname);
-        // std::abort(2);
-    }
 
     // Get the length of the input buffer
     fseek(file, 0, SEEK_END); 
@@ -40,41 +36,10 @@ char* readFile(const char* fname) {
     }
 
     fread(buffer, 1, buf_length, file); 
-    buffer[buf_length] = nullchar; // null char 
+    buffer[buf_length + 1] = nullchar;
     fclose(file); 
 
     return buffer;
 }
-
-#else 
-
-#include <fstream>
-#include <sstream>
-#include <string> 
-#include <iostream>
-
-namespace Hazel {
-
-// Read file contents
-std::string read_File(const std::string& fname) {
-    std::ifstream stream(fname); 
-	std::string buffer; 
-
-    if(!stream) {
-        std::cout << "Coud not open file: " << fname << "\n";
-        std::abort();
-    }
-
-    std::ostringstream ss;
-    ss << stream.rdbuf();
-    buffer = ss.str();
-    stream.close();
-
-    return buffer;
-}
-
-} // namespace Hazel
-
-#endif // __cplusplus 
 
 #endif // _CSTL_IO_H
