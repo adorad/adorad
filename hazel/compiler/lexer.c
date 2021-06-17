@@ -215,27 +215,22 @@ static inline void lexer_lex_string(Lexer* lexer) {
 
 // Scan an identifier
 static inline void lexer_lex_identifier(Lexer* lexer) {
-    // When this function is called, we alread know that the first character statisfies the `case ALPHA`
-    // in `lexer_lex()`, we need to substring from the previous char as well.
+    // When this function is called, we alread know that the first character statisfies the `case ALPHA`.
+    // So, the remaining characters are ALPHA, DIGIT, or `_`
     char* ident_value = (char*)calloc(MAX_TOKEN_SIZE, sizeof(char));
     char ch = lexer_advance(lexer);
+    printf("Current char = %c\n", ch);
     UInt32 prev_offset = lexer->offset - 1;
 
-    printf("IDENTIFIER = ");
     while(isLetter(ch) || isDigit(ch)) {
-        printf("%c", ch);
         ch = lexer_advance(lexer);
     }
-    printf("\n");
-    printf("        In lexer_identifier, ch = `%c`, curr chr= `%c` and peek = `%c`\n", ch, LEXER_CURR_CHAR, lexer_peekn(lexer, 1));
+
+    printf("!!! In lexer identifier, ch = `%c`, curr chr= `%c`\n", ch, LEXER_CURR_CHAR);
     UInt32 offset_diff = lexer->offset - prev_offset;
     CSTL_CHECK_NE(offset_diff, 0);
     substr(ident_value, lexer->buffer, prev_offset - 1, offset_diff);
     CSTL_CHECK_NOT_NULL(ident_value, "ident_value must not be null");       
-    printf("        ch ===== `%c`\n", ch);
-    // // Move back one character
-    // // *Do not* remove this
-    // LEXER_DECREMENT_OFFSET;
     lexer_maketoken(lexer, IDENTIFIER, ident_value);
 }
 
@@ -371,8 +366,8 @@ static void lexer_lex(Lexer* lexer) {
         //      next = buff[1]
         curr = lexer_advance(lexer);
         next = lexer_peek(lexer);
-        printf("        LEX=> curr   = `%c` && next = `%c`\n", curr, next);
-        printf("        LEX=> Offset = %d\n", lexer->offset);
+        printf("        LEX => curr   = `%c` && next = `%c`\n", curr, next);
+        printf("        LEX => Offset = %d\n", lexer->offset);
         tokenkind = TOK_ILLEGAL;
 
         switch(curr) {
