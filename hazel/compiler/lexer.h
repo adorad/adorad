@@ -19,8 +19,8 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #include <hazel/core/misc.h>
 #include <hazel/core/types.h>
 #include <hazel/core/string.h> 
+#include <hazel/core/vector.h>
 #include <hazel/compiler/tokens.h>
-
 /*
     Hazel's Lexer is built in such a way that no (or negligible) memory allocations are necessary during usage. 
 
@@ -32,6 +32,12 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
     Reference: 
         1. ASCII Table: http://www.theasciicode.com.ar 
 */
+// Defines the number of tokens for each time we allocate memory in `tokenList`
+// This is an arbitrary number. Each time we cross `TOKENLIST_ALLOC_CAPACITY` number of tokens in `tokenList`,
+// we allocate (TOKENLIST_ALLOC_CAPACITY * sizeof(Token)) bytes at a time (which works out to around 0.26MB)
+// per (re)allocation
+#define TOKENLIST_ALLOC_CAPACITY    8192
+
 typedef struct Lexer {
     const char* buffer;     // the Lexical buffer
     UInt32 buffer_capacity; // current buffer capacity (in Bytes)
@@ -40,8 +46,7 @@ typedef struct Lexer {
                             // and the curr char)
 
     Token token;            // current token
-    Token* tokenList;       // list of tokens
-    UInt64 tokenList_cap;   // allocated capacity of `tokenList`(changes whenever we run out of memory and realloc)
+    cstlVector* tokenList;  // list of tokens
     UInt64 num_tokens;      // number of tokens in `tokenList`. This is used when appending tokens to `tokenList`
     UInt32 lineno;          // the line number in the source where the token occured
     UInt32 colno;           // the column number

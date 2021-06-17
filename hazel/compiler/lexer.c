@@ -48,9 +48,7 @@ Lexer* lexer_init(const char* buffer) {
     lexer->offset = 0;
 
     // Tokens
-    lexer->tokenList = (Token*)calloc(TOKENLIST_ALLOC_SIZE, sizeof(Token));
-    lexer->tokenList_cap = TOKENLIST_ALLOC_SIZE;
-    lexer->num_tokens = 0;
+    lexer->tokenList = vec_new(sizeof(Token), TOKENLIST_ALLOC_CAPACITY);
 
     // Location
     lexer->lineno = 1;
@@ -59,13 +57,8 @@ Lexer* lexer_init(const char* buffer) {
     return lexer;
 }
 
-static void lexer_tokenlist_append(Lexer* lexer, Token* token) {
-    if(lexer->num_tokens >= lexer->tokenList_cap) {
-        lexer->tokenList = (Token*)realloc(lexer->tokenList, sizeof(Token) * (2 * TOKENLIST_ALLOC_SIZE));
-        CSTL_CHECK_NOT_NULL(lexer->tokenList, "Cannot realloc more memory. Memory full.");
-        lexer->tokenList_cap += TOKENLIST_ALLOC_SIZE;
-    }
-    lexer->tokenList[lexer->num_tokens++] = *token;
+static void lexer_tokenlist_push(Lexer* lexer, Token* token) {
+    lexer->tokenList->push(lexer->tokenList, token);
 }
 
 static void lexer_free(Lexer* lexer) {
@@ -148,16 +141,15 @@ static void lexer_maketoken(Lexer* lexer, TokenKind kind, char* value) {
     token->lineno = lexer->lineno;
     token->fname = lexer->fname;
     token->value = value;
-    
-    lexer_tokenlist_append(lexer, token);
+
+    lexer_tokenlist_push(lexer, token);
 }
 
 // Scan a comment (single line)
 static inline void lexer_lex_sl_comment(Lexer* lexer) {
     char ch = lexer_advance(lexer);
-    while(ch && ch != '\n') {
+    while(ch && ch != '\n')
         ch = lexer_advance(lexer);
-    }
 }
 
 // Scan a comment (multi-line)
@@ -187,7 +179,6 @@ static inline void lexer_lex_char(Lexer* lexer) {
             LEXER_RESET_COLNO;
         }
     }
-    // return LEXER_CURR_CHAR;
 }
 
 // Scan an escape char
@@ -230,13 +221,21 @@ static inline void lexer_lex_identifier(Lexer* lexer) {
     char ch = lexer_advance(lexer);
     UInt32 prev_offset = lexer->offset - 1;
 
+    printf("IDENTIFIER = ");
     while(isLetter(ch) || isDigit(ch)) {
+        printf("%c", ch);
         ch = lexer_advance(lexer);
     }
+    printf("\n");
+    printf("        In lexer_identifier, ch = `%c`, curr chr= `%c` and peek = `%c`\n", ch, LEXER_CURR_CHAR, lexer_peekn(lexer, 1));
     UInt32 offset_diff = lexer->offset - prev_offset;
     CSTL_CHECK_NE(offset_diff, 0);
     substr(ident_value, lexer->buffer, prev_offset - 1, offset_diff);
-    CSTL_CHECK_NOT_NULL(ident_value, "ident_value must not be null");
+    CSTL_CHECK_NOT_NULL(ident_value, "ident_value must not be null");       
+    printf("        ch ===== `%c`\n", ch);
+    // // Move back one character
+    // // *Do not* remove this
+    // LEXER_DECREMENT_OFFSET;
     lexer_maketoken(lexer, IDENTIFIER, ident_value);
 }
 
@@ -267,9 +266,9 @@ static inline void lexer_lex_digit(Lexer* lexer) {
                         ++hexcount; 
                         ch = lexer_advance(lexer);
                     }
-                    if(hexcount == 0) {
+                    if(hexcount == 0)
                         lexer_error(lexer, "Expected hexadecimal digits [0-9A-Fa-f] after `0x`");
-                    }
+                    
                     tokenkind = HEX_INT;
                     break;
                 // Binary
@@ -281,9 +280,9 @@ static inline void lexer_lex_digit(Lexer* lexer) {
                         ++bincount; 
                         ch = lexer_advance(lexer);
                     }
-                    if(bincount == 0) {
+                    if(bincount == 0)
                         lexer_error(lexer, "Expected binary digit [0-1] after `0b`");
-                    }
+                    
                     tokenkind = BIN_INT;
                     break;
                 // Octal
@@ -297,9 +296,9 @@ static inline void lexer_lex_digit(Lexer* lexer) {
                         ++octcount; 
                         ch = lexer_advance(lexer);
                     }
-                    if(octcount == 0) {
+                    if(octcount == 0)
                         lexer_error(lexer, "Expected octal digits [0-7] after `0o`");
-                    }
+                    
                     tokenkind = OCT_INT;
                     break;
                 case ALPHA_EXCEPT_B_O_X:
@@ -315,20 +314,26 @@ static inline void lexer_lex_digit(Lexer* lexer) {
         // Fractions, or Integer?
         else {
             // Normal Floats
-            if(ch == '.' || ch == '_') {
+            if(ch == '.' || ch == '_')
                 ch = lexer_advance(lexer);
-            }
+            
             // Exponents (Float)
             else if(ch == 'e' || ch == 'E') {
                 // Skip over [eE]
                 ch = lexer_advance(lexer);
-                if(ch == '+' || ch == '-') 
-                    ch = lexer_advance(lexer);
-                if(isDigit(ch)) {
+                if(ch == '+' || ch == '-') { 
                     ch = lexer_advance(lexer);
                 } else {
-                    lexer_error(lexer, "Invalid character after exponent. Expected a digit, got `%c`");
+                    lexer_error(lexer, "Expected [+-] after exponent `e`. Got `%c`", ch);
                 }
+                
+                int exp_digits = 0;
+                while(isDigit(ch)) {
+                    ch = lexer_advance(lexer);
+                    ++exp_digits;
+                }
+                if(exp_digits == 0)
+                    lexer_error(lexer, "Invalid character after exponent `e`. Expected a digit, got `%c`", ch);
             }
             // Imaginary
             else if(ch == 'j' || ch == 'J') {
@@ -366,13 +371,14 @@ static void lexer_lex(Lexer* lexer) {
         //      next = buff[1]
         curr = lexer_advance(lexer);
         next = lexer_peek(lexer);
+        printf("        LEX=> curr   = `%c` && next = `%c`\n", curr, next);
+        printf("        LEX=> Offset = %d\n", lexer->offset);
         tokenkind = TOK_ILLEGAL;
 
         switch(curr) {
             case nullchar: goto lex_eof;
             // The `-1` is there to prevent an ILLEGAL token kind from being appended to `lexer->tokenList`
             // NB: Whitespace as a token is useless for our case (will this change later?)
-            // case WHITESPACE_NO_NEWLINE: LEXER_INCREMENT_OFFSET; tokenkind = -1; break;
             case WHITESPACE_NO_NEWLINE: tokenkind = -1; break;
             case '\n':
                 LEXER_INCREMENT_LINENO;
@@ -390,15 +396,15 @@ static void lexer_lex(Lexer* lexer) {
                     default: tokenkind = -1; lexer_lex_string(lexer); break;
                 }
                 break;
-            case ';': tokenkind = SEMICOLON; break;
-            case ',': tokenkind = COMMA; break;
-            case '\\': tokenkind = BACKSLASH; break;
-            case '[': tokenkind = LSQUAREBRACK; break;
-            case ']': tokenkind = RSQUAREBRACK; break;
-            case '{': tokenkind = LBRACE; break;
-            case '}': tokenkind = RBRACE; break;
-            case '(': tokenkind = LPAREN; break;
-            case ')': tokenkind = RPAREN; break;
+            case ';': LEXER_INCREMENT_OFFSET; tokenkind = SEMICOLON; break;
+            case ',': LEXER_INCREMENT_OFFSET; tokenkind = COMMA; break;
+            case '\\': LEXER_INCREMENT_OFFSET; tokenkind = BACKSLASH; break;
+            case '[': LEXER_INCREMENT_OFFSET; tokenkind = LSQUAREBRACK; break;
+            case ']': LEXER_INCREMENT_OFFSET; tokenkind = RSQUAREBRACK; break;
+            case '{': LEXER_INCREMENT_OFFSET; tokenkind = LBRACE; break;
+            case '}': LEXER_INCREMENT_OFFSET; tokenkind = RBRACE; break;
+            case '(': LEXER_INCREMENT_OFFSET; tokenkind = LPAREN; break;
+            case ')': LEXER_INCREMENT_OFFSET; tokenkind = RPAREN; break;
             case '=':
                 switch(next) {
                     case '=': LEXER_INCREMENT_OFFSET; tokenkind = EQUALS_EQUALS; break;
@@ -442,7 +448,19 @@ static void lexer_lex(Lexer* lexer) {
                     default: tokenkind = SLASH; break;
                 }
                 break;
-            case '#': LEXER_INCREMENT_OFFSET; tokenkind = HASH_SIGN; break;
+            case '#': 
+                // Ignore shebang on the first line
+                if(lexer->lineno == 1 && next == '!' && lexer_peekn(lexer, 1) == '/') {
+                    tokenkind = -1;
+                    // Skip till end of line
+                    while(LEXER_CURR_CHAR && LEXER_CURR_CHAR != '\n')
+                        curr = lexer_advance(lexer);
+                }
+                else {
+                    LEXER_INCREMENT_OFFSET; 
+                    tokenkind = HASH_SIGN;
+                }
+                break;
             case '!':
                 switch(next) {
                     case '=': LEXER_INCREMENT_OFFSET; tokenkind = EXCLAMATION_EQUALS; break;

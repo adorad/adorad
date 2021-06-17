@@ -43,15 +43,16 @@ int main(int argc, const char* const argv[]) {
     //     printf("%d\n", tok->kind);
     // }
 
-    // clock_t st, end, total;
-    // st = clock();
-    // lexer_lex(lexer);
-    // end = clock();
-    // printf("Number of tokens = %d\n", lexer->num_tokens);
-    // for(int i=0; i<lexer->num_tokens; i++) {
-    //     printf("TOKEN(%s, %s)\n", token_toString(lexer->tokenList[i].kind), lexer->tokenList[i].value);
-    // }
-    // printf("Total time = %lf\n", (double)((end-st)/CLOCKS_PER_SEC));
+    clock_t st, end, total;
+    st = clock();
+    lexer_lex(lexer);
+    end = clock();
+    printf("Number of tokens = %d\n", lexer->tokenList->size(lexer->tokenList));
+    for(UInt64 i=0; i < lexer->tokenList->size(lexer->tokenList); i++) {
+        Token* tok = lexer->tokenList->at(lexer->tokenList, i);
+        printf("FFTOKEN(%s, %s)\n", token_toString(tok->kind), tok->value);
+    }
+    printf("Total time = %lf\n", (double)((end-st)/CLOCKS_PER_SEC));
 
     return 0; 
 }

@@ -1,3 +1,6 @@
+#ifndef CSTL_VECTOR_H
+#define CSTL_VECTOR_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <hazel/core/types.h>
@@ -267,3 +270,5 @@ static bool vec_grow(cstlVector* vec, UInt64 capacity) {
 
     return true;
 }
+
+#endif // CSTL_VECTOR_H
