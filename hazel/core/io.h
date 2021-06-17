@@ -36,7 +36,7 @@ char* readFile(const char* fname) {
     }
 
     fread(buffer, 1, buf_length, file); 
-    buffer[buf_length + 1] = nullchar;
+    buffer[buf_length] = nullchar;
     fclose(file); 
 
     return buffer;

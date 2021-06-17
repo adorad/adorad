@@ -14,15 +14,17 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #ifndef CSTL_CLOCK_H
 #define CSTL_CLOCK_H
 
-// #include <hazel/core/misc.h>
-// #include <hazel/core/types.h>
+#include <time.h>
 
+// Returns the current time (in clock_t)
+static double now() {
+    return clock();
+}
 
-// Time ==========================================
-// CSTL_DEF UInt64   cstl_rdtsc(void);
-// CSTL_DEF Float64  cstl_time_now(void); // This is only for relative time e.g. game loops
-// CSTL_DEF UInt64   cstl_utc_time_now(void); // Number of microseconds since 1601-01-01 UTC
-// CSTL_DEF void     cstl_sleep_ms(UInt32 ms);
+// Get duration between `start` and `end` in seconds.
+static double duration(clock_t start, clock_t end) {
+    return (double)(start - end)/CLOCKS_PER_SEC;
+}
 
 
 #endif // CSTL_CLOCK_H
