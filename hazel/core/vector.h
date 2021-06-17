@@ -38,6 +38,7 @@ struct cstlVector {
     bool (*is_empty)(cstlVector*);
     bool (*reserve)(cstlVector*, UInt64);
     UInt64 (*size)(cstlVector*);
+    UInt64 (*capacity)(cstlVector*);
     bool (*clear)(cstlVector*);
     bool (*push)(cstlVector*, const void*);
     bool (*pop)(cstlVector*);
@@ -64,6 +65,8 @@ static void* vec_end(cstlVector* vec);
 static bool vec_is_empty(cstlVector* vec);
 // Returns the size of `vec` (i.e the number of bytes)
 static UInt64 vec_size(cstlVector* vec);
+// Returns the allocated capacity of `vec` (i.e the number of bytes)
+static UInt64 vec_cap(cstlVector* vec);
 // Reserve memory 
 // Returns `false` on error
 static bool vec_reserve(cstlVector* vec, UInt64 bytes);
@@ -99,6 +102,7 @@ static cstlVector* vec_new(UInt64 objsize, UInt64 capacity) {
 
     vec->at = &vec_at;
     vec->size = &vec_size;
+    vec->capacity = &vec_cap;
     vec->push = &vec_push;
     vec->pop = &vec_pop;
     vec->begin = &vec_begin;
@@ -171,6 +175,14 @@ static UInt64 vec_size(cstlVector* vec) {
     CSTL_CHECK_NOT_NULL(vec->internal.data, "Expected not null");
 
     return vec->internal.size;
+}
+
+// Returns the allocated capacity of `vec` (i.e the number of bytes)
+static UInt64 vec_cap(cstlVector* vec) {
+    CSTL_CHECK_NOT_NULL(vec, "Expected not null");
+    CSTL_CHECK_NOT_NULL(vec->internal.data, "Expected not null");
+
+    return vec->internal.capacity;
 }
 
 // Reserve memory 
