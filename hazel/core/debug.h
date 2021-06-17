@@ -94,7 +94,7 @@ cstlColouredPrintf(int colour, const char* fmt, ...) {
             case CSTL_COLOUR_WARN:     str = "\033[1;33m"; break;
             case CSTL_COLOUR_CYAN:     str = "\033[1;36m"; break;
             case CSTL_COLOUR_BOLD:     str = "\033[1m"; break;
-            default:            str = "\033[0m"; break;
+            default:                   str = "\033[0m"; break;
         }
         printf("%s", str);
         n = printf("%s", buffer);
@@ -117,7 +117,7 @@ cstlColouredPrintf(int colour, const char* fmt, ...) {
             case CSTL_COLOUR_WARN:       attr = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY; break;
             case CSTL_COLOUR_BOLD:       attr = FOREGROUND_BLUE | FOREGROUND_GREEN |FOREGROUND_RED | 
                                          FOREGROUND_INTENSITY; break;
-            default:              attr = 0; break;
+            default:                     attr = 0; break;
         }
         if(attr != 0)
             SetConsoleTextAttribute(h, attr);
