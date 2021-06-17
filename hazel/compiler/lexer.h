@@ -32,11 +32,12 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
     Reference: 
         1. ASCII Table: http://www.theasciicode.com.ar 
 */
-// Defines the number of tokens for each time we allocate memory in `tokenList`
-// This is an arbitrary number. Each time we cross `TOKENLIST_ALLOC_CAPACITY` number of tokens in `tokenList`,
-// we allocate (TOKENLIST_ALLOC_CAPACITY * sizeof(Token)) bytes at a time (which works out to around 0.26MB)
-// per (re)allocation
+// This macro defines how many tokens we initially expect in lexer->tokenList. 
+// When this limit is reached, we realloc using this same constant (TOKENLIST_ALLOC_CAPACITY * sizeof(Token)) bytes 
+// at a time (which works out to around 0.26MB) per (re)allocation
 #define TOKENLIST_ALLOC_CAPACITY    8192
+// Maximum length of an individual token
+#define MAX_TOKEN_SIZE         256
 
 typedef struct Lexer {
     const char* buffer;     // the Lexical buffer
@@ -45,9 +46,7 @@ typedef struct Lexer {
                             // offset of the curr char (no. of chars b/w the beginning of the Lexical Buffer
                             // and the curr char)
 
-    Token token;            // current token
     cstlVector* tokenList;  // list of tokens
-    UInt64 num_tokens;      // number of tokens in `tokenList`. This is used when appending tokens to `tokenList`
     UInt32 lineno;          // the line number in the source where the token occured
     UInt32 colno;           // the column number
     const char* fname;      // /path/to/file.hzl
@@ -56,12 +55,6 @@ typedef struct Lexer {
     int nest_level;         // used to infer if we're inside many `{}`s
 } Lexer;
 
-// This macro defines how many tokens we initially expect in Lexer->tokenList. 
-// When this limit is reached, we realloc using this same constant
-// #define TOKENLIST_ALLOC_SIZE   4096
-#define TOKENLIST_ALLOC_SIZE   4096*4
-// Maximum length of an individual token
-#define MAX_TOKEN_SIZE         250
 
 #ifndef LEXER_MACROS_
 #define LEXER_MACROS_
