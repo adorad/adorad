@@ -23,7 +23,7 @@ static double now() {
 
 // Get duration between `start` and `end` in seconds.
 static double duration(clock_t start, clock_t end) {
-    return (double)(start - end)/CLOCKS_PER_SEC;
+    return (double)(end - start)/CLOCKS_PER_SEC;
 }
 
 

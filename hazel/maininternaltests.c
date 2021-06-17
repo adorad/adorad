@@ -28,36 +28,21 @@ int main(int argc, const char* const argv[]) {
     // printf("-- LEXER_BUFFER: \n%s\n", lexer->buffer);
     printf("--------------\n");
 
-    // cstlVector* vec = vec_new(sizeof(Token), 40);
-    // vec->push(vec, lexer_maketoken(lexer, EQUALS, null));
-    // vec->push(vec, lexer_maketoken(lexer, EQUALS, null));
-    // vec->push(vec, lexer_maketoken(lexer, EQUALS, null));
-    // vec->push(vec, lexer_maketoken(lexer, EQUALS, null));
-    // vec->push(vec, lexer_maketoken(lexer, EQUALS, null));
-    // vec->push(vec, lexer_maketoken(lexer, EQUALS, null));
-    // vec->push(vec, lexer_maketoken(lexer, EQUALS, null));
-    // vec->push(vec, lexer_maketoken(lexer, EQUALS, null));
-
-    // for(int i = 0; i < vec->size(vec); i++) {
-    //     Token* tok = vec_at(vec, i);
-    //     printf("%d\n", tok->kind);
-    // }
-
     clock_t st, end;
-    st = clock();
+    st = now();
     int count = 0;
     lexer_lex(lexer);
     printf("Prining\n");
-    for(int i = 0; i<900000000; i++) ++count;
-    printf("count = %d\n", count);
-    end = clock();
-    double total = (double)end - st;
+    // for(int i = 0; i<900000000; i++) ++count;
+    // printf("count = %d\n", count);
+    end = now();
+    double total = duration(st, end);
     // printf("Number of tokens = %d\n", lexer->tokenList->size(lexer->tokenList));
     // for(UInt64 i=0; i < lexer->tokenList->size(lexer->tokenList); i++) {
     //     Token* tok = lexer->tokenList->at(lexer->tokenList, i);
     //     printf("TOKEN(%s, \"%s\")\n", token_toString(tok->kind), tok->value);
     // }
-    printf("Total time = %lfs\n", total/CLOCKS_PER_SEC);
+    printf("Total time = %lfs\n", total);
 
     return 0; 
 }
