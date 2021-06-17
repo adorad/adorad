@@ -228,7 +228,7 @@ static inline TokenKind lexer_is_keyword_or_identifier(char* value) {
     // Search `tokenHash` for a match for `value`. 
     // If we can't find one, we assume an identifier
     bool has_found_keyword = false;
-    for(int tokenkind = TOK___KEYWORDS_BEGIN; tokenkind < TOK___KEYWORDS_END; tokenkind++) {
+    for(int tokenkind = TOK___KEYWORDS_BEGIN + 1; tokenkind < TOK___KEYWORDS_END; tokenkind++) {
         if(strcmp(tokenHash[tokenkind], value) == 0) {
             // Found a match
             return tokenkind;
@@ -245,14 +245,11 @@ static inline void lexer_lex_identifier(Lexer* lexer) {
     // So, the remaining characters are ALPHA, DIGIT, or `_`
     char* ident_value = (char*)calloc(MAX_TOKEN_SIZE, sizeof(char));
     char ch = lexer_advance(lexer);
-    printf("Current char = %c\n", ch);
     UInt32 prev_offset = lexer->offset - 1;
 
-    while(isLetter(ch) || isDigit(ch)) {
+    while(isLetter(ch) || isDigit(ch))
         ch = lexer_advance(lexer);
-    }
 
-    printf("!!! In lexer identifier, ch = `%c`, curr chr= `%c`\n", ch, LEXER_CURR_CHAR);
     UInt32 offset_diff = lexer->offset - prev_offset;
     CSTL_CHECK_NE(offset_diff, 0);
     substr(ident_value, lexer->buffer, prev_offset - 1, offset_diff);
@@ -395,8 +392,6 @@ static void lexer_lex(Lexer* lexer) {
         //      next = buff[1]
         curr = lexer_advance(lexer);
         next = lexer_peek(lexer);
-        printf("        LEX => curr   = `%c` && next = `%c`\n", curr, next);
-        printf("        LEX => Offset = %d\n", lexer->offset);
         tokenkind = TOK_ILLEGAL;
 
         switch(curr) {

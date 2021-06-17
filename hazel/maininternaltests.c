@@ -25,7 +25,7 @@ int main(int argc, const char* const argv[]) {
 	char* buffer = readFile("test/LexerDemo.hzl");
     // char* buffer = "0123456789abcdefghijklmnopqrstuvwxyz";
 	Lexer* lexer = lexer_init(buffer, "test/LexerDemo.hzl"); 
-    printf("-- LEXER_BUFFER: \n%s\n", lexer->buffer);
+    // printf("-- LEXER_BUFFER: \n%s\n", lexer->buffer);
     printf("--------------\n");
 
     // cstlVector* vec = vec_new(sizeof(Token), 40);
@@ -43,16 +43,21 @@ int main(int argc, const char* const argv[]) {
     //     printf("%d\n", tok->kind);
     // }
 
-    clock_t st, end, total;
+    clock_t st, end;
     st = clock();
+    int count = 0;
     lexer_lex(lexer);
+    printf("Prining\n");
+    for(int i = 0; i<900000000; i++) ++count;
+    printf("count = %d\n", count);
     end = clock();
+    double total = (double)end - st;
     // printf("Number of tokens = %d\n", lexer->tokenList->size(lexer->tokenList));
     // for(UInt64 i=0; i < lexer->tokenList->size(lexer->tokenList); i++) {
     //     Token* tok = lexer->tokenList->at(lexer->tokenList, i);
     //     printf("TOKEN(%s, \"%s\")\n", token_toString(tok->kind), tok->value);
     // }
-    printf("Total time = %lfs\n", (double)((end-st)/CLOCKS_PER_SEC));
+    printf("Total time = %lfs\n", total/CLOCKS_PER_SEC);
 
     return 0; 
 }
