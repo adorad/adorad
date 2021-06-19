@@ -31,8 +31,9 @@ int main(int argc, const char* const argv[]) {
     clock_t st, end;
     st = now();
     int count = 0;
+    printf("Lexing beginning...\n");
     lexer_lex(lexer);
-    printf("Prining\n");
+    printf("Lexing finished...\n");
     // for(int i = 0; i<900000000; i++) ++count;
     // printf("count = %d\n", count);
     end = now();

@@ -247,8 +247,9 @@ static inline void lexer_lex_identifier(Lexer* lexer) {
     char ch = lexer_advance(lexer);
     UInt32 prev_offset = lexer->offset - 1;
 
-    while(isLetter(ch) || isDigit(ch))
+    while(isLetter(ch) || isDigit(ch)) {
         ch = lexer_advance(lexer);
+    }
 
     UInt32 offset_diff = lexer->offset - prev_offset;
     CSTL_CHECK_NE(offset_diff, 0);
