@@ -27,19 +27,13 @@
 ## Key Features of Hazel
 
 - Simplicity: the language can be learned in less than an hour
-- Fast compilation: ≈80k loc/s with a Clang backend,
-    ≈1 million loc/s with x64 and tcc backends *(Intel i5-7500, SSD, no optimization)*
+- Fast compilation
 - Easy to develop: Hazel compiles itself in less than a second
 - Performance: as fast as C (Hazel's main backend compiles to human-readable C)
-- Safety: no null, no globals, no undefined behavior, immutability by default
+- Safety: no undefined behavior, immutability by default
 - C to Hazel translation
-- Hot code reloading
-- Innovative memory management
-- Built-in Vision library
 - Easy cross compilation
 - REPL
-- [Built-in ORM](https://github.com/HazelLang/hazel/blob/master/doc/docs.md#orm)
-- C backend
 
 <!--
 ## Interactive Shell
@@ -235,6 +229,21 @@ Please file an issue in GitHub [here](https://github.com/HazelLang/hazel/issues)
 <!--
 Please see the [Troubleshooting](https://github.com/HazelLang/hazel/wiki/Troubleshooting) section on our [wiki page](https://github.com/HazelLang/hazel/wiki)
 -->
+
+## Supporting This Project
+
+If you are able to and would like to sponsor this project, I'm available here: 
+
+It is never required, but always appreciated :)
+
+<p align="center">
+<!--    <a href="https://www.buymeacoffee.com/jasmcaus" target = "_blank"><img alt="Buy Jason a Coffee" width="48px" src="https://raw.githubusercontent.com/adi1090x/files/master/other/1.png"></a> -->
+    <a href="https://www.ko-fi.com/jasmcaus" target="_blank"><img alt="Buy Jason a Coffee" width="48px" src="https://raw.githubusercontent.com/adi1090x/files/mater/other/2.png"></a>
+    <a href="https://www.paypal.me/jasmcaus" target="_blank"><img alt="Buy Jason a Coffee" width="48px" src="https://raw.githubusercontent.com/adi1090x/files/master/other/3.png"></a>
+    <a href="https://www.patreon.com/jasmcaus" target="_blank"><img alt="Buy Jason a Coffee" width=48px" src="https://raw.githubusercontent/adi1090x/files/master/other4.png"></a>
+</p>
+
+
 
 [TwitterBadge]: https://twitter.com/jasmcaus
 [TwitterUrl]: https://img.shields.io/twitter/follow/jasmcaus.svg?style=flatl&label=Follow&logo=twitter&logoColor=white&color=1da1f2
