@@ -22,8 +22,6 @@
 
 </div>
 
-<!-- This is the repository for Hazel development code. The language design is based very similarly to C++, Lua and Julia. -->
-
 ## Key Features of Hazel
 
 - Simplicity: the language can be learned in less than an hour
@@ -134,54 +132,6 @@ installed.
 However, if none is found when running `make` on Linux or Windows, TCC is downloaded as the default C backend.
 It's very lightweight (several MB) so this shouldn't take too long.
 
-
-### Symlinking
-
-NB: it is *highly recommended*, that you put Hazel on your PATH. That saves you the effort to type in the full path to your 
-Hazel executable every time. Hazel provides a convenience `hazel symlink` command to do that more easily.
-
-On Unix systems, it creates a `/usr/local/bin/Hazel` symlink to your executable. To do that, run:
-
-```shell
-sudo ./hazel symlink
-```
-
-On Windows, start a new shell with administrative privileges, for example by <kbd>Windows Key</kbd>, then type `cmd.exe`, 
-right click on its menu entry, and choose `Run as administrator`. In the new administrative shell, cd to the path, where you 
-have compiled hazel.exe, then type:
-
-```bat
-.\hazel.exe symlink
-```
-
-That will make Hazel available everywhere, by adding it to your PATH. You might need to restart your shell/editor after that, 
-so that it can pick the new PATH variable.
-
-NB: there is no need to run `hazel symlink` more than once - Hazel will continue to be available, even after `hazel up`, 
-restarts and so on. 
-
-You only need to run it again, if you decide to move the Hazel repo folder somewhere else.
--->
-<!-- ### Docker
-
-<details><summary>Expand Docker instructions</summary>
-
-```bash
-git clone https://github.com/HazelLang/Hazel
-cd v
-docker build -t vlang .
-docker run --rm -it vlang:latest
-```
-
-### Docker with Alpine/musl
-
-```bash
-git clone https://github.com/HazelLang/Hazel
-cd v
-docker build -t vlang --file=Dockerfile.alpine .
-docker run --rm -it vlang:latest
-```
-
 </details> -->
 
 <!--
@@ -238,9 +188,9 @@ It is never required, but always appreciated :)
 
 <p align="center">
 <!--    <a href="https://www.buymeacoffee.com/jasmcaus" target = "_blank"><img alt="Buy Jason a Coffee" width="48px" src="https://raw.githubusercontent.com/adi1090x/files/master/other/1.png"></a> -->
-    <a href="https://www.ko-fi.com/jasmcaus" target="_blank"><img alt="Buy Jason a Coffee" width="48px" src="https://raw.githubusercontent.com/adi1090x/files/mater/other/2.png"></a>
+    <a href="https://www.ko-fi.com/jasmcaus" target="_blank"><img alt="Buy Jason a Coffee" width="48px" src="https://raw.githubusercontent.com/adi1090x/files/master/other/2.png"></a>
     <a href="https://www.paypal.me/jasmcaus" target="_blank"><img alt="Buy Jason a Coffee" width="48px" src="https://raw.githubusercontent.com/adi1090x/files/master/other/3.png"></a>
-    <a href="https://www.patreon.com/jasmcaus" target="_blank"><img alt="Buy Jason a Coffee" width=48px" src="https://raw.githubusercontent/adi1090x/files/master/other4.png"></a>
+    <a href="https://www.patreon.com/jasmcaus" target="_blank"><img alt="Buy Jason a Coffee" width=48px src="https://raw.githubusercontent.com/adi1090x/files/master/other/4.png"></a>
 </p>
 
 
