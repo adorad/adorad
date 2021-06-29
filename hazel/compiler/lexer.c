@@ -406,7 +406,6 @@ static void lexer_lex(Lexer* lexer) {
         curr = lexer_advance(lexer);
         next = lexer_peek(lexer);
         tokenkind = TOK_ILLEGAL;
-        // printf("\033[1;32mCurr: '%c' and Next: '%c'\033[0m\n", curr, next);
 
         switch(curr) {
             case nullchar: goto lex_eof;
@@ -485,10 +484,8 @@ static void lexer_lex(Lexer* lexer) {
                 if(lexer->lineno == 1 && next == '!' && lexer_peekn(lexer, 1) == '/') {
                     tokenkind = -1;
                     // Skip till end of line
-                    while(LEXER_CURR_CHAR && (LEXER_CURR_CHAR != '\n' || LEXER_CURR_CHAR != nullchar)) {
-                        printf("Yes\n");
+                    while(LEXER_CURR_CHAR && (LEXER_CURR_CHAR != '\n' || LEXER_CURR_CHAR != nullchar))
                         curr = lexer_advance(lexer);
-                    }
                 }
                 else {
                     LEXER_INCREMENT_OFFSET;
