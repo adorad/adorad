@@ -39,6 +39,7 @@ int main(int argc, const char* const argv[]) {
 
     printf("Number of tokens = %d\n", lexer->tokenList->size(lexer->tokenList));
     printf("Total allocated memory (in bytes) = %d\n", lexer->tokenList->internal.objsize * lexer->tokenList->size(lexer->tokenList));
+    
     printf("\033[1;32m\nTokens Vector: \033[0m\n");
     for(UInt64 i=0; i < lexer->tokenList->size(lexer->tokenList); i++) {
         Token* tok = lexer->tokenList->at(lexer->tokenList, i);
