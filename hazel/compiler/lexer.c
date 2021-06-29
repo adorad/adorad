@@ -164,10 +164,32 @@ static void lexer_maketoken(Lexer* lexer, TokenKind kind, char* value) {
 }
 
 // Scan a comment (single line)
+// We store comments in the lexing phase. The Parser will decide which comments are actually useful and which
+// aren't
 static inline void lexer_lex_sl_comment(Lexer* lexer) {
     char ch = lexer_advance(lexer);
-    while(ch && ch != '\n')
+    int comment_length = 0; // no. of chars in the comment (useful for allocating memory for `comment_value`)
+    UInt32 prev_offset = lexer->offset - 1;
+
+    while(ch && ch != '\n') {
         ch = lexer_advance(lexer);
+        ++comment_length;
+    }
+
+    CSTL_CHECK_EQ(ch, '\n');
+    
+    // Do not store empty comments. Eg:
+    //     `#`
+    if(comment_length == 0) 
+        return;
+
+    printf("Found comment_length = %d\n", comment_length);
+    char* comment_value = (char*)calloc(comment_length + 1, sizeof(char));
+    substr(comment_value, lexer->buffer, prev_offset, comment_length - 1);
+    CSTL_CHECK_NOT_NULL(comment_value, "`comment_value` must not be null.");
+    lexer_maketoken(lexer, COMMENT, comment_value);
+
+    LEXER_DECREMENT_OFFSET;
 }
 
 // Scan a comment (multi-line)
@@ -487,9 +509,10 @@ static void lexer_lex(Lexer* lexer) {
                     while(LEXER_CURR_CHAR && (LEXER_CURR_CHAR != '\n' || LEXER_CURR_CHAR != nullchar))
                         curr = lexer_advance(lexer);
                 }
+                // Comment
                 else {
-                    LEXER_INCREMENT_OFFSET;
-                    tokenkind = HASH_SIGN;
+                    tokenkind = -1;
+                    lexer_lex_sl_comment(lexer);
                 }
                 break;
             case '!':
