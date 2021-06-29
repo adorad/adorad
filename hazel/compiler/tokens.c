@@ -38,7 +38,7 @@ void token_reset_token(Token* token) {
 }
 
 // Convert a Token to its respective String representation
-char* token_toString(TokenKind kind) {
+char* token_to_string(TokenKind kind) {
     switch(kind) {
         // Special (internal usage only)
         case TOK_EOF: return "TOK_EOF";

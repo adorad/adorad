@@ -42,7 +42,7 @@ int main(int argc, const char* const argv[]) {
     printf("\033[1;32m\nTokens Vector: \033[0m\n");
     for(UInt64 i=0; i < lexer->tokenList->size(lexer->tokenList); i++) {
         Token* tok = lexer->tokenList->at(lexer->tokenList, i);
-        printf("TOKEN(%s, \"%s\")\n", token_toString(tok->kind), tok->value);
+        printf("TOKEN(%s, \"%s\")\n", token_to_string(tok->kind), tok->value);
     }
     printf("Total time = %lfs\n", total);
 

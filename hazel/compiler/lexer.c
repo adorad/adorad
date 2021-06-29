@@ -146,8 +146,8 @@ static void lexer_maketoken(Lexer* lexer, TokenKind kind, char* value) {
     Token* token = (Token*)calloc(1, sizeof(Token));
     CSTL_CHECK_NOT_NULL(token, "Could not allocate memory. Memory full.");
 
-    if(value == null){
-        value = token_toString(kind);
+    if(value == null) {
+        value = token_to_string(kind);
 
         if(kind == STRING || kind == IDENTIFIER || kind == INTEGER || kind == HEX_INT || kind == BIN_INT ||
         kind == OCT_INT)
