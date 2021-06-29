@@ -113,9 +113,12 @@ static inline char lexer_advance(Lexer* lexer);
 // Advance `n` characters in the Lexical Buffer
 static inline char lexer_advancen(Lexer* lexer, UInt32 n);
 
+// Returns the previous element in the Lexical buffer.
+// This is non-destructive --> the buffer offset is not updated.
+static inline char lexer_prev(Lexer* lexer);
 // Returns the previous `n` elements in the Lexical buffer.
 // This is non-destructive -- the buffer offset is not updated.
-static inline char lexer_prev(Lexer* lexer, UInt32 n);
+static inline char lexer_prevn(Lexer* lexer, UInt32 n);
 
 // Returns the current element in the Lexical Buffer.
 static inline char lexer_peek(Lexer* lexer);

@@ -29,21 +29,21 @@ int main(int argc, const char* const argv[]) {
     printf("--------------\n");
 
     clock_t st, end;
+    printf("Lexing beginning...\n");
     st = now();
     int count = 0;
-    printf("Lexing beginning...\n");
     lexer_lex(lexer);
-    printf("Lexing finished...\n");
-    // for(int i = 0; i<900000000; i++) ++count;
-    // printf("count = %d\n", count);
     end = now();
+    printf("Lexing finished...\n");
     double total = duration(st, end);
+
     printf("Number of tokens = %d\n", lexer->tokenList->size(lexer->tokenList));
     printf("Total allocated memory (in bytes) = %d\n", lexer->tokenList->internal.objsize * lexer->tokenList->size(lexer->tokenList));
-    // for(UInt64 i=0; i < lexer->tokenList->size(lexer->tokenList); i++) {
-    //     Token* tok = lexer->tokenList->at(lexer->tokenList, i);
-    //     printf("TOKEN(%s, \"%s\")\n", token_toString(tok->kind), tok->value);
-    // }
+    printf("\033[1;32m\nTokens Vector: \033[0m\n");
+    for(UInt64 i=0; i < lexer->tokenList->size(lexer->tokenList); i++) {
+        Token* tok = lexer->tokenList->at(lexer->tokenList, i);
+        printf("TOKEN(%s, \"%s\")\n", token_toString(tok->kind), tok->value);
+    }
     printf("Total time = %lfs\n", total);
 
     return 0; 

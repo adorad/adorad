@@ -1,15 +1,1 @@
-export func(Int i) {
-    Bool8 = 0x123
-}
-export func(Int i) {
-    Bool8 = 0x123
-}
-export func(Int i) {
-    Bool8 = 0x123
-}
-export func(Int i) {
-    Bool8 = 0x123
-}
-export func(Int i) {
-    Bool8 = 0x123
-}
+func(Int i)

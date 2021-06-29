@@ -411,7 +411,7 @@ static inline int cstlShouldDecomposeMacro(char const* actual, char const* expec
 #define GET_3RD_ARG(arg1, arg2, arg3, ...)   arg3
 
 #define CSTL_CHECK_1_ARGS(cond)              __CSTL_CHECK__(cond, CHECK, "FAILED")
-#define CSTL_CHECK_2_ARGS(cond, message)     __CSTL_CHECK__(cond, CHECK, message)
+#define CSTL_CHECK_2_ARGS(cond, ...)         __CSTL_CHECK__(cond, CHECK, __VA_ARGS__)
 #define CSTL_CHECK_MACRO_CHOOSER(...)        GET_3RD_ARG(__VA_ARGS__, CSTL_CHECK_2_ARGS, CSTL_CHECK_1_ARGS, )
 
 #define CSTL_CHECK(...)      CSTL_CHECK_MACRO_CHOOSER(__VA_ARGS__)(__VA_ARGS__)

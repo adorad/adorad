@@ -100,7 +100,7 @@ static inline void strToUpper(char* str) {
 
 // Get a substring from `source` and copies it into `destination`
 static inline void substr(char* destination, char const* source, int begin, int bytes) {
-    CSTL_CHECK_NOT_NULL(destination, "`destination` cannot be null");
+    CSTL_CHECK_NOT_NULL(destination, "`destination` cannot be null. Did you forget to allocate memory for it?");
     CSTL_CHECK_NOT_NULL(source, "`source` cannot be null");
     CSTL_CHECK_GE(begin, 0);
     strncpy(destination, &(source[begin]), bytes);
