@@ -148,6 +148,7 @@ char* token_to_string(TokenKind kind) {
         // Keywords
         case ANY: return "any";
         case AS: return "as";
+        case ATOMIC: return "atomic";
         case BEGIN: return "begin";
         case BREAK: return "break";
         case CASE: return "case";
