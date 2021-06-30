@@ -136,45 +136,68 @@ TEST(Lexer, advancen) {
     CHECK_EQ(lexer->lineno, 1);
 }
 
-// static Token* create_token(TokenKind kind, UInt32 offset, char* value, UInt32 line, UInt32 col, char* fname) {
-//     Token* token = calloc(1, sizeof(Token));
-//     token->kind = kind;
-//     token->offset = offset;
-//     token->value = value;
-//     token->lineno = line;
-//     token->colno = col;
-//     token->fname = fname;
-//     return token;
-// }
+#define lt  lexer->tokenList
 
-// typedef struct {
-//     Token* token;
-//     int pos;
-//     int cap;   
-// } LexerTestArr;
+TEST(lexer, lex_keywords) {
+    char* buffer = "atomic UInt32 var = 0x123;";
+    Lexer* lexer = lexer_init(buffer, null);
+    Token* tok;
+    
+    lexer_lex(lexer);
 
-// LexerTestArr* LexerTestArr_alloc(int n) {
-//     LexerTestArr* lta = (LexerTestArr*)calloc(n, sizeof(LexerTestArr));
-//     lta->token = (Token*)calloc(n, sizeof(LexerTestArr));
-//     lta->pos = 0;
-//     lta->cap = n;
-//     return lta;
-// }
+    // Test
+    tok = lt->at(lt, 0);
+    CHECK(tok->kind == ATOMIC);
+    CHECK_EQ(tok->offset, 0);
+    CHECK_EQ(tok->lineno, 1);
+    CHECK_EQ(tok->colno, 1);
+    CHECK_STREQ(tok->value, "atomic");
+    CHECK_STREQ(tok->fname, "");
+    
+    tok = lt->at(lt, 1);
+    CHECK(tok->kind == IDENTIFIER);
+    CHECK_EQ(tok->offset, 7);
+    CHECK_EQ(tok->lineno, 1);
+    CHECK_EQ(tok->colno, 8);
+    CHECK_STREQ(tok->value, "UInt32");
+    CHECK_STREQ(tok->fname, "");
 
-// void LexerTestArr_append(LexerTestArr* lta, TokenKind kind, UInt32 offset, char* value, UInt32 line, UInt32 col, char* fname) {
-//     if(lta->pos >= lta->cap) {
-//         lta->token = (Token*)realloc(lta->token, sizeof(LexerTestArr) * (2 * 20));
-//         CHECK_NOT_NULL(lta->token);
-//         lta->cap += 20;
-//     }
-//     Token* token = create_token(kind, offset, value, line, col, fname);
-//     lta->token[lta->pos++] = *token;
-// }
+    tok = lt->at(lt, 2);
+    CHECK(tok->kind == IDENTIFIER);
+    CHECK_EQ(tok->offset, 14);
+    CHECK_EQ(tok->lineno, 1);
+    CHECK_EQ(tok->colno, 15);
+    CHECK_STREQ(tok->value, "var");
+    CHECK_STREQ(tok->fname, "");
 
-// void LexerTestArr_free(LexerTestArr* lta) {
-//     // free(lta->token);
-//     free(lta);
-// }
+    tok = lt->at(lt, 3);
+    CHECK(tok->kind == EQUALS);
+    CHECK_EQ(tok->offset, 17);
+    CHECK_EQ(tok->lineno, 1);
+    CHECK_EQ(tok->colno, 18);
+    CHECK_STREQ(tok->value, "=");
+    CHECK_STREQ(tok->fname, "");
+
+    tok = lt->at(lt, 4);
+    CHECK(tok->kind == HEX_INT);
+    CHECK_EQ(tok->offset, 20);
+    CHECK_EQ(tok->lineno, 1);
+    CHECK_EQ(tok->colno, 21);
+    CHECK_STREQ(tok->value, "0x123");
+    CHECK_STREQ(tok->fname, "");
+
+    tok = lt->at(lt, 5);
+    CHECK(tok->kind == SEMICOLON);
+    CHECK_EQ(tok->offset, 25);
+    CHECK_EQ(tok->lineno, 1);
+    CHECK_EQ(tok->colno, 26);
+    CHECK_STREQ(tok->value, ";");
+    CHECK_STREQ(tok->fname, "");
+
+    tok = lt->at(lt, 6);
+    CHECK(tok->kind == TOK_EOF);
+    CHECK_STREQ(tok->value, "EOF");
+}
 
 // TEST(Lexer, lexer_lex_digits) {
 //     char* buffer = "car = 0b1010101\nvar = 0xDeadBeef\nbar = 0o72626457263\nhar = 0b111111111111111111\nlar = 0x28300293";

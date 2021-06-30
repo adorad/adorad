@@ -1,5 +1,4 @@
-# This is a comment
-# Single-Line comment
 func(Int i) {
     Any x = 0x232;
+    String h = "Hello";
 }

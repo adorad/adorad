@@ -41,7 +41,7 @@ void token_reset_token(Token* token) {
 char* token_to_string(TokenKind kind) {
     switch(kind) {
         // Special (internal usage only)
-        case TOK_EOF: return "TOK_EOF";
+        case TOK_EOF: return "EOF";
         case TOK_NULL: return "TOK_NULL";
         case TOK_ILLEGAL: return "ILLEGAL";
         case COMMENT: return "COMMENT";

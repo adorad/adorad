@@ -44,7 +44,7 @@ int main(int argc, const char* const argv[]) {
     for(UInt64 i=0; i < lexer->tokenList->size(lexer->tokenList); i++) {
         Token* tok = lexer->tokenList->at(lexer->tokenList, i);
         printf("TOKEN(%s, \"%s\")\n", token_to_string(tok->kind), tok->value);
-    }
+    } 
     printf("Total time = %lfs\n", total);
 
     return 0; 

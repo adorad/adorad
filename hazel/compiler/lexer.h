@@ -129,7 +129,7 @@ static inline char lexer_peekn(Lexer* lexer, UInt32 n);
 void lexer_error(Lexer* lexer, const char* format, ...);
 
 // Make a token
-static void lexer_maketoken(Lexer* lexer, TokenKind kind, char* value);
+static void lexer_maketoken(Lexer* lexer, TokenKind kind, char* value, UInt32 offset, UInt32 lineno, UInt32 colno);
 
 // Scan a comment (single line)
 static inline void lexer_lex_sl_comment(Lexer* lexer);

@@ -75,7 +75,10 @@ static void lexer_tokenlist_push(Lexer* lexer, Token* token) {
 }
 
 static void lexer_free(Lexer* lexer) {
-    free(lexer);
+    if(lexer) {
+        lexer->tokenList->free(lexer->tokenList);
+        free(lexer);
+    }
 }
 
 // Report an error and exit
@@ -96,6 +99,7 @@ static inline char lexer_advance(Lexer* lexer) {
         return nullchar; 
     
     LEXER_INCREMENT_COLNO;
+    // printf("\033[1;31moffset = %d, colno = %d, lineno = %d \033[0m\n", lexer->offset + 1, lexer->colno, lexer->lineno);
     return (char)lexer->buffer[lexer->offset++];
 }
 
@@ -142,7 +146,7 @@ static inline char lexer_peekn(Lexer* lexer, UInt32 n) {
     return (char)lexer->buffer[lexer->offset + n];
 }
 
-static void lexer_maketoken(Lexer* lexer, TokenKind kind, char* value) {  
+static void lexer_maketoken(Lexer* lexer, TokenKind kind, char* value, UInt32 offset, UInt32 lineno, UInt32 colno) {  
     Token* token = (Token*)calloc(1, sizeof(Token));
     CSTL_CHECK_NOT_NULL(token, "Could not allocate memory. Memory full.");
 
@@ -155,9 +159,9 @@ static void lexer_maketoken(Lexer* lexer, TokenKind kind, char* value) {
     }
 
     token->kind = kind;
-    token->offset = lexer->offset;
-    token->colno = lexer->colno;
-    token->lineno = lexer->lineno;
+    token->offset = offset;
+    token->colno = colno;
+    token->lineno = lineno;
     token->fname = lexer->fname;
     token->value = value;
     lexer_tokenlist_push(lexer, token);
@@ -170,6 +174,8 @@ static inline void lexer_lex_sl_comment(Lexer* lexer) {
     char ch = lexer_advance(lexer);
     int comment_length = 0; // no. of chars in the comment (useful for allocating memory for `comment_value`)
     UInt32 prev_offset = lexer->offset - 1;
+    UInt32 lineno = lexer->lineno;
+    UInt32 colno = lexer->colno;
 
     while(ch && ch != '\n') {
         ch = lexer_advance(lexer);
@@ -183,16 +189,16 @@ static inline void lexer_lex_sl_comment(Lexer* lexer) {
     if(comment_length == 0) 
         return;
 
-    printf("Found comment_length = %d\n", comment_length);
     char* comment_value = (char*)calloc(comment_length + 1, sizeof(char));
     substr(comment_value, lexer->buffer, prev_offset, comment_length - 1);
     CSTL_CHECK_NOT_NULL(comment_value, "`comment_value` must not be null.");
-    lexer_maketoken(lexer, COMMENT, comment_value);
+    lexer_maketoken(lexer, COMMENT, comment_value, prev_offset, lineno, colno);
 
     LEXER_DECREMENT_OFFSET;
 }
 
 // Scan a comment (multi-line)
+// We have no reason, at the moment, to store a multi-line comment as a Token
 static inline void lexer_lex_ml_comment(Lexer* lexer) {
     char ch = lexer_advance(lexer);
     bool asterisk_found = false; 
@@ -232,8 +238,10 @@ static inline void lexer_lex_string(Lexer* lexer) {
     CSTL_CHECK_NE(LEXER_CURR_CHAR, '"');
 
     char ch = lexer_advance(lexer);
-    char* str_value = (char*)calloc(MAX_TOKEN_SIZE, sizeof(char));
+    int str_length = 0; // length of string
     UInt32 prev_offset = lexer->offset - 1;
+    UInt32 lineno = lexer->lineno;
+    UInt32 colno = lexer->colno;
 
     while(ch != '"') {
         if(ch == '\\') {
@@ -242,15 +250,16 @@ static inline void lexer_lex_string(Lexer* lexer) {
         } else {
             ch = lexer_advance(lexer);
         }
+        ++str_length;
     }
     CSTL_CHECK_EQ(ch, '"');
     UInt32 offset_diff = lexer->offset - prev_offset;
-    // offset_diff should never be 0 because we already handle the `""` case in `lexer_lex()`
-    CSTL_CHECK_NE(offset_diff, 0);
-    // `offset_diff - 1` so as to ignore the closing quote `"` from being copied into `str_value`
+
+    char* str_value = (char*)calloc(str_length + 1, sizeof(char));
+    // `offset_diff - 1` so as to ignore the closing quote `"`
     substr(str_value, lexer->buffer, prev_offset, offset_diff - 1);
     CSTL_CHECK_NOT_NULL(str_value, "str_value must not be null");
-    lexer_maketoken(lexer, STRING, str_value);
+    lexer_maketoken(lexer, STRING, str_value, prev_offset - 1, lineno, colno - 1);
 }
 
 // Returns whether `value` is a keyword or an identifier
@@ -273,21 +282,31 @@ static inline void lexer_lex_identifier(Lexer* lexer) {
     CSTL_CHECK(isLetter(lexer_prev(lexer)) || isDigit(lexer_prev(lexer)),
                "This message means you've encountered a serious bug within Hazel. Please file an issue on "
                "Hazel's Github repo.\nError: `lexer_lex_identifier()` hasn't been called with a valid identifier character");
-    char* ident_value = (char*)calloc(MAX_TOKEN_SIZE, sizeof(char));
+    UInt32 prev_offset = lexer->offset;
+    UInt32 lineno = lexer->lineno;
+    UInt32 colno = lexer->colno;
+    int ident_length = 0; // length of identifier
     char ch = lexer_advance(lexer);
-    UInt32 prev_offset = lexer->offset - 1;
 
-    while(isLetter(ch) || isDigit(ch))
+    // printf("\033[1;32moffset = %d, colno = %d, lineno = %d \033[0m\n", prev_offset, colno, lineno);
+
+    while(isLetter(ch) || isDigit(ch)) {
         ch = lexer_advance(lexer);
+        ++ident_length;
+    }
+
+    if(ident_length > MAX_TOKEN_SIZE)
+        CSTL_WARN(A number can never have more than 256 characters);
 
     UInt32 offset_diff = lexer->offset - prev_offset;
-    CSTL_CHECK_NE(offset_diff, 0);
+
+    char* ident_value = (char*)calloc(ident_length + 1, sizeof(char));
     substr(ident_value, lexer->buffer, prev_offset - 1, offset_diff);
     CSTL_CHECK_NOT_NULL(ident_value, "ident_value must not be null");
 
     // Determine if a keyword or just a regular identifier
     TokenKind tokenkind = lexer_is_keyword_or_identifier(ident_value);
-    lexer_maketoken(lexer, tokenkind, ident_value);
+    lexer_maketoken(lexer, tokenkind, ident_value, prev_offset - 1, lineno, colno - 1);
 
     LEXER_DECREMENT_OFFSET;
 }
@@ -301,8 +320,10 @@ static inline void lexer_lex_digit(Lexer* lexer) {
     // This value needs to be captured as well in `token->value`
     char ch = lexer_prev(lexer);
     UInt32 prev_offset = lexer->offset - 1;
+    UInt32 lineno = lexer->lineno;
+    UInt32 colno = lexer->colno;
     TokenKind tokenkind = TOK_ILLEGAL;
-    char* digit_value = (char*)calloc(MAX_TOKEN_SIZE, sizeof(char));
+    int digit_length = 0; // no. of digits in the number
 
     CSTL_CHECK_TRUE(isDigit(ch));
     while(isDigit(ch)) {
@@ -323,6 +344,7 @@ static inline void lexer_lex_digit(Lexer* lexer) {
                         lexer_error(lexer, "Expected hexadecimal digits [0-9A-Fa-f] after `0x`");
                     
                     tokenkind = HEX_INT;
+                    digit_length = hexcount;
                     break;
                 // Binary
                 case 'b': case 'B':
@@ -337,6 +359,7 @@ static inline void lexer_lex_digit(Lexer* lexer) {
                         lexer_error(lexer, "Expected binary digit [0-1] after `0b`");
                     
                     tokenkind = BIN_INT;
+                    digit_length = bincount;
                     break;
                 // Octal
                 // Depart from the (error-prone) C-style octals with an inital zero e.g 0123
@@ -353,6 +376,7 @@ static inline void lexer_lex_digit(Lexer* lexer) {
                         lexer_error(lexer, "Expected octal digits [0-7] after `0o`");
                     
                     tokenkind = OCT_INT;
+                    digit_length = octcount;
                     break;
                 case ALPHA_EXCEPT_B_O_X:
                     // Error
@@ -387,21 +411,37 @@ static inline void lexer_lex_digit(Lexer* lexer) {
                 }
                 if(exp_digits == 0)
                     lexer_error(lexer, "Invalid character after exponent `e`. Expected a digit, got `%c`", ch);
+                
+                // (TODO) Verify this is correct
+                digit_length = exp_digits;
             }
             // Imaginary
             else if(ch == 'j' || ch == 'J') {
+                // digit_length = imag_count;
             }
         }
-        ch = lexer_advance(lexer);
+        // ch = lexer_advance(lexer);
     }
 
     CSTL_CHECK(tokenkind != TOK_ILLEGAL);
+
     UInt32 offset_diff = lexer->offset - prev_offset;
     CSTL_CHECK_NE(offset_diff, 0);
-    substr(digit_value, lexer->buffer, prev_offset, offset_diff - 2);
+
+    if(digit_length > MAX_TOKEN_SIZE)
+        CSTL_WARN(A number can never have more than 256 characters);
+
+    // digit_length can be 0 and we can still have a number. Reasoning is as follows:
+    // This function is guaranteed to be called when there's at least one "number-like". We simply check if
+    // there are more digits to lex.
+    // If digit_length = 0, this means that there's only one digit in the number (eg. 0, 2, 9)
+    char* digit_value = (char*)calloc(digit_length + 1, sizeof(char));
+    substr(digit_value, lexer->buffer, prev_offset, offset_diff - 1);
     CSTL_CHECK_NOT_NULL(digit_value, "digit_value must not be null");
 
-    lexer_maketoken(lexer, tokenkind, digit_value);
+    lexer_maketoken(lexer, tokenkind, digit_value, prev_offset, lineno, colno);
+
+    LEXER_DECREMENT_OFFSET;
 }
 
 // Lex the Source files
@@ -409,17 +449,14 @@ static void lexer_lex(Lexer* lexer) {
     // Some UTF8 text may start with a 3-byte 'BOM' marker sequence. If it exists, skip over them because they 
     // are useless bytes. Generally, it is not recommended to add BOM markers to UTF8 texts, but it's not 
     // uncommon (especially on Windows).
-    if(lexer->buffer[0] == (char)0xef && lexer->buffer[1] == (char)0xbb && lexer->buffer[2] == (char)0xbf) {
+    if(lexer->buffer[0] == (char)0xef && lexer->buffer[1] == (char)0xbb && lexer->buffer[2] == (char)0xbf)
         lexer_advancen(lexer, 3);
-    }
 
     char next = nullchar;
     char curr = nullchar;
     TokenKind tokenkind = TOK_ILLEGAL;
 
-    // NB: The fact that `lexer->offset > lexer->buffer_capacity` is handled by the first case block (nullchar).
-    // This is faster (performance-wise) than repeatedly checking for the above condition.
-    while(true) { 
+    while(true) {
         // `lexer_advance()` returns the current character and moves forward, and `lexer_peek()` returns the current
         // character (after the advance).
         // For example, if we start from buff[0], 
@@ -427,6 +464,7 @@ static void lexer_lex(Lexer* lexer) {
         //      next = buff[1]
         curr = lexer_advance(lexer);
         next = lexer_peek(lexer);
+
         tokenkind = TOK_ILLEGAL;
 
         switch(curr) {
@@ -445,7 +483,9 @@ static void lexer_lex(Lexer* lexer) {
             case '"':
                 switch(next) {
                     // Empty String literal 
-                    case '"': LEXER_INCREMENT_OFFSET; lexer_maketoken(lexer, STRING,  "\"\""); break;
+                    case '"': LEXER_INCREMENT_OFFSET; lexer_maketoken(lexer, STRING, "\"\"", lexer->offset - 1, 
+                                                                      lexer->lineno, lexer->colno - 1); 
+                              break;
                     default: tokenkind = -1; lexer_lex_string(lexer); break;
                 }
                 break;
@@ -462,7 +502,7 @@ static void lexer_lex(Lexer* lexer) {
                 switch(next) {
                     case '=': LEXER_INCREMENT_OFFSET; tokenkind = EQUALS_EQUALS; break;
                     case '>': LEXER_INCREMENT_OFFSET; tokenkind = EQUALS_ARROW; break;
-                    default: tokenkind = EQUALS; break;
+                    default: tokenkind = EQUALS; printf("`=` offset = %d and colno = %d\n", lexer->offset, lexer->colno); break;
                 }
                 break;
             case '+':
@@ -617,10 +657,10 @@ static void lexer_lex(Lexer* lexer) {
         } // switch(ch)
 
         if(tokenkind == -1) continue;
-        lexer_maketoken(lexer, tokenkind, null);
+        lexer_maketoken(lexer, tokenkind, null, lexer->offset - 1, lexer->lineno, lexer->colno - 1);
     } // while
 
 lex_eof:;
 
-    lexer_maketoken(lexer, TOK_EOF, null);
+    lexer_maketoken(lexer, TOK_EOF, null, lexer->offset - 1, lexer->lineno, lexer->colno - 1);
 }
