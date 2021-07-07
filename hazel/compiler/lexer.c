@@ -99,7 +99,6 @@ static inline char lexer_advance(Lexer* lexer) {
         return nullchar; 
     
     LEXER_INCREMENT_COLNO;
-    // printf("\033[1;31moffset = %d, colno = %d, lineno = %d \033[0m\n", lexer->offset + 1, lexer->colno, lexer->lineno);
     return (char)lexer->buffer[lexer->offset++];
 }
 
@@ -287,8 +286,6 @@ static inline void lexer_lex_identifier(Lexer* lexer) {
     UInt32 colno = lexer->colno;
     int ident_length = 0; // length of identifier
     char ch = lexer_advance(lexer);
-
-    // printf("\033[1;32moffset = %d, colno = %d, lineno = %d \033[0m\n", prev_offset, colno, lineno);
 
     while(isLetter(ch) || isDigit(ch)) {
         ch = lexer_advance(lexer);
@@ -502,7 +499,7 @@ static void lexer_lex(Lexer* lexer) {
                 switch(next) {
                     case '=': LEXER_INCREMENT_OFFSET; tokenkind = EQUALS_EQUALS; break;
                     case '>': LEXER_INCREMENT_OFFSET; tokenkind = EQUALS_ARROW; break;
-                    default: tokenkind = EQUALS; printf("`=` offset = %d and colno = %d\n", lexer->offset, lexer->colno); break;
+                    default: tokenkind = EQUALS; break;
                 }
                 break;
             case '+':
