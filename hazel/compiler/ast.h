@@ -19,8 +19,10 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 
 typedef struct AstNode AstNode;
 
+// Change values later
 typedef enum AstNodeType {
-
+    AST_NODE_HELLO,
+    AST_NODE_HELLO2,
 } AstNodeType;
 
 typedef struct AstNodeFuncDef {
@@ -43,7 +45,8 @@ typedef struct AstNodeFuncPrototype {
     enum FuncInline func_inline;
     bool is_export;
     bool is_extern;
-    bool is_var_args;    // variable arguments used?
+    bool is_var_args;  // variable arguments used?
+    bool is_mutable;   // This is false unless explicitly mentioned
 } AstNodeFuncPrototype;
 
 typedef struct AstNodeParamDecls {
@@ -59,9 +62,26 @@ enum ReturnKind {
     ReturnKindError
 };
 
-typedef struct AstNodeReturnType {
+typedef struct AstNodeReturnExpr {
     enum ReturnKind kind;
-} AstNodeReturnType;
+    AstNode* expr;
+} AstNodeReturnExpr;
+
+typedef struct AstNodeDefer {
+    enum ReturnKind kind;
+    AstNode* expr;
+} AstNodeDefer;
+
+typedef struct AstNodeVarDecl {
+    char* symbol;
+    // Either or both will be non-null
+    AstNode* type;
+    AstNode* expr;
+
+    bool is_const;
+    bool is_export;
+    bool is_mutable; // This is false unless explicitly mentioned
+} AstNodeVarDecl;
 
 struct AstNode {
     AstNodeType type; // type of AST Node
@@ -70,7 +90,9 @@ struct AstNode {
     union {
         AstNodeFuncDef* func_def;
         AstNodeParamDecls* param_decls;
-        AstNodeReturnType* return_type;
+        AstNodeReturnExpr* return_type;
+        AstNodeDefer* defer;
+        AstNodeVarDecl* var_decl;
     } data;
 };
 

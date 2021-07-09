@@ -16,6 +16,8 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 // This ALWAYS needs to be right at the top 
 #include <hazel/core/hcore.h> 
 
-#include <hazel/compiler/types.h> 
+#include <hazel/compiler/types.h>
+#include <hazel/compiler/tokens.h>  
 #include <hazel/compiler/lexer.h>
-#include <hazel/compiler/tokens.h> 
+#include <hazel/compiler/ast.h>
+#include <hazel/compiler/parser.h>
