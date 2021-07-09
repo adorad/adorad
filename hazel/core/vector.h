@@ -86,11 +86,10 @@ static bool vec_pop(cstlVector* vec);
 // capacity => number of elements
 // Returns `null` in the event of an error (e.g memory full; could not allocate)
 static cstlVector* vec_new(UInt64 objsize, UInt64 capacity) {
-    cstlVector* vec;
     if(capacity == 0)
         capacity = VEC_INIT_ALLOC_CAP;
     
-    vec = (cstlVector*)calloc(1, sizeof(cstlVector));
+    cstlVector* vec = (cstlVector*)calloc(1, sizeof(cstlVector));
     CSTL_CHECK_NOT_NULL(vec, "Could not allocate memory. Memory full.");
 
     vec->internal.data = (void*)calloc(objsize, capacity);
