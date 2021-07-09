@@ -15,11 +15,15 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 
 #include <stdio.h>
 #include <string.h>
+#include <stdarg.h>
 
 #include <hazel/core/misc.h>
 #include <hazel/core/types.h>
 #include <hazel/core/string.h> 
 #include <hazel/core/vector.h>
+#include <hazel/core/buffer.h>
+#include <hazel/core/debug.h>
+
 #include <hazel/compiler/tokens.h>
 
 /*
@@ -33,27 +37,27 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
     Reference: 
         1. ASCII Table: http://www.theasciicode.com.ar 
 */
+
 // This macro defines how many tokens we initially expect in lexer->tokenList. 
 // When this limit is reached, we realloc using this same constant (TOKENLIST_ALLOC_CAPACITY * sizeof(Token)) bytes 
 // at a time (which works out to around 0.26MB) per (re)allocation
 #define TOKENLIST_ALLOC_CAPACITY    8192
 // Maximum length of an individual token
-#define MAX_TOKEN_SIZE         256
+#define MAX_TOKEN_LENGTH            256
 
 typedef struct Lexer {
-    const char* buffer;     // the Lexical buffer
-    UInt32 buffer_capacity; // current buffer capacity (in Bytes)
-    UInt32 offset;          // current buffer offset (in Bytes) 
-                            // offset of the curr char (no. of chars b/w the beginning of the Lexical Buffer
-                            // and the curr char)
+    const cstlBuffer* buffer;   // the Lexical buffer
+    UInt32 offset;              // current buffer offset (in Bytes) 
+                                // offset of the curr char (no. of chars b/w the beginning of the Lexical Buffer
+                                // and the curr char)
 
-    cstlVector* tokenList;  // list of tokens
-    UInt32 lineno;          // the line number in the source where the token occured
-    UInt32 colno;           // the column number
-    const char* fname;      // /path/to/file.hzl
+    cstlVector* tokenList;      // list of tokens
+    UInt32 lineno;              // the line number in the source where the token occured
+    UInt32 colno;               // the column number
+    const char* fname;          // /path/to/file.hzl
 
-    bool is_inside_str;     // set to true inside a string
-    int nest_level;         // used to infer if we're inside many `{}`s
+    bool is_inside_str;         // set to true inside a string
+    int nest_level;             // used to infer if we're inside many `{}`s
 } Lexer;
 
 
@@ -61,7 +65,7 @@ typedef struct Lexer {
 #define LEXER_MACROS_
     // Get the current character in the Lexical buffer
     // NB: This does not increase the offset
-    #define LEXER_CURR_CHAR                   lexer->buffer[lexer->offset]
+    #define LEXER_CURR_CHAR                   lexer->buffer->at(lexer->buffer, lexer->offset)
 
     // Reset the line
     #define LEXER_RESET_LINENO                lexer->lineno = 0
@@ -88,17 +92,15 @@ typedef struct Lexer {
     #define LEXER_DECREMENT_OFFSET_ONLY       --lexer->offset;
 
     // Reset the buffer 
-    #define LEXER_RESET_BUFFER        \
-        lexer->buffer= "";            \
-        lexer->buffer_capacity = 0
+    #define LEXER_RESET_BUFFER              \
+        lexer->buffer->free(lexer->buffer)
 
     // Reset the Lexer state
-    #define LEXER_RESET               \
-        lexer->buffer = "";           \
-        lexer->buffer_capacity = 0;   \
-        lexer->offset = 0;            \
-        lexer->lineno = 1;            \
-        lexer->colno = 1;             \
+    #define LEXER_RESET                     \
+        lexer->buffer->free(lexer->buffer); \
+        lexer->offset = 0;                  \
+        lexer->lineno = 1;                  \
+        lexer->colno = 1;                   \
         lexer->fname = ""
 
 #endif // LEXER_MACROS_

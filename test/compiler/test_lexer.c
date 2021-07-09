@@ -6,8 +6,8 @@ TEST(Lexer, Init) {
     char* buffer = "0123456789abcdefghijklmnopqrstuvwxyz";
     Lexer* lexer = lexer_init(buffer, null);
 
-    CHECK_STRNEQ(lexer->buffer, "");
-    CHECK_EQ(lexer->buffer_capacity, strlen(buffer));
+    CHECK_STRNEQ(lexer->buffer->data, "");
+    CHECK_EQ(lexer->buffer->length, strlen(buffer));
     CHECK_EQ(lexer->tokenList->capacity(lexer->tokenList), TOKENLIST_ALLOC_CAPACITY);
     CHECK_EQ(lexer->tokenList->size(lexer->tokenList), 0);
     CHECK_EQ(lexer->offset, 0);
@@ -24,8 +24,8 @@ TEST(Lexer, advance_without_newline) {
     Lexer* lexer = lexer_init(buffer, null);
     
     for(UInt32 i=0; i < strlen(buffer); i++) {
-        CHECK_STREQ(lexer->buffer, buffer);
-        CHECK_EQ(lexer_advance(lexer), lexer->buffer[lexer->offset-1]);
+        CHECK_STREQ(lexer->buffer->data, buffer);
+        CHECK_EQ(lexer_advance(lexer), lexer->buffer->data[lexer->offset-1]);
         CHECK_EQ(lexer->tokenList->capacity(lexer->tokenList), TOKENLIST_ALLOC_CAPACITY);
         CHECK_EQ(lexer->tokenList->size(lexer->tokenList), 0);
         CHECK_EQ(lexer->offset, i+1);
@@ -39,7 +39,7 @@ TEST(Lexer, advance_with_newline) {
     char* buffer = "a\nb\ncdefghijklmnopqrstuvwxyz0123456789";
     Lexer* lexer = lexer_init(buffer, null);
     
-    CHECK_STREQ(lexer->buffer, buffer);
+    CHECK_STREQ(lexer->buffer->data, buffer);
     CHECK_EQ(lexer_advance(lexer), 'a');
     CHECK_EQ(lexer->offset, 1);
     CHECK_EQ(lexer->tokenList->capacity(lexer->tokenList), TOKENLIST_ALLOC_CAPACITY);
@@ -48,7 +48,7 @@ TEST(Lexer, advance_with_newline) {
     CHECK_EQ(lexer->lineno, 1);
 
     // Hit a newline
-    CHECK_STREQ(lexer->buffer, buffer);
+    CHECK_STREQ(lexer->buffer->data, buffer);
     CHECK_EQ(lexer_advance(lexer), '\n');
     CHECK_EQ(lexer->offset, 2);
     CHECK_EQ(lexer->tokenList->capacity(lexer->tokenList), TOKENLIST_ALLOC_CAPACITY);
