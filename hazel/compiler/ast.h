@@ -10,3 +10,10 @@ Licensed under the MIT License <http://opensource.org/licenses/MIT>
 SPDX-License-Identifier: MIT
 Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 */
+
+#ifndef HAZEL_AST_H
+#define HAZEL_AST_H
+
+
+
+#endif // HAZEL_AST_H

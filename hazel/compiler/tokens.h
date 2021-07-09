@@ -11,8 +11,8 @@ SPDX-License-Identifier: MIT
 Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 */
 
-#ifndef _HAZEL_TOKEN_H
-#define _HAZEL_TOKEN_H
+#ifndef HAZEL_TOKEN_H
+#define HAZEL_TOKEN_H
 
 #include <stdlib.h>
 
@@ -241,4 +241,4 @@ void token_reset_token(Token* token);
 // Convert a Token to its respective String representation
 char* token_to_string(TokenKind kind);
 
-#endif // _HAZEL_TOKEN_H
+#endif // HAZEL_TOKEN_H

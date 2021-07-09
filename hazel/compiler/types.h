@@ -11,8 +11,8 @@ SPDX-License-Identifier: MIT
 Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 */
 
-#ifndef _HAZEL_TYPES_H 
-#define _HAZEL_TYPES_H 
+#ifndef HAZEL_TYPES_H 
+#define HAZEL_TYPES_H 
 
 // list of Data types/ used in the Hazel Programming Language
 typedef enum {
@@ -54,4 +54,4 @@ typedef enum {
 } HazelTypes; 
 
 
-#endif // _HAZEL_TYPES_H 
+#endif // HAZEL_TYPES_H 

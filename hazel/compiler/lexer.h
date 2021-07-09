@@ -10,8 +10,8 @@ Licensed under the MIT License <http://opensource.org/licenses/MIT>
 SPDX-License-Identifier: MIT
 Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 */
-#ifndef _HAZEL_LEXER_H
-#define _HAZEL_LEXER_H
+#ifndef HAZEL_LEXER_H
+#define HAZEL_LEXER_H
 
 #include <stdio.h>
 #include <string.h>
@@ -152,4 +152,4 @@ static inline void lexer_lex_digit(Lexer* lexer);
 // Lex the Source files
 static void lexer_lex(Lexer* lexer);
 
-#endif // _HAZEL_LEXER_H
+#endif // HAZEL_LEXER_H
