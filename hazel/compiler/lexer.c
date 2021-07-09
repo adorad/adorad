@@ -318,7 +318,7 @@ static inline void lexer_lex_digit(Lexer* lexer) {
     char ch = lexer_prev(lexer);
     UInt32 prev_offset = lexer->offset - 1;
     UInt32 lineno = lexer->lineno;
-    UInt32 colno = lexer->colno;
+    UInt32 colno = lexer->colno - 1;
     TokenKind tokenkind = TOK_ILLEGAL;
     int digit_length = 0; // no. of digits in the number
 
@@ -341,7 +341,7 @@ static inline void lexer_lex_digit(Lexer* lexer) {
                         lexer_error(lexer, "Expected hexadecimal digits [0-9A-Fa-f] after `0x`");
                     
                     tokenkind = HEX_INT;
-                    digit_length = hexcount;
+                    digit_length = hexcount + 1; // Account for the '0'
                     break;
                 // Binary
                 case 'b': case 'B':
@@ -356,7 +356,7 @@ static inline void lexer_lex_digit(Lexer* lexer) {
                         lexer_error(lexer, "Expected binary digit [0-1] after `0b`");
                     
                     tokenkind = BIN_INT;
-                    digit_length = bincount;
+                    digit_length = bincount + 1; // Account for the '0'
                     break;
                 // Octal
                 // Depart from the (error-prone) C-style octals with an inital zero e.g 0123
@@ -373,7 +373,7 @@ static inline void lexer_lex_digit(Lexer* lexer) {
                         lexer_error(lexer, "Expected octal digits [0-7] after `0o`");
                     
                     tokenkind = OCT_INT;
-                    digit_length = octcount;
+                    digit_length = octcount + 1; // Account for the '0'
                     break;
                 case ALPHA_EXCEPT_B_O_X:
                     // Error
@@ -410,7 +410,7 @@ static inline void lexer_lex_digit(Lexer* lexer) {
                     lexer_error(lexer, "Invalid character after exponent `e`. Expected a digit, got `%c`", ch);
                 
                 // (TODO) Verify this is correct
-                digit_length = exp_digits;
+                digit_length = exp_digits + 1; // Account for the prev digit
             }
             // Imaginary
             else if(ch == 'j' || ch == 'J') {
