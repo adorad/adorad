@@ -172,9 +172,9 @@ TEST(lexer, lex_keywords) {
 
     tok = lt->at(lt, 3);
     CHECK(tok->kind == EQUALS);
-    CHECK_EQ(tok->offset, 17);
+    CHECK_EQ(tok->offset, 18);
     CHECK_EQ(tok->lineno, 1);
-    CHECK_EQ(tok->colno, 18);
+    CHECK_EQ(tok->colno, 19);
     CHECK_STREQ(tok->value, "=");
     CHECK_STREQ(tok->fname, "");
 

@@ -11,10 +11,8 @@ SPDX-License-Identifier: MIT
 Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 */
 
-
 #ifndef CSTL_OS_H
 #define CSTL_OS_H
-
 
 // Operating Systems ==========================================
 // CSTL_OS_...

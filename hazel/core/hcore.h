@@ -64,6 +64,7 @@ CREDITS
 #include <hazel/core/memory.h>
 #include <hazel/core/os.h>
 #include <hazel/core/math.h>
+#include <hazel/core/buffer.h>
 #include <hazel/core/string.h>
 #include <hazel/core/vector.h>
 

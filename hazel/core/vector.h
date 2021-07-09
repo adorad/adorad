@@ -1,18 +1,21 @@
+/*
+_ _    _           ______   _______        
+| |  | |    /\    /___  /   |  ____|| |    
+| |__| |   /  \      / /    | |__   | |       Hazel - The Fast, Expressive & Elegant Programming Language
+|  __  |  / /\ \    / /     |  __|  | |       Languages: C, C++, and Assembly
+| |  | | / ____ \  / /___   | |____ | |____   https://github.com/HazelLang/hazel/
+|_|_ |_|/_/    \_\/_______\ |______|_\______|
+
+Licensed under the MIT License <http://opensource.org/licenses/MIT>
+SPDX-License-Identifier: MIT
+Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
+*/
+
 #ifndef CSTL_VECTOR_H
 #define CSTL_VECTOR_H
 
-#include <stdio.h>
-#include <stdlib.h>
 #include <hazel/core/types.h>
 #include <hazel/core/debug.h>
-
-// Sources
-// 
-//      1. https://github.com/bigstronkcodeman/C-Generic-Dynamic-Arrays/blob/main/dynarray.c
-//      2. https://github.com/Naitsirc98/C-Vector/blob/master/Vector/Vector/src/vector/vector.c
-//      3. https://github.com/bamless/cvector/blob/master/vector.c
-//      4. https://github.com/nothings/stb/blob/master/stb_c_lexer.h
- 
 
 // We require this to be a large number, much more than what you might eventually use for more projects,
 // but because CSTL is of great use and importance in the Hazel Programming Language (which needs these
@@ -84,9 +87,9 @@ static bool vec_pop(cstlVector* vec);
 // Returns `null` in the event of an error (e.g memory full; could not allocate)
 static cstlVector* vec_new(UInt64 objsize, UInt64 capacity) {
     cstlVector* vec;
-    if(capacity == 0) {
+    if(capacity == 0)
         capacity = VEC_INIT_ALLOC_CAP;
-    }
+    
     vec = (cstlVector*)calloc(1, sizeof(cstlVector));
     CSTL_CHECK_NOT_NULL(vec, "Could not allocate memory. Memory full.");
 
