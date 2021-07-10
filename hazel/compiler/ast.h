@@ -45,6 +45,7 @@ typedef struct AstNodeFuncPrototype {
     enum FuncInline func_inline;
     bool is_export;
     bool is_extern;
+    bool is_generic;
     bool is_var_args;  // variable arguments used?
     bool is_mutable;   // This is false unless explicitly mentioned
 } AstNodeFuncPrototype;
@@ -73,9 +74,8 @@ typedef struct AstNodeDefer {
 } AstNodeDefer;
 
 typedef struct AstNodeVarDecl {
-    char* symbol;
-    // Either or both will be non-null
-    AstNode* type;
+    char* name;
+    AstNode* type; // can be null
     AstNode* expr;
 
     bool is_const;
