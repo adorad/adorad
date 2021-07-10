@@ -30,11 +30,12 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 // as well as in Syntax.toml (hazel/compiler/Syntax/Syntax.toml)
 #define ALLTOKENS \
     /* Special (internal usage only) */ \
-    TOKENKIND(TOK_ILLEGAL = 0,  ""),   \
-    TOKENKIND(TOK_ID,  "TOK_ID"),   \
+    TOKENKIND(TOK_ILLEGAL = 0,  ""),        \
+    TOKENKIND(TOK_ID,  "TOK_ID"),           \
     TOKENKIND(TOK_EOF, "TOK_EOF"),  /* End of Input */ \
-    TOKENKIND(TOK_NULL,"TOK_NULL"), \
-    TOKENKIND(COMMENT, "COMMENT"),  \
+    TOKENKIND(TOK_NULL,"TOK_NULL"),         \
+    TOKENKIND(COMMENT, "COMMENT"),          \
+    TOKENKIND(DOCS_COMMENT, "DOCS_COMMENT") \
 \
     /* Literals */ \
 TOKENKIND(TOK___LITERALS_BEGIN, ""), \

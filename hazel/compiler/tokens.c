@@ -45,6 +45,7 @@ char* token_to_string(TokenKind kind) {
         case TOK_NULL: return "TOK_NULL";
         case TOK_ILLEGAL: return "ILLEGAL";
         case COMMENT: return "COMMENT";
+        case DOCS_COMMENT: return "DOCS_COMMENT";
 
         // Literals
         case IDENTIFIER: return "IDENTIFIER";
