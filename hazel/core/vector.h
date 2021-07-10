@@ -231,9 +231,8 @@ static bool vec_push(cstlVector* vec, const void* data) {
 
     CSTL_CHECK_GT(vec->internal.objsize, 0);
 
-    if(vec->internal.data != null) {
+    if(vec->internal.data != null)
         memcpy(VECTOR_AT_MACRO(vec, vec->internal.size), data, vec->internal.objsize);
-    }
 
     vec->internal.size++;
     return true;
