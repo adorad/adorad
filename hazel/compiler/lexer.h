@@ -141,6 +141,8 @@ static inline void lexer_lex_ml_comment(Lexer* lexer);
 static inline void lexer_lex_char(Lexer* lexer);
 // Scan an escape char
 static inline void lexer_lex_esc_char(Lexer* lexer);
+// Scan a macro (begins with `@`)
+static inline void lexer_lex_macro(Lexer* lexer);
 // Scan a string
 static inline void lexer_lex_string(Lexer* lexer);
 // Returns whether `value` is a keyword or an identifier

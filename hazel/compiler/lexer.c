@@ -228,6 +228,35 @@ static inline void lexer_lex_char(Lexer* lexer) {
 static inline void lexer_lex_esc_char(Lexer* lexer) {
 }
 
+// Scan a macro (begins with `@`)
+static inline void lexer_lex_macro(Lexer* lexer) {
+    char ch = lexer_advance(lexer);
+    int macro_length = 0; // length of macro
+
+    // Don't include the `@` in the macro symbol name
+    UInt32 prev_offset = lexer->offset;
+    UInt32 lineno = lexer->lineno;
+    UInt32 colno = lexer->colno;
+
+    while(isLetter(ch) || isDigit(ch)) {
+        ch = lexer_advance(lexer);
+        ++macro_length;
+    }
+
+    if(macro_length > MAX_TOKEN_LENGTH)
+        CSTL_WARN(A number can never have more than 256 characters);
+
+    UInt32 offset_diff = lexer->offset - prev_offset;
+    printf("Offset_diff = %d\n", offset_diff);
+
+    char* macro_value = (char*)calloc(macro_length + 1, sizeof(char));
+    substr(macro_value, lexer->buffer->data, prev_offset - 1, offset_diff);
+    CSTL_CHECK_NOT_NULL(macro_value, "macro_value must not be null");
+    lexer_maketoken(lexer, MACRO, macro_value, prev_offset - 1, lineno, colno - 1);
+
+    LEXER_DECREMENT_OFFSET;
+}
+
 // Scan a string
 static inline void lexer_lex_string(Lexer* lexer) {
     // We already know that the curr char is _not_ a quote (`"`) --> an empty string token (`""`) is
@@ -239,6 +268,7 @@ static inline void lexer_lex_string(Lexer* lexer) {
     UInt32 prev_offset = lexer->offset - 1;
     UInt32 lineno = lexer->lineno;
     UInt32 colno = lexer->colno;
+    lexer->is_inside_str = true;
 
     while(ch != '"') {
         if(ch == '\\') {
@@ -249,6 +279,8 @@ static inline void lexer_lex_string(Lexer* lexer) {
         }
         ++str_length;
     }
+    lexer->is_inside_str = false;
+
     CSTL_CHECK_EQ(ch, '"');
     UInt32 offset_diff = lexer->offset - prev_offset;
 
@@ -291,7 +323,7 @@ static inline void lexer_lex_identifier(Lexer* lexer) {
     }
 
     if(ident_length > MAX_TOKEN_LENGTH)
-        CSTL_WARN(A number can never have more than 256 characters);
+        CSTL_WARN(An identifier can never have more than 256 characters);
 
     UInt32 offset_diff = lexer->offset - prev_offset;
 
@@ -484,15 +516,15 @@ static void lexer_lex(Lexer* lexer) {
                     default: tokenkind = -1; lexer_lex_string(lexer); break;
                 }
                 break;
-            case ';': tokenkind = SEMICOLON; break;
-            case ',': tokenkind = COMMA; break;
+            case ';':  tokenkind = SEMICOLON; break;
+            case ',':  tokenkind = COMMA; break;
             case '\\': tokenkind = BACKSLASH; break;
-            case '[': tokenkind = LSQUAREBRACK; break;
-            case ']': tokenkind = RSQUAREBRACK; break;
-            case '{': tokenkind = LBRACE; break;
-            case '}': tokenkind = RBRACE; break;
-            case '(': tokenkind = LPAREN; break;
-            case ')': tokenkind = RPAREN; break;
+            case '[':  tokenkind = LSQUAREBRACK; break;
+            case ']':  tokenkind = RSQUAREBRACK; break;
+            case '{':  lexer->nest_level++; tokenkind = LBRACE; break;
+            case '}':  lexer->nest_level--; tokenkind = RBRACE; break;
+            case '(':  tokenkind = LPAREN; break;
+            case ')':  tokenkind = RPAREN; break;
             case '=':
                 switch(next) {
                     case '=': LEXER_INCREMENT_OFFSET; tokenkind = EQUALS_EQUALS; break;
@@ -645,7 +677,7 @@ static void lexer_lex(Lexer* lexer) {
                 }
                 break;
             case '?': tokenkind = QUESTION; break;
-            case '@': tokenkind = MACRO; break;
+            case '@': tokenkind = -1; lexer_lex_macro(lexer); break;
             default:
                 lexer_error(lexer, "Invalid character `%c`", curr);
                 break;
