@@ -75,12 +75,13 @@ typedef struct AstNodeDefer {
 
 typedef struct AstNodeVarDecl {
     char* name;
-    AstNode* type; // can be null
+    AstNode* type;    // can be null
     AstNode* expr;
+    UInt64 tok_index; // token index
 
     bool is_const;
     bool is_export;
-    bool is_mutable; // This is false unless explicitly mentioned
+    bool is_mutable;  // This is false unless explicitly mentioned by the user
 } AstNodeVarDecl;
 
 struct AstNode {
@@ -96,5 +97,20 @@ struct AstNode {
     } data;
 };
 
+enum IdentifierKind {
+    IdentifierKindBlankIdent, // `_`
+    IdentifierKindVariable,
+    IdentifierKindConst,
+    IdentifierKindFunction
+};
+
+typedef struct AstNodeIdentifier {
+    AstNode* type;
+    UInt64 tok_idx;
+
+    bool is_const;
+    bool is_export;
+    bool is_mutable;  // This is false unless explicitly mentioned by the user
+} AstNodeIdentifier;
 
 #endif // HAZEL_AST_H
