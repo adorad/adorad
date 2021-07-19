@@ -17,7 +17,7 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
 #include <hazel/core/debug.h>
 #include <hazel/core/compilers.h>
 
-// Base types/
+// Base types
 /*
 typedef unsigned char       UInt8; 
 typedef          char       Int8;  
