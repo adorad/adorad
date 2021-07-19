@@ -35,7 +35,7 @@ Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
     TOKENKIND(TOK_EOF, "TOK_EOF"),  /* End of Input */ \
     TOKENKIND(TOK_NULL,"TOK_NULL"),         \
     TOKENKIND(COMMENT, "COMMENT"),          \
-    TOKENKIND(DOCS_COMMENT, "DOCS_COMMENT") \
+    TOKENKIND(DOCS_COMMENT, "DOCS_COMMENT"), \
 \
     /* Literals */ \
 TOKENKIND(TOK___LITERALS_BEGIN, ""), \
