@@ -6,7 +6,7 @@ TEST(Lexer, Init) {
     char* buffer = "0123456789abcdefghijklmnopqrstuvwxyz";
     Lexer* lexer = lexer_init(buffer, null);
 
-    CHECK_STRNEQ(lexer->buffer->data, "");
+    CHECK_STRNE(lexer->buffer->data, "");
     CHECK_EQ(lexer->buffer->length, strlen(buffer));
     CHECK_EQ(lexer->tokenList->capacity(lexer->tokenList), TOKENLIST_ALLOC_CAPACITY);
     CHECK_EQ(lexer->tokenList->size(lexer->tokenList), 0);
