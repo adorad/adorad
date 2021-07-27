@@ -1,4 +1,4 @@
-func(Int i) {
+func anon(Int i) {
     Any x = 0x232;
     String h = "Hello";
 }
