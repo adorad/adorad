@@ -1,15 +1,15 @@
-# Hazel Documentation
+# Adorad Documentation
 
 ## Introduction
 
-Hazel is a statically typed compiled programming language designed for building maintainable software.
+Adorad is a statically typed compiled programming language designed for building maintainable software.
 
-Hazel is a very simple language: going through this documentation will take you about an hour or two at most,
+Adorad is a very simple language: going through this documentation will take you about an hour or two at most,
 and by the end of it you will have a pretty solid hold of the entire language.
 
 The language promotes writing simple and clear code with minimal abstraction.
 
-Despite being simple, Hazel gives you a ton of power. Anything you can do in other languages, you can do in Hazel.
+Despite being simple, Adorad gives you a ton of power. Anything you can do in other languages, you can do in Adorad.
 
 ## Install from source
 The major way to get the latest and greatest V, is to **install it from source**.
@@ -19,24 +19,24 @@ It is **easy**, and it usually takes **only a few seconds**.
 ### Linux, macOS, FreeBSD, etc:
 You need `git`, and a C compiler like `tcc`, `gcc` or `clang`, and `make`:
 ```bash
-git clone https://github.com/hazel-lang/Hazel
-cd Hazel
+git clone https://github.com/adorad-lang/Adorad
+cd Adorad
 make
 ```
 
 ### Windows:
 You need `git`, and a C compiler like `tcc`, `gcc`, `clang` or `msvc`:
 ```bash
-git clone https://github.com/hazel-lang/Hazel
-cd Hazel
+git clone https://github.com/adorad-lang/Adorad
+cd Adorad
 make.bat -tcc
 ```
 NB: You can also pass one of `-gcc`, `-msvc`, `-clang` to `make.bat` instead,
 if you do prefer to use a different C compiler, but -tcc is small, fast, and
-easy to install (Hazel will download a prebuilt binary automatically).
+easy to install (Adorad will download a prebuilt binary automatically).
 
 It is recommended to add this folder to the PATH of your environment variables.
-This can be done with the command `hazel.exe symlink`.
+This can be done with the command `adorad.exe symlink`.
 
 
 ## Table of Contents
@@ -138,22 +138,22 @@ For more details, do: `v check-md`
 ## Hello World
 
 
-```hazel
+```adorad
 print('Hello World')
 ```
 
-Save this snippet into a file named `hello.hzl`. Now do: `hazel run hello.hzl`.
+Save this snippet into a file named `hello.hzl`. Now do: `adorad run hello.hzl`.
 
-> That is assuming that Hazel is on your path
+> That is assuming that Adorad is on your path
 
-Congratulations - you just wrote and executed your first Hazel program!
+Congratulations - you just wrote and executed your first Adorad program!
 
-You can compile a program without execution with `hazel hello.hzl`.
-See `hazel help` for all supported commands.
+You can compile a program without execution with `adorad hello.hzl`.
+See `adorad help` for all supported commands.
 
-In many other languages (such as C/C++, Go, and Rust), `main` is the entry point for your program. Hazel doesn't mind whichever you use. Write a ``main()`` function or don't - Hazel will work the same regardless. 
+In many other languages (such as C/C++, Go, and Rust), `main` is the entry point for your program. Adorad doesn't mind whichever you use. Write a ``main()`` function or don't - Adorad will work the same regardless. 
 
-```hazel
+```adorad
 def main() {
     print('Hello World')
 }
@@ -165,7 +165,7 @@ We do, however, recommend you add the ``def main()`` for larger programs (such a
 
 ## Comments
 
-```hazel
+```adorad
 // This is a single line comment.
 """
 This is a multiline comment.
@@ -176,7 +176,7 @@ This is a multiline comment.
 
 ## Functions
 
-```hazel
+```adorad
 def main() {
 	print(add(77, 33))
 	print(sub(100, 50))
@@ -193,17 +193,17 @@ def Int sub(Int x, Int y) {
 
 Here, the type comes *before* the argument's name.
 
-Hazel will support functional overloading via <ins>Multiple Dispatch</ins> in version 2.0. 
+Adorad will support functional overloading via <ins>Multiple Dispatch</ins> in version 2.0. 
 
 Functions can be used before their declaration:
 `add` and `sub` are declared after `main`, but can still be called from `main`.
-This is true for all declarations in Hazel and eliminates the need for header files or thinking about the order of files 
+This is true for all declarations in Adorad and eliminates the need for header files or thinking about the order of files 
 and declarations.
 
 
 ### Returning multiple values
 
-```hazel
+```adorad
 def {Int, Int} foo(){
 	return 2, 3
 }
@@ -216,7 +216,7 @@ c, _ = foo() // ignore values using `_`
 
 ## Symbol visibility
 
-```hazel
+```adorad
 public def public_function() {
 }
 
@@ -233,7 +233,7 @@ For information about creating a module, see [Modules](#modules).
 
 ## Variables
 
-```hazel
+```adorad
 name = 'Bob'
 age = 20
 large_number = Int64(9999999999)
@@ -243,14 +243,14 @@ print(age)
 print(large_number)
 ```
 
-Variables are declared and initialized with `=`. This is the only way to declare variables in Hazel. This means that 
+Variables are declared and initialized with `=`. This is the only way to declare variables in Adorad. This means that 
 variables *must always* have an initial value.
 
 The variable's type is inferred from the value on the right hand side.
 To choose a different type, use type conversion:
 the expression `T(v)` converts the value `v` to the type `T`.
 
-Unlike most other languages, V only allows defining variables in functions. Global (module level) variables are not allowed. There's no global state in Hazel (see [Pure functions by default](#pure-functions-by-default) for details).
+Unlike most other languages, V only allows defining variables in functions. Global (module level) variables are not allowed. There's no global state in Adorad (see [Pure functions by default](#pure-functions-by-default) for details).
 
 If you *absolutely must* need a global variable, you may do so using a <ins>Macro</ins>.
 
@@ -259,7 +259,7 @@ For consistency across different code bases, all variable and function names mus
 
 ### Mutable variables
 
-```hazel
+```adorad
 mutable age = 20
 print(age)
 
@@ -267,7 +267,7 @@ age = 21
 print(age)
 ```
 
-To change the value of the variable use `=`. In Hazel, variables are immutable by default (except `String`s)
+To change the value of the variable use `=`. In Adorad, variables are immutable by default (except `String`s)
 To be able to change the value of the variable, declare it with the `mutable` keyword.
 
 Try compiling the program above after removing `mutable` from the first line.
@@ -276,12 +276,12 @@ Try compiling the program above after removing `mutable` from the first line.
 ### Declaration errors
 
 In development mode, the compiler will warn you that you haven't used a variable (you'll get an "Unused Variable" warning).
-This is turned off in production mode but you can always enable it by passing the `-prod` flag to hazel – `hazel -prod foo.hzl`): it will not compile at all (like in Go).
+This is turned off in production mode but you can always enable it by passing the `-prod` flag to adorad – `adorad -prod foo.hzl`): it will not compile at all (like in Go).
 
-```hazel
+```adorad
 def main() {
     a = 10
-    b = "Hazel is cool!"
+    b = "Adorad is cool!"
 
     if true {
         a = 20
@@ -295,7 +295,7 @@ def main() {
 
 ### Primitive types
 
-```hazel
+```adorad
 Bool
 
 String
@@ -312,10 +312,10 @@ Any // similar to C's void*
 
 Note that unlike C and Go, `Int` is always a 32 bit integer.
 
-There is an exception to the rule that all operators in Hazel must have values of the same type on both sides. A small primitive type on one side can be automatically promoted if it fits completely into the data range of the type on the other side.
+There is an exception to the rule that all operators in Adorad must have values of the same type on both sides. A small primitive type on one side can be automatically promoted if it fits completely into the data range of the type on the other side.
 These are the allowed possibilities:
 
-```hazel
+```adorad
    Int8 → Int16 → Int → Int64
                      ↘      ↘
                     Float32 → Float64
@@ -329,7 +329,7 @@ An `Int` value for example can be automatically promoted to `Float64` or `Int64`
 
 Literals like `123` or `4.56` are treated in a special way. They do not lead to type promotions, however they default to `Int` and `Float64` respectively, when their type has to be decided:
 
-```hazel
+```adorad
 u = Unsigned16(12)
 v = 13 + u    // v is of type `Unsigned16` - no promotion
 x = Float32(45.6)
@@ -343,7 +343,7 @@ d = b + x     // d is of type `Float64` - automatic promotion of `x`'s value
 
 ### Strings
 
-```hazel
+```adorad
 name = 'Bob'
 
 print(name.len)
@@ -354,14 +354,14 @@ windows_newline = '\r\n' // escape special characters like in C
 @assert(windows_newline.len == 2)
 ```
 
-In Hazel, a string is a read-only (non-immutable) tensor of bytes. String data is encoded using UTF-8.
+In Adorad, a string is a read-only (non-immutable) tensor of bytes. String data is encoded using UTF-8.
 You **cannot** mutate elements:
 
-```hazel
+```adorad
 mutable s = 'hello 🌎' // Error: Cannot make an immutable object of type 'String' mutable
 s[0] = `H` // not allowed
 ```
-> Error: cannot assign to `s[i]` since Hazel strings are immutable
+> Error: cannot assign to `s[i]` since Adorad strings are immutable
 
 Note that indexing a string will produce a `byte`. Indexes correspond to bytes in the string, not Unicode code points.
 
@@ -371,14 +371,14 @@ unless the string contains a single quote character.
 
 For raw strings, prepend `r`. *Raw strings are not escaped*:
 
-```hazel
+```adorad
 s = r'hello\nworld'
 print(s) // "hello\nworld"
 ```
 
 Strings can be easily converted to integers:
 
-```hazel
+```adorad
 s = '42'
 n = s.int() // 42
 ```
@@ -389,7 +389,7 @@ n = s.int() // 42
 Basic interpolation syntax is pretty simple - use `$` before a variable name.
 
 The variable will be converted to a string and embedded into the literal:
-```hazel
+```adorad
 name = 'Bob'
 print('Hello, $name!') // Hello, Bob!
 ```
@@ -401,7 +401,7 @@ Format specifiers similar to those in C's `printf()` are also supported.
 `f`, `g`, `x`, etc. are optional and specify the output format.
 The compiler takes care of the storage size, so there is no `hd` or `llu`.
 
-```hazel
+```adorad
 x = 123.4567
 print('x = ${x:4.2f}')
 print('[${x:10}]') // pad with spaces on the left => [   123.457]
@@ -411,7 +411,7 @@ print('[${int(x):010}]') // pad with zeros on the left => [0000000123]
 
 ### String operators
 
-```hazel
+```adorad
 name = 'Bob'
 bobby = name + 'by' // '+' is used to concatenate strings
 print(bobby) // "Bobby"
@@ -421,10 +421,10 @@ s += 'world' // `+=` is used to append to a string
 print(s) // "hello world"
 ```
 
-All operators in Hazel must have values of the same type on both sides. 
+All operators in Adorad must have values of the same type on both sides. 
 You cannot concatenate an integer to a string:
 
-```hazel
+```adorad
 age = 10
 print('age = ' + age) // not allowed (concatenates and then enters the output stream)
 ```
@@ -432,21 +432,21 @@ print('age = ' + age) // not allowed (concatenates and then enters the output st
 
 For this to work, you have to either convert `age` to a `String`
 
-```hazel
+```adorad
 age = 11
 print('age = ' + age.str())
 ```
 
 or use string interpolation (this is the preferred way):
 
-```hazel
+```adorad
 age = 12
 print('age = $age')
 ```
 
 ### Numbers
 
-```hazel
+```adorad
 a = 123
 ```
 
@@ -455,7 +455,7 @@ This will assign the value of 123 to `a`. By default `a` will have the type `Int
 
 You can also use hexadecimal, binary or octal notation for integer literals:
 
-```hazel
+```adorad
 a = 0x7B
 b = 0b01111011
 c = 0o173
@@ -463,9 +463,9 @@ c = 0o173
 
 All of these will be assigned the same value, 123. They will all have type `Int`, no matter what notation you used.
 
-Hazel also supports writing numbers with `_` as separator:
+Adorad also supports writing numbers with `_` as separator:
 
-```hazel
+```adorad
 num = 1_000_000 // same as 1000000
 three = 0b0_11 // same as 0b11
 float_num = 3_122.55 // same as 3122.55
@@ -475,7 +475,7 @@ oct = 0o17_3 // same as 0o173
 
 If you want a different type of integer, you can use casting:
 
-```hazel
+```adorad
 a = Int64(123)
 b = Byte(42)
 c = Int16(12345)
@@ -483,7 +483,7 @@ c = Int16(12345)
 
 Assigning floating point numbers works the same way:
 
-```hazel
+```adorad
 f = 1.0
 f1 = Float64(3.14)
 f2 = Float32(3.14)
@@ -494,7 +494,7 @@ If you do not specify the type explicitly, by default float literals will have t
 
 ### Arrays/Tensors
 
-```hazel
+```adorad
 mutable nums = [1, 2, 3]
 print(nums) // "[1, 2, 3]"
 print(nums[1]) // "2"
@@ -510,9 +510,9 @@ print(nums.len) // "0"
 users = [] // by default, it is of type `Float64`
 ```
 
-In Hazel, arrays are primarily called Tensors. This means that "arrays" in C/C++, Python, etc are `Tensors` in Hazel. 
+In Adorad, arrays are primarily called Tensors. This means that "arrays" in C/C++, Python, etc are `Tensors` in Adorad. 
 
-In Hazel, all Tensors are **homogenous** (*i.e* of the same type). The type of an tensor is inferred from the first element:
+In Adorad, all Tensors are **homogenous** (*i.e* of the same type). The type of an tensor is inferred from the first element:
 * `[1, 2, 3]` is an tensor of Ints (`TensorInt`).
 * `['a', 'b']` is an tensor of Strings (`TensorString`).
 
@@ -521,12 +521,12 @@ This means that code like `[1, 'a']` will not compile.
 You can explicitly specify the type for the first element: `[Byte(16), 32, 64, 128]` or better yet, `Byte([16, 32, 64, 128])/
 
 The `.len` field returns the length of the tensor. Note that it's a read-only field, and it cannot be modified. 
-Exported fields are read-only by default in Hazel (see [Access modifiers](#access-modifiers)).
+Exported fields are read-only by default in Adorad (see [Access modifiers](#access-modifiers)).
 
 
 #### Tensor operations
 
-```hazel
+```adorad
 mutable nums = [1, 2, 3]
 nums << 4
 print(nums) // "[1, 2, 3, 4]"
@@ -555,14 +555,14 @@ During initialization you can specify the capacity of the tensor (`cap`), its in
 (`init`):
 
 
-```hazel
+```adorad
 arr = Int( {len: 5, init: -1} )
 // `[-1, -1, -1, -1, -1]`
 ```
 
 Setting the capacity improves performance of insertions, as it reduces the number of reallocations needed:
 
-```hazel
+```adorad
 mutable numbers = Int( {cap: 1000} )
 print(numbers.len) // 0
 
@@ -580,14 +580,14 @@ All tensors can be easily printed with `print(arr)` and converted to a string wi
 
 Copying the data from the tensor is done with `.clone()`:
 
-```hazel
+```adorad
 nums = [1, 2, 3]
 nums_copy = nums.clone()
 ```
 
 Tensors can be efficiently filtered and mapped with the `.filter()` and `.map()` methods:
 
-```hazel
+```adorad
 nums = [1, 2, 3, 4, 5, 6]
 even = nums.filter(it % 2 == 0)
 print(even) // [2, 4, 6]
@@ -617,14 +617,14 @@ print(upper_def) // ['HELLO', 'WORLD']
 Tensors can have more than one dimension.
 
 2d tensor example:
-```hazel
+```adorad
 mutable a = Int( {len: 2, init: Int( {len: 3}} ) )
 a[0][1] = 2
 print(a) // [ [0, 2, 0], [0, 0, 0] ]
 ```
 
 3d tensor example:
-```hazel
+```adorad
 mutable a = Int( {len: 2, init: Int( {len: 3, init: Int( {len: 2}}} ) ) )
 a[0][1][1] = 2
 print(a) // [[[0, 0], [0, 2], [0, 0]], [[0, 0], [0, 0], [0, 0]]]
@@ -634,13 +634,13 @@ print(a) // [[[0, 0], [0, 2], [0, 0]], [[0, 0], [0, 0], [0, 0]]]
 
 Sorting tensors of all kinds is very simple and intuitive. Special variables `a` and `b` are used when providing a custom sorting condition.
 
-```hazel
+```adorad
 mutable numbers = [1, 3, 2]
 numbers.sort() // 1, 2, 3
 numbers.sort(a > b) // 3, 2, 1
 ```
 
-```hazel
+```adorad
 struct User {
 	age  int
 	name string
@@ -660,7 +660,7 @@ index must be greater than or equal to the left side index.
 If a right-side index is absent, it is assumed to be the tensor length. 
 If a left-side index is absent, it is assumed to be 0.
 
-```hazel
+```adorad
 nums = [1, 2, 3, 4, 5]
 print(nums[1..4]) // [2, 3, 4]
 print(nums[..4]) // [1, 2, 3, 4]
@@ -670,7 +670,7 @@ print(nums[1..]) // [2, 3, 4, 5]
 All tensor operations may be performed on slices.
 Slices can be pushed onto an tensor of the same type.
 
-```hazel
+```adorad
 tensor_1 = [3, 5, 4, 7, 6]
 mutable tensor_2 = [0, 1]
 
@@ -681,7 +681,7 @@ print(tensor_2) // [0, 1, 3, 5, 4]
 
 ### Fixed size tensors
 
-Hazel also supports tensors with fixed size. Unlike ordinary tensors, their length is constant. You cannot append elements to 
+Adorad also supports tensors with fixed size. Unlike ordinary tensors, their length is constant. You cannot append elements to 
 them, nor shrink them. You can only modify their elements `in-place`.
 
 However, access to the elements of fixed size tensors is more efficient, they need less memory than ordinary tensors, and 
@@ -692,7 +692,7 @@ Most methods are defined to work on ordinary tensors, not on fixed size tensors.
 
 You can convert a fixed size tensor to an ordinary tensor with slicing:
 
-```hazel
+```adorad
 mutable defums = Int( {len: 3}) // defums is a fixed size tensor with 3 elements.
 defums[0] = 1
 defums[1] = 10
@@ -710,7 +710,7 @@ Note that slicing will cause the data of the fixed size tensor to be copied to t
 
 ### Maps
 
-```hazel
+```adorad
 mutable m = map[string]int{} // a map with `string` keys and `int` values
 m['one'] = 1
 m['two'] = 2
@@ -722,7 +722,7 @@ m.delete('two')
 Maps can have keys of type string, rune, integer, float or voidptr.
 
 The whole map can be initialized using this short syntax:
-```hazel
+```adorad
 numbers = map{
 	1: 'one'
 	2: 'two'
@@ -732,14 +732,14 @@ print(numbers)
 
 If a key is not found, a zero value is returned by default:
 
-```hazel
+```adorad
 sm = map{
 	'abc': 'xyz'
 }
 val = sm['bad_key']
 print(val) // ''
 ```
-```hazel
+```adorad
 intm = map{
 	1: 1234
 	2: 5678
@@ -750,14 +750,14 @@ print(s) // 0
 
 It's also possible to use an `or {}` block to handle missing keys:
 
-```hazel
+```adorad
 mm = map[string]int{}
 val = mm['bad_key'] or { panic('key not found') }
 ```
 
 The same optional check applies to tensors:
 
-```hazel
+```adorad
 arr = [1, 2, 3]
 large_index = 999
 val = arr[large_index] or { panic('out of bounds') }
@@ -769,7 +769,7 @@ For information about creating a module, see [Modules](#modules).
 
 Modules can be imported using the `import` keyword:
 
-```hazel
+```adorad
 import os
 
 def main() {
@@ -793,7 +793,7 @@ Cyclic module imports are not allowed, like in Go.
 
 You can also import specific functions and types from modules directly:
 
-```hazel
+```adorad
 import os { input }
 
 def main() {
@@ -806,7 +806,7 @@ Note: This is not allowed for constants - they must always be prefixed.
 
 You can import several specific symbols at once:
 
-```hazel
+```adorad
 import os { input, user_os }
 
 name = input('Enter your name: ')
@@ -820,7 +820,7 @@ print('Your OS is ${os}.')
 Any imported module name can be aliased using the `as` keyword:
 
 NOTE: this example will not compile unless you have created `mymod/sha256.v`
-```hazel
+```adorad
 import crypto.sha256
 import mymod.sha256 as mysha256
 
@@ -834,7 +834,7 @@ def main() {
 You cannot alias an imported function or type.
 However, you _can_ redeclare a type.
 
-```hazel
+```adorad
 import time
 import math
 
@@ -859,7 +859,7 @@ def main() {
 
 ### If
 
-```hazel
+```adorad
 a = 10
 b = 20
 if a < b {
@@ -877,7 +877,7 @@ there are no parentheses surrounding the condition and the braces are always req
 
 `if` can be used as an expression:
 
-```hazel
+```adorad
 num = 777
 s = if num % 2 == 0 { 'even' } else { 'odd' }
 print(s)
@@ -888,7 +888,7 @@ print(s)
 You can check the current type of a sum type using `is` and its negated form `!is`.
 
 You can do it either in an `if`:
-```hazel
+```adorad
 struct Abc {
 	val string
 }
@@ -909,7 +909,7 @@ if x !is Abc {
 }
 ```
 or using `match`:
-```hazel
+```adorad
 match x {
 	Abc {
 		// x is automatically casted to Abc and can be used here
@@ -923,7 +923,7 @@ match x {
 ```
 
 This works also with struct fields:
-```hazel
+```adorad
 struct MyStruct {
 	x int
 }
@@ -960,7 +960,7 @@ In this case the developer has to mark the expression with a `mut` keyword
 to tell the compiler that you're aware of what you're doing.
 
 It works like this:
-```hazel
+```adorad
 mutable x = MySumType(MyStruct{123})
 if mutable x is MyStruct {
 	// x is casted to MyStruct even if it's mutable
@@ -982,7 +982,7 @@ match mutable x {
 `in` allows to check whether an tensor or a map contains an element.
 To do the opposite, use `!in`.
 
-```hazel
+```adorad
 nums = [1, 2, 3]
 print(1 in nums) // true
 print(4 !in nums) // true
@@ -996,7 +996,7 @@ print('three' !in m) // true
 
 It's also useful for writing boolean expressions that are clearer and more compact:
 
-```hazel
+```adorad
 enum Token {
 	plus
 	minus
@@ -1031,7 +1031,7 @@ numeric range.
 
 ##### Tensor `for`
 
-```hazel
+```adorad
 numbers = [1, 2, 3, 4, 5]
 for num in numbers {
 	print(num)
@@ -1050,7 +1050,7 @@ If an index is required, an alternative form `for index, value in arr` can be us
 Note, that the value is read-only.
 If you need to modify the tensor while looping, you have to use indexing:
 
-```hazel
+```adorad
 mutable numbers = [0, 1, 2]
 for i, _ in numbers {
 	numbers[i]++
@@ -1061,7 +1061,7 @@ When an identifier is just a single underscore, it is ignored.
 
 ##### Map `for`
 
-```hazel
+```adorad
 m = map{
 	'one': 1
 	'two': 2
@@ -1074,7 +1074,7 @@ for key, value in m {
 ```
 
 Either key or value can be ignored by using a single underscore as the identifier.
-```hazel
+```adorad
 m = map{
 	'one': 1
 	'two': 2
@@ -1095,7 +1095,7 @@ for _, value in m {
 
 ##### Range `for`
 
-```hazel
+```adorad
 // Prints '01234'
 for i in 0 .. 5 {
 	print(i)
@@ -1106,7 +1106,7 @@ from `low` up to *but not including* `high`.
 
 #### Condition `for`
 
-```hazel
+```adorad
 mutable sum = 0
 mutable i = 0
 for i <= 100 {
@@ -1122,7 +1122,7 @@ Again, there are no parentheses surrounding the condition, and the braces are al
 
 #### Bare `for`
 
-```hazel
+```adorad
 mutable num = 0
 for {
 	num += 2
@@ -1137,7 +1137,7 @@ The condition can be omitted, resulting in an infinite loop.
 
 #### C `for`
 
-```hazel
+```adorad
 for i = 0; i < 10; i += 2 {
 	// Don't print 6
 	if i == 6 {
@@ -1159,7 +1159,7 @@ Here `i` doesn't need to be declared with `mut` since it's always going to be mu
 You can also use `break` and `continue` followed by a label name to refer to an outer `for`
 loop:
 
-```hazel
+```adorad
 outer: for i = 4; true; i++ {
 	print(i)
 	for {
@@ -1182,7 +1182,7 @@ The above code prints:
 
 ### Match
 
-```hazel
+```adorad
 os = 'windows'
 print('V is running on ')
 match os {
@@ -1196,7 +1196,7 @@ A match statement is a shorter way to write a sequence of `if - else` statements
 When a matching branch is found, the following statement block will be run.
 The else branch will be run when no other branches match.
 
-```hazel
+```adorad
 number = 2
 s = match number {
 	1 { 'one' }
@@ -1207,7 +1207,7 @@ s = match number {
 
 A match expression returns the value of the final expression from the matching branch.
 
-```hazel
+```adorad
 enum Color {
 	red
 	blue
@@ -1226,7 +1226,7 @@ A match statement can also be used to branch on the variants of an `enum`
 by using the shorthand `.variant_here` syntax. An `else` branch is not allowed
 when all the branches are exhaustive.
 
-```hazel
+```adorad
 c = `v`
 typ = match c {
 	`0`...`9` { 'digit' }
@@ -1252,7 +1252,7 @@ Note: `match` as an expression is not usable in `for` loop and `if` statements.
 A defer statement defers the execution of a block of statements
 until the surrounding function returns.
 
-```hazel
+```adorad
 import os
 
 def read_log() {
@@ -1273,7 +1273,7 @@ def read_log() {
 
 ## Structs
 
-```hazel
+```adorad
 struct Point {
 	x int
 	y int
@@ -1294,7 +1294,7 @@ assert p.x == 10
 Structs are allocated on the stack. To allocate a struct on the heap
 and get a reference to it, use the `&` prefix:
 
-```hazel
+```adorad
 struct Point {
 	x int
 	y int
@@ -1312,7 +1312,7 @@ References are similar to Go pointers and C++ references.
 
 V doesn't allow subclassing, but it supports embedded structs:
 
-```hazel
+```adorad
 struct Widget {
 mut:
 	x int
@@ -1331,13 +1331,13 @@ button.x = 3
 ```
 Without embedding we'd have to name the `Widget` field and do:
 
-```hazel
+```adorad
 button.widget.x = 3
 ```
 
 ### Default field values
 
-```hazel
+```adorad
 struct Foo {
 	n   int    // n is 0 by default
 	s   string // s is '' by default
@@ -1353,7 +1353,7 @@ It's also possible to define custom default values.
 
 ### Required fields
 
-```hazel
+```adorad
 struct Foo {
 	n int [required]
 }
@@ -1363,7 +1363,7 @@ You can mark a struct field with the `[required]` attribute, to tell V that
 that field must be initialized when creating an instance of that struct.
 
 This example will not compile, since the field `n` isn't explicitly initialized:
-```hazel
+```adorad
 _ = Foo{}
 ```
 
@@ -1371,7 +1371,7 @@ _ = Foo{}
 
 ### Short struct literal syntax
 
-```hazel
+```adorad
 struct Point {
 	x int
 	y int
@@ -1397,7 +1397,7 @@ as a function argument.
 V doesn't have default function arguments or named arguments, for that trailing struct
 literal syntax can be used instead:
 
-```hazel
+```adorad
 struct ButtonConfig {
 	text        string
 	is_disabled bool
@@ -1426,7 +1426,7 @@ assert button.height == 20
 
 As you can see, both the struct name and braces can be omitted, instead of:
 
-```hazel
+```adorad
 new_button(ButtonConfig{text:'Click me', width:100})
 ```
 
@@ -1438,7 +1438,7 @@ Struct fields are private and immutable by default (making structs immutable as 
 Their access modifiers can be changed with
 `pub` and `mut`. In total, there are 5 possible options:
 
-```hazel
+```adorad
 struct Foo {
 	a int // private immutable (default)
 mut:
@@ -1456,7 +1456,7 @@ __global:
 
 For example, here's the `string` type defined in the `builtin` module:
 
-```hazel
+```adorad
 struct string {
     str byteptr
 pub:
@@ -1467,7 +1467,7 @@ pub:
 It's easy to see from this definition that `string` is an immutable type.
 The byte pointer with the string data is not accessible outside `builtin` at all.
 The `len` field is public, but immutable:
-```hazel
+```adorad
 def main() {
     str = 'hello'
     len = str.len // OK
@@ -1480,7 +1480,7 @@ no need in getters/setters or properties.
 
 ## Methods
 
-```hazel
+```adorad
 struct User {
 	age int
 }
@@ -1512,7 +1512,7 @@ but a short, preferably one letter long, name.
 
 Just like structs, unions support embedding.
 
-```hazel
+```adorad
 struct Rgba32_Component {
 	r byte
 	g byte
@@ -1566,7 +1566,7 @@ intended for low-level applications like kernels and drivers.
 
 It is possible to modify function arguments by using the keyword `mut`:
 
-```hazel
+```adorad
 struct User {
 	name string
 mut:
@@ -1586,7 +1586,7 @@ print(user.is_registered) // "true"
 In this example, the receiver (which is simply the first argument) is marked as mutable,
 so `register()` can change the user object. The same works with non-receiver arguments:
 
-```hazel
+```adorad
 def multiply_by_2(mutable arr []int) {
 	for i in 0 .. arr.len {
 		arr[i] *= 2
@@ -1616,7 +1616,7 @@ instead of `register(mutable user)`.
 
 V makes it easy to return a modified version of an object:
 
-```hazel
+```adorad
 struct User {
 	name          string
 	age           int
@@ -1640,7 +1640,7 @@ print(user)
 
 ### Variable number of arguments
 
-```hazel
+```adorad
 def sum(a ...int) int {
 	mutable total = 0
 	for x in a {
@@ -1661,7 +1661,7 @@ print(sum(...b)) // output: 18
 
 ### Anonymous & high order functions
 
-```hazel
+```adorad
 def sqr(n int) int {
 	return n * n
 }
@@ -1700,7 +1700,7 @@ def main() {
 
 ## References
 
-```hazel
+```adorad
 struct Foo {}
 
 def (foo Foo) bar_method() {
@@ -1722,7 +1722,7 @@ or by reference.
 You can ensure that the struct is always passed by reference by
 adding `&`:
 
-```hazel
+```adorad
 struct Foo {
 	abc int
 }
@@ -1738,7 +1738,7 @@ def (foo &Foo) bar() {
 In general, V's references are similar to Go pointers and C++ references.
 For example, a generic tree structure definition would look like this:
 
-```hazel
+```adorad
 struct Node<T> {
     val   T
     left  &Node
@@ -1748,7 +1748,7 @@ struct Node<T> {
 
 ## Constants
 
-```hazel
+```adorad
 const (
 	pi    = 3.14
 	world = '世界'
@@ -1763,13 +1763,13 @@ at the module level (outside of functions).
 Constant values can never be changed. You can also declare a single
 constant separately:
 
-```hazel
+```adorad
 const e = 2.71828
 ```
 
 V constants are more flexible than in most languages. You can assign more complex values:
 
-```hazel
+```adorad
 struct Color {
 	r int
 	g int
@@ -1821,7 +1821,7 @@ well in V, because consts are a lot more powerful than in other languages.
 They can represent complex structures, and this is used quite often since there
 are no globals:
 
-```hazel
+```adorad
 print('Top cities: ${top_cities.filter(.usa)}')
 ```
 -->
@@ -1830,7 +1830,7 @@ print('Top cities: ${top_cities.filter(.usa)}')
 
 Some functions are builtin like `print`. Here is the complete list:
 
-```hazel
+```adorad
 def print(s string) // print anything on sdtout
 def print(s string) // print anything and a newline on sdtout
 
@@ -1845,7 +1845,7 @@ def print_backtrace() // print backtraces on stderr
 `print` is a simple yet powerful builtin function, that can print anything:
 strings, numbers, tensors, maps, structs.
 
-```hazel
+```adorad
 struct User {
 	name string
 	age  int
@@ -1864,7 +1864,7 @@ print(User{ name: 'Bob', age: 20 }) // "User{name:'Bob', age:20}"
 If you want to define a custom print value for your type, simply define a
 `.str() string` method:
 
-```hazel
+```adorad
 struct Color {
 	r int
 	g int
@@ -1898,7 +1898,7 @@ cd ~/code/modules
 mkdir mymodule
 vim mymodule/myfile.v
 ```
-```hazel
+```adorad
 // myfile.v
 module mymodule
 
@@ -1910,7 +1910,7 @@ pub def say_hi() {
 
 You can now use `mymodule` in your code:
 
-```hazel
+```adorad
 import mymodule
 
 def main() {
@@ -1930,7 +1930,7 @@ def main() {
 If you want a module to automatically call some setup/initialization code when it is imported,
 you can use a module `init` function:
 
-```hazel
+```adorad
 def init() {
 	// your setup code here ...
 }
@@ -1943,7 +1943,7 @@ particularly useful for initializing a C library.
 
 ### Interfaces
 
-```hazel
+```adorad
 struct Dog {
 	breed string
 }
@@ -1983,7 +1983,7 @@ There is no explicit declaration of intent, no "implements" keyword.
 #### Casting an interface
 
 We can test the underlying type of an interface using dynamic cast operators:
-```hazel
+```adorad
 interface Something {}
 
 def announce(s Something) {
@@ -2007,7 +2007,7 @@ When a struct is wrapped in an interface that has implemented a method
 with the same name as one implemented by this struct, only the method
 implemented on the interface is called.
 
-```hazel
+```adorad
 struct Cat {}
 
 def (c Cat) speak() string {
@@ -2037,7 +2037,7 @@ def main() {
 
 ### Enums
 
-```hazel
+```adorad
 enum Color {
 	red
 	green
@@ -2061,7 +2061,7 @@ This ensures that if a new enum field is added, it's handled everywhere in the c
 Enum fields cannot re-use reserved keywords. However, reserved keywords may be escaped
 with an @.
 
-```hazel
+```adorad
 enum Color {
 	@none
 	red
@@ -2075,7 +2075,7 @@ print(color)
 
 Integers may be assigned to enum fields.
 
-```hazel
+```adorad
 enum Grocery {
 	apple
 	orange = 5
@@ -2097,7 +2097,7 @@ Operations are not allowed on enum variables; they must be explicity cast to `in
 A sum type instance can hold a value of several different types. Use the `type`
 keyword to declare a sum type:
 
-```hazel
+```adorad
 struct Moon {}
 
 struct Mars {}
@@ -2114,7 +2114,7 @@ The built-in method `type_name` returns the name of the currently held
 type.
 
 With sum types you could build recursive structures and write concise but powerful code on them.
-```hazel
+```adorad
 // V's binary tree
 struct Empty {}
 
@@ -2147,7 +2147,7 @@ def main() {
 To check whether a sum type instance holds a certain type, use `sum is Type`.
 To cast a sum type to one of its variants you can use `sum as Type`:
 
-```hazel
+```adorad
 struct Moon {}
 
 struct Mars {}
@@ -2177,7 +2177,7 @@ A safer way is to use a smart cast.
 
 #### Smart casting
 
-```hazel
+```adorad
 if w is Mars {
 	assert typeof(w).name == 'Mars'
 	if w.dust_storm() {
@@ -2190,7 +2190,7 @@ known as *flow-sensitive typing*.
 If `w` is a mutable identifier, it would be unsafe if the compiler smart casts it without a warning.
 That's why you have to declare a `mut` before the `is` expression:
 
-```hazel
+```adorad
 if mutable w is Mars {
 	assert typeof(w).name == 'Mars'
 	if w.dust_storm() {
@@ -2205,7 +2205,7 @@ Otherwise `w` would keep its original type.
 
 You can also use `match` to determine the variant:
 
-```hazel
+```adorad
 struct Moon {}
 
 struct Mars {}
@@ -2235,7 +2235,7 @@ def land(w World) {
 
 `match` must have a pattern for each variant or have an `else` branch.
 
-```hazel
+```adorad
 struct Moon {}
 struct Mars {}
 struct Venus {}
@@ -2259,7 +2259,7 @@ def pass_time(w World) {
 ### Option/Result types and error handling
 
 Option types are declared with `?Type`:
-```hazel
+```adorad
 struct User {
 	id   int
 	name string
@@ -2306,7 +2306,7 @@ Unlike other languages, V does not handle exceptions with `throw/try/catch` bloc
 `err` is defined inside an `or` block and is set to the string message passed
 to the `error()` function. `err` is empty if `none` was returned.
 
-```hazel
+```adorad
 user = repo.find_user_by_id(7) or {
 	print(err) // "User 7 not found"
 	return
@@ -2318,7 +2318,7 @@ user = repo.find_user_by_id(7) or {
 There are four ways of handling an optional. The first method is to
 propagate the error:
 
-```hazel
+```adorad
 import net.http
 
 def f(url string) ?string {
@@ -2336,7 +2336,7 @@ any further.
 
 The body of `f` is essentially a condensed version of:
 
-```hazel
+```adorad
     resp = http.get(url) or { return err }
     return resp.text
 ```
@@ -2344,7 +2344,7 @@ The body of `f` is essentially a condensed version of:
 ---
 The second method is to break from execution early:
 
-```hazel
+```adorad
 user = repo.find_user_by_id(7) or { return }
 ```
 
@@ -2361,7 +2361,7 @@ The third method is to provide a default value at the end of the `or` block.
 In case of an error, that value would be assigned instead,
 so it must have the same type as the content of the `Option` being handled.
 
-```hazel
+```adorad
 def do_something(s string) ?string {
 	if s == 'foo' {
 		return 'foo'
@@ -2378,7 +2378,7 @@ print(b)
 ---
 The fourth method is to use `if` unwrapping:
 
-```hazel
+```adorad
 import net.http
 
 if resp = http.get('https://google.com') {
@@ -2392,7 +2392,7 @@ Above, `http.get` returns a `?http.Response`. `resp` is only in scope for the fi
 
 ## Generics
 
-```hazel
+```adorad
 
 struct Repo<T> {
     db DB
@@ -2422,7 +2422,7 @@ runtime parameter types. This is why `find_by_id` can omit `<T>`, because the
 receiver argument `r` uses a generic type `T`.
 
 Another example:
-```hazel
+```adorad
 def compare<T>(a T, b T) int {
 	if a < b {
 		return -1
@@ -2453,7 +2453,7 @@ print(compare(1.1, 1.2)) //         -1
 V's model of concurrency is very similar to Go's. To run `foo()` concurrently in
 a different thread, just call it with `go foo()`:
 
-```hazel
+```adorad
 import math
 
 def p(a f64, b f64) { // ordinary function without return value
@@ -2471,7 +2471,7 @@ Sometimes it is necessary to wait until a parallel thread has finished. This can
 be done by assigning a *handle* to the started thread and calling the `wait()` method
 to this handle later:
 
-```hazel
+```adorad
 import math
 
 def p(a f64, b f64) { // ordinary function without return value
@@ -2491,7 +2491,7 @@ This approach can also be used to get a return value from a function that is run
 parallel thread. There is no need to modify the function itself to be able to call it
 concurrently.
 
-```hazel
+```adorad
 import math { sqrt }
 
 def get_hypot(a f64, b f64) f64 { //       ordinary function returning a value
@@ -2510,7 +2510,7 @@ def main() {
 If there is a large number of tasks, it might be easier to manage them
 using an tensor of threads.
 
-```hazel
+```adorad
 import time
 
 def task(id int, duration int) {
@@ -2541,7 +2541,7 @@ def main() {
 Additionally for threads that return the same type, calling `wait()`
 on the thread tensor will return all computed values.
 
-```hazel
+```adorad
 def expensive_computing(i int) int {
 	return i * i
 }
@@ -2568,7 +2568,7 @@ Channels can be buffered or unbuffered and it is possible to `select` from multi
 Channels have the type `chan objtype`. An optional buffer length can specified as the `cap` property
 in the declaration:
 
-```hazel
+```adorad
 ch = chan int{} // unbuffered - "synchronous"
 ch2 = chan f64{cap: 100} // buffer length 100
 ```
@@ -2577,7 +2577,7 @@ Channels do not have to be declared as `mut`. The buffer length is not part of t
 a property of the individual channel object. Channels can be passed to coroutines like normal
 variables:
 
-```hazel
+```adorad
 def f(ch chan int) {
 	// ...
 }
@@ -2592,7 +2592,7 @@ def main() {
 Objects can be pushed to channels using the arrow operator. The same operator can be used to
 pop objects from the other end:
 
-```hazel
+```adorad
 ch = chan int{}
 ch2 = chan f64{}
 n = 5
@@ -2611,7 +2611,7 @@ to do so will then result in a runtime panic (with the exception of `select` and
 associated channel has been closed and the buffer is empty. This situation can be
 handled using an or branch (see [Handling Optionals](#handling-optionals)).
 
-```hazel
+```adorad
 ch = chan int{}
 ch2 = chan f64{}
 // ...
@@ -2630,7 +2630,7 @@ y = <-ch2 ?
 The `select` command allows monitoring several channels at the same time
 without noticeable CPU load.  It consists of a list of possible transfers and associated branches
 of statements - similar to the [match](#match) command:
-```hazel
+```adorad
 import time
 def main () {
   c = chan f64{}
@@ -2662,7 +2662,7 @@ by adding an `else { ... }` branch. `else` and `> timeout` are mutually exclusiv
 
 The `select` command can be used as an *expression* of type `bool`
 that becomes `false` if all channels are closed:
-```hazel
+```adorad
 if select {
     ch <- a {
         // ...
@@ -2677,7 +2677,7 @@ if select {
 #### Special Channel Features
 
 For special purposes there are some builtin properties and methods:
-```hazel
+```adorad
 struct Abc {
 	x int
 }
@@ -2712,7 +2712,7 @@ Such variables should be created as `shared` and passed to the coroutine as such
 The underlying `struct` contains a hidden *mutex* that allows locking concurrent access
 using `rlock` for read-only and `lock` for read/write access.
 
-```hazel
+```adorad
 struct St {
 mut:
 	x int // data to shared
@@ -2739,7 +2739,7 @@ Shared variables must be structs, tensors or maps.
 
 ## Decoding JSON
 
-```hazel
+```adorad
 import json
 
 struct Foo {
@@ -2783,7 +2783,7 @@ No runtime reflection is used. This results in much better performance.
 
 ### Asserts
 
-```hazel
+```adorad
 def foo(mutable v []int) {
 	v[0] = 1
 }
@@ -2800,7 +2800,7 @@ unexpected value. Assert statements can be used in any function.
 
 ### Test files
 
-```hazel
+```adorad
 // hello.v
 module main
 
@@ -2813,7 +2813,7 @@ def main() {
 }
 ```
 
-```hazel
+```adorad
 module main
 // hello_test.v
 def test_hello() {
@@ -2871,11 +2871,11 @@ For developers willing to have more low level control, autofree can be disabled 
 memory manually.
 
 Note: right now autofree is hidden behind the -autofree flag. It will be enabled by
-default in Hazel 0.3. If autofree is not used, V programs will leak memory.
+default in Adorad 0.3. If autofree is not used, V programs will leak memory.
 
 For example:
 
-```hazel
+```adorad
 import strings
 
 def draw_text(s string, x int, y int) {
@@ -2900,7 +2900,7 @@ In fact, the first two calls won't result in any allocations at all.
 These two strings are small,
 V will use a preallocated buffer for them.
 
-```hazel
+```adorad
 struct User {
 	name string
 }
@@ -2933,7 +2933,7 @@ V's ORM provides a number of benefits:
 - Readability and simplicity. (You don't need to manually parse the results of a query and
     then manually construct objects from the parsed results.)
 
-```hazel
+```adorad
 import sqlite
 
 struct Customer {
@@ -2984,7 +2984,7 @@ vdoc will generate it from docstrings in the source code.
 
 Documentation for each function/type/const must be placed right before the declaration:
 
-```hazel
+```adorad
 // clearall clears all bits in the tensor
 def clearall() {
 }
@@ -2995,7 +2995,7 @@ The comment must start with the name of the definition.
 Sometimes one line isn't enough to explain what a function does, in that case comments should
 span to the documented function using single line comments:
 
-```hazel
+```adorad
 // copy_all recursively copies all elements of the tensor by their value,
 // if `dupes` is false all duplicate values are eliminated in the process.
 def copy_all(dupes bool) {
@@ -3040,7 +3040,7 @@ You can sort on column 3 (average time per function) using:
 `sort -n -k3 profile.txt|tail`
 
 You can also use stopwatches to measure just portions of your code explicitly:
-```hazel
+```adorad
 import time
 
 def main() {
@@ -3071,7 +3071,7 @@ Examples of potentially memory-unsafe operations are:
 
 To mark potentially memory-unsafe operations, enclose them in an `unsafe` block:
 
-```hazel
+```adorad
 // allocate 2 uninitialized bytes & return a reference to them
 mutable p = unsafe { malloc(2) }
 p[0] = `h` // Error: pointer indexing is only allowed in `unsafe` blocks
@@ -3107,7 +3107,7 @@ for now data structures such as Linked Lists or Binary Trees that rely on refere
 fields that can use the value `0`, understanding that it is unsafe, and that it can
 cause a panic.
 
-```hazel
+```adorad
 struct Node {
 	a &Node
 	b &Node = 0 // Auto-initialized to nil, use with caution!
@@ -3138,7 +3138,7 @@ print(qux)
 * `sizeof(Type)` gives the size of a type in bytes.
 * `offsetof(Struct, field_name)` gives the offset in bytes of a struct field.
 
-```hazel
+```adorad
 struct Foo {
 	a int
 	b int
@@ -3153,7 +3153,7 @@ assert offsetof(Foo, b) == 4
 
 ### Example
 
-```hazel
+```adorad
 #flag -lsqlite3
 #include "sqlite3.h"
 // See also the example from https://www.sqlite.org/quickstart.html
@@ -3232,7 +3232,7 @@ Currently the `linux`, `darwin` , `freebsd`, and `windows` flags are supported.
 
 NB: Each flag must go on its own line (for now)
 
-```hazel
+```adorad
 #flag linux -lsdl2
 #flag linux -Ivig
 #flag linux -DCIMGUI_DEFINE_ENUMS_AND_STRUCTS=1
@@ -3258,7 +3258,7 @@ freedesktop one.
 
 If no flags are passed it will add `--cflags` and `--libs`, both lines below do the same:
 
-```hazel
+```adorad
 #pkgconfig r_core
 #pkgconfig --cflags --libs r_core
 ```
@@ -3275,7 +3275,7 @@ Then:
 * Put a v.mod file inside the toplevel folder of your module (if you
 created your module with `v new` you already have v.mod file). For
 example:
-```hazel
+```adorad
 Module {
 	name: 'mymodule',
 	description: 'My nice module wraps a simple C library.',
@@ -3286,7 +3286,7 @@ Module {
 
 
 * Add these lines to the top of your module:
-```hazel
+```adorad
 #flag -I @VROOT/c
 #flag @VROOT/c/implementation.o
 #include "header.h"
@@ -3378,7 +3378,7 @@ use `v help`, `v help build` and `v help build-c`.
 `$` is used as a prefix for compile-time operations.
 
 #### $if
-```hazel
+```adorad
 // Support for multiple conditions in one branch
 $if ios || android {
 	print('Running on a mobile device!')
@@ -3427,7 +3427,7 @@ Full list of builtin options:
 
 #### $embed_file
 
-```hazel
+```adorad
 module main
 def main() {
 	embedded_file = $embed_file('v.png')
@@ -3456,7 +3456,7 @@ V has a simple template language for text and html templates, and they can easil
 be embedded via `$tmpl('path/to/template.txt')`:
 
 
-```hazel
+```adorad
 def build() string {
 	name = 'Peter'
 	age = 25
@@ -3502,7 +3502,7 @@ numbers: [1, 2, 3]
 
 #### $env
 
-```hazel
+```adorad
 module main
 
 def main() {
@@ -3532,25 +3532,25 @@ and `file_default.c.v` will be ignored.
 
 Here is a more complete example:
 main.v:
-```hazel
+```adorad
 module main
 def main() { print(message) }
 ```
 
 main_default.c.v:
-```hazel
+```adorad
 module main
 const ( message = 'Hello world' )
 ```
 
 main_linux.c.v:
-```hazel
+```adorad
 module main
 const ( message = 'Hello linux' )
 ```
 
 main_windows.c.v:
-```hazel
+```adorad
 module main
 const ( message = 'Hello windows' )
 ```
@@ -3587,12 +3587,12 @@ that are substituted at compile time:
 - `@VMOD_FILE` => replaced with the contents of the nearest v.mod file (as a string).
 
 That allows you to do the following example, useful while debugging/logging/tracing your code:
-```hazel
+```adorad
 eprint('file: ' + @FILE + ' | line: ' + @LINE + ' | def: ' + @MOD + '.' + @FN)
 ```
 
 Another example, is if you want to embed the version/name from v.mod *inside* your executable:
-```hazel
+```adorad
 import v.vmod
 vm = vmod.decode( @VMOD_FILE ) or { panic(err.msg) }
 eprint('$vm.name $vm.version\n $vm.description')
@@ -3635,7 +3635,7 @@ the boolean expression is highly improbable. In the JS backend, that does nothin
 Having built-in JSON support is nice, but V also allows you to create efficient
 serializers for any data format. V has compile-time `if` and `for` constructs:
 
-```hazel
+```adorad
 // TODO: not fully implemented
 
 struct User {
@@ -3670,7 +3670,7 @@ def decode_User(data string) User {
 
 ## Limited operator overloading
 
-```hazel
+```adorad
 struct Vec {
 	x int
 	y int
@@ -3721,7 +3721,7 @@ are auto generated when the operators are defined though they must return the sa
 
 TODO: not implemented yet
 
-```hazel
+```adorad
 def main() {
     a = 10
     asm x64 {
@@ -3734,7 +3734,7 @@ def main() {
 
 ## Translating C to V
 
-TODO: translating C to V will be available in Hazel 0.3.
+TODO: translating C to V will be available in Adorad 0.3.
 
 V can translate your C code to human readable V code and generate V wrappers on top of C libraries.
 
@@ -3754,7 +3754,7 @@ int main() {
 
 Run `v translate test.c`, and V will generate `test.v`:
 
-```hazel
+```adorad
 def main() {
 	for i = 0; i < 10; i++ {
 		print('hello world')
@@ -3790,7 +3790,7 @@ Translating it to V gives you several advantages:
 
 ## Hot code reloading
 
-```hazel
+```adorad
 module main
 
 import time
@@ -3852,7 +3852,7 @@ Use the `.vsh` file extension. It will make all functions in the `os`
 module global (so that you can use `mkdir()` instead of `os.mkdir()`, for example).
 
 An example `deploy.vsh`:
-```hazel
+```adorad
 #!/usr/bin/env -S v run
 // The shebang above associates the file to V on Unix-like systems,
 // so it can be run just by specifying the path to the file
@@ -3905,7 +3905,7 @@ V has several attributes that modify the behavior of functions and structs.
 An attribute is a compiler instruction specified inside `[]` right before a
 function/struct/enum declaration and applies only to the following declaration.
 
-```hazel
+```adorad
 // Calling this function will result in a deprecation warning
 [deprecated]
 def old_function() {
@@ -3968,7 +3968,7 @@ or deeper than the current scope. `goto` allows jumping past variable initializa
 jumping back to code that accesses memory that has already been freed, so it requires
 `unsafe`.
 
-```hazel
+```adorad
 if x {
 	// ...
 	if y {
@@ -3990,7 +3990,7 @@ a nested loop, and those do not risk violating memory-safety.
 
 V has 41 reserved keywords (3 are literals):
 
-```hazel
+```adorad
 as
 asm
 assert
@@ -4039,7 +4039,7 @@ See also [Types](#types).
 
 This lists operators for [primitive types](#primitive-types) only.
 
-```hazel
+```adorad
 +    sum                    integers, floats, strings
 -    difference             integers, floats
 *    product                integers, floats

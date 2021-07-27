@@ -12,7 +12,7 @@ cmake:
 	cmake -S $(SOURCE_DIR) -B $(BUILD_DIR) $(GENERATOR) -DCMAKE_BUILD_TYPE=Debug -DHAZEL_BUILDTESTS=On
 	cmake --build $(BUILD_DIR) --config Debug
 	echo ------------------ Running Target ------------------
-	cd build/bin/ ; ./HazelInternalTestsWithMain
+	cd build/bin/ ; ./AdoradInternalTestsWithMain
 .PHONY: cmake 
 
 cmakeclean:

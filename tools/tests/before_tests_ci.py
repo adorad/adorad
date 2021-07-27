@@ -1,8 +1,8 @@
 r"""
-    This script essentially `copies` the entire folder of Hazel and into a new directory that is used solely by 
+    This script essentially `copies` the entire folder of Adorad and into a new directory that is used solely by 
     CMake during CI. 
     It removes all instances of `static`, `inline`, `extern` or any other keywords that might result in internal 
-    linkage and thus break Hazel's C Compiler Tests. 
+    linkage and thus break Adorad's C Compiler Tests. 
     With this internal linkage, it is IMPOSSIBLE to externally test a method used in the compiler. An example for 
     this would be `lexer_next()` or `lexer_next_n()` which _need_ to be inlined and statically linked for performance reasons.
 """
@@ -13,9 +13,9 @@ ospd = os.path.dirname
 # Navigate to root folder
 # ../../../
 ROOT = ospd(ospd(ospd(os.path.abspath(__file__))))
-SOURCEROOT = os.path.join(ROOT, 'hazel')
-# The `HazelInternalTests` folder will be created by this script
-DESTINATIONROOT = os.path.join(ROOT, 'HazelInternalTests')
+SOURCEROOT = os.path.join(ROOT, 'adorad')
+# The `AdoradInternalTests` folder will be created by this script
+DESTINATIONROOT = os.path.join(ROOT, 'AdoradInternalTests')
 
 # Acceptable directories to remove external linkage
 # We cannot remove it globally as it affects CSTL as well - and results in the `multiple definitions` error
@@ -47,14 +47,14 @@ def main():
 
             filepath = os.path.join(root, file)
             destpath = os.path.join(destroot, file)
-            # We don't need the `main.c` file that comes with Hazel (that's used to build the Static/Shared library and 
+            # We don't need the `main.c` file that comes with Adorad (that's used to build the Static/Shared library and 
             # because of internal linkage, we cannot test certain methods of the Compiler)
             # So, we rename `maininternaltests.c` to `main.c` only inside this testing context
             if file.endswith('main.c'):
                 continue
 
-            if(file.endswith('hazel.h')):
-                destpath = os.path.join(destroot, 'HazelInternalTests.h')
+            if(file.endswith('adorad.h')):
+                destpath = os.path.join(destroot, 'AdoradInternalTests.h')
             
             if(file.endswith('maininternaltests.c')):
                 destpath = os.path.join(destroot, 'main.c')
@@ -70,9 +70,9 @@ def main():
             with open(destpath) as f:
                 s = f.read()
 
-                s = s.replace('hazel', 'HazelInternalTests')
-                s = s.replace('HazelInternalTests Language', 'Hazel Language')
-                s = s.replace('hazel.h', 'HazelInternalTests.h')
+                s = s.replace('adorad', 'AdoradInternalTests')
+                s = s.replace('AdoradInternalTests Language', 'Adorad Language')
+                s = s.replace('adorad.h', 'AdoradInternalTests.h')
 
                 if root.endswith(ACCEPTABLE_REMOVEABLE_DIRS):
                     s = s.replace('static inline ', '')
@@ -88,7 +88,7 @@ def main():
             with open(destpath, 'w') as f:
                 f.write(s)
 
-    print(f'\n[INFO] Copied {copied} source files from Hazel.')
+    print(f'\n[INFO] Copied {copied} source files from Adorad.')
 
 if __name__ == '__main__':
     main()

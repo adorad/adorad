@@ -25,7 +25,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Set up HazelInternalTests folder
+      - name: Set up AdoradInternalTests folder
         run: |
           python3 tools/tests/before_tests_ci.py 
       

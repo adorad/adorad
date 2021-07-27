@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.20 FATAL_ERROR)
 project(
-    Hazel 
-    DESCRIPTION "The Hazel Programming Language"
+    Adorad 
+    DESCRIPTION "The Adorad Programming Language"
     VERSION 1.0.0
     LANGUAGES C
 )
@@ -10,7 +10,7 @@ project(
 # Hence we explicitely check for correct enforcement of CMake configurations.
 if (${CMAKE_VERSION} VERSION_LESS "3.20")
     message(
-        ERROR "You are currently on CMake Version ${CMAKE_VERSION}, but Hazel supports CMake 3.20 above."
+        ERROR "You are currently on CMake Version ${CMAKE_VERSION}, but Adorad supports CMake 3.20 above."
         "Please update your CMake installation."
     )
 endif()
@@ -30,7 +30,7 @@ string(FIND "${CMAKE_C_FLAGS}" "-std=c" ENV_CXX_STANDARD)
 if(ENV_CXX_STANDARD GREATER -1)
     message (
         WARNING "C Standard Version definition detected in an environment variable."
-        "Hazel requires at least-std=c11. Please remove -std=c settings in your environment."
+        "Adorad requires at least-std=c11. Please remove -std=c settings in your environment."
     )
 endif()
 
@@ -54,19 +54,19 @@ if(NOT CMAKE_SIZEOF_VOID_P GREATER 0)
             compiler details")
 endif()
 
-# Determine if Hazel is built as a subproject (using add_subdirectory) or if it is the main project being built
+# Determine if Adorad is built as a subproject (using add_subdirectory) or if it is the main project being built
 set(IS_MAIN_PROJECT OFF)
 if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
     set(IS_MAIN_PROJECT ON)
 endif()
 
-option(HAZEL_BUILDTESTS "Build Hazel test binaries" OFF)
-option(HAZEL_BUILD_STATIC_LIB "Build Hazel Static Library " OFF)
-option(HAZEL_BUILD_SHARED_LIB "Build Hazel Shared Library " OFF)
-option(BUILD_DOCS "Build Hazel documentation" OFF)
+option(HAZEL_BUILDTESTS "Build Adorad test binaries" OFF)
+option(HAZEL_BUILD_STATIC_LIB "Build Adorad Static Library " OFF)
+option(HAZEL_BUILD_SHARED_LIB "Build Adorad Shared Library " OFF)
+option(BUILD_DOCS "Build Adorad documentation" OFF)
 
 if(HAZEL_BUILDTESTS)
-    # We need at least a Static Library to build and link with Hazel's Internal Tests
+    # We need at least a Static Library to build and link with Adorad's Internal Tests
     if(NOT HAZEL_BUILD_STATIC_LIB)
         set(HAZEL_BUILD_STATIC_LIB ON)
     endif()
@@ -180,7 +180,7 @@ endif()
 set(BUILD_SHARED_LIBS OFF)
 
 # ------ Main Build ------
-add_subdirectory(hazel)
+add_subdirectory(adorad)
 
 if(HAZEL_BUILDTESTS)
     add_subdirectory(test)

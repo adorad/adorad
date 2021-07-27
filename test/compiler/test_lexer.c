@@ -1,4 +1,4 @@
-#include <HazelInternalTests/HazelInternalTests.h>
+#include <AdoradInternalTests/AdoradInternalTests.h>
 #include <tau/tau.h>
 TAU_MAIN()
  

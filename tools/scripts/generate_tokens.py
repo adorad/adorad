@@ -1,7 +1,7 @@
-# Generates tokens which are defined in hazel/grammar/Tokens
+# Generates tokens which are defined in adorad/grammar/Tokens
 # The files are (relative to the root) are:
-#   1. hazel/compiler/tokens/token.h
-#   2. hazel/compiler/tokens/token.c
+#   1. adorad/compiler/tokens/token.h
+#   2. adorad/compiler/tokens/token.c
 
 NT_OFFSET = 256 
 
@@ -62,7 +62,7 @@ token_h_template = """\
 #define HAZEL_TOKEN_H
 
 // #ifdef __cplusplus
-// namespace Hazel {
+// namespace Adorad {
 // #endif
 
 %s\
@@ -94,7 +94,7 @@ TokenNames* token_init(int type, char* value);
 """
 
 
-def make_token_header(infile, outfile='hazel/compiler/tokens/token.h'):
+def make_token_header(infile, outfile='adorad/compiler/tokens/token.h'):
     token_names, ERRORTOKEN, _ = load_tokens(infile)
 
     defines = [] 
@@ -116,7 +116,7 @@ token_c_template = """\
 
 
 #if 0
-#include "hazel/compiler/tokens/tokens.h"
+#include "adorad/compiler/tokens/tokens.h"
 
 // Token Names
 const char* const TokenNames = {
@@ -166,7 +166,7 @@ def generate_chars_to_token(mapping, n=1):
     return ''.join(result)
 
 
-def make_token_c(infile, outfile='hazel/compiler/tokens/token.c'):
+def make_token_c(infile, outfile='adorad/compiler/tokens/token.c'):
     tok_names, ERRORTOKEN, string_to_tok = load_tokens(infile)
     string_to_tok['<>'] = string_to_tok['!=']
     chars_to_token = {}
@@ -223,7 +223,7 @@ def ISEOF(x):
     return x == ENDMARKER
 '''
 
-def make_token_py(infile, outfile='hazel/compiler/tokens/tokens.py'):
+def make_token_py(infile, outfile='adorad/compiler/tokens/tokens.py'):
     tok_names, ERRORTOKEN, string_to_tok = load_tokens(infile)
 
     constants = []
@@ -245,7 +245,7 @@ def make_token_py(infile, outfile='hazel/compiler/tokens/tokens.py'):
         print("%s regenerated from %s" % (outfile, infile))
 
 
-def mainfunc(op, infile='hazel/compiler/tokens', *args):
+def mainfunc(op, infile='adorad/compiler/tokens', *args):
     make = globals()['make_' + op]
     make(infile, *args)
 

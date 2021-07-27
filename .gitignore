@@ -3,20 +3,20 @@
 # python/setup.py uses the list of patterns in this file to decide what to delete, but it's not 100% sound. Be careful when
 # refactoring this file! 
 
-# Hazel
-python/Hazel.egg-info/*
+# Adorad
+python/Adorad.egg-info/*
 python/build/*
 docs/build/*
 build/*
 out/*
-HazelInternalTests/*
+AdoradInternalTests/*
 test.c
 test.h
 test.txt
 test.py
-hazeloutput.txt
-hazeltestoutput.txt
-HazelCommentDesign.txt
+adoradoutput.txt
+adoradtestoutput.txt
+AdoradCommentDesign.txt
 
 # PyPi 
 dist/*

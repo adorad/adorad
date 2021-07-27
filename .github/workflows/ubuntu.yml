@@ -21,7 +21,7 @@ jobs:
         
     steps:
       - uses: actions/checkout@v2
-      - name: Set up HazelInternalTests folder
+      - name: Set up AdoradInternalTests folder
         run: |
           python3 tools/tests/before_tests_ci.py 
           
@@ -55,7 +55,7 @@ jobs:
         run: |
           sudo apt-get install -y clang-10
 
-      - name: Set up HazelInternalTests folder
+      - name: Set up AdoradInternalTests folder
         run: |
           python tools/tests/before_tests_ci.py 
 

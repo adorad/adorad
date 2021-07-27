@@ -4,6 +4,6 @@
 // Automatically generated header file for the Adorad library.
 // Do not include this file directly. Instead, include adorad/core/macros.h.
 
-#cmakedefine HAZEL_BUILD_SHARED_LIB
+/* #undef HAZEL_BUILD_SHARED_LIB */
 
 #endif // HAZEL_MACROS_CMAKE_MACROS_H_
