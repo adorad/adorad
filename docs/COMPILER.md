@@ -26,11 +26,11 @@ The architecture of the compiler is very simple and has three distinct steps:
 
 The main files are:
 
-1. `cmd/adorad/adorad.hzl` => The entry point.
+1. `cmd/adorad/adorad.ad` => The entry point.
 
 - Adorad figures out the build mode.
 - Constructs the compiler object (`struct Adorad`).
-- Creates a list of .hzl files that need to be parsed.
+- Creates a list of .ad files that need to be parsed.
 - Creates a parser object for each file and runs `parse()` on them.
 - The correct backend is called (C, JS, x64), and a binary is compiled.
 
@@ -51,7 +51,7 @@ resolved, type information is added to the AST.
 7. `adorad/gen/c` The C backend. It simply walks the AST and generates C code that can be compiled with Clang, GCC, Visual 
 Studio, and TCC.
 
-8. `json.hzl` defines the json code generation. 
+8. `json.ad` defines the json code generation. 
 > Note: This file will be removed once Adorad supports comptime code generation, and it will be possible to do this using the 
 language's tools.
 

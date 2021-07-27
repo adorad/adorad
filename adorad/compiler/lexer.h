@@ -54,7 +54,7 @@ typedef struct Lexer {
     cstlVector* tokenList;      // list of tokens
     UInt32 lineno;              // the line number in the source where the token occured
     UInt32 colno;               // the column number
-    const char* fname;          // /path/to/file.hzl
+    const char* fname;          // /path/to/file.ad
 
     bool is_inside_str;         // set to true inside a string
     int nest_level;             // used to infer if we're inside many `{}`s

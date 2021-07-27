@@ -232,7 +232,7 @@ typedef struct {
     UInt32 start;       // Starting offset of the token (used in substring-ing tokens of length >1)
     UInt32 lineno;      // the line number in the source where the token occured
     UInt32 colno;       // the column number
-    const char* fname;  // /path/to/file.hzl
+    const char* fname;  // /path/to/file.ad
 } Token;
 
 // Create a basic (ILLEGAL) token

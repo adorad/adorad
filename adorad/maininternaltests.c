@@ -4,7 +4,7 @@
 int main(int argc, const char* const argv[]) {
     // C - Example: 
     // To compile a Adorad source file:
-    // >> adorad compile hello.hzl
+    // >> adorad compile hello.ad
     // if(argc<3) {
     //     printf("Too few arguments"); 
     //     return 1;

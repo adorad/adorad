@@ -48,7 +48,7 @@ adorad> exit
     Goodbye! Set the world on fire!
 ```
 
-Using a script `hello.hzl`:
+Using a script `hello.ad`:
 
 ```ruby
 print("Hello World")
@@ -57,14 +57,14 @@ print("Hello World")
 Running on the terminal is as easy as:
 
 ```shell
-$ adorad hello.hzl
+$ adorad hello.ad
 Hello World
 ```
 
 ## Compiler
 
 ```shell
-$ adorad compile hello.hzl -o hello
+$ adorad compile hello.ad -o hello
 Starting the compiler engine...
 Compiling Adorad code into build/hello.c
 Compiling the C code into machine code...
@@ -115,7 +115,7 @@ That's it! Now you have a Adorad executable at `[path to Adorad repo]/build/Ador
 <!--
 (On Windows `make` means running `make.bat`, so make sure you use `cmd.exe`)
 
-Now you can try `./adorad run examples/hello_world.hzl` (`adorad.exe` on Windows).
+Now you can try `./adorad run examples/hello_world.ad` (`adorad.exe` on Windows).
 
 Adorad is constantly being updated. To update Adorad, simply run:
 
@@ -155,8 +155,8 @@ Hello world
 
 ```bash
 cd examples
-adorad hello_world.hzl && ./hello_world   # or simply
-adorad  hello_world.hzl                   # this builds the program and runs it right away
+adorad hello_world.ad && ./hello_world   # or simply
+adorad  hello_world.ad                   # this builds the program and runs it right away
 ```
 
 ## Adorad sync

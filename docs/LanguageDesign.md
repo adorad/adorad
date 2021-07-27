@@ -8,8 +8,8 @@
 We use this resource: https://gist.github.com/hawkw/9213690
 
 ## Importing
-Adorad uses the ``import`` keyword to import Adorad modules/packages and the ``include <file.hzl>`` syntax to use an existing
-``.hzl`` file. 
+Adorad uses the ``import`` keyword to import Adorad modules/packages and the ``include <file.ad>`` syntax to use an existing
+``.ad`` file. 
 
 It's that simple: You ``import`` packages and ``include`` files. Nothing more, nothing else. 
 
@@ -26,12 +26,12 @@ You can also create aliases for packages using the ``as`` keyword:
 ```cpp
 import Latte as lt 
 
-include <latte.hzl> as coffee
+include <latte.ad> as coffee
 ```
 
-This will now refer to the ``Latte`` packages as ``lt`` and the include file ``latte.hzl`` as ``coffee``. 
+This will now refer to the ``Latte`` packages as ``lt`` and the include file ``latte.ad`` as ``coffee``. 
 
-Note that to include multiple Adorad files, you'll need to add the ``include <file.hzl>`` syntax for as many ``.hzl`` 
+Note that to include multiple Adorad files, you'll need to add the ``include <file.ad>`` syntax for as many ``.ad`` 
 files you intend to add to your project
 
 ## Comments 

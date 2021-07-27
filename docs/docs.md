@@ -142,13 +142,13 @@ For more details, do: `v check-md`
 print('Hello World')
 ```
 
-Save this snippet into a file named `hello.hzl`. Now do: `adorad run hello.hzl`.
+Save this snippet into a file named `hello.ad`. Now do: `adorad run hello.ad`.
 
 > That is assuming that Adorad is on your path
 
 Congratulations - you just wrote and executed your first Adorad program!
 
-You can compile a program without execution with `adorad hello.hzl`.
+You can compile a program without execution with `adorad hello.ad`.
 See `adorad help` for all supported commands.
 
 In many other languages (such as C/C++, Go, and Rust), `main` is the entry point for your program. Adorad doesn't mind whichever you use. Write a ``main()`` function or don't - Adorad will work the same regardless. 
@@ -276,7 +276,7 @@ Try compiling the program above after removing `mutable` from the first line.
 ### Declaration errors
 
 In development mode, the compiler will warn you that you haven't used a variable (you'll get an "Unused Variable" warning).
-This is turned off in production mode but you can always enable it by passing the `-prod` flag to adorad – `adorad -prod foo.hzl`): it will not compile at all (like in Go).
+This is turned off in production mode but you can always enable it by passing the `-prod` flag to adorad – `adorad -prod foo.ad`): it will not compile at all (like in Go).
 
 ```adorad
 def main() {
@@ -779,7 +779,7 @@ def main() {
 }
 ```
 This program can use any public definitions from the `os` module, such
-as the `input` function. See the [standard library](https://modules.vlang.io/)
+as the `input` function. See the standard library.)
 documentation for a list of common modules and their public symbols.
 
 By default, you have to specify the module prefix every time you call an external function.
