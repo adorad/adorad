@@ -8,7 +8,7 @@
 
 Licensed under the MIT License <http://opensource.org/licenses/MIT>
 SPDX-License-Identifier: MIT
-Copyright (c) 2021 Jason Dsouza <http://github.com/jasmcaus>
+Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 */
 
 /* Defines the common scaffolding for exported symbols.
