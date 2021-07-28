@@ -154,13 +154,13 @@ See `adorad help` for all supported commands.
 In many other languages (such as C/C++, Go, and Rust), `main` is the entry point for your program. Adorad doesn't mind whichever you use. Write a ``main()`` function or don't - Adorad will work the same regardless. 
 
 ```adorad
-def main() {
+func main() {
     print('Hello World')
 }
 ```
 
-For the sake of brevity, you can completely omit the `def main()` for small programs (or *scripts*). 
-We do, however, recommend you add the ``def main()`` for larger programs (such as [Modules](#modules))
+For the sake of brevity, you can completely omit the `func main()` for small programs (or *scripts*). 
+We do, however, recommend you add the ``func main()`` for larger programs (such as [Modules](#modules))
 
 
 ## Comments
@@ -177,16 +177,16 @@ This is a multiline comment.
 ## Functions
 
 ```adorad
-def main() {
+func main() {
 	print(add(77, 33))
 	print(sub(100, 50))
 }
 
-def Int add(Int x, Int y) {
+func Int add(Int x, Int y) {
 	return x + y
 }
 
-def Int sub(Int x, Int y) {
+func Int sub(Int x, Int y) {
 	return x - y
 }
 ```
@@ -204,7 +204,7 @@ and declarations.
 ### Returning multiple values
 
 ```adorad
-def {Int, Int} foo(){
+func {Int, Int} foo(){
 	return 2, 3
 }
 
@@ -217,10 +217,10 @@ c, _ = foo() // ignore values using `_`
 ## Symbol visibility
 
 ```adorad
-public def public_function() {
+public func public_function() {
 }
 
-def private_function() {
+func private_function() {
 }
 ```
 
@@ -250,7 +250,7 @@ The variable's type is inferred from the value on the right hand side.
 To choose a different type, use type conversion:
 the expression `T(v)` converts the value `v` to the type `T`.
 
-Unlike most other languages, V only allows defining variables in functions. Global (module level) variables are not allowed. There's no global state in Adorad (see [Pure functions by default](#pure-functions-by-default) for details).
+Unlike most other languages, Adorad only allows defining variables in functions. Global (module level) variables are not allowed. There's no global state in Adorad (see [Pure functions by default](#pure-functions-by-default) for details).
 
 If you *absolutely must* need a global variable, you may do so using a <ins>Macro</ins>.
 
@@ -279,7 +279,7 @@ In development mode, the compiler will warn you that you haven't used a variable
 This is turned off in production mode but you can always enable it by passing the `-prod` flag to adorad – `adorad -prod foo.ad`): it will not compile at all (like in Go).
 
 ```adorad
-def main() {
+func main() {
     a = 10
     b = "Adorad is cool!"
 
@@ -307,7 +307,7 @@ Float32, Float64
 
 byteptr, voidptr, charptr, size_t // these are mostly used for C interoperability
 
-Any // similar to C's void*
+Any // similar to C's `void*`
 ```
 
 Note that unlike C and Go, `Int` is always a 32 bit integer.
@@ -593,7 +593,7 @@ even = nums.filter(it % 2 == 0)
 print(even) // [2, 4, 6]
 
 // filter can accept anonymous functions
-even_def = nums.filter(def Bool (Int x) {
+even_func = nums.filter(func Bool (Int x) {
 	return x % 2 == 0
 })
 print(even_def)
@@ -603,7 +603,7 @@ upper = words.map(it.to_upper())
 print(upper) // ['HELLO', 'WORLD']
 
 // Map can also accept anonymous functions
-upper_def = words.map(def String (String w) {
+upper_func = words.map(func String (String w) {
 	return w.to_upper()
 })
 print(upper_def) // ['HELLO', 'WORLD']
@@ -772,7 +772,7 @@ Modules can be imported using the `import` keyword:
 ```adorad
 import os
 
-def main() {
+func main() {
 	// read text from stdin
 	name = os.input('Enter your name: ')
 	print('Hello, $name!')
@@ -796,7 +796,7 @@ You can also import specific functions and types from modules directly:
 ```adorad
 import os { input }
 
-def main() {
+func main() {
 	// read text from stdin
 	name = input('Enter your name: ')
 	print('Hello, $name!')
@@ -819,12 +819,12 @@ print('Your OS is ${os}.')
 
 Any imported module name can be aliased using the `as` keyword:
 
-NOTE: this example will not compile unless you have created `mymod/sha256.v`
+NOTE: this example will not compile unless you have created `mymod/sha256.ad`
 ```adorad
 import crypto.sha256
 import mymod.sha256 as mysha256
 
-def main() {
+func main() {
     v_hash = sha256.sum('hi'.bytes()).hex()
     my_hash = mysha256.sum('hi'.bytes()).hex()
     assert my_hash == v_hash
@@ -840,11 +840,11 @@ import math
 
 type MyTime = time.Time
 
-def (mutable t MyTime) century() int {
+func (mutable t MyTime) century() int {
 	return int(1.0 + math.trunc(f64(t.year) * 0.009999794661191))
 }
 
-def main() {
+func main() {
 	mutable my_time = MyTime{
 		year: 2020
 		month: 12
@@ -1017,12 +1017,12 @@ if parser.token in [.plus, .minus, .div, .mult] {
 }
 ```
 
-V optimizes such expressions,
+Adorad optimizes such expressions,
 so both `if` statements above produce the same machine code and no tensors are created.
 
 ### For loop
 
-V has only one looping keyword: `for`, with several forms.
+Adorad has only one looping keyword: `for`, with several forms.
 
 #### `for`/`in`
 
@@ -1184,7 +1184,7 @@ The above code prints:
 
 ```adorad
 os = 'windows'
-print('V is running on ')
+print('Adorad is running on ')
 match os {
 	'darwin' { print('macOS.') }
 	'linux' { print('Linux.') }
@@ -1214,7 +1214,7 @@ enum Color {
 	green
 }
 
-def is_red_or_blue(c Color) bool {
+func is_red_or_blue(c Color) bool {
 	return match c {
 		.red, .blue { true } // comma can be used to test multiple values
 		.green { false }
@@ -1255,7 +1255,7 @@ until the surrounding function returns.
 ```adorad
 import os
 
-def read_log() {
+func read_log() {
 	mutable ok = false
 	mutable f = os.open('log.txt') or { panic(err.msg) }
 	defer {
@@ -1310,7 +1310,7 @@ References are similar to Go pointers and C++ references.
 
 ### Embedded structs
 
-V doesn't allow subclassing, but it supports embedded structs:
+Adorad doesn't allow subclassing, but it supports embedded structs:
 
 ```adorad
 struct Widget {
@@ -1359,7 +1359,7 @@ struct Foo {
 }
 ```
 
-You can mark a struct field with the `[required]` attribute, to tell V that
+You can mark a struct field with the `[required]` attribute, to tell Adorad that
 that field must be initialized when creating an instance of that struct.
 
 This example will not compile, since the field `n` isn't explicitly initialized:
@@ -1394,7 +1394,7 @@ as a function argument.
 
 #### Trailing struct literal arguments
 
-V doesn't have default function arguments or named arguments, for that trailing struct
+Adorad doesn't have default function arguments or named arguments, for that trailing struct
 literal syntax can be used instead:
 
 ```adorad
@@ -1411,7 +1411,7 @@ struct Button {
 	height int
 }
 
-def new_button(c ButtonConfig) &Button {
+func new_button(c ButtonConfig) &Button {
 	return &Button{
 		width: c.width
 		height: c.height
@@ -1468,7 +1468,7 @@ It's easy to see from this definition that `string` is an immutable type.
 The byte pointer with the string data is not accessible outside `builtin` at all.
 The `len` field is public, but immutable:
 ```adorad
-def main() {
+func main() {
     str = 'hello'
     len = str.len // OK
     str.len++      // Compilation error
@@ -1485,7 +1485,7 @@ struct User {
 	age int
 }
 
-def (u User) can_register() bool {
+func (u User) can_register() bool {
 	return u.age > 16
 }
 
@@ -1499,7 +1499,7 @@ user2 = User{
 print(user2.can_register()) // "true"
 ```
 
-V doesn't have classes, but you can define methods on types.
+Adorad doesn't have classes, but you can define methods on types.
 A method is a function with a special receiver argument.
 The receiver appears in its own argument list between the `def` keyword and the method name.
 Methods must be in the same module as the receiver type.
@@ -1551,13 +1551,13 @@ Note that the embedded struct arguments are not necessarily stored in the order 
 
 ### Pure functions by default
 
-V functions are pure by default, meaning that their return values are a function of their
+Adorad functions are pure by default, meaning that their return values are a function of their
 arguments only, and their evaluation has no side effects (besides I/O).
 
 This is achieved by a lack of global variables and all function arguments being
 immutable by default, even when [references](#references) are passed.
 
-V is not a purely functional language however.
+Adorad is not a purely functional language however.
 
 There is a compiler flag to enable global variables (`--enable-globals`), but this is
 intended for low-level applications like kernels and drivers.
@@ -1573,7 +1573,7 @@ mut:
 	is_registered bool
 }
 
-def (mutable u User) register() {
+func (mutable u User) register() {
 	u.is_registered = true
 }
 
@@ -1587,7 +1587,7 @@ In this example, the receiver (which is simply the first argument) is marked as 
 so `register()` can change the user object. The same works with non-receiver arguments:
 
 ```adorad
-def multiply_by_2(mutable arr []int) {
+func multiply_by_2(mutable arr []int) {
 	for i in 0 .. arr.len {
 		arr[i] *= 2
 	}
@@ -1606,7 +1606,7 @@ It is preferable to return values instead of modifying arguments.
 Modifying arguments should only be done in performance-critical parts of your application
 to reduce allocations and copying.
 
-For this reason V doesn't allow the modification of arguments with primitive types (e.g. integers).
+For this reason Adorad doesn't allow the modification of arguments with primitive types (e.g. integers).
 Only more complex types such as tensors and maps may be modified.
 
 Use `user.register()` or `user = register(user)`
@@ -1614,7 +1614,7 @@ instead of `register(mutable user)`.
 
 #### Struct update syntax
 
-V makes it easy to return a modified version of an object:
+Adorad makes it easy to return a modified version of an object:
 
 ```adorad
 struct User {
@@ -1623,7 +1623,7 @@ struct User {
 	is_registered bool
 }
 
-def register(u User) User {
+func register(u User) User {
 	return {
 		...u
 		is_registered: true
@@ -1641,7 +1641,7 @@ print(user)
 ### Variable number of arguments
 
 ```adorad
-def sum(a ...int) int {
+func sum(a ...int) int {
 	mutable total = 0
 	for x in a {
 		total += x
@@ -1662,28 +1662,28 @@ print(sum(...b)) // output: 18
 ### Anonymous & high order functions
 
 ```adorad
-def sqr(n int) int {
+func sqr(n int) int {
 	return n * n
 }
 
-def cube(n int) int {
+func cube(n int) int {
 	return n * n * n
 }
 
-def run(value int, op def (int) int) int {
+func run(value int, op func (int) int) int {
 	return op(value)
 }
 
-def main() {
+func main() {
 	// Functions can be passed to other functions
 	print(run(5, sqr)) // "25"
 	// Anonymous functions can be declared inside other functions:
-	double_def = def (n int) int {
+	double_func = func (n int) int {
 		return n + n
 	}
 	print(run(5, double_def)) // "10"
 	// Functions can be passed around without assigning them to variables:
-	res = run(5, def (n int) int {
+	res = run(5, func (n int) int {
 		return n + n
 	})
 	print(res) // "10"
@@ -1703,17 +1703,17 @@ def main() {
 ```adorad
 struct Foo {}
 
-def (foo Foo) bar_method() {
+func (foo Foo) bar_method() {
 	// ...
 }
 
-def bar_function(foo Foo) {
+func bar_function(foo Foo) {
 	// ...
 }
 ```
 
 If a function argument is immutable (like `foo` in the examples above)
-V can pass it either by value or by reference. The compiler will decide,
+Adorad can pass it either by value or by reference. The compiler will decide,
 and the developer doesn't need to think about it.
 
 You no longer need to remember whether you should pass the struct by value
@@ -1727,7 +1727,7 @@ struct Foo {
 	abc int
 }
 
-def (foo &Foo) bar() {
+func (foo &Foo) bar() {
 	print(foo.abc)
 }
 ```
@@ -1767,7 +1767,7 @@ constant separately:
 const e = 2.71828
 ```
 
-V constants are more flexible than in most languages. You can assign more complex values:
+Adorad constants are more flexible than in most languages. You can assign more complex values:
 
 ```adorad
 struct Color {
@@ -1776,7 +1776,7 @@ struct Color {
 	b int
 }
 
-def rgb(r int, g int, b int) Color {
+func rgb(r int, g int, b int) Color {
 	return Color{
 		r: r
 		g: g
@@ -1809,7 +1809,7 @@ When naming constants, `snake_case` must be used. In order to distinguish consts
 from local variables, the full path to consts must be specified. For example,
 to access the PI const, full `math.pi` name must be used both outside the `math`
 module, and inside it. That restriction is relaxed only for the `main` module
-(the one containing your `def main()`), where you can use the unqualified name of
+(the one containing your `func main()`), where you can use the unqualified name of
 constants defined there, i.e. `numbers`, rather than `main.numbers`.
 
 vfmt takes care of this rule, so you can type `print(pi)` inside the `math` module,
@@ -1831,15 +1831,15 @@ print('Top cities: ${top_cities.filter(.usa)}')
 Some functions are builtin like `print`. Here is the complete list:
 
 ```adorad
-def print(s string) // print anything on sdtout
-def print(s string) // print anything and a newline on sdtout
+func print(s string) // print anything on sdtout
+func print(s string) // print anything and a newline on sdtout
 
-def eprint(s string) // same as print(), but use stderr
-def eprint(s string) // same as print(), but use stderr
+func eprint(s string) // same as print(), but use stderr
+func eprint(s string) // same as print(), but use stderr
 
-def exit(code int) // terminate the program with a custom error code
-def panic(s string) // print a message and backtraces on stderr, and terminate the program with error code 1
-def print_backtrace() // print backtraces on stderr
+func exit(code int) // terminate the program with a custom error code
+func panic(s string) // print a message and backtraces on stderr, and terminate the program with error code 1
+func print_backtrace() // print backtraces on stderr
 ```
 
 `print` is a simple yet powerful builtin function, that can print anything:
@@ -1871,7 +1871,7 @@ struct Color {
 	b int
 }
 
-pub def (c Color) str() string {
+pub func (c Color) str() string {
 	return '{$c.r, $c.g, $c.b}'
 }
 
@@ -1888,22 +1888,22 @@ print(red)
 Every file in the root of a folder is part of the same module.
 Simple programs don't need to specify module name, in which case it defaults to 'main'.
 
-V is a very modular language. Creating reusable modules is encouraged and is
+Adorad is a very modular language. Creating reusable modules is encouraged and is
 quite easy to do.
 To create a new module, create a directory with your module's name containing
-.v files with code:
+.ad files with code:
 
 ```shell
 cd ~/code/modules
 mkdir mymodule
-vim mymodule/myfile.v
+vim mymodule/myfile.ad
 ```
 ```adorad
-// myfile.v
+// myfile.ad
 module mymodule
 
 // To export a function we have to use `pub`
-pub def say_hi() {
+pub func say_hi() {
     print('hello from mymodule!')
 }
 ```
@@ -1913,7 +1913,7 @@ You can now use `mymodule` in your code:
 ```adorad
 import mymodule
 
-def main() {
+func main() {
     mymodule.say_hi()
 }
 ```
@@ -1921,7 +1921,7 @@ def main() {
 * Module names should be short, under 10 characters.
 * Module names must use `snake_case`.
 * Circular imports are not allowed.
-* You can have as many .v files in a module as you want.
+* You can have as many .ad files in a module as you want.
 * You can create modules anywhere.
 * All modules are compiled statically into a single executable.
 
@@ -1931,7 +1931,7 @@ If you want a module to automatically call some setup/initialization code when i
 you can use a module `init` function:
 
 ```adorad
-def init() {
+func init() {
 	// your setup code here ...
 }
 ```
@@ -1952,11 +1952,11 @@ struct Cat {
 	breed string
 }
 
-def (d Dog) speak() string {
+func (d Dog) speak() string {
 	return 'woof'
 }
 
-def (c Cat) speak() string {
+func (c Cat) speak() string {
 	return 'meow'
 }
 
@@ -1986,7 +1986,7 @@ We can test the underlying type of an interface using dynamic cast operators:
 ```adorad
 interface Something {}
 
-def announce(s Something) {
+func announce(s Something) {
 	if s is Dog {
 		print('a $s.breed dog') // `s` is automatically cast to `Dog` (smart cast)
 	} else if s is Cat {
@@ -2010,21 +2010,21 @@ implemented on the interface is called.
 ```adorad
 struct Cat {}
 
-def (c Cat) speak() string {
+func (c Cat) speak() string {
 	return 'meow!'
 }
 
 interface Adoptable {}
 
-def (a Adoptable) speak() string {
+func (a Adoptable) speak() string {
 	return 'adopt me!'
 }
 
-def new_adoptable() Adoptable {
+func new_adoptable() Adoptable {
 	return Cat{}
 }
 
-def main() {
+func main() {
 	cat = Cat{}
 	assert cat.speak() == 'meow!'
 	a = new_adoptable()
@@ -2045,7 +2045,7 @@ enum Color {
 }
 
 mutable color = Color.red
-// V knows that `color` is a `Color`. No need to use `color = Color.green` here.
+// Adorad knows that `color` is a `Color`. No need to use `color = Color.green` here.
 color = .green
 print(color) // "green"
 match color {
@@ -2127,14 +2127,14 @@ struct Node {
 type Tree = Empty | Node
 
 // sum up all node values
-def sum(tree Tree) f64 {
+func sum(tree Tree) f64 {
 	return match tree {
 		Empty { f64(0) } // TODO: as match gets smarter just remove f64()
 		Node { tree.value + sum(tree.left) + sum(tree.right) }
 	}
 }
 
-def main() {
+func main() {
 	left = Node{0.2, Empty{}, Empty{}}
 	right = Node{0.3, Empty{}, Node{0.4, Empty{}, Empty{}}}
 	tree = Node{0.5, left, right}
@@ -2156,11 +2156,11 @@ struct Venus {}
 
 type World = Mars | Moon | Venus
 
-def (m Mars) dust_storm() bool {
+func (m Mars) dust_storm() bool {
 	return true
 }
 
-def main() {
+func main() {
 	mutable w = World(Moon{})
 	assert w is Moon
 	w = Mars{}
@@ -2214,11 +2214,11 @@ struct Venus {}
 
 type World = Mars | Moon | Venus
 
-def open_parachutes(n int) {
+func open_parachutes(n int) {
 	print(n)
 }
 
-def land(w World) {
+func land(w World) {
 	match w {
 		Moon {} // no atmosphere
 		Mars {
@@ -2242,11 +2242,11 @@ struct Venus {}
 
 type World = Moon | Mars | Venus
 
-def (m Moon) moon_walk() {}
-def (m Mars) shiver() {}
-def (v Venus) sweat() {}
+func (m Moon) moon_walk() {}
+func (m Mars) shiver() {}
+func (v Venus) sweat() {}
 
-def pass_time(w World) {
+func pass_time(w World) {
     match w {
         // using the shadowed match variable, in this case `w` (smart cast)
         Moon { w.moon_walk() }
@@ -2269,17 +2269,17 @@ struct Repo {
 	users []User
 }
 
-def (r Repo) find_user_by_id(id int) ?User {
+func (r Repo) find_user_by_id(id int) ?User {
 	for user in r.users {
 		if user.id == id {
-			// V automatically wraps this into an option type
+			// Adorad automatically wraps this into an option type
 			return user
 		}
 	}
 	return error('User $id not found')
 }
 
-def main() {
+func main() {
 	repo = Repo{
 		users: [User{1, 'Andrew'}, User{2, 'Bob'}, User{10, 'Charles'}]
 	}
@@ -2291,7 +2291,7 @@ def main() {
 }
 ```
 
-V combines `Option` and `Result` into one type, so you don't need to decide which one to use.
+Adorad combines `Option` and `Result` into one type, so you don't need to decide which one to use.
 
 The amount of work required to "upgrade" a function to an optional function is minimal;
 you have to add a `?` to the return type and return an error when something goes wrong.
@@ -2301,7 +2301,7 @@ If you don't need to return an error message, you can simply `return none`
 
 This is the primary mechanism for error handling in V. They are still values, like in Go,
 but the advantage is that errors can't be unhandled, and handling them is a lot less verbose.
-Unlike other languages, V does not handle exceptions with `throw/try/catch` blocks.
+Unlike other languages, Adorad does not handle exceptions with `throw/try/catch` blocks.
 
 `err` is defined inside an `or` block and is set to the string message passed
 to the `error()` function. `err` is empty if `none` was returned.
@@ -2321,7 +2321,7 @@ propagate the error:
 ```adorad
 import net.http
 
-def f(url string) ?string {
+func f(url string) ?string {
 	resp = http.get(url) ?
 	return resp.text
 }
@@ -2353,7 +2353,7 @@ entire program, or use a control flow statement (`return`, `break`, `continue`, 
 to break from the current block.
 Note that `break` and `continue` can only be used inside a `for` loop.
 
-V does not have a way to forcibly "unwrap" an optional (as other languages do,
+Adorad does not have a way to forcibly "unwrap" an optional (as other languages do,
 for instance Rust's `unwrap()` or Swift's `!`). To do this, use `or { panic(err.msg) }` instead.
 
 ---
@@ -2362,7 +2362,7 @@ In case of an error, that value would be assigned instead,
 so it must have the same type as the content of the `Option` being handled.
 
 ```adorad
-def do_something(s string) ?string {
+func do_something(s string) ?string {
 	if s == 'foo' {
 		return 'foo'
 	}
@@ -2398,12 +2398,12 @@ struct Repo<T> {
     db DB
 }
 
-def new_repo<T>(db DB) Repo<T> {
+func new_repo<T>(db DB) Repo<T> {
     return Repo<T>{db: db}
 }
 
-// This is a generic function. V will generate it for every type it's used with.
-def (r Repo<T>) find_by_id(id int) ?T {
+// This is a generic function. Adorad will generate it for every type it's used with.
+func (r Repo<T>) find_by_id(id int) ?T {
     table_name = T.name // in this example getting the name of the type gives us the table name
     return r.db.query_one<T>('select * from $table_name where id = ?', id)
 }
@@ -2417,13 +2417,13 @@ post = posts_repo.find_by_id(1)? // find_by_id<Post>
 At the moment only one type parameter named `T` is supported.
 
 Currently generic function definitions must declare their type parameters, but in
-future V will infer generic type parameters from single-letter type names in
+future Adorad will infer generic type parameters from single-letter type names in
 runtime parameter types. This is why `find_by_id` can omit `<T>`, because the
 receiver argument `r` uses a generic type `T`.
 
 Another example:
 ```adorad
-def compare<T>(a T, b T) int {
+func compare<T>(a T, b T) int {
 	if a < b {
 		return -1
 	}
@@ -2456,12 +2456,12 @@ a different thread, just call it with `go foo()`:
 ```adorad
 import math
 
-def p(a f64, b f64) { // ordinary function without return value
+func p(a f64, b f64) { // ordinary function without return value
 	c = math.sqrt(a * a + b * b)
 	print(c)
 }
 
-def main() {
+func main() {
 	go p(3, 4)
 	// p will be run in parallel thread
 }
@@ -2474,12 +2474,12 @@ to this handle later:
 ```adorad
 import math
 
-def p(a f64, b f64) { // ordinary function without return value
+func p(a f64, b f64) { // ordinary function without return value
 	c = math.sqrt(a * a + b * b)
 	print(c) // prints `5`
 }
 
-def main() {
+func main() {
 	h = go p(3, 4)
 	// p() runs in parallel thread
 	h.wait()
@@ -2494,12 +2494,12 @@ concurrently.
 ```adorad
 import math { sqrt }
 
-def get_hypot(a f64, b f64) f64 { //       ordinary function returning a value
+func get_hypot(a f64, b f64) f64 { //       ordinary function returning a value
 	c = sqrt(a * a + b * b)
 	return c
 }
 
-def main() {
+func main() {
 	g = go get_hypot(54.06, 2.08) // spawn thread and get handle to it
 	h1 = get_hypot(2.32, 16.74) //   do some other calculation here
 	h2 = g.wait() //                 get result from spawned thread
@@ -2513,13 +2513,13 @@ using an tensor of threads.
 ```adorad
 import time
 
-def task(id int, duration int) {
+func task(id int, duration int) {
 	print('task $id begin')
 	time.sleep(duration * time.millisecond)
 	print('task $id end')
 }
 
-def main() {
+func main() {
 	mutable threads = []thread{}
 	threads << go task(1, 500)
 	threads << go task(2, 900)
@@ -2542,11 +2542,11 @@ Additionally for threads that return the same type, calling `wait()`
 on the thread tensor will return all computed values.
 
 ```adorad
-def expensive_computing(i int) int {
+func expensive_computing(i int) int {
 	return i * i
 }
 
-def main() {
+func main() {
 	mutable threads = []thread int{}
 	for i in 1 .. 10 {
 		threads << go expensive_computing(i)
@@ -2578,11 +2578,11 @@ a property of the individual channel object. Channels can be passed to coroutine
 variables:
 
 ```adorad
-def f(ch chan int) {
+func f(ch chan int) {
 	// ...
 }
 
-def main() {
+func main() {
 	ch = chan int{}
 	go f(ch)
 	// ...
@@ -2632,7 +2632,7 @@ without noticeable CPU load.  It consists of a list of possible transfers and as
 of statements - similar to the [match](#match) command:
 ```adorad
 import time
-def main () {
+func main () {
   c = chan f64{}
   ch = chan f64{}
   ch2 = chan f64{}
@@ -2718,13 +2718,13 @@ mut:
 	x int // data to shared
 }
 
-def (shared b St) g() {
+func (shared b St) g() {
 	lock b {
 		// read/modify/write b.x
 	}
 }
 
-def main() {
+func main() {
 	shared a = St{
 		x: 10
 	}
@@ -2776,7 +2776,7 @@ The `json.decode` function takes two arguments:
 the first is the type into which the JSON value should be decoded and
 the second is a string containing the JSON data.
 
-V generates code for JSON encoding and decoding.
+Adorad generates code for JSON encoding and decoding.
 No runtime reflection is used. This results in much better performance.
 
 ## Testing
@@ -2784,7 +2784,7 @@ No runtime reflection is used. This results in much better performance.
 ### Asserts
 
 ```adorad
-def foo(mutable v []int) {
+func foo(mutable v []int) {
 	v[0] = 1
 }
 
@@ -2801,34 +2801,34 @@ unexpected value. Assert statements can be used in any function.
 ### Test files
 
 ```adorad
-// hello.v
+// hello.ad
 module main
 
-def hello() string {
+func hello() string {
 	return 'Hello world'
 }
 
-def main() {
+func main() {
 	print(hello())
 }
 ```
 
 ```adorad
 module main
-// hello_test.v
-def test_hello() {
+// hello_test.ad
+func test_hello() {
     assert hello() == 'Hello world'
 }
 ```
-To run the test above, use `v hello_test.v`. This will check that the function `hello` is
-producing the correct output. V executes all test functions in the file.
+To run the test above, use `adorad hello_test.ad`. This will check that the function `hello` is
+producing the correct output. Adorad executes all test functions in the file.
 
-* All test functions have to be inside a test file whose name ends in `_test.v`.
+* All test functions have to be inside a test file whose name ends in `_test.ad`.
 * Test function names must begin with `test_` to mark them for execution.
 * Normal functions can also be defined in test files, and should be called manually. Other
   symbols can also be defined in test files e.g. types.
 * There are two kinds of tests: external and internal.
-* Internal tests must *declare* their module, just like all other .v
+* Internal tests must *declare* their module, just like all other `.ad`
 files from the same module. Internal tests can even call private functions in
 the same module.
 * External tests must *import* the modules which they test. They do not
@@ -2836,10 +2836,10 @@ have access to the private functions/types of the modules. They can test only
 the external/public API that a module provides.
 
 In the example above, `test_hello` is an internal test, that can call
-the private function `hello()` because `hello_test.v` has `module main`,
-just like `hello.v`, i.e. both are part of the same module. Note also that
+the private function `hello()` because `hello_test.ad` has `module main`,
+just like `hello.ad`, i.e. both are part of the same module. Note also that
 since `module main` is a regular module like the others, internal tests can
-be used to test private functions in your main program .v files too.
+be used to test private functions in your main program .ad files too.
 
 You can also define special test functions in a test file:
 * `testsuite_begin` which will be run *before* all other test functions.
@@ -2847,15 +2847,15 @@ You can also define special test functions in a test file:
 
 #### Running tests
 
-To run test functions in an individual test file, use `v foo_test.v`.
+To run test functions in an individual test file, use `adorad foo_test.ad`.
 
-To test an entire module, use `v test mymodule`. You can also use `v test .` to test
+To test an entire module, use `adorad test mymodule`. You can also use `adorad test .` to test
 everything inside your current folder (and subfolders). You can pass the `-stats`
 option to see more details about the individual tests run.
 
 ## Memory management
 
-V avoids doing unnecessary allocations in the first place by using value types,
+Adorad avoids doing unnecessary allocations in the first place by using value types,
 string buffers, promoting a simple abstraction-free code style.
 
 Most objects (~90-100%) are freed by V's autofree engine: the compiler inserts
@@ -2871,21 +2871,21 @@ For developers willing to have more low level control, autofree can be disabled 
 memory manually.
 
 Note: right now autofree is hidden behind the -autofree flag. It will be enabled by
-default in Adorad 0.3. If autofree is not used, V programs will leak memory.
+default in Adorad 0.3. If autofree is not used, Adorad programs will leak memory.
 
 For example:
 
 ```adorad
 import strings
 
-def draw_text(s string, x int, y int) {
+func draw_text(s string, x int, y int) {
 	// ...
 }
 
-def draw_scene() {
+func draw_scene() {
 	// ...
 	name1 = 'abc'
-	name2 = 'def ghi'
+	name2 = 'func ghi'
 	draw_text('hello $name1', 10, 10)
 	draw_text('hello $name2', 100, 10)
 	draw_text(strings.repeat(`X`, 10000), 10, 50)
@@ -2898,14 +2898,14 @@ the function exits.
 
 In fact, the first two calls won't result in any allocations at all.
 These two strings are small,
-V will use a preallocated buffer for them.
+Adorad will use a preallocated buffer for them.
 
 ```adorad
 struct User {
 	name string
 }
 
-def test() []int {
+func test() []int {
 	number = 7 // stack variable
 	user = User{} // struct allocated on stack
 	numbers = [1, 2, 3] // tensor allocated on heap, will be freed as the function exits
@@ -2921,7 +2921,7 @@ def test() []int {
 
 (This is still in an alpha state)
 
-V has a built-in ORM (object-relational mapping) which supports SQLite,
+Adorad has a built-in ORM (object-relational mapping) which supports SQLite,
 and will soon support MySQL, Postgres, MS SQL, and Oracle.
 
 V's ORM provides a number of benefits:
@@ -2950,7 +2950,7 @@ nr_customers = sql db {
 	select count from Customer
 }
 print('number of all customers: $nr_customers')
-// V syntax can be used to build queries
+// Adorad syntax can be used to build queries
 // db.select returns an tensor
 uk_customers = sql db {
 	select from Customer where country == 'uk' && nr_orders > 0
@@ -2959,7 +2959,7 @@ print(uk_customers.len)
 for customer in uk_customers {
 	print('$customer.id - $customer.name')
 }
-// by adding `limit 1` we tell V that there will be only one object
+// by adding `limit 1` we tell Adorad that there will be only one object
 customer = sql db {
 	select from Customer where id == 1 limit 1
 }
@@ -2974,7 +2974,7 @@ sql db {
 }
 ```
 
-For more examples, see <a href='https://github.com/vlang/v/blob/master/vlib/orm/orm_test.v'>vlib/orm/orm_test.v</a>.
+<!-- For more examples, see <a href='https://github.com/vlang/v/blob/master/vlib/orm/orm_test.ad'>vlib/orm/orm_test.ad</a>. -->
 
 ## Writing Documentation
 
@@ -2986,7 +2986,7 @@ Documentation for each function/type/const must be placed right before the decla
 
 ```adorad
 // clearall clears all bits in the tensor
-def clearall() {
+func clearall() {
 }
 ```
 
@@ -2998,7 +2998,7 @@ span to the documented function using single line comments:
 ```adorad
 // copy_all recursively copies all elements of the tensor by their value,
 // if `dupes` is false all duplicate values are eliminated in the process.
-def copy_all(dupes bool) {
+func copy_all(dupes bool) {
 	// ...
 }
 ```
@@ -3011,23 +3011,23 @@ To generate documentation use vdoc, for example `v doc net.http`.
 
 ## Tools
 
-### v fmt
+<!-- ### v fmt
 
 You don't need to worry about formatting your code or setting style guidelines.
-`v fmt` takes care of that:
+`adorad fmt` takes care of that:
 
 ```shell
-v fmt file.v
+adorad fmt file.ad
 ```
 
-It's recommended to set up your editor, so that `v fmt -w` runs on every save.
+It's recommended to set up your editor, so that `adorad fmt -w` runs on every save.
 A vfmt run is usually pretty cheap (takes <30ms).
 
-Always run `v fmt -w file.v` before pushing your code.
+Always run `adorad fmt -w file.ad` before pushing your code. -->
 
 ### Profiling
 
-V has good support for profiling your programs: `v -profile profile.txt run file.v`
+Adorad has good support for profiling your programs: `adorad -profile profile.txt run file.ad`
 That will produce a profile.txt file, which you can then analyze.
 
 The generated profile.txt file will have lines with 4 columns:
@@ -3043,7 +3043,7 @@ You can also use stopwatches to measure just portions of your code explicitly:
 ```adorad
 import time
 
-def main() {
+func main() {
 	sw = time.new_stopwatch({})
 	print('Hello world')
 	print('Greeting the world took: ${sw.elapsed().nanoseconds()}ns')
@@ -3055,10 +3055,10 @@ def main() {
 ## Memory-unsafe code
 
 Sometimes for efficiency you may want to write low-level code that can potentially
-corrupt memory or be vulnerable to security exploits. V supports writing such code,
+corrupt memory or be vulnerable to security exploits. Adorad supports writing such code,
 but not by default.
 
-V requires that any potentially memory-unsafe operations are marked intentionally.
+Adorad requires that any potentially memory-unsafe operations are marked intentionally.
 Marking them also indicates to anyone reading the code that there could be
 memory-safety violations if there was a mistake.
 
@@ -3163,26 +3163,26 @@ struct C.sqlite3 {
 struct C.sqlite3_stmt {
 }
 
-type FnSqlite3Callback = def (voidptr, int, &charptr, &charptr) int
+type FnSqlite3Callback = func (voidptr, int, &charptr, &charptr) int
 
-def C.sqlite3_open(charptr, &&C.sqlite3) int
+func C.sqlite3_open(charptr, &&C.sqlite3) int
 
-def C.sqlite3_close(&C.sqlite3) int
+func C.sqlite3_close(&C.sqlite3) int
 
-def C.sqlite3_column_int(stmt &C.sqlite3_stmt, n int) int
+func C.sqlite3_column_int(stmt &C.sqlite3_stmt, n int) int
 
 // ... you can also just define the type of parameter and leave out the C. prefix
-def C.sqlite3_prepare_v2(&sqlite3, charptr, int, &&sqlite3_stmt, &charptr) int
+func C.sqlite3_prepare_v2(&sqlite3, charptr, int, &&sqlite3_stmt, &charptr) int
 
-def C.sqlite3_step(&sqlite3_stmt)
+func C.sqlite3_step(&sqlite3_stmt)
 
-def C.sqlite3_finalize(&sqlite3_stmt)
+func C.sqlite3_finalize(&sqlite3_stmt)
 
-def C.sqlite3_exec(db &sqlite3, sql charptr, cb FnSqlite3Callback, cb_arg voidptr, emsg &charptr) int
+func C.sqlite3_exec(db &sqlite3, sql charptr, cb FnSqlite3Callback, cb_arg voidptr, emsg &charptr) int
 
-def C.sqlite3_free(voidptr)
+func C.sqlite3_free(voidptr)
 
-def my_callback(arg voidptr, howmany int, cvalues &charptr, cnames &charptr) int {
+func my_callback(arg voidptr, howmany int, cvalues &charptr, cnames &charptr) int {
 	unsafe {
 		for i in 0 .. howmany {
 			print('| ${cstring_to_vstring(cnames[i])}: ${cstring_to_vstring(cvalues[i]):20} ')
@@ -3192,14 +3192,14 @@ def my_callback(arg voidptr, howmany int, cvalues &charptr, cnames &charptr) int
 	return 0
 }
 
-def main() {
+func main() {
 	db = &C.sqlite3(0) // this means `sqlite3* db = 0`
-	// passing a string literal to a C function call results in a C string, not a V string
+	// passing a string literal to a C function call results in a C string, not a Adorad string
 	C.sqlite3_open('users.db', &db)
 	// C.sqlite3_open(db_path.str, &db)
 	query = 'select count(*) from users'
 	stmt = &C.sqlite3_stmt(0)
-	// NB: you can also use the `.str` field of a V string,
+	// NB: you can also use the `.str` field of a Adorad string,
 	// to get its C style zero terminated representation
 	C.sqlite3_prepare_v2(db, query.str, -1, &stmt, 0)
 	C.sqlite3_step(stmt)
@@ -3220,7 +3220,7 @@ def main() {
 
 ### Passing C compilation flags
 
-Add `#flag` directives to the top of your V files to provide C compilation flags like:
+Add `#flag` directives to the top of your Adorad files to provide C compilation flags like:
 
 - `-I` for adding C include files search paths
 - `-l` for adding C library names that you want to get linked
@@ -3253,7 +3253,7 @@ Add `#pkgconfig` directive is used to tell the compiler which modules should be 
 and linking using the pkg-config files provided by the respective dependencies.
 
 As long as backticks can't be used in `#flag` and spawning processes is not desirable for security
-and portability reasons, V uses its own pkgconfig library that is compatible with the standard
+and portability reasons, Adorad uses its own pkgconfig library that is compatible with the standard
 freedesktop one.
 
 If no flags are passed it will add `--cflags` and `--libs`, both lines below do the same:
@@ -3268,7 +3268,7 @@ extra paths by using the `PKG_CONFIG_PATH` environment variable. Multiple module
 
 ### Including C code
 
-You can also include C code directly in your V module.
+You can also include C code directly in your Adorad module.
 For example, let's say that your C code is located in a folder named 'c' inside your module folder.
 Then:
 
@@ -3291,57 +3291,57 @@ Module {
 #flag @VROOT/c/implementation.o
 #include "header.h"
 ```
-NB: @VROOT will be replaced by V with the *nearest parent folder, where there is a v.mod file*.
-Any .v file beside or below the folder where the v.mod file is,
+NB: @VROOT will be replaced by Adorad with the *nearest parent folder, where there is a v.mod file*.
+Any .ad file beside or below the folder where the v.mod file is,
 can use `#flag @VROOT/abc` to refer to this folder.
 The @VROOT folder is also *prepended* to the module lookup path,
 so you can *import* other modules under your @VROOT, by just naming them.
 
-The instructions above will make V look for an compiled .o file in
+The instructions above will make Adorad look for an compiled .o file in
 your module `folder/c/implementation.o`.
-If V finds it, the .o file will get linked to the main executable, that used the module.
-If it does not find it, V assumes that there is a `@VROOT/c/implementation.c` file,
+If Adorad finds it, the .o file will get linked to the main executable, that used the module.
+If it does not find it, Adorad assumes that there is a `@VROOT/c/implementation.c` file,
 and tries to compile it to a .o file, then will use that.
 
-This allows you to have C code, that is contained in a V module, so that its distribution is easier.
-You can see a complete minimal example for using C code in a V wrapper module here:
+This allows you to have C code, that is contained in a Adorad module, so that its distribution is easier.
+You can see a complete minimal example for using C code in a Adorad wrapper module here:
 [project_with_c_code](https://github.com/vlang/v/tree/master/vlib/v/tests/project_with_c_code).
-Another example, demonstrating passing structs from C to V and back again:
-[interoperate between C to V to C](https://github.com/vlang/v/tree/master/vlib/v/tests/project_with_c_code_2).
+Another example, demonstrating passing structs from C to Adorad and back again:
+[interoperate between C to Adorad to C](https://github.com/vlang/v/tree/master/vlib/v/tests/project_with_c_code_2).
 
 ### C types
 
-Ordinary zero terminated C strings can be converted to V strings with
-`unsafe { charptr(cstring).vstring() }` or if you know their length already with
-`unsafe { charptr(cstring).vstring_with_len(len) }`.
+Ordinary zero terminated C strings can be converted to Adorad strings with
+`unsafe { charptr(cstring).adstring() }` or if you know their length already with
+`unsafe { charptr(cstring).adstring_with_len(len) }`.
 
-NB: The .vstring() and .vstring_with_len() methods do NOT create a copy of the `cstring`,
-so you should NOT free it after calling the method `.vstring()`.
+NB: The .adstring() and .adstring_with_len() methods do NOT create a copy of the `cstring`,
+so you should NOT free it after calling the method `.adstring()`.
 If you need to make a copy of the C string (some libc APIs like `getenv` pretty much require that,
 since they return pointers to internal libc memory), you can use `cstring_to_vstring(cstring)`.
 
 On Windows, C APIs often return so called `wide` strings (utf16 encoding).
-These can be converted to V strings with `string_from_wide(&u16(cwidestring))` .
+These can be converted to Adorad strings with `string_from_wide(&u16(cwidestring))` .
 
-V has these types for easier interoperability with C:
+Adorad has these types for easier interoperability with C:
 
 - `voidptr` for C's `void*`,
 - `byteptr` for C's `byte*` and
 - `charptr` for C's `char*`.
 - `&charptr` for C's `char**`
 
-To cast a `voidptr` to a V reference, use `user = &User(user_void_ptr)`.
+To cast a `voidptr` to a Adorad reference, use `user = &User(user_void_ptr)`.
 
-`voidptr` can also be dereferenced into a V struct through casting: `user = User(user_void_ptr)`.
+`voidptr` can also be dereferenced into a Adorad struct through casting: `user = User(user_void_ptr)`.
 
-[an example of a module that calls C code from V](https://github.com/vlang/v/blob/master/vlib/v/tests/project_with_c_code/mod1/wrapper.v)
+<!-- [an example of a module that calls C code from V](https://github.com/vlang/v/blob/master/vlib/v/tests/project_with_c_code/mod1/wrapper.v) -->
 
 ## Debugging generated C code
 
 To debug issues in the generated C code, you can pass these flags:
 
 - `-g` - produces a less optimized executable with more debug information in it.
-    V will enforce line numbers from the .v files in the stacktraces, that the
+    Adorad will enforce line numbers from the .ad files in the stacktraces, that the
     executable will produce on panic. It is usually better to pass -g, unless
     you are writing low level code, in which case use the next option `-cg`.
 - `-cg` - produces a less optimized executable with more debug information in it.
@@ -3358,17 +3358,17 @@ To debug issues in the generated C code, you can pass these flags:
 
 For best debugging experience if you are writing a low level wrapper for an existing
 C library, you can pass several of these flags at the same time:
-`v -keepc -cg -showcc yourprogram.v`, then just run your debugger (gdb/lldb) or IDE
+`v -keepc -cg -showcc yourprogram.ad`, then just run your debugger (gdb/lldb) or IDE
 on the produced executable `yourprogram`.
 
 If you just want to inspect the generated C code,
 without further compilation, you can also use the `-o` flag (e.g. `-o file.c`).
-This will make V produce the `file.c` then stop.
+This will make Adorad produce the `file.c` then stop.
 
 If you want to see the generated C source code for *just* a single C function,
-for example `main`, you can use: `-printdef main -o file.c`.
+for example `main`, you can use: `-printfunc main -o file.c`.
 
-To see a detailed list of all flags that V supports,
+To see a detailed list of all flags that Adorad supports,
 use `v help`, `v help build` and `v help build-c`.
 
 ## Conditional compilation
@@ -3429,7 +3429,7 @@ Full list of builtin options:
 
 ```adorad
 module main
-def main() {
+func main() {
 	embedded_file = $embed_file('v.png')
 	mutable fw = os.create('exported.png') or { panic(err.msg) }
 	fw.write_bytes(embedded_file.data(), embedded_file.len)
@@ -3437,7 +3437,7 @@ def main() {
 }
 ```
 
-V can embed arbitrary files into the executable with the `$embed_file(<path>)`
+Adorad can embed arbitrary files into the executable with the `$embed_file(<path>)`
 compile time call. Paths can be absolute or relative to the source file.
 
 When you do not use `-prod`, the file will not be embedded. Instead, it will
@@ -3450,21 +3450,21 @@ executable, increasing your binary size, but making it more self contained
 and thus easier to distribute. In this case, `f.data()` will cause *no IO*,
 and it will always return the same data.
 
-#### $tmpl for embedding and parsing V template files
+#### $tmpl for embedding and parsing Adorad template files
 
-V has a simple template language for text and html templates, and they can easily
+Adorad has a simple template language for text and html templates, and they can easily
 be embedded via `$tmpl('path/to/template.txt')`:
 
 
 ```adorad
-def build() string {
+func build() string {
 	name = 'Peter'
 	age = 25
 	numbers = [1, 2, 3]
 	return $tmpl('1.txt')
 }
 
-def main() {
+func main() {
 	print(build())
 }
 ```
@@ -3505,13 +3505,13 @@ numbers: [1, 2, 3]
 ```adorad
 module main
 
-def main() {
+func main() {
 	compile_time_env = $env('ENV_VAR')
 	print(compile_time_env)
 }
 ```
 
-V can bring in values at compile time from environment variables.
+Adorad can bring in values at compile time from environment variables.
 `$env('ENV_VAR')` can also be used in top-level `#flag` and `#include` statements:
 `#flag linux -I $env('JAVA_HOME')/include`.
 
@@ -3519,37 +3519,37 @@ V can bring in values at compile time from environment variables.
 
 If a file has an environment-specific suffix, it will only be compiled for that environment.
 
-- `.js.v` => will be used only by the JS backend. These files can contain JS. code.
-- `.c.v` => will be used only by the C backend. These files can contain C. code.
-- `.x64.v` => will be used only by V's x64 backend.
-- `_nix.c.v` => will be used only on Unix systems (non Windows).
-- `_${os}.c.v` => will be used only on the specific `os` system.
-For example, `_windows.c.v` will be used only when compiling on Windows, or with `-os windows`.
-- `_default.c.v` => will be used only if there is NOT a more specific platform file.
-For example, if you have both `file_linux.c.v` and `file_default.c.v`,
-and you are compiling for linux, then only `file_linux.c.v` will be used,
-and `file_default.c.v` will be ignored.
+- `.js.ad` => will be used only by the JS backend. These files can contain JS. code.
+- `.c.ad` => will be used only by the C backend. These files can contain C. code.
+- `.x64.ad` => will be used only by V's x64 backend.
+- `_nix.c.ad` => will be used only on Unix systems (non Windows).
+- `_${os}.c.ad` => will be used only on the specific `os` system.
+For example, `_windows.c.ad` will be used only when compiling on Windows, or with `-os windows`.
+- `_default.c.ad` => will be used only if there is NOT a more specific platform file.
+For example, if you have both `file_linux.c.ad` and `file_default.c.ad`,
+and you are compiling for linux, then only `file_linux.c.ad` will be used,
+and `file_default.c.ad` will be ignored.
 
 Here is a more complete example:
-main.v:
+main.ad:
 ```adorad
 module main
-def main() { print(message) }
+func main() { print(message) }
 ```
 
-main_default.c.v:
+main_default.c.ad:
 ```adorad
 module main
 const ( message = 'Hello world' )
 ```
 
-main_linux.c.v:
+main_linux.c.ad:
 ```adorad
 module main
 const ( message = 'Hello linux' )
 ```
 
-main_windows.c.v:
+main_windows.c.ad:
 ```adorad
 module main
 const ( message = 'Hello windows' )
@@ -3561,29 +3561,29 @@ With the example above:
 - when you compile for any other platform, you will get the
 non specific 'Hello world' message.
 
-- `_d_customflag.v` => will be used *only* if you pass `-d customflag` to V.
+- `_d_customflag.ad` => will be used *only* if you pass `-d customflag` to V.
 That corresponds to `$if customflag ? {}`, but for a whole file, not just a
 single block. `customflag` should be a snake_case identifier, it can not
 contain arbitrary characters (only lower case latin letters + numbers + `_`).
-NB: a combinatorial `_d_customflag_linux.c.v` postfix will not work.
+NB: a combinatorial `_d_customflag_linux.c.ad` postfix will not work.
 If you do need a custom flag file, that has platform dependent code, use the
-postfix `_d_customflag.v`, and then use plaftorm dependent compile time
+postfix `_d_customflag.ad`, and then use plaftorm dependent compile time
 conditional blocks inside it, i.e. `$if linux {}` etc.
 
 ## Compile time pseudo variables
 
-V also gives your code access to a set of pseudo string variables,
+Adorad also gives your code access to a set of pseudo string variables,
 that are substituted at compile time:
 
-- `@FN` => replaced with the name of the current V function
+- `@FN` => replaced with the name of the current Adorad function
 - `@METHOD` => replaced with ReceiverType.MethodName
-- `@MOD` => replaced with the name of the current V module
-- `@STRUCT` => replaced with the name of the current V struct
-- `@FILE` => replaced with the path of the V source file
-- `@LINE` => replaced with the V line number where it appears (as a string).
+- `@MOD` => replaced with the name of the current Adorad module
+- `@STRUCT` => replaced with the name of the current Adorad struct
+- `@FILE` => replaced with the path of the Adorad source file
+- `@LINE` => replaced with the Adorad line number where it appears (as a string).
 - `@COLUMN` => replaced with the column where it appears (as a string).
-- `@VEXE` => replaced with the path to the V compiler
-- `@VHASH`  => replaced with the shortened commit hash of the V compiler (as a string).
+- `@VEXE` => replaced with the path to the Adorad compiler
+- `@VHASH`  => replaced with the shortened commit hash of the Adorad compiler (as a string).
 - `@VMOD_FILE` => replaced with the contents of the nearest v.mod file (as a string).
 
 That allows you to do the following example, useful while debugging/logging/tracing your code:
@@ -3593,7 +3593,7 @@ eprint('file: ' + @FILE + ' | line: ' + @LINE + ' | def: ' + @MOD + '.' + @FN)
 
 Another example, is if you want to embed the version/name from v.mod *inside* your executable:
 ```adorad
-import v.vmod
+import v.admod
 vm = vmod.decode( @VMOD_FILE ) or { panic(err.msg) }
 eprint('$vm.name $vm.version\n $vm.description')
 ```
@@ -3632,8 +3632,8 @@ the boolean expression is highly improbable. In the JS backend, that does nothin
 
 ## Compile-time reflection
 
-Having built-in JSON support is nice, but V also allows you to create efficient
-serializers for any data format. V has compile-time `if` and `for` constructs:
+Having built-in JSON support is nice, but Adorad also allows you to create efficient
+serializers for any data format. Adorad has compile-time `if` and `for` constructs:
 
 ```adorad
 // TODO: not fully implemented
@@ -3644,7 +3644,7 @@ struct User {
 }
 
 // Note: T should be passed a struct name only
-def decode<T>(data string) T {
+func decode<T>(data string) T {
     mutable result = T{}
     // compile-time `for` loop
     // T.fields gives an tensor of a field metadata type
@@ -3660,7 +3660,7 @@ def decode<T>(data string) T {
 }
 
 // `decode<User>` generates:
-def decode_User(data string) User {
+func decode_User(data string) User {
     mutable result = User{}
     result.name = get_string(data, 'name')
     result.age = get_int(data, 'age')
@@ -3676,19 +3676,19 @@ struct Vec {
 	y int
 }
 
-def (a Vec) str() string {
+func (a Vec) str() string {
 	return '{$a.x, $a.y}'
 }
 
-def (a Vec) + (b Vec) Vec {
+func (a Vec) + (b Vec) Vec {
 	return Vec{a.x + b.x, a.y + b.y}
 }
 
-def (a Vec) - (b Vec) Vec {
+func (a Vec) - (b Vec) Vec {
 	return Vec{a.x - b.x, a.y - b.y}
 }
 
-def main() {
+func main() {
 	a = Vec{2, 3}
 	b = Vec{4, 5}
 	mutable c = Vec{1, 2}
@@ -3722,7 +3722,7 @@ are auto generated when the operators are defined though they must return the sa
 TODO: not implemented yet
 
 ```adorad
-def main() {
+func main() {
     a = 10
     asm x64 {
         mov eax, [a]
@@ -3734,9 +3734,9 @@ def main() {
 
 ## Translating C to V
 
-TODO: translating C to V will be available in Adorad 0.3.
+TODO: translating C to Adorad will be available in Adorad 0.3.
 
-V can translate your C code to human readable V code and generate V wrappers on top of C libraries.
+Adorad can translate your C code to human readable Adorad code and generate Adorad wrappers on top of C libraries.
 
 
 Let's create a simple program `test.c` first:
@@ -3752,10 +3752,10 @@ int main() {
 }
 ```
 
-Run `v translate test.c`, and V will generate `test.v`:
+Run `v translate test.c`, and Adorad will generate `test.ad`:
 
 ```adorad
-def main() {
+func main() {
 	for i = 0; i < 10; i++ {
 		print('hello world')
 	}
@@ -3768,9 +3768,9 @@ To generate a wrapper on top of a C library use this command:
 v wrapper c_code/libsodium/src/libsodium
 ```
 
-This will generate a directory `libsodium` with a V module.
+This will generate a directory `libsodium` with a Adorad module.
 
-Example of a C2V generated libsodium wrapper:
+Example of a C2Adorad generated libsodium wrapper:
 
 https://github.com/medvednikov/libsodium
 
@@ -3781,7 +3781,7 @@ When should you translate C code and when should you simply call C code from V?
 If you have well-written, well-tested C code,
 then of course you can always simply call this C code from V.
 
-Translating it to V gives you several advantages:
+Translating it to Adorad gives you several advantages:
 
 - If you plan to develop that code base, you now have everything in one language,
     which is much safer and easier to develop in than C.
@@ -3797,11 +3797,11 @@ import time
 import os
 
 [live]
-def print_message() {
+func print_message() {
 	print('Hello! Modify this message while the program is running.')
 }
 
-def main() {
+func main() {
 	for {
 		print_message()
 		time.sleep(500 * time.millisecond)
@@ -3809,28 +3809,28 @@ def main() {
 }
 ```
 
-Build this example with `v -live message.v`.
+Build this example with `adorad -live message.ad`.
 
 Functions that you want to be reloaded must have `[live]` attribute
 before their definition.
 
 Right now it's not possible to modify types while the program is running.
 
-More examples, including a graphical application:
-[github.com/vlang/v/tree/master/examples/hot_code_reload](https://github.com/vlang/v/tree/master/examples/hot_reload).
+<!-- More examples, including a graphical application:
+[github.com/vlang/v/tree/master/examples/hot_code_reload](https://github.com/vlang/v/tree/master/examples/hot_reload). -->
 
 ## Cross compilation
 
 To cross compile your project simply run
 
 ```shell
-v -os windows .
+adorad -os windows .
 ```
 
 or
 
 ```shell
-v -os linux .
+adorad -os linux .
 ```
 
 (Cross compiling for macOS is temporarily not possible.)
@@ -3839,22 +3839,22 @@ If you don't have any C dependencies, that's all you need to do. This works even
 when compiling GUI apps using the `ui` module or graphical apps using `gg`.
 
 You will need to install Clang, LLD linker, and download a zip file with
-libraries and include files for Windows and Linux. V will provide you with a link.
+libraries and include files for Windows and Linux. Adorad will provide you with a link.
 
-## Cross-platform shell scripts in V
+## Cross-platform shell scripts in Adorad
 
-V can be used as an alternative to Bash to write deployment scripts, build scripts, etc.
+Adorad can be used as an alternative to Bash to write deployment scripts, build scripts, etc.
 
-The advantage of using V for this is the simplicity and predictability of the language, and
-cross-platform support. "V scripts" run on Unix-like systems as well as on Windows.
+The advantage of using Adorad for this is the simplicity and predictability of the language, and
+cross-platform support. "Adorad scripts" run on Unix-like systems as well as on Windows.
 
-Use the `.vsh` file extension. It will make all functions in the `os`
+Use the `.adsh` file extension. It will make all functions in the `os`
 module global (so that you can use `mkdir()` instead of `os.mkdir()`, for example).
 
-An example `deploy.vsh`:
-```adorad
-#!/usr/bin/env -S v run
-// The shebang above associates the file to V on Unix-like systems,
+An example `deploy.adsh`:
+```bash
+#!/usr/bin/env -S adorad run
+// The shebang above associates the file to Adorad on Unix-like systems,
 // so it can be run just by specifying the path to the file
 // once it's made executable using `chmod +x`.
 
@@ -3864,8 +3864,8 @@ rmdir_all('build') or { }
 // Create build/, never fails as build/ does not exist
 mkdir('build') ?
 
-// Move *.v files to build/
-result = exec('mv *.v build/') ?
+// Move *.ad files to build/
+result = exec('mv *.ad build/') ?
 if result.exit_code != 0 {
 	print(result.output)
 }
@@ -3874,7 +3874,7 @@ if result.exit_code != 0 {
 // mutable count = 0
 // if files.len > 0 {
 //     for file in files {
-//         if file.ends_with('.v') {
+//         if file.ends_with('.ad') {
 //              mv(file, 'build/') or {
 //                  print('err: $err')
 //                  return
@@ -3888,19 +3888,19 @@ if result.exit_code != 0 {
 // }
 ```
 
-Now you can either compile this like a normal V program and get an executable you can deploy and run
+Now you can either compile this like a normal Adorad program and get an executable you can deploy and run
 anywhere:
-`v deploy.vsh && ./deploy`
+`v deploy.adsh && ./deploy`
 
 Or just run it more like a traditional Bash script:
-`v run deploy.vsh`
+`v run deploy.adsh`
 
 On Unix-like platforms, the file can be run directly after making it executable using `chmod +x`:
-`./deploy.vsh`
+`./deploy.adsh`
 
 ## Attributes
 
-V has several attributes that modify the behavior of functions and structs.
+Adorad has several attributes that modify the behavior of functions and structs.
 
 An attribute is a compiler instruction specified inside `[]` right before a
 function/struct/enum declaration and applies only to the following declaration.
@@ -3908,12 +3908,12 @@ function/struct/enum declaration and applies only to the following declaration.
 ```adorad
 // Calling this function will result in a deprecation warning
 [deprecated]
-def old_function() {
+func old_function() {
 }
 
 // This function's calls will be inlined.
 [inline]
-def inlined_function() {
+func inlined_function() {
 }
 
 // The following struct must be allocated on the heap. Therefore, it can only be used as a
@@ -3922,47 +3922,47 @@ def inlined_function() {
 struct Window {
 }
 
-// V will not generate this function and all its calls if the provided flag is false.
+// Adorad will not generate this function and all its calls if the provided flag is false.
 // To use a flag, use `v -d flag`
 [if debug]
-def foo() {
+func foo() {
 }
 
-def bar() {
+func bar() {
 	foo() // will not be called if `-d debug` is not passed
 }
 
 // Calls to this function must be in unsafe{} blocks
 [unsafe]
-def risky_business() {
+func risky_business() {
 }
 
 // V's autofree engine will not take care of memory management in this function
 [manualfree]
-def custom_allocations() {
+func custom_allocations() {
 }
 
-// For C interop only, tells V that the following struct is defined with `typedef struct` in C
+// For C interop only, tells Adorad that the following struct is defined with `typefunc struct` in C
 [typedef]
 struct C.Foo {
 }
 
 // Used in Win32 API code when you need to pass callback function
 [windows_stdcall]
-def C.DefWindowProc(hwnd int, msg int, lparam int, wparam int)
+func C.DefWindowProc(hwnd int, msg int, lparam int, wparam int)
 
 // Windows only:
 // If a default graphics library is imported (ex. gg, ui), then the graphical window takes
 // priority and no console window is created, effectively disabling print() statements.
 // Use to explicity create console window. Valid before main() only.
 [console]
-def main() {
+func main() {
 }
 ```
 
 ## Goto
 
-V allows unconditionally jumping to a label with `goto`. The label name must be contained
+Adorad allows unconditionally jumping to a label with `goto`. The label name must be contained
 within the same function as the `goto` statement. A program may `goto` a label outside
 or deeper than the current scope. `goto` allows jumping past variable initialization or
 jumping back to code that accesses memory that has already been freed, so it requires
@@ -3988,7 +3988,7 @@ a nested loop, and those do not risk violating memory-safety.
 
 ## Appendix I: Keywords
 
-V has 41 reserved keywords (3 are literals):
+Adorad has 41 reserved keywords (3 are literals):
 
 ```adorad
 as
