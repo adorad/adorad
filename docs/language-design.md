@@ -19,7 +19,7 @@ For example:
 import Latte
 
 // This uses a single Adorad file "latte.hz"
-include <latte.hz>
+include <latte.ad>
 ```
 
 You can also create aliases for packages using the ``as`` keyword:
@@ -52,12 +52,12 @@ JIT Engine.
 ## Defining a Function 
 To define a function simply stick the ``def`` keyword infront. Since Adorad is *statically-typed*, each function argument **must** have an associated type to it (this may be a <ins>built-in type</ins> or a <ins>custom type</ins>). Also like everything else in Adorad, you must use the ``{ }`` brackets to define your code block (Adorad's JIT Engine will complain if this is omitted). If you're used to programming in Scala, this won't be much of a jump.
 
-```python
-def do_something(String message) {
+```go
+func do_something(String message) {
     print(message)
 }
 
-def do_something_else(Uint8 num1, Uint8 num2) {
+func do_something_else(Uint8 num1, Uint8 num2) {
     return num1 + num2 
 }
 ```
@@ -69,14 +69,8 @@ macro nullthrows(sourceCodeSnippet) {
     return String(
         const result = ${sourceCodeSnippet}; 
         if (result is null or result is undefined) {
-            throw new Error("Uh oh, this returned null:" + ${String(sourceCodeSnippet)});
+            throw new Error("Uh oh, this returned null:" + {String(#sourceCodeSnippet)});
         } else return result;
     )
 }
 ```
-
-## Defining a Class 
-
-## Memory Managment
-
-
