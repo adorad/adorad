@@ -19,12 +19,51 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #include <adorad/core/vector.h>
 
 typedef struct AstNode AstNode;
+typedef enum AstNodeKind AstNodeKind;
+
 
 // Change values later
-typedef enum AstNodeType {
-    AST_NODE_HELLO,
-    AST_NODE_HELLO2,
-} AstNodeType;
+enum AstNodeKind {
+    NodeKindIdentifier = 0,
+    NodeKindBlock,
+
+    // Functions
+    NodeKindFuncPrototype,
+    NodeKindFuncDef,
+
+    // Literals
+    NodeKindIntLiteral,
+    NodeKindFloatLiteral,
+    NodeKindCharLiteral,
+    NodeKindStringLiteral,
+    NodeKindBoolLiteral,
+    NodeKindNillLiteral,
+    NodeKindEnumLiteral,
+
+    // Declarations
+    NodeKindEnumDecl,
+    NodeKindVarDecl,
+
+    // Expressions
+    NodeKindFuncCallExpr,
+    NodeKindIfExpr,
+    NodeKindForExpr,   // `for {}`
+    NodeKindForCExpr,  // `for i=0; i<10; i++ {}`
+    NodeKindForInExpr, // `for i in 0..10 {}`
+    NodeKindMatchExpr,
+    NodeKindSwitchExpr,
+    NodeKindCatchExpr,
+    NodeKindBinaryOpExpr,
+
+    // Fields
+    NodeKindTypeField,
+
+    NodeKindBreak,
+    NodeKindContinue,
+
+
+
+};
 
 typedef struct AstNodeFuncDef {
     AstNode* prototype;
@@ -39,7 +78,7 @@ enum FuncInline {
 
 typedef struct AstNodeFuncPrototype {
     char* name;
-    cstlVector* params;  // vector of `AstNode*`s -> similar to cstlVector<AstNode*> if C has generics
+    cstlVector* params;  // vector of `AstNode*`s -> similar to cstlVector<AstNode*> if C had generics
     AstNode* return_type;
     AstNode* func_def;
 
@@ -102,7 +141,7 @@ typedef struct AstNodeIdentifier {
 } AstNodeIdentifier;
 
 struct AstNode {
-    AstNodeType type; // type of AST Node
+    AstNodeKind type; // type of AST Node
     UInt64 tok_index; // token index
 
     union {

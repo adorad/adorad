@@ -30,7 +30,6 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #define ALLTOKENS \
     /* Special (internal usage only) */ \
     TOKENKIND(TOK_ILLEGAL = 0,  ""),        \
-    TOKENKIND(TOK_ID,  "TOK_ID"),           \
     TOKENKIND(TOK_EOF, "TOK_EOF"),  /* End of Input */ \
     TOKENKIND(TOK_NULL,"TOK_NULL"),         \
     TOKENKIND(COMMENT, "COMMENT"),          \
