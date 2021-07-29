@@ -11,11 +11,10 @@ SPDX-License-Identifier: MIT
 Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 */
 
-#ifndef HAZEL_TOKEN_H
-#define HAZEL_TOKEN_H
+#ifndef ADORAD_TOKEN_H
+#define ADORAD_TOKEN_H
 
-#include <stdlib.h>
-
+#include <adorad/adorad.h>
 #include <adorad/core/misc.h>
 #include <adorad/core/types.h> 
 
@@ -26,8 +25,8 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 // Set of lexical tokens understood by the Compiler
 // 
 // NOTE: 
-// Any changes made to this function _MUST_ reflect in the toString() (in <Tokens.c>)
-// as well as in Syntax.toml (adorad/compiler/Syntax/Syntax.toml)
+// Any changes made to this function _MUST_ reflect in the token_to_string() (in <adorad/compiler/tokens.c>)
+// as well as in Syntax.toml (adorad/compiler/syntax.toml)
 #define ALLTOKENS \
     /* Special (internal usage only) */ \
     TOKENKIND(TOK_ILLEGAL = 0,  ""),        \
@@ -242,4 +241,4 @@ void token_reset_token(Token* token);
 // Convert a Token to its respective String representation
 char* token_to_string(TokenKind kind);
 
-#endif // HAZEL_TOKEN_H
+#endif // ADORAD_TOKEN_H

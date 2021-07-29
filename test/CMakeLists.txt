@@ -21,7 +21,7 @@ enable_testing()
 include(CTest)
 
 file(GLOB 
-    HAZEL_INTERNAL_TESTS_SOURCES
+    ADORAD_INTERNAL_TESTS_SOURCES
     "Compiler/test_*.c"
 )
 
@@ -34,13 +34,13 @@ file(GLOB
 # Theoretically, this should work and we should be able to test the core logic behind Adorad.
 # Note: This only happens during the CI phase and _should not_ run whenever an external library needs to 
 # link to Adorad
-file(GLOB HAZEL_INTERNALTEST_SOURCES
+file(GLOB ADORAD_INTERNALTEST_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/../AdoradInternalTests/compiler/*.c
 )
-file(GLOB_RECURSE HAZEL_INTERNALTEST_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/../AdoradInternalTests/*.h)
+file(GLOB_RECURSE ADORAD_INTERNALTEST_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/../AdoradInternalTests/*.h)
 
 message("--------- [INFO] Building the Static Library for AdoradInternalTests ")
-add_library(libAdoradInternalTests STATIC ${HAZEL_INTERNALTEST_SOURCES} ${HAZEL_INTERNALTEST_HEADERS})
+add_library(libAdoradInternalTests STATIC ${ADORAD_INTERNALTEST_SOURCES} ${ADORAD_INTERNALTEST_HEADERS})
 # Enable hidden visibility if compiler supports it.
 if(${COMPILER_SUPPORTS_HIDDEN_VISIBILITY})
     target_compile_options(libAdoradInternalTests PRIVATE "-fvisibility=hidden")
@@ -72,7 +72,7 @@ install(TARGETS libAdoradInternalTests DESTINATION lib)
 #############################################################################
 # One executable for each unit test file
 #############################################################################
-foreach(source ${HAZEL_INTERNAL_TESTS_SOURCES})
+foreach(source ${ADORAD_INTERNAL_TESTS_SOURCES})
     get_filename_component(testcase ${source} NAME_WE)
     add_executable(
         ${testcase} # without file extension

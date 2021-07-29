@@ -11,9 +11,10 @@ SPDX-License-Identifier: MIT
 Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 */
 
-#ifndef HAZEL_PARSER_H
-#define HAZEL_PARSER_H
+#ifndef ADORAD_PARSER_H
+#define ADORAD_PARSER_H
 
+#include <adorad/adorad.h>
 #include <adorad/compiler/ast.h>
 #include <adorad/compiler/tokens.h>
 
@@ -35,4 +36,4 @@ static inline TokenKind parser_chomp(Parser* parser);
 // Consumes a token and moves on to the next, if the current token matches the expected token.
 static inline TokenKind parser_chomp_if(Parser* parser, TokenKind tokenkind);
 
-#endif // HAZEL_PARSER_H
+#endif // ADORAD_PARSER_H

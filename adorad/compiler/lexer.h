@@ -10,13 +10,10 @@ Licensed under the MIT License <http://opensource.org/licenses/MIT>
 SPDX-License-Identifier: MIT
 Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 */
-#ifndef HAZEL_LEXER_H
-#define HAZEL_LEXER_H
+#ifndef ADORAD_LEXER_H
+#define ADORAD_LEXER_H
 
-#include <stdio.h>
-#include <string.h>
-#include <stdarg.h>
-
+#include <adorad/adorad.h>
 #include <adorad/core/misc.h>
 #include <adorad/core/types.h>
 #include <adorad/core/string.h> 
@@ -154,4 +151,4 @@ static inline void lexer_lex_digit(Lexer* lexer);
 // Lex the Source files
 static void lexer_lex(Lexer* lexer);
 
-#endif // HAZEL_LEXER_H
+#endif // ADORAD_LEXER_H

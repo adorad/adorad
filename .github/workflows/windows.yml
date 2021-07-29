@@ -33,7 +33,7 @@ jobs:
 
       - name: CMake
         run: |
-          cmake -S . -B build -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DHAZEL_BUILDTESTS=On
+          cmake -S . -B build -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DADORAD_BUILDTESTS=On
 
       - name: Build
         run: |
@@ -73,17 +73,17 @@ jobs:
     - name: CMake (Release, x64)
       if: matrix.build_type == 'Release' && matrix.architecture == 'x64'
       run: |
-        cmake -S . -B build -G "Visual Studio 15 2017" -A ${{ matrix.architecture }} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DHAZEL_BUILDTESTS=On -DCMAKE_EXE_LINKER_FLAGS="/STACK:4000000" -DCMAKE_SYSTEM_VERSION="10.0.18362.0"
+        cmake -S . -B build -G "Visual Studio 15 2017" -A ${{ matrix.architecture }} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DADORAD_BUILDTESTS=On -DCMAKE_EXE_LINKER_FLAGS="/STACK:4000000" -DCMAKE_SYSTEM_VERSION="10.0.18362.0"
       
     - name: CMake (Release, !x64)
       if: matrix.build_type == 'Release' && matrix.architecture != 'x64'
       run: |
-        cmake -S . -B build -G "Visual Studio 15 2017" -A ${{ matrix.architecture }} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DHAZEL_BUILDTESTS=On -DCMAKE_SYSTEM_VERSION="10.0.18362.0"
+        cmake -S . -B build -G "Visual Studio 15 2017" -A ${{ matrix.architecture }} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DADORAD_BUILDTESTS=On -DCMAKE_SYSTEM_VERSION="10.0.18362.0"
 
     - name: CMake (Default Configs)
       if: matrix.build_type != 'Release'
       run: |
-        cmake -S . -B build -G "Visual Studio 15 2017" -A ${{ matrix.architecture }} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DHAZEL_BUILDTESTS=On -DCMAKE_SYSTEM_VERSION="10.0.18362.0"
+        cmake -S . -B build -G "Visual Studio 15 2017" -A ${{ matrix.architecture }} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DADORAD_BUILDTESTS=On -DCMAKE_SYSTEM_VERSION="10.0.18362.0"
 
     - name: Build
       run: |
@@ -105,7 +105,7 @@ jobs:
 
     - name: CMake
       run: |
-        cmake -S . -B build -G "Visual Studio 15 2017" -DCMAKE_BUILD_TYPE=Release -DHAZEL_BUILDTESTS=On -DCMAKE_C_FLAGS="/permissive- /std:c11 /utf-8 /W4" -DCMAKE_SYSTEM_VERSION="10.0.18362.0"
+        cmake -S . -B build -G "Visual Studio 15 2017" -DCMAKE_BUILD_TYPE=Release -DADORAD_BUILDTESTS=On -DCMAKE_C_FLAGS="/permissive- /std:c11 /utf-8 /W4" -DCMAKE_SYSTEM_VERSION="10.0.18362.0"
 
     - name: Build
       run: |
@@ -132,7 +132,7 @@ jobs:
 
     - name: CMake
       run: |
-        cmake -S . -B build -G "Visual Studio 16 2019" -A ${{ matrix.architecture }} -DHAZEL_BUILDTESTS=On -DCMAKE_SYSTEM_VERSION="10.0.18362.0"
+        cmake -S . -B build -G "Visual Studio 16 2019" -A ${{ matrix.architecture }} -DADORAD_BUILDTESTS=On -DCMAKE_SYSTEM_VERSION="10.0.18362.0"
       
     - name: Build
       run: |
@@ -154,7 +154,7 @@ jobs:
 
     - name: CMake
       run: |
-        cmake -S . -B build -G "Visual Studio 16 2019" -DHAZEL_BUILDTESTS=On -DCMAKE_C_FLAGS="/permissive- /std:c++latest /utf-8 /W4" -DCMAKE_SYSTEM_VERSION="10.0.18362.0"
+        cmake -S . -B build -G "Visual Studio 16 2019" -DADORAD_BUILDTESTS=On -DCMAKE_C_FLAGS="/permissive- /std:c++latest /utf-8 /W4" -DCMAKE_SYSTEM_VERSION="10.0.18362.0"
 
     - name: Build
       run: |
@@ -186,7 +186,7 @@ jobs:
 
       - name: CMake
         run: |
-          cmake -S . -B build -G"MinGW Makefiles" -DCMAKE_C_COMPILER="C:/Program Files/LLVM/bin/clang.exe" -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DHAZEL_BUILDTESTS=On
+          cmake -S . -B build -G"MinGW Makefiles" -DCMAKE_C_COMPILER="C:/Program Files/LLVM/bin/clang.exe" -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DADORAD_BUILDTESTS=On
 
       - name: Build
         run: |
@@ -214,7 +214,7 @@ jobs:
 
       - name: CMake
         run: |
-          cmake -S . -B build -G "Visual Studio 16 2019" -A ${{ matrix.architecture }} -T ClangCL -DHAZEL_BUILDTESTS=On
+          cmake -S . -B build -G "Visual Studio 16 2019" -A ${{ matrix.architecture }} -T ClangCL -DADORAD_BUILDTESTS=On
 
       - name: Build
         run: |

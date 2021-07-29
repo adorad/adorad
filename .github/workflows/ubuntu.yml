@@ -31,7 +31,7 @@ jobs:
 
       - name: CMake
         run: |
-          cmake -S . -B build -D CMAKE_BUILD_TYPE=${{ matrix.build_type }} -DHAZEL_BUILDTESTS=On
+          cmake -S . -B build -D CMAKE_BUILD_TYPE=${{ matrix.build_type }} -DADORAD_BUILDTESTS=On
 
       - name: Build 
         run: |
@@ -61,7 +61,7 @@ jobs:
 
       - name: CMake
         run: |
-          cmake -S . -B build -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_C_COMPILER=clang-10 -DHAZEL_BUILDTESTS=On
+          cmake -S . -B build -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_C_COMPILER=clang-10 -DADORAD_BUILDTESTS=On
 
       - name: Build
         run: |

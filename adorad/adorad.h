@@ -13,7 +13,11 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 
 // Includes all the files needed for Adorad compilation
 
-// This ALWAYS needs to be right at the top 
+#include <stdlib.h>
+#include <stdarg.h>
+#include <string.h>
+#include <stdio.h>
+
 #include <adorad/core/hcore.h> 
 
 #include <adorad/compiler/types.h>

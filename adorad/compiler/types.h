@@ -11,47 +11,47 @@ SPDX-License-Identifier: MIT
 Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 */
 
-#ifndef HAZEL_TYPES_H 
-#define HAZEL_TYPES_H 
+#ifndef ADORAD_TYPES_H 
+#define ADORAD_TYPES_H 
 
 // list of Data types/ used in the Adorad Programming Language
 typedef enum {
-    HAZELTYPE_Any, 
-    HAZELTYPE_Null, 
-    HAZELTYPE_Bool, 
-    HAZELTYPE_Byte, 
-    HAZELTYPE_String, 
-    HAZELTYPE_Rune, 
+    ADORADTYPE_Any, 
+    ADORADTYPE_Null, 
+    ADORADTYPE_Bool, 
+    ADORADTYPE_Byte, 
+    ADORADTYPE_String, 
+    ADORADTYPE_Rune, 
 
-    HAZELTYPE_Int8, 
-    HAZELTYPE_Int16, 
-    HAZELTYPE_Int, // Int32
-    HAZELTYPE_Int64, 
-    //HAZELTYPE_Int128, // To be supported in the future 
+    ADORADTYPE_Int8, 
+    ADORADTYPE_Int16, 
+    ADORADTYPE_Int, // Int32
+    ADORADTYPE_Int64, 
+    //ADORADTYPE_Int128, // To be supported in the future 
 
-    HAZELTYPE_Float32, 
-    HAZELTYPE_Float64, 
+    ADORADTYPE_Float32, 
+    ADORADTYPE_Float64, 
 
-    HAZELTYPE_UInt16,
-    HAZELTYPE_UInt32, 
-    HAZELTYPE_UInt64, 
-    //HAZELTYPE_UInt128, // Will be supported in the future
+    ADORADTYPE_UInt16,
+    ADORADTYPE_UInt32, 
+    ADORADTYPE_UInt64, 
+    //ADORADTYPE_UInt128, // Will be supported in the future
 
     // Tensor-related types
-    HAZELTYPE_TensorInt16,
-    HAZELTYPE_TensorInt32, 
-    HAZELTYPE_TensorInt64, 
-    HAZELTYPE_TensorFloat32, 
-    HAZELTYPE_TensorFloat64, 
+    ADORADTYPE_TensorInt16,
+    ADORADTYPE_TensorInt32, 
+    ADORADTYPE_TensorInt64, 
+    ADORADTYPE_TensorFloat32, 
+    ADORADTYPE_TensorFloat64, 
 
     // Complex 
-    HAZELTYPE_Complex32,
-    HAZELTYPE_Complex64,
+    ADORADTYPE_Complex32,
+    ADORADTYPE_Complex64,
 
     // Quaternion
-    HAZELTYPE_Quaternion128, 
-    HAZELTYPE_Quaternion256 
+    ADORADTYPE_Quaternion128, 
+    ADORADTYPE_Quaternion256 
 } AdoradTypes; 
 
 
-#endif // HAZEL_TYPES_H 
+#endif // ADORAD_TYPES_H 

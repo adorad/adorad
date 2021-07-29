@@ -60,25 +60,25 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
     set(IS_MAIN_PROJECT ON)
 endif()
 
-option(HAZEL_BUILDTESTS "Build Adorad test binaries" OFF)
-option(HAZEL_BUILD_STATIC_LIB "Build Adorad Static Library " OFF)
-option(HAZEL_BUILD_SHARED_LIB "Build Adorad Shared Library " OFF)
+option(ADORAD_BUILDTESTS "Build Adorad test binaries" OFF)
+option(ADORAD_BUILD_STATIC_LIB "Build Adorad Static Library " OFF)
+option(ADORAD_BUILD_SHARED_LIB "Build Adorad Shared Library " OFF)
 option(BUILD_DOCS "Build Adorad documentation" OFF)
 
-if(HAZEL_BUILDTESTS)
+if(ADORAD_BUILDTESTS)
     # We need at least a Static Library to build and link with Adorad's Internal Tests
-    if(NOT HAZEL_BUILD_STATIC_LIB)
-        set(HAZEL_BUILD_STATIC_LIB ON)
+    if(NOT ADORAD_BUILD_STATIC_LIB)
+        set(ADORAD_BUILD_STATIC_LIB ON)
     endif()
 endif()
 
 # ------ Options ------
-set(HAZEL_ROOT_DIR                    ${CMAKE_CURRENT_SOURCE_DIR})
-set(HAZEL_BIN_DIR                     ${CMAKE_CURRENT_SOURCE_DIR}/build/bin)
-set(HAZEL_LIB_DIR                     ${CMAKE_CURRENT_SOURCE_DIR}/build/lib)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY   ${HAZEL_BIN_DIR})
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY   ${HAZEL_LIB_DIR})
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY   ${HAZEL_LIB_DIR})
+set(ADORAD_ROOT_DIR                    ${CMAKE_CURRENT_SOURCE_DIR})
+set(ADORAD_BIN_DIR                     ${CMAKE_CURRENT_SOURCE_DIR}/build/bin)
+set(ADORAD_LIB_DIR                     ${CMAKE_CURRENT_SOURCE_DIR}/build/lib)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY   ${ADORAD_BIN_DIR})
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY   ${ADORAD_LIB_DIR})
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY   ${ADORAD_LIB_DIR})
 
 
 # ------Compiler and linker options ------
@@ -182,6 +182,6 @@ set(BUILD_SHARED_LIBS OFF)
 # ------ Main Build ------
 add_subdirectory(adorad)
 
-if(HAZEL_BUILDTESTS)
+if(ADORAD_BUILDTESTS)
     add_subdirectory(test)
 endif()

@@ -11,9 +11,10 @@ SPDX-License-Identifier: MIT
 Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 */
 
-#ifndef HAZEL_AST_H
-#define HAZEL_AST_H
+#ifndef ADORAD_AST_H
+#define ADORAD_AST_H
 
+#include <adorad/adorad.h>
 #include <adorad/core/types.h>
 #include <adorad/core/vector.h>
 
@@ -114,4 +115,4 @@ struct AstNode {
     } data;
 };
 
-#endif // HAZEL_AST_H
+#endif // ADORAD_AST_H

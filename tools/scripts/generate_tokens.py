@@ -58,8 +58,8 @@ token_h_template = """\
 
 #if 0
 // Token Types 
-#ifndef HAZEL_TOKEN_H
-#define HAZEL_TOKEN_H
+#ifndef ADORAD_TOKEN_H
+#define ADORAD_TOKEN_H
 
 // #ifdef __cplusplus
 // namespace Adorad {
@@ -90,7 +90,7 @@ TokenNames* token_init(int type, char* value);
 #endif
 
 #endif 0 // if 0
-#endif // HAZEL_TOKEN_H
+#endif // ADORAD_TOKEN_H
 """
 
 
