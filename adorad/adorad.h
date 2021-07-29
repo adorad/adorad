@@ -17,6 +17,8 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #include <stdarg.h>
 #include <string.h>
 #include <stdio.h>
+#include <sys/stat.h>
+#include <time.h>
 
 #include <adorad/core/hcore.h> 
 
