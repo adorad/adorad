@@ -84,19 +84,6 @@ typedef struct AstNodeVarDecl {
     bool is_mutable;  // This is false unless explicitly mentioned by the user
 } AstNodeVarDecl;
 
-struct AstNode {
-    AstNodeType type; // type of AST Node
-    UInt64 tok_index; // token index
-
-    union {
-        AstNodeFuncDef* func_def;
-        AstNodeParamDecls* param_decls;
-        AstNodeReturnExpr* return_type;
-        AstNodeDefer* defer;
-        AstNodeVarDecl* var_decl;
-    } data;
-};
-
 enum IdentifierKind {
     IdentifierKindBlankIdent, // `_`
     IdentifierKindVariable,
@@ -112,5 +99,19 @@ typedef struct AstNodeIdentifier {
     bool is_export;
     bool is_mutable;  // This is false unless explicitly mentioned by the user
 } AstNodeIdentifier;
+
+struct AstNode {
+    AstNodeType type; // type of AST Node
+    UInt64 tok_index; // token index
+
+    union {
+        AstNodeFuncDef* func_def;
+        AstNodeParamDecls* param_decls;
+        AstNodeReturnExpr* return_type;
+        AstNodeDefer* defer;
+        AstNodeVarDecl* var_decl;
+        AstNodeIdentifier* identifier;
+    } data;
+};
 
 #endif // HAZEL_AST_H
