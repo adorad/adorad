@@ -11,8 +11,8 @@ SPDX-License-Identifier: MIT
 Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 */
 
-#ifndef _CSTL_CORE_CSTL_H
-#define _CSTL_CORE_CSTL_H
+#ifndef CSTL_CORE_CSTL_H
+#define CSTL_CORE_CSTL_H
 
 /** 
     Jason Dsouza's (jasmcaus) C Helper Library 
@@ -68,4 +68,4 @@ CREDITS
 #include <adorad/core/string.h>
 #include <adorad/core/vector.h>
 
-#endif // _CSTL_CORE_CSTL_H
+#endif // CSTL_CORE_CSTL_H
