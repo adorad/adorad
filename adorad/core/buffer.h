@@ -44,7 +44,7 @@ static char* buff_end(cstlBuffer* buffer);
 // Is the buffer data empty?
 static bool buff_is_empty(cstlBuffer* buffer);
 // Assign `new` to the buffer data
-static void buff_set(cstlBuffer* buffer, char* new);
+static void buff_set(cstlBuffer* buffer, char* new_buff);
 // Free the cstlBuffer from it's associated memory
 static void buff_free(cstlBuffer* buffer);
 
@@ -108,11 +108,11 @@ static bool buff_is_empty(cstlBuffer* buffer) {
 }
 
 // Assign `new` to the buffer data
-static void buff_set(cstlBuffer* buffer, char* new) {
+static void buff_set(cstlBuffer* buffer, char* new_buff) {
     CSTL_CHECK_NOT_NULL(buffer, "Expected not null");
 
-    buffer->data = new;
-    buffer->length = (UInt64)strlen(new);
+    buffer->data = new_buff;
+    buffer->length = (UInt64)strlen(new_buff);
 }
 
 // Free the cstlBuffer from it's associated memory
