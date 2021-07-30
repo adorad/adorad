@@ -24,7 +24,9 @@ configure_file(
 file(GLOB LIBADORAD_SOURCES
     compiler/*.c
 )
-file(GLOB_RECURSE ADORAD_HEADERS *.h)
+file(GLOB_RECURSE ADORAD_HEADERS 
+    *.h
+)
 
 # 
 # Build the Shared/Static Library
@@ -81,6 +83,7 @@ if(ADORAD_BUILD_SHARED_LIB)
             $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}>
             # This is here out of convenience. You might break a test or two if this is removed.
             $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}>
+            $<BUILD_INTERFACE:${CMAKE_PROJECT_SOURCE_DIR}>
             $<INSTALL_INTERFACE:include>
         )
 

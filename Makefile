@@ -27,3 +27,7 @@ test:
 testclean:
 	rm test.exe 
 .PHONY: testclean
+
+emitoutput:
+	gcc -E adorad/compiler/tokens.h -I . -o adoradoutput.txt
+.PHONY: emitoutput
