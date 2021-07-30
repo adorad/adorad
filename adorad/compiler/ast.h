@@ -22,7 +22,6 @@ typedef struct AstNode AstNode;
 typedef enum AstNodeKind AstNodeKind;
 
 
-// Change values later
 enum AstNodeKind {
     NodeKindIdentifier = 0,
     NodeKindBlock,
