@@ -36,6 +36,8 @@ char* readFile(const char* fname) {
     
     if(!file) {
         printf("Could not open file: <%s>\n", fname);
+        printf("%s\n", !file_exists(fname) ?  
+                            "FileNotFoundError: File does not exist." : "");
         exit(1);
     }
 

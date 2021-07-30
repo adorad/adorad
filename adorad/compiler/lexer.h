@@ -34,6 +34,13 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
         1. ASCII Table: http://www.theasciicode.com.ar 
 */
 
+// This macro defines how many tokens we initially expect in lexer->tokenList. 
+// When this limit is reached, we realloc using this same constant (TOKENLIST_ALLOC_CAPACITY * sizeof(Token)) bytes 
+// at a time (which works out to around 0.26MB) per (re)allocation
+#define TOKENLIST_ALLOC_CAPACITY    8192
+// Maximum length of an individual token
+#define MAX_TOKEN_LENGTH            256
+
 typedef struct Lexer {
     const cstlBuffer* buffer; // the Lexical buffer
     UInt32 offset;            // current buffer offset (in Bytes) 
