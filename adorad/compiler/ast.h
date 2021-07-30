@@ -14,15 +14,12 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #ifndef ADORAD_AST_H
 #define ADORAD_AST_H
 
-#include <adorad/adorad.h>
 #include <adorad/core/types.h>
 #include <adorad/core/vector.h>
 
 typedef struct AstNode AstNode;
-typedef enum AstNodeKind AstNodeKind;
 
-
-enum AstNodeKind {
+typedef enum AstNodeKind {
     NodeKindIdentifier = 0,
     NodeKindBlock,
 
@@ -57,7 +54,7 @@ enum AstNodeKind {
 
     NodeKindBreak,         // `break`
     NodeKindContinue,      // `continue`
-};
+} AstNodeKind;
 
 typedef struct AstNodeFuncDef {
     AstNode* prototype;
