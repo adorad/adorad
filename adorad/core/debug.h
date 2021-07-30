@@ -17,6 +17,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #include <stdarg.h>
 #include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <adorad/core/os.h>
 #include <adorad/core/headers.h>
 #include <adorad/core/misc.h>
