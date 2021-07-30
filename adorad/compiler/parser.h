@@ -14,7 +14,6 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #ifndef ADORAD_PARSER_H
 #define ADORAD_PARSER_H
 
-#include <adorad/adorad.h>
 #include <adorad/compiler/ast.h>
 #include <adorad/compiler/tokens.h>
 
@@ -23,7 +22,7 @@ typedef struct Parser {
 } Parser;
 
 static Parser* parser_init();
-static AstNode* ast_create_node(Parser* parser, AstNodeType type);
+static AstNode* ast_create_node(AstNodeKind type);
 
 static inline TokenKind parser_peek_token(Parser* parser);
 

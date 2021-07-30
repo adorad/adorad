@@ -11,6 +11,7 @@ SPDX-License-Identifier: MIT
 Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 */
 
+#include <stdlib.h>
 #include <adorad/compiler/parser.h>
 
 // Initialize a new Parser
@@ -48,7 +49,7 @@ static inline TokenKind parser_expect_token(Parser* parser, TokenKind tokenkind)
     exit(1);
 }
 
-static AstNode* ast_create_node(AstNodeType type) {
+static AstNode* ast_create_node(AstNodeKind type) {
     AstNode* node = (AstNode*)calloc(1, sizeof(AstNode));
     node->type = type;
     return node;
