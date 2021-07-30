@@ -73,9 +73,9 @@ if(ADORAD_BUILDTESTS)
 endif()
 
 # ------ Options ------
-set(ADORAD_ROOT_DIR                    ${CMAKE_CURRENT_SOURCE_DIR})
-set(ADORAD_BIN_DIR                     ${CMAKE_CURRENT_SOURCE_DIR}/build/bin)
-set(ADORAD_LIB_DIR                     ${CMAKE_CURRENT_SOURCE_DIR}/build/lib)
+set(ADORAD_ROOT_DIR                  ${CMAKE_CURRENT_SOURCE_DIR})
+set(ADORAD_BIN_DIR                   ${CMAKE_CURRENT_SOURCE_DIR}/build/bin)
+set(ADORAD_LIB_DIR                   ${CMAKE_CURRENT_SOURCE_DIR}/build/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY   ${ADORAD_BIN_DIR})
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY   ${ADORAD_LIB_DIR})
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY   ${ADORAD_LIB_DIR})
