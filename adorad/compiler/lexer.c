@@ -11,7 +11,58 @@ SPDX-License-Identifier: MIT
 Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 */
 
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+
 #include <adorad/compiler/lexer.h>
+
+// This macro defines how many tokens we initially expect in lexer->tokenList. 
+// When this limit is reached, we realloc using this same constant (TOKENLIST_ALLOC_CAPACITY * sizeof(Token)) bytes 
+// at a time (which works out to around 0.26MB) per (re)allocation
+#define TOKENLIST_ALLOC_CAPACITY    8192
+// Maximum length of an individual token
+#define MAX_TOKEN_LENGTH            256
+
+// Get the current character in the Lexical buffer
+// NB: This does not increase the offset
+#define LEXER_CURR_CHAR                   lexer->buffer->at(lexer->buffer, lexer->offset)
+
+// Reset the line
+#define LEXER_RESET_LINENO                lexer->lineno = 0
+// Reset the column number 
+#define LEXER_RESET_COLNO                 lexer->colno = 0
+
+// Increment the line number
+#define LEXER_INCREMENT_LINENO            ++lexer->lineno; LEXER_RESET_COLNO
+// Decrement the lineno
+#define LEXER_DECREMENT_LINENO            --lexer->lineno; LEXER_RESET_COLNO
+// Increment the column number
+#define LEXER_INCREMENT_COLNO             ++lexer->colno 
+// Decrement the colno
+#define LEXER_DECREMENT_COLNO             --lexer->colno
+
+// Increment the Lexical Buffer offset
+#define LEXER_INCREMENT_OFFSET            ++lexer->offset; LEXER_INCREMENT_COLNO
+// Decrement the Lexical Buffer offset
+#define LEXER_DECREMENT_OFFSET            --lexer->offset; LEXER_DECREMENT_COLNO
+
+// Increment the Lexical Buffer offset without affecting `colno`
+#define LEXER_INCREMENT_OFFSET_ONLY       ++lexer->offset;
+// Decrement the Lexical Buffer offset without affecting `colno`
+#define LEXER_DECREMENT_OFFSET_ONLY       --lexer->offset;
+
+// Reset the buffer 
+#define LEXER_RESET_BUFFER              \
+    lexer->buffer->free(lexer->buffer)
+
+// Reset the Lexer state
+#define LEXER_RESET                     \
+    lexer->buffer->free(lexer->buffer); \
+    lexer->offset = 0;                  \
+    lexer->lineno = 1;                  \
+    lexer->colno = 1;                   \
+    lexer->fname = ""
 
 // String representation of a TokenKind
 // To access the string representation of a TokenKind object, simply use `tokenHash[tokenkind]`
