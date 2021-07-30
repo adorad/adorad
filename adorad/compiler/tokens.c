@@ -11,6 +11,7 @@ SPDX-License-Identifier: MIT
 Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 */
 
+#include <stdlib.h>
 #include <adorad/compiler/tokens.h>
 
 // Token constructor

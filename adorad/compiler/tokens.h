@@ -14,19 +14,17 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #ifndef ADORAD_TOKEN_H
 #define ADORAD_TOKEN_H
 
-#include <adorad/adorad.h>
 #include <adorad/core/misc.h>
 #include <adorad/core/types.h> 
 
+/*
+    `tokens.h` defines constants representing the lexical tokens of the Adorad programming language and basic operations
+    on tokens (printing, predicates).
 
-// tokens.h defines constants representing the lexical tokens of the Adorad programming language and basic operations on 
-// tokens (printing, predicates).
-
-// Set of lexical tokens understood by the Compiler
-// 
-// NOTE: 
-// Any changes made to this function _MUST_ reflect in the token_to_string() (in <adorad/compiler/tokens.c>)
-// as well as in Syntax.toml (adorad/compiler/syntax.toml)
+    NOTE: 
+    Any changes made to this function _MUST_ be reflect in the token_to_string() (in <adorad/compiler/tokens.c>)
+    as well as in Syntax.toml (adorad/compiler/syntax/syntax.toml)
+*/
 #define ALLTOKENS \
     /* Special (internal usage only) */ \
     TOKENKIND(TOK_ILLEGAL = 0,  ""),        \
@@ -216,14 +214,14 @@ TOKENKIND(TOK___KEYWORDS_END, ""),    \
 \
     TOKENKIND(TOK_COUNT, "")
 
-typedef enum {
+typedef enum TokenKind {
     #define TOKENKIND(kind, str)     kind
         ALLTOKENS
     #undef TOKENKIND
 } TokenKind;
 
 // Main Token Struct 
-typedef struct {
+typedef struct Token {
     TokenKind kind;     // Token Kind
     UInt32 offset;      // Offset of the first character of the Token
     const char* value;  // Token value
