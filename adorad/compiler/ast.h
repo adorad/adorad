@@ -309,4 +309,21 @@ struct AstNode {
     } data;
 };
 
+// The `import` statement
+typedef struct AstImport {
+    char* module;  // the module name
+    char* alias;   // the `y` in `import x as y`
+} AstImport;
+
+// Each Adorad source file can be represented by one AstFile structure.
+typedef struct AstFile {
+    char* path;     // full path of the source file - `/path/to/file.ad`
+    char* basepath; // file name - `file.ad` (useful for tracing)
+    int num_lines;  // number of source code lines in the file (including comments)
+    int num_bytes;  // number of processed source code bytes
+    // TODO (jasmcaus) Change the type of `module` to an `AstNodeModule`
+    char* module;   // name of the module
+    bool is_test;   // true for test_*.ad files
+} AstFile;
+
 #endif // ADORAD_AST_H
