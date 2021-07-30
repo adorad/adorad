@@ -13,17 +13,10 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 
 // Includes all the files needed for Adorad compilation
 
-#include <stdlib.h>
-#include <stdarg.h>
-#include <string.h>
-#include <stdio.h>
-#include <sys/stat.h>
-#include <time.h>
-
-#include <adorad/core/hcore.h> 
+#include <adorad/core/hcore.h>
 
 #include <adorad/compiler/types.h>
-#include <adorad/compiler/tokens.h>  
+#include <adorad/compiler/tokens.h>
 #include <adorad/compiler/lexer.h>
 #include <adorad/compiler/ast.h>
 #include <adorad/compiler/parser.h>
