@@ -16,41 +16,41 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 
 // list of Data types/ used in the Adorad Programming Language
 typedef enum {
-    ADORADTYPE_Any, 
-    ADORADTYPE_Null, 
-    ADORADTYPE_Bool, 
-    ADORADTYPE_Byte, 
-    ADORADTYPE_String, 
-    ADORADTYPE_Rune, 
+    AdoradTypeAny, 
+    AdoradTypeNull, 
+    AdoradTypeBool, 
+    AdoradTypeByte, 
+    AdoradTypeString, 
+    AdoradTypeRune, 
 
-    ADORADTYPE_Int8, 
-    ADORADTYPE_Int16, 
-    ADORADTYPE_Int, // Int32
-    ADORADTYPE_Int64, 
-    //ADORADTYPE_Int128, // To be supported in the future 
+    AdoradTypeInt8, 
+    AdoradTypeInt16, 
+    AdoradTypeInt, // Int32
+    AdoradTypeInt64, 
+    //AdoradTypeInt128, // To be supported in the future 
 
-    ADORADTYPE_Float32, 
-    ADORADTYPE_Float64, 
+    AdoradTypeFloat32, 
+    AdoradTypeFloat64, 
 
-    ADORADTYPE_UInt16,
-    ADORADTYPE_UInt32, 
-    ADORADTYPE_UInt64, 
-    //ADORADTYPE_UInt128, // Will be supported in the future
+    AdoradTypeUInt16,
+    AdoradTypeUInt32, 
+    AdoradTypeUInt64, 
+    //AdoradTypeUInt128, // Will be supported in the future
 
     // Tensor-related types
-    ADORADTYPE_TensorInt16,
-    ADORADTYPE_TensorInt32, 
-    ADORADTYPE_TensorInt64, 
-    ADORADTYPE_TensorFloat32, 
-    ADORADTYPE_TensorFloat64, 
+    AdoradTypeTensorInt16,
+    AdoradTypeTensorInt32, 
+    AdoradTypeTensorInt64, 
+    AdoradTypeTensorFloat32, 
+    AdoradTypeTensorFloat64, 
 
     // Complex 
-    ADORADTYPE_Complex32,
-    ADORADTYPE_Complex64,
+    AdoradTypeComplex32,
+    AdoradTypeComplex64,
 
     // Quaternion
-    ADORADTYPE_Quaternion128, 
-    ADORADTYPE_Quaternion256 
+    AdoradTypeQuaternion128, 
+    AdoradTypeQuaternion256 
 } AdoradTypes; 
 
 
