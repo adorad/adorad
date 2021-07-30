@@ -15,14 +15,10 @@ FetchContent_Declare(
     URL https://github.com/jasmcaus/tau/archive/dev.zip
 )
 FetchContent_MakeAvailable(Tau)
-# add_subdirectory("F:/Documents/Dev/Github/tau" "Tau" EXCLUDE_FROM_ALL)
-
-enable_testing()
-include(CTest)
 
 file(GLOB 
     ADORAD_INTERNAL_TESTS_SOURCES
-    "Compiler/test_*.c"
+    "compiler/test_*.c"
 )
 
 # We need to create a separate library that links to our tests
@@ -37,7 +33,9 @@ file(GLOB
 file(GLOB ADORAD_INTERNALTEST_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/../AdoradInternalTests/compiler/*.c
 )
-file(GLOB_RECURSE ADORAD_INTERNALTEST_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/../AdoradInternalTests/*.h)
+file(GLOB_RECURSE ADORAD_INTERNALTEST_HEADERS 
+    ${CMAKE_CURRENT_SOURCE_DIR}/../AdoradInternalTests/*.h
+)
 
 message("--------- [INFO] Building the Static Library for AdoradInternalTests ")
 add_library(libAdoradInternalTests STATIC ${ADORAD_INTERNALTEST_SOURCES} ${ADORAD_INTERNALTEST_HEADERS})

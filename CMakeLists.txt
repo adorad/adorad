@@ -183,5 +183,8 @@ set(BUILD_SHARED_LIBS OFF)
 add_subdirectory(adorad)
 
 if(ADORAD_BUILDTESTS)
+    message("--------- [INFO] Building Adorad Tests")
+    enable_testing()
+    include(CTest)
     add_subdirectory(test)
 endif()
