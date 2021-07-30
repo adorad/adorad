@@ -78,8 +78,21 @@ typedef struct AstNodeFuncPrototype {
     bool is_extern;
     bool is_generic;
     bool is_var_args;  // variable arguments used?
-    bool is_mutable;   // This is false unless explicitly mentioned
 } AstNodeFuncPrototype;
+
+enum FuncCallModifier {
+    FuncCallModifierNone,
+    FuncCallModifierAsync,
+    FuncCallModifierNeverInline,
+    FuncCallModifierAlwaysInline,
+    FuncCallModifierCompileTime
+};
+
+typedef struct AstNodeFuncCallExpr {
+    AstNode* func_call_expr;
+    cstlVector* params;
+    enum FuncCallModifier modifier;
+} AstNodeFuncCallExpr;
 
 typedef struct AstNodeParamDecls {
     char* name;
@@ -88,19 +101,11 @@ typedef struct AstNodeParamDecls {
     bool is_var_args;
 } AstNodeParamDecls;
 
-// From Zig. Not sure if this will suit our purposes
-enum ReturnKind {
-    ReturnKindUnconditional,
-    ReturnKindError
-};
-
 typedef struct AstNodeReturnExpr {
-    enum ReturnKind kind;
     AstNode* expr;
 } AstNodeReturnExpr;
 
 typedef struct AstNodeDefer {
-    enum ReturnKind kind;
     AstNode* expr;
 } AstNodeDefer;
 
@@ -131,17 +136,176 @@ typedef struct AstNodeIdentifier {
     bool is_mutable;  // This is false unless explicitly mentioned by the user
 } AstNodeIdentifier;
 
+typedef struct AstNodeBlock {
+    char* name;
+    cstlVector* statements;
+} AstNodeBlock;
+
+typedef struct AstNodeTestDecl {
+    char* name;   // can be nullptr if no name
+    AstNode* body;
+} AstNodeTestDecl;
+
+typedef struct AstNodeTestExpr {
+    char* symbol;
+    AstNode* target_node;
+    AstNode* then_node;
+    AstNode* else_node;  // null, block node, or an `if expr` node
+} AstNodeTestExpr;
+
+enum BinaryOpKind {
+    BinaryOpKindAssignmentInvalid,
+    BinaryOpKindAssignmentPlus,    // =+
+    BinaryOpKindAssignmentMinus,   // =-
+    BinaryOpKindAssignmentMult,    // =*
+    BinaryOpKindAssignmentDiv,     // =/
+    BinaryOpKindAssignmentMod,     // =%
+    BinaryOpKindAssignmentBitshiftLeft,  // =<<
+    BinaryOpKindAssignmentBitshiftRight, // =>>
+    BinaryOpKindAssignmentBitAnd,  // &
+    BinaryOpKindAssignmentBitOr,   // |
+    BinaryOpKindAssignmentBitXor,  // ^
+    BinaryOpKindBoolAnd,
+    BinaryOpKindBoolOr,
+    BinaryOpKindCmpEqual,                 // ==
+    BinaryOpKindCmpNotEqual,              // !=
+    BinaryOpKindCmpLessThan,              // <
+    BinaryOpKindCmpGreaterThan,           // >
+    BinaryOpKindCmpLessThanorEqualTo,     // <=
+    BinaryOpKindCmpGreaterThanorEqualTo,  // >=
+    BinaryOpKindBinaryAnd,
+    BinaryOpKindBinaryOr,
+    BinaryOpKindBinaryXor,
+    BinaryOpKindBitshitLeft,   // <<
+    BinaryOpKindBitshitRight,  // >>
+    BinaryOpKindAdd,      // +
+    BinaryOpKindSubtract, // -
+    BinaryOpKindMult,     // *
+    BinaryOpKindDiv,      // /
+    BinaryOpKindMod,      // %
+    BinaryOpKindTensorSlice,
+    BinaryOpKindTensorMult
+};
+
+typedef struct AstNodeBinaryOpExpr {
+    AstNode* op1;
+    enum BinaryOpKind binary_op;
+    AstNode* op2;
+} AstNodeBinaryOpExpr;
+
+enum PrefixOpKind {
+    PrefixOpKindInvalid,
+    PrefixOpKindBoolNot,
+    PrefixOpKindBinaryNot, 
+    PrefixOpKindNegation,  // !var
+    PrefixOpKindAddrOf     // &var
+};
+
+typedef struct AstNodePrefixOpExpr {
+    enum PrefixOpKind prefix_op;
+    AstNode* expr;
+} AstNodePrefixOpExpr;
+
+typedef struct AstNodeTryExpr {
+    char* symbol;
+    AstNode* target_node;
+    AstNode* then_node;
+    AstNode* else_node;
+    char* err_symbol;
+} AstNodeTryExpr;
+
+typedef struct AstNodeCatchExpr {
+    AstNode* op1;
+    AstNode* symbol; // can be nullptr
+    AstNode* op2;
+} AstNodeCatchExpr;
+
+typedef struct AstNodeIfBoolExpr {
+    AstNode* condition;
+    AstNode* then_block;
+    AstNode* else_node; // null, block node, or other `if expr` node
+} AstNodeIfBoolExpr;
+
+typedef struct AstNodeForExpr {
+    char* name;
+    AstNode* condition;
+    AstNode* continue_expr;
+    AstNode* body;
+} AstNodeForExpr;
+
+typedef struct AstNodeMatchExpr {
+    AstNode* expr;
+    cstlVector* patterns;
+} AstNodeMatchExpr;
+
+typedef struct AstNodeMatchRange {
+    AstNode* start;
+    AstNode* end;
+} AstNodeMatchRange;
+
+typedef struct AstNodeCompileTime {
+    AstNode* expr;
+} AstNodeCompileTime;
+
+enum ContainerKind {
+    ContainerKindEnum,
+    ContainerKindUnion
+};
+
+enum ContainerLayoutKind {
+    ContainerLayoutKindAuto,
+    ContainerLayoutKindPacked
+};
+
+typedef struct AstNodeContainerDecl {
+    cstlVector* fields;
+    cstlVector* decls;
+    enum ContainerKind kind;
+    enum ContainerLayoutKind layout;
+} AstNodeContainerDecl;
+
+typedef struct AstNodeBoolLiteral {
+    bool value;
+} AstNodeBoolLiteral;
+
+typedef struct AstNodeBreakLiteral {
+    char* name;
+    AstNode* expr; // can be nullptr
+} AstNodeBreakLiteral;
+
+typedef struct AstNodeContinueLiteral {
+    char* name;
+} AstNodeContinueLiteral;
+
 struct AstNode {
     AstNodeKind type; // type of AST Node
     UInt64 tok_index; // token index
 
     union {
         AstNodeFuncDef* func_def;
+        AstNodeFuncPrototype* func_proto;
+        AstNodeFuncCallExpr* func_call_expr;
         AstNodeParamDecls* param_decls;
         AstNodeReturnExpr* return_type;
         AstNodeDefer* defer;
         AstNodeVarDecl* var_decl;
         AstNodeIdentifier* identifier;
+        AstNodeBlock* block;
+        AstNodeTestDecl* test_decl;
+        AstNodeTestExpr* test_expr;
+        AstNodeBinaryOpExpr* binary_op_expr;
+        AstNodePrefixOpExpr* prefix_op_expr;
+        AstNodeTryExpr* try_expr;
+        AstNodeCatchExpr* catch_expr;
+        AstNodeIfBoolExpr* if_bool_expr;
+        AstNodeForExpr* for_expr;
+        AstNodeMatchExpr* match_expr;
+        AstNodeMatchRange* match_range;
+        AstNodeCompileTime* compile_time_expr;
+        AstNodeContainerDecl* container_decl;
+        AstNodeBoolLiteral* bool_literal;
+        AstNodeBreakLiteral* break_literal;
+        AstNodeContinueLiteral* continue_literal;
     } data;
 };
 
