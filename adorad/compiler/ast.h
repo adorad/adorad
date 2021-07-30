@@ -29,40 +29,35 @@ enum AstNodeKind {
 
     // Functions
     NodeKindFuncPrototype,
-    NodeKindFuncDef,
+    NodeKindFuncDef,      // 
 
     // Literals
-    NodeKindIntLiteral,
-    NodeKindFloatLiteral,
-    NodeKindCharLiteral,
-    NodeKindStringLiteral,
-    NodeKindBoolLiteral,
-    NodeKindNillLiteral,
-    NodeKindEnumLiteral,
+    NodeKindIntLiteral,    // `2`
+    NodeKindFloatLiteral,  // `3.4224829`
+    NodeKindCharLiteral,   // 'a', 'b'...
+    NodeKindStringLiteral, // 'str` or "str"
+    NodeKindBoolLiteral,   // `bool`
+    NodeKindNillLiteral,   // `nil`
 
     // Declarations
-    NodeKindEnumDecl,
-    NodeKindVarDecl,
+    NodeKindEnumDecl,      // `enum Fruits { ... }`
+    NodeKindVarDecl,       // `some_type var_name = ...`
 
     // Expressions
-    NodeKindFuncCallExpr,
-    NodeKindIfExpr,
-    NodeKindForExpr,   // `for {}`
-    NodeKindForCExpr,  // `for i=0; i<10; i++ {}`
-    NodeKindForInExpr, // `for i in 0..10 {}`
-    NodeKindMatchExpr,
-    NodeKindSwitchExpr,
-    NodeKindCatchExpr,
+    NodeKindFuncCallExpr,  // `sayHello('Hello!')`
+    NodeKindIfExpr,        // `if cond { ...}`
+    NodeKindForExpr,       // `for {}`
+    NodeKindForCExpr,      // `for i=0; i<10; i++ {}`
+    NodeKindForInExpr,     // `for i in 0..10 {}`
+    NodeKindMatchExpr,     // `match expr { ... }`
+    NodeKindCatchExpr,     // `catch Error`
     NodeKindBinaryOpExpr,
 
     // Fields
-    NodeKindTypeField,
+    NodeKindTypeField,     // `type name { ... }`
 
-    NodeKindBreak,
-    NodeKindContinue,
-
-
-
+    NodeKindBreak,         // `break`
+    NodeKindContinue,      // `continue`
 };
 
 typedef struct AstNodeFuncDef {
