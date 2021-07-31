@@ -53,6 +53,10 @@ if(ADORAD_BUILD_STATIC_LIB)
         $<INSTALL_INTERFACE:include>
     )
 
+    target_compile_definitions(libAdoradStatic PUBLIC
+        _ADORAD_=1
+    )
+
     # Build the executable
     # main.c (or whatever demo file you want to link against)
     add_executable(AdoradStatic ${CMAKE_CURRENT_SOURCE_DIR}/main.c)
@@ -87,6 +91,9 @@ if(ADORAD_BUILD_SHARED_LIB)
             $<INSTALL_INTERFACE:include>
         )
 
+        target_compile_definitions(libAdoradShared PUBLIC
+            _ADORAD_=1
+        )
 
         # Build the executable
         # main.c (or whatever demo file you want to link against) =
