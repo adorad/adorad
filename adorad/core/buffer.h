@@ -23,6 +23,7 @@ struct cstlBuffer {
     char* data;    // buffer data
     UInt64 length; // buffer size
 
+#ifndef _ADORAD_
     char (*at)(cstlBuffer*, UInt64);
     // Front and back iterators
     char* (*begin)(cstlBuffer*);
@@ -31,6 +32,7 @@ struct cstlBuffer {
     // Buffer things
     void (*set)(cstlBuffer*, char*);
     void(*free)(cstlBuffer*);
+#endif // _ADORAD_
 };
 
 // Create a new `cstlBuffer`
@@ -62,12 +64,15 @@ static cstlBuffer* buff_new(char* buff_data) {
 
     buffer->data = buff_data;
     buffer->length = len;
+
+#ifndef _ADORAD_
     buffer->at = &buff_at;
     buffer->begin = &buff_begin;
     buffer->end = &buff_end;
     buffer->is_empty = &buff_is_empty;
     buffer->set = &buff_set;
     buffer->free = &buff_free;
+#endif // _ADORAD_
 
     return buffer;
 }
