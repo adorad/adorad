@@ -19,6 +19,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #include <sys/stat.h>
 
 #include <adorad/core/types.h>
+#include <adorad/core/debug.h>
 
 typedef struct File {
     char* full_path;
@@ -35,8 +36,8 @@ char* readFile(const char* fname) {
     FILE* file = fopen(fname, "rb"); 
     
     if(!file) {
-        printf("Could not open file: <%s>\n", fname);
-        printf("%s\n", !file_exists(fname) ?  
+        cstlColouredPrintf(CSTL_COLOUR_ERROR, "Could not open file: <%s>\n", fname);
+        cstlColouredPrintf(CSTL_COLOUR_ERROR, "%s\n", !file_exists(fname) ?  
                             "FileNotFoundError: File does not exist." : "");
         exit(1);
     }
