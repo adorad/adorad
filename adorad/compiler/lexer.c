@@ -19,7 +19,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 
 // Get the current character in the Lexical buffer
 // NB: This does not increase the offset
-#define LEXER_CURR_CHAR                   lexer->buffer->at(lexer->buffer, lexer->offset)
+#define LEXER_CURR_CHAR                   buff_at(lexer->buffer, lexer->offset)
 
 // Reset the line
 #define LEXER_RESET_LINENO                lexer->lineno = 0
@@ -112,13 +112,13 @@ Lexer* lexer_init(const char* buffer, const char* fname) {
 }
 
 static void lexer_tokenlist_push(Lexer* lexer, Token* token) {
-    lexer->tokenList->push(lexer->tokenList, token);
+    vec_push(lexer->tokenList, token);
 }
 
 static void lexer_free(Lexer* lexer) {
     if(lexer) {
-        lexer->tokenList->free(lexer->tokenList);
-        lexer->buffer->free(lexer->buffer);
+        vec_free(lexer->tokenList);
+        buff_free(lexer->buffer);
         free(lexer);
     }
 }
@@ -175,7 +175,7 @@ static inline char lexer_prevn(Lexer* lexer, UInt32 n) {
 
 // Returns the current element in the Lexical Buffer.
 static inline char lexer_peek(Lexer* lexer) {
-    return lexer->buffer->at(lexer->buffer, lexer->offset);
+    return buff_at(lexer->buffer, lexer->offset);
 }
 
 // "Look ahead" `n` characters in the Lexical buffer.
