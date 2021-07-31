@@ -40,7 +40,7 @@ CREDITS
     methods are individually built into their separate object files.
     Thus, you will end up with the "Multiple definition of `function`" error. 
 
-    If you need to use an individual file, either include this file (hcore.h) _once_ or pick and choose what you need - 
+    If you need to use an individual file, either include this file (adcore.h) _once_ or pick and choose what you need - 
     being explicit never hurts. 
 
     For the development of the Adorad Language, it is required (otherwise you'll run into compilation problems such as the 

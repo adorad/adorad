@@ -13,7 +13,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 
 // Includes all the files needed for Adorad compilation
 
-#include <adorad/core/hcore.h>
+#include <adorad/core/adcore.h>
 
 #include <adorad/compiler/types.h>
 #include <adorad/compiler/tokens.h>
