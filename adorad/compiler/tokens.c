@@ -21,9 +21,9 @@ Token* token_init() {
     token->offset = 0;
     token->value = "";
     token->start = 0;
-    token->lineno = 1;
-    token->colno = 1;
-    token->fname = "";
+    token->loc->line = 1;
+    token->loc->col = 1;
+    token->loc->fname = "";
 
     return token;
 }
@@ -33,9 +33,9 @@ void token_reset_token(Token* token) {
     token->kind = TOK_ILLEGAL; 
     token->offset = 0; 
     token->value = "";
-    token->lineno = 0; 
-    token->colno = 0; 
-    token->fname = "";
+    token->loc->line = 0; 
+    token->loc->col = 0; 
+    token->loc->fname = "";
 }
 
 // Convert a Token to its respective String representation

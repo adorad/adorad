@@ -21,6 +21,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #include <adorad/core/debug.h>
 
 #include <adorad/compiler/tokens.h>
+#include <adorad/compiler/location.h>
 
 /*
     Adorad's Lexer is built in such a way that no (or negligible) memory allocations are necessary during usage. 
@@ -48,9 +49,7 @@ typedef struct Lexer {
                         // and the curr char)
 
     Vec* tokenList;     // list of tokens
-    UInt32 lineno;      // the line number in the source where the token occured
-    UInt32 colno;       // the column number
-    const char* fname;  // /path/to/file.ad
+    Location* loc;      // location of the token in the source code
 
     bool is_inside_str; // set to true inside a string
     int nest_level;     // used to infer if we're inside many `{}`s

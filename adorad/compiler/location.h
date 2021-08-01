@@ -16,8 +16,8 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #include <adorad/core/types.h>
 
 typedef struct Location {
-    UInt32 lineno;
-    UInt32 colno;
+    UInt32 line;
+    UInt32 col;
     const char* fname;
 } Location;
 

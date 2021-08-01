@@ -16,6 +16,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 
 #include <adorad/core/misc.h>
 #include <adorad/core/types.h> 
+#include <adorad/compiler/location.h>
 
 /*
     `tokens.h` defines constants representing the lexical tokens of the Adorad programming language and basic operations
@@ -226,9 +227,7 @@ typedef struct Token {
     UInt32 offset;      // Offset of the first character of the Token
     const char* value;  // Token value
     UInt32 start;       // Starting offset of the token (used in substring-ing tokens of length >1)
-    UInt32 lineno;      // the line number in the source where the token occured
-    UInt32 colno;       // the column number
-    const char* fname;  // /path/to/file.ad
+    Location* loc;      // location of the token in the source code
 } Token;
 
 // Create a basic (ILLEGAL) token

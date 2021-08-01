@@ -22,27 +22,27 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #define LEXER_CURR_CHAR                   buff_at(lexer->buffer, lexer->offset)
 
 // Reset the line
-#define LEXER_RESET_LINENO                lexer->lineno = 0
+#define LEXER_RESET_LINENO                lexer->loc->line = 0
 // Reset the column number 
-#define LEXER_RESET_COLNO                 lexer->colno = 0
+#define LEXER_RESET_COLNO                 lexer->loc->col = 0
 
 // Increment the line number
-#define LEXER_INCREMENT_LINENO            ++lexer->lineno; LEXER_RESET_COLNO
-// Decrement the lineno
-#define LEXER_DECREMENT_LINENO            --lexer->lineno; LEXER_RESET_COLNO
+#define LEXER_INCREMENT_LINENO            ++lexer->loc->line; LEXER_RESET_COLNO
+// Decrement the line
+#define LEXER_DECREMENT_LINENO            --lexer->loc->line; LEXER_RESET_COLNO
 // Increment the column number
-#define LEXER_INCREMENT_COLNO             ++lexer->colno 
-// Decrement the colno
-#define LEXER_DECREMENT_COLNO             --lexer->colno
+#define LEXER_INCREMENT_COLNO             ++lexer->loc->col 
+// Decrement the col
+#define LEXER_DECREMENT_COLNO             --lexer->loc->col
 
 // Increment the Lexical Buffer offset
 #define LEXER_INCREMENT_OFFSET            ++lexer->offset; LEXER_INCREMENT_COLNO
 // Decrement the Lexical Buffer offset
 #define LEXER_DECREMENT_OFFSET            --lexer->offset; LEXER_DECREMENT_COLNO
 
-// Increment the Lexical Buffer offset without affecting `colno`
+// Increment the Lexical Buffer offset without affecting `col`
 #define LEXER_INCREMENT_OFFSET_ONLY       ++lexer->offset;
-// Decrement the Lexical Buffer offset without affecting `colno`
+// Decrement the Lexical Buffer offset without affecting `col`
 #define LEXER_DECREMENT_OFFSET_ONLY       --lexer->offset;
 
 // Reset the buffer 
@@ -53,9 +53,9 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #define LEXER_RESET                     \
     lexer->buffer->free(lexer->buffer); \
     lexer->offset = 0;                  \
-    lexer->lineno = 1;                  \
-    lexer->colno = 1;                   \
-    lexer->fname = ""
+    lexer->loc->line = 1;                  \
+    lexer->loc->col = 1;                   \
+    lexer->loc->fname = ""
 
 // String representation of a TokenKind
 // To access the string representation of a TokenKind object, simply use `tokenHash[tokenkind]`
@@ -104,9 +104,9 @@ Lexer* lexer_init(const char* buffer, const char* fname) {
         fname = "";
 
     lexer->offset = 0;
-    lexer->lineno = 1;
-    lexer->colno = 1;
-    lexer->fname = fname;
+    lexer->loc->line = 1;
+    lexer->loc->col = 1;
+    lexer->loc->fname = fname;
 
     return lexer;
 }
@@ -129,7 +129,7 @@ void lexer_error(Lexer* lexer, const char* format, ...) {
     va_start(vl, format);
     fprintf(stderr, "%sSyntaxError: ", "\033[1;31m");
     vfprintf(stderr, format, vl);
-    fprintf(stderr, " at %s:%d:%d%s\n", lexer->fname, lexer->lineno,lexer->colno, "\033[0m");
+    fprintf(stderr, " at %s:%d:%d%s\n", lexer->loc->fname, lexer->loc->line,lexer->loc->col, "\033[0m");
     va_end(vl);
     exit(1);
 }
@@ -150,7 +150,7 @@ static inline char lexer_advancen(Lexer* lexer, UInt32 n) {
     if(lexer->offset + n >= lexer->buffer->length)
         return nullchar;
     
-    lexer->colno += n;
+    lexer->loc->col += n;
     lexer->offset += n;
     return lexer->buffer->data[lexer->offset];
 }
@@ -187,7 +187,7 @@ static inline char lexer_peekn(Lexer* lexer, UInt32 n) {
     return (char)lexer->buffer->data[lexer->offset + n];
 }
 
-static void lexer_maketoken(Lexer* lexer, TokenKind kind, char* value, UInt32 offset, UInt32 lineno, UInt32 colno) {  
+static void lexer_maketoken(Lexer* lexer, TokenKind kind, char* value, UInt32 offset, UInt32 line, UInt32 col) {  
     Token* token = (Token*)calloc(1, sizeof(Token));
     CSTL_CHECK_NOT_NULL(token, "Could not allocate memory. Memory full.");
 
@@ -201,9 +201,9 @@ static void lexer_maketoken(Lexer* lexer, TokenKind kind, char* value, UInt32 of
 
     token->kind = kind;
     token->offset = offset;
-    token->colno = colno;
-    token->lineno = lineno;
-    token->fname = lexer->fname;
+    token->loc->col = col;
+    token->loc->line = line;
+    token->loc->fname = lexer->loc->fname;
     token->value = value;
     lexer_tokenlist_push(lexer, token);
 }
@@ -215,8 +215,8 @@ static inline void lexer_lex_sl_comment(Lexer* lexer) {
     char ch = lexer_advance(lexer);
     int comment_length = 0; // no. of chars in the comment (useful for allocating memory for `comment_value`)
     UInt32 prev_offset = lexer->offset - 1;
-    UInt32 lineno = lexer->lineno;
-    UInt32 colno = lexer->colno;
+    UInt32 line = lexer->loc->line;
+    UInt32 col = lexer->loc->col;
 
     while(ch && ch != '\n') {
         ch = lexer_advance(lexer);
@@ -233,7 +233,7 @@ static inline void lexer_lex_sl_comment(Lexer* lexer) {
     char* comment_value = (char*)calloc(comment_length + 1, sizeof(char));
     substr(comment_value, lexer->buffer->data, prev_offset, comment_length - 1);
     CSTL_CHECK_NOT_NULL(comment_value, "`comment_value` must not be null.");
-    lexer_maketoken(lexer, COMMENT, comment_value, prev_offset, lineno, colno);
+    lexer_maketoken(lexer, COMMENT, comment_value, prev_offset, line, col);
 
     LEXER_DECREMENT_OFFSET;
 }
@@ -279,8 +279,8 @@ static inline void lexer_lex_macro(Lexer* lexer) {
 
     // Don't include the `@` in the macro symbol name
     UInt32 prev_offset = lexer->offset;
-    UInt32 lineno = lexer->lineno;
-    UInt32 colno = lexer->colno;
+    UInt32 line = lexer->loc->line;
+    UInt32 col = lexer->loc->col;
 
     while(isLetter(ch) || isDigit(ch)) {
         ch = lexer_advance(lexer);
@@ -296,7 +296,7 @@ static inline void lexer_lex_macro(Lexer* lexer) {
     char* macro_value = (char*)calloc(macro_length + 1, sizeof(char));
     substr(macro_value, lexer->buffer->data, prev_offset - 1, offset_diff);
     CSTL_CHECK_NOT_NULL(macro_value, "macro_value must not be null");
-    lexer_maketoken(lexer, MACRO, macro_value, prev_offset - 1, lineno, colno - 1);
+    lexer_maketoken(lexer, MACRO, macro_value, prev_offset - 1, line, col - 1);
 
     LEXER_DECREMENT_OFFSET;
 }
@@ -310,8 +310,8 @@ static inline void lexer_lex_string(Lexer* lexer) {
     char ch = lexer_advance(lexer);
     int str_length = 0; // length of string
     UInt32 prev_offset = lexer->offset - 1;
-    UInt32 lineno = lexer->lineno;
-    UInt32 colno = lexer->colno;
+    UInt32 line = lexer->loc->line;
+    UInt32 col = lexer->loc->col;
     lexer->is_inside_str = true;
 
     while(ch != '"') {
@@ -332,7 +332,7 @@ static inline void lexer_lex_string(Lexer* lexer) {
     // `offset_diff - 1` so as to ignore the closing quote `"`
     substr(str_value, lexer->buffer->data, prev_offset, offset_diff - 1);
     CSTL_CHECK_NOT_NULL(str_value, "str_value must not be null");
-    lexer_maketoken(lexer, STRING, str_value, prev_offset - 1, lineno, colno - 1);
+    lexer_maketoken(lexer, STRING, str_value, prev_offset - 1, line, col - 1);
 }
 
 // Returns whether `value` is a keyword or an identifier
@@ -356,8 +356,8 @@ static inline void lexer_lex_identifier(Lexer* lexer) {
                "This message means you've encountered a serious bug within Adorad. Please file an issue on "
                "Adorad's Github repo.\nError: `lexer_lex_identifier()` hasn't been called with a valid identifier character");
     UInt32 prev_offset = lexer->offset;
-    UInt32 lineno = lexer->lineno;
-    UInt32 colno = lexer->colno;
+    UInt32 line = lexer->loc->line;
+    UInt32 col = lexer->loc->col;
     int ident_length = 0; // length of identifier
     char ch = lexer_advance(lexer);
 
@@ -377,7 +377,7 @@ static inline void lexer_lex_identifier(Lexer* lexer) {
 
     // Determine if a keyword or just a regular identifier
     TokenKind tokenkind = lexer_is_keyword_or_identifier(ident_value);
-    lexer_maketoken(lexer, tokenkind, ident_value, prev_offset - 1, lineno, colno - 1);
+    lexer_maketoken(lexer, tokenkind, ident_value, prev_offset - 1, line, col - 1);
 
     LEXER_DECREMENT_OFFSET;
 }
@@ -391,8 +391,8 @@ static inline void lexer_lex_digit(Lexer* lexer) {
     // This value needs to be captured as well in `token->value`
     char ch = lexer_prev(lexer);
     UInt32 prev_offset = lexer->offset - 1;
-    UInt32 lineno = lexer->lineno;
-    UInt32 colno = lexer->colno - 1;
+    UInt32 line = lexer->loc->line;
+    UInt32 col = lexer->loc->col - 1;
     TokenKind tokenkind = TOK_ILLEGAL;
     int digit_length = 0; // no. of digits in the number
 
@@ -510,7 +510,7 @@ static inline void lexer_lex_digit(Lexer* lexer) {
     substr(digit_value, lexer->buffer->data, prev_offset, offset_diff - 1);
     CSTL_CHECK_NOT_NULL(digit_value, "digit_value must not be null");
 
-    lexer_maketoken(lexer, tokenkind, digit_value, prev_offset, lineno, colno);
+    lexer_maketoken(lexer, tokenkind, digit_value, prev_offset, line, col);
 
     LEXER_DECREMENT_OFFSET;
 }
@@ -555,7 +555,7 @@ static void lexer_lex(Lexer* lexer) {
                 switch(next) {
                     // Empty String literal 
                     case '"': LEXER_INCREMENT_OFFSET; lexer_maketoken(lexer, STRING, "\"\"", lexer->offset - 1, 
-                                                                      lexer->lineno, lexer->colno - 1); 
+                                                                      lexer->loc->line, lexer->loc->col - 1); 
                               break;
                     default: tokenkind = -1; lexer_lex_string(lexer); break;
                 }
@@ -614,7 +614,7 @@ static void lexer_lex(Lexer* lexer) {
                 break;
             case '#': 
                 // Ignore shebang on the first line
-                if(lexer->lineno == 1 && next == '!' && lexer_peekn(lexer, 1) == '/') {
+                if(lexer->loc->line == 1 && next == '!' && lexer_peekn(lexer, 1) == '/') {
                     tokenkind = -1;
                     // Skip till end of line
                     while(LEXER_CURR_CHAR && (LEXER_CURR_CHAR != '\n' || LEXER_CURR_CHAR != nullchar))
@@ -728,10 +728,10 @@ static void lexer_lex(Lexer* lexer) {
         } // switch(ch)
 
         if(tokenkind == -1) continue;
-        lexer_maketoken(lexer, tokenkind, null, lexer->offset - 1, lexer->lineno, lexer->colno - 1);
+        lexer_maketoken(lexer, tokenkind, null, lexer->offset - 1, lexer->loc->line, lexer->loc->col - 1);
     } // while
 
 lex_eof:;
 
-    lexer_maketoken(lexer, TOK_EOF, null, lexer->offset - 1, lexer->lineno, lexer->colno - 1);
+    lexer_maketoken(lexer, TOK_EOF, null, lexer->offset - 1, lexer->loc->line, lexer->loc->col - 1);
 }
