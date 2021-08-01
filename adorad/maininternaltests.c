@@ -1,7 +1,9 @@
 #include <adorad/adorad.h>
-#include <time.h>
 
 int main(int argc, const char* const argv[]) {
+    printf("Sizeof Buffer = %d\n", sizeof(cstlBuffer));
+    printf("Sizeof cstlVector = %d\n", sizeof(cstlVector));
+
 	// char* buffer = readFile("test/LexerDemo.ad");
     // // char* buffer = "0123456789abcdefghijklmnopqrstuvwxyz";
 	// Lexer* lexer = lexer_init(buffer, "test/LexerDemo.ad"); 

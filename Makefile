@@ -9,7 +9,7 @@ BUILD_DIR = build
 
 cmake:
 	python3 ./tools/tests/before_tests_ci.py
-	cmake -S $(SOURCE_DIR) -B $(BUILD_DIR) $(GENERATOR) -DCMAKE_BUILD_TYPE=Debug -DADORAD_BUILDTESTS=On
+	cmake -S $(SOURCE_DIR) -B $(BUILD_DIR) $(GENERATOR) -DCMAKE_BUILD_TYPE=Debug -DADORAD_BUILDTESTS=ON
 	cmake --build $(BUILD_DIR) --config Debug
 	echo ------------------ Running Target ------------------
 	cd build/bin/ ; ./AdoradInternalTestsWithMain
@@ -29,5 +29,5 @@ testclean:
 .PHONY: testclean
 
 emitoutput:
-	gcc -E adorad/compiler/tokens.h -I . -o adoradoutput.txt
+	gcc -E adorad/core/buffer.h -I . -o adoradoutput.txt
 .PHONY: emitoutput
