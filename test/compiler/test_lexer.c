@@ -8,8 +8,8 @@ TEST(Lexer, Init) {
 
     CHECK_STRNE(lexer->buffer->data, "");
     CHECK_EQ(lexer->buffer->length, strlen(buffer));
-    CHECK_EQ(lexer->tokenList->capacity(lexer->tokenList), TOKENLIST_ALLOC_CAPACITY);
-    CHECK_EQ(lexer->tokenList->size(lexer->tokenList), 0);
+    CHECK_EQ(vec_cap(lexer->tokenList), TOKENLIST_ALLOC_CAPACITY);
+    CHECK_EQ(vec_size(lexer->tokenList), 0);
     CHECK_EQ(lexer->offset, 0);
     CHECK_EQ(lexer->lineno, 1);
     CHECK_EQ(lexer->colno, 1);
