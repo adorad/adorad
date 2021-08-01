@@ -18,10 +18,9 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #include <adorad/core/types.h>
 #include <adorad/core/debug.h>
 
-#define XSTR(x) STR(x)
-#define STR(x) #x
-
 typedef struct cstlBuffer cstlBuffer;
+typedef cstlBuffer Buff;
+
 struct cstlBuffer {
     char* data;    // buffer data
     UInt64 length; // buffer size

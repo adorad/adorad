@@ -1,8 +1,8 @@
 #include <adorad/adorad.h>
 
 int main(int argc, const char* const argv[]) {
-    printf("Sizeof Buffer = %d\n", sizeof(cstlBuffer));
-    printf("Sizeof cstlVector = %d\n", sizeof(cstlVector));
+    printf("Sizeof Buffer = %d\n", sizeof(Buff));
+    printf("Sizeof Vec = %d\n", sizeof(Vec));
 
 	// char* buffer = readFile("test/LexerDemo.ad");
     // // char* buffer = "0123456789abcdefghijklmnopqrstuvwxyz";

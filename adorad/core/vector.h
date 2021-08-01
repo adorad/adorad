@@ -32,6 +32,7 @@ typedef struct {
 
 // The actual `cstlVector` struct
 typedef struct cstlVector cstlVector;
+typedef cstlVector Vec;
 struct cstlVector {
     cstlVectorInternal internal;
 

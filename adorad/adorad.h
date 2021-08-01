@@ -13,7 +13,10 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 
 // Includes all the files needed for Adorad compilation
 
-#define _ADORAD_
+#ifndef _ADORAD_
+      #define _ADORAD_
+#endif // _ADORAD_
+
 #include <adorad/core/adcore.h>
 
 #include <adorad/compiler/types.h>

@@ -42,12 +42,12 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #define MAX_TOKEN_LENGTH            256
 
 typedef struct Lexer {
-    cstlBuffer* buffer;    // the Lexical buffer
+    Buff* buffer;    // the Lexical buffer
     UInt32 offset;         // current buffer offset (in Bytes) 
                            // offset of the curr char (no. of chars b/w the beginning of the Lexical Buffer
                            // and the curr char)
 
-    cstlVector* tokenList; // list of tokens
+    Vec* tokenList; // list of tokens
     UInt32 lineno;         // the line number in the source where the token occured
     UInt32 colno;          // the column number
     const char* fname;     // /path/to/file.ad

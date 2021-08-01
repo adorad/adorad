@@ -15,6 +15,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #define ADORAD_AST_H
 
 #include <adorad/core/types.h>
+#include <adorad/core/buffer.h>
 #include <adorad/core/vector.h>
 
 typedef struct AstNode AstNode;
@@ -56,10 +57,20 @@ typedef enum AstNodeKind {
     NodeKindContinue,      // `continue`
 } AstNodeKind;
 
-typedef struct AstNodeFuncDef {
-    AstNode* prototype;
-    AstNode* body;
-} AstNodeFuncDef;
+// Function or Method Declaration
+typedef struct AstNodeFuncDecl {
+    Buff* name;
+    Buff* module;
+    bool is_variadic;  // variadic arguments
+    bool is_export;    // true for `export func abc()`
+    bool is_noreturn;  // true for `[noreturn] func 
+    bool is_main;      // true for `func main()`
+    bool is_test;      // true for `func test_yyy()`
+    bool no_body;      // true for function definitions (no function body) `func abc()`
+
+    AstNode* parameters;
+    AstNode* body;      // can be nullptr for no-body functions (just declarations)
+} AstNodeFuncDecl;
 
 enum FuncInline {
     FI_AUTO,
@@ -68,8 +79,8 @@ enum FuncInline {
 };
 
 typedef struct AstNodeFuncPrototype {
-    char* name;
-    cstlVector* params;  // vector of `AstNode*`s -> similar to cstlVector<AstNode*> if C had generics
+    Buff* name;
+    Vec* params;  // vector of `AstNode*`s -> similar to Vec<AstNode*> if C had generics
     AstNode* return_type;
     AstNode* func_def;
 
@@ -90,12 +101,12 @@ enum FuncCallModifier {
 
 typedef struct AstNodeFuncCallExpr {
     AstNode* func_call_expr;
-    cstlVector* params;
+    Vec* params;
     enum FuncCallModifier modifier;
 } AstNodeFuncCallExpr;
 
 typedef struct AstNodeParamDecls {
-    char* name;
+    Buff* name;
     AstNode* type;
     bool is_alias;
     bool is_var_args;
@@ -110,7 +121,7 @@ typedef struct AstNodeDefer {
 } AstNodeDefer;
 
 typedef struct AstNodeVarDecl {
-    char* name;
+    Buff* name;
     AstNode* type;    // can be null
     AstNode* expr;
     UInt64 tok_index; // token index
@@ -137,17 +148,17 @@ typedef struct AstNodeIdentifier {
 } AstNodeIdentifier;
 
 typedef struct AstNodeBlock {
-    char* name;
-    cstlVector* statements;
+    Buff* name;
+    Vec* statements;
 } AstNodeBlock;
 
 typedef struct AstNodeTestDecl {
-    char* name;   // can be nullptr if no name
+    Buff* name;   // can be nullptr if no name
     AstNode* body;
 } AstNodeTestDecl;
 
 typedef struct AstNodeTestExpr {
-    char* symbol;
+    Buff* symbol;
     AstNode* target_node;
     AstNode* then_node;
     AstNode* else_node;  // null, block node, or an `if expr` node
@@ -207,11 +218,11 @@ typedef struct AstNodePrefixOpExpr {
 } AstNodePrefixOpExpr;
 
 typedef struct AstNodeTryExpr {
-    char* symbol;
+    Buff* symbol;
     AstNode* target_node;
     AstNode* then_node;
     AstNode* else_node;
-    char* err_symbol;
+    Buff* err_symbol;
 } AstNodeTryExpr;
 
 typedef struct AstNodeCatchExpr {
@@ -227,7 +238,7 @@ typedef struct AstNodeIfBoolExpr {
 } AstNodeIfBoolExpr;
 
 typedef struct AstNodeForExpr {
-    char* name;
+    Buff* name;
     AstNode* condition;
     AstNode* continue_expr;
     AstNode* body;
@@ -235,7 +246,7 @@ typedef struct AstNodeForExpr {
 
 typedef struct AstNodeMatchExpr {
     AstNode* expr;
-    cstlVector* patterns;
+    Vec* patterns;
 } AstNodeMatchExpr;
 
 typedef struct AstNodeMatchRange {
@@ -258,8 +269,8 @@ enum ContainerLayoutKind {
 };
 
 typedef struct AstNodeContainerDecl {
-    cstlVector* fields;
-    cstlVector* decls;
+    Vec* fields;
+    Vec* decls;
     enum ContainerKind kind;
     enum ContainerLayoutKind layout;
 } AstNodeContainerDecl;
@@ -269,12 +280,12 @@ typedef struct AstNodeBoolLiteral {
 } AstNodeBoolLiteral;
 
 typedef struct AstNodeBreakLiteral {
-    char* name;
+    Buff* name;
     AstNode* expr; // can be nullptr
 } AstNodeBreakLiteral;
 
 typedef struct AstNodeContinueLiteral {
-    char* name;
+    Buff* name;
 } AstNodeContinueLiteral;
 
 struct AstNode {
@@ -282,7 +293,7 @@ struct AstNode {
     UInt64 tok_index; // token index
 
     union {
-        AstNodeFuncDef* func_def;
+        AstNodeFuncDecl* func_def;
         AstNodeFuncPrototype* func_proto;
         AstNodeFuncCallExpr* func_call_expr;
         AstNodeParamDecls* param_decls;
@@ -311,18 +322,18 @@ struct AstNode {
 
 // The `import` statement
 typedef struct AstImport {
-    char* module;  // the module name
-    char* alias;   // the `y` in `import x as y`
+    Buff* module;  // the module name
+    Buff* alias;   // the `y` in `import x as y`
 } AstImport;
 
 // Each Adorad source file can be represented by one AstFile structure.
 typedef struct AstFile {
-    char* path;     // full path of the source file - `/path/to/file.ad`
-    char* basepath; // file name - `file.ad` (useful for tracing)
+    Buff* path;     // full path of the source file - `/path/to/file.ad`
+    Buff* basepath; // file name - `file.ad` (useful for tracing)
     int num_lines;  // number of source code lines in the file (including comments)
     int num_bytes;  // number of processed source code bytes
     // TODO (jasmcaus) Change the type of `module` to an `AstNodeModule`
-    char* module;   // name of the module
+    Buff* module;   // name of the module
     bool is_test;   // true for test_*.ad files
 } AstFile;
 
