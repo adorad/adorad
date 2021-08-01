@@ -25,8 +25,8 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 
 typedef struct {
     void** data;      // pointer to the underlying memory
-    UInt64 capacity;  // allocated memory capacity (no. of elements)
     UInt64 size;      // number of elements currently in `vec`
+    UInt64 capacity;  // allocated memory capacity (no. of elements)
     UInt64 objsize;   // size of each element in bytes
 } cstlVectorInternal;
 
