@@ -42,18 +42,18 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #define MAX_TOKEN_LENGTH            256
 
 typedef struct Lexer {
-    Buff* buffer;    // the Lexical buffer
-    UInt32 offset;         // current buffer offset (in Bytes) 
-                           // offset of the curr char (no. of chars b/w the beginning of the Lexical Buffer
-                           // and the curr char)
+    Buff* buffer;       // the Lexical buffer
+    UInt32 offset;      // current buffer offset (in Bytes) 
+                        // offset of the curr char (no. of chars b/w the beginning of the Lexical Buffer
+                        // and the curr char)
 
-    Vec* tokenList; // list of tokens
-    UInt32 lineno;         // the line number in the source where the token occured
-    UInt32 colno;          // the column number
-    const char* fname;     // /path/to/file.ad
+    Vec* tokenList;     // list of tokens
+    UInt32 lineno;      // the line number in the source where the token occured
+    UInt32 colno;       // the column number
+    const char* fname;  // /path/to/file.ad
 
-    bool is_inside_str;    // set to true inside a string
-    int nest_level;        // used to infer if we're inside many `{}`s
+    bool is_inside_str; // set to true inside a string
+    int nest_level;     // used to infer if we're inside many `{}`s
 } Lexer;
 
 Lexer* lexer_init(const char* buffer, const char* fname);
