@@ -94,19 +94,11 @@ static const char* tokenHash[] = {
 
 Lexer* lexer_init(const char* buffer, const char* fname) {
     Lexer* lexer = (Lexer*)calloc(1, sizeof(Lexer));
-    
-    // Buffer
+
+    lexer->offset = 0;    
     lexer->buffer = buff_new(buffer);
-    // Tokens
     lexer->tokenList = vec_new(sizeof(Token), TOKENLIST_ALLOC_CAPACITY);
-
-    if(!fname)
-        fname = "";
-
-    lexer->offset = 0;
-    lexer->loc->line = 1;
-    lexer->loc->col = 1;
-    lexer->loc->fname = fname;
+    lexer->loc = loc_new(fname);
 
     return lexer;
 }

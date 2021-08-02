@@ -10,19 +10,17 @@ Licensed under the MIT License <http://opensource.org/licenses/MIT>
 SPDX-License-Identifier: MIT
 Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 */
-#ifndef ADORAD_LOCATION_H
-#define ADORAD_LOCATION_H
 
-#include <adorad/core/types.h>
+#include <stdlib.h>
+#include <adorad/compiler/location.h>
 
-typedef struct Location Location;
-
-struct Location {
-    UInt32 line;
-    UInt32 col;
-    const char* fname;
-};
-
-Location* loc_new(const char* fname);
-
-#endif // ADORAD_LOCATION_H
+Location* loc_new(const char* fname) {
+    Location* loc = (Location*)calloc(1, sizeof(Location));
+    loc->line = 1;
+    loc->col = 1;
+    if(!fname)
+        fname = "";
+    loc->fname = fname;
+    
+    return loc;
+}
