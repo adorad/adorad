@@ -17,16 +17,17 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #include <adorad/core/types.h>
 #include <adorad/core/buffer.h>
 #include <adorad/core/vector.h>
+#include <adorad/compiler/location.h>
 
 typedef struct AstNode AstNode;
 
 typedef enum AstNodeKind {
     NodeKindIdentifier = 0,
-    NodeKindBlock,
+    NodeKindBlock,        // `{ ... }
 
     // Functions
     NodeKindFuncPrototype,
-    NodeKindFuncDef,      // 
+    NodeKindFuncDef,      // `func hello()`
 
     // Literals
     NodeKindIntLiteral,    // `2`
@@ -60,7 +61,9 @@ typedef enum AstNodeKind {
 // Function or Method Declaration
 typedef struct AstNodeFuncDecl {
     Buff* name;
-    Buff* module;
+    Buff* module;      // name of the module
+    Buff* parent_type; // the `type` of which the function belongs to (nullptr, if not a method)
+    Buff* return_type;
     bool is_variadic;  // variadic arguments
     bool is_export;    // true for `export func abc()`
     bool is_noreturn;  // true for `[noreturn] func 
@@ -70,6 +73,7 @@ typedef struct AstNodeFuncDecl {
 
     AstNode* parameters;
     AstNode* body;      // can be nullptr for no-body functions (just declarations)
+    Location* loc;     // location of the `func` declaration
 } AstNodeFuncDecl;
 
 enum FuncInline {
@@ -112,6 +116,17 @@ typedef struct AstNodeParamDecls {
     bool is_var_args;
 } AstNodeParamDecls;
 
+// break/continue
+typedef struct AstNodeBranchStatement {
+    Buff* name;
+    AstNode* expr;  // can be nullptr (`break`). always nullptr for `continue`
+    Location* loc;
+    enum {
+        AstNodeBranchStatementBreak,
+        AstNodeBranchStatementContinue
+    } type;
+} AstNodeBranchStatement;
+
 typedef struct AstNodeReturnExpr {
     AstNode* expr;
 } AstNodeReturnExpr;
@@ -147,6 +162,7 @@ typedef struct AstNodeIdentifier {
     bool is_mutable;  // This is false unless explicitly mentioned by the user
 } AstNodeIdentifier;
 
+// `{ ... }`
 typedef struct AstNodeBlock {
     Buff* name;
     Vec* statements;
@@ -258,35 +274,64 @@ typedef struct AstNodeCompileTime {
     AstNode* expr;
 } AstNodeCompileTime;
 
-enum ContainerKind {
-    ContainerKindEnum,
-    ContainerKindUnion
-};
-
-enum ContainerLayoutKind {
-    ContainerLayoutKindAuto,
-    ContainerLayoutKindPacked
-};
-
+// enum / union
 typedef struct AstNodeContainerDecl {
     Vec* fields;
     Vec* decls;
-    enum ContainerKind kind;
-    enum ContainerLayoutKind layout;
+    enum {
+        ContainerKindEnum,
+        ContainerKindUnion
+    } kind;
+    enum {
+        ContainerLayoutKindAuto,
+        ContainerLayoutKindPacked
+    } layout;
 } AstNodeContainerDecl;
 
+typedef struct AstNodeIntLiteral {
+    Buff* value;
+    Location* loc;
+    // TODO (jasmcaus) - Come up with a workaround for this
+    enum {
+        AstNodeIntLiteral8,
+        AstNodeIntLiteral16,
+        AstNodeIntLiteral32, // default
+        AstNodeIntLiteral64,
+        // AstNodeIntLiteral128 // will be supported later
+    } type;
+} AstNodeIntLiteral;
+
+typedef struct AstNodeFloatLiteral {
+    Buff* value;
+    Location* loc;
+    // TODO (jasmcaus) - Come up with a workaround for this
+    enum {
+        AstNodeFloatLiteral32,    // default
+        AstNodeFloatLiteral64,
+        // AstNodeFloatLiteral128 // will be supported later
+    } type;
+} AstNodeFloatLiteral;
+
+typedef struct AstNodeStringLiteral {
+    Buff* value;
+    Location* loc;
+    bool is_special;   // format / raw string
+    enum {
+        AstNodeStringLiteralNone,   // if `is_special` is false
+        AstNodeStringLiteralRaw,    // `r"abc"`
+        AstNodeStringLiteralFormat  // `f"name = {name}"`
+    } type;
+} AstNodeStringLiteral;
+
+typedef struct AstNodeCharLiteral {
+    Buff* value;
+    Location* loc;
+} AstNodeCharLiteral;
+
 typedef struct AstNodeBoolLiteral {
-    bool value;
+    Buff* value;
+    Location* loc;
 } AstNodeBoolLiteral;
-
-typedef struct AstNodeBreakLiteral {
-    Buff* name;
-    AstNode* expr; // can be nullptr
-} AstNodeBreakLiteral;
-
-typedef struct AstNodeContinueLiteral {
-    Buff* name;
-} AstNodeContinueLiteral;
 
 struct AstNode {
     AstNodeKind type; // type of AST Node
@@ -314,9 +359,12 @@ struct AstNode {
         AstNodeMatchRange* match_range;
         AstNodeCompileTime* compile_time_expr;
         AstNodeContainerDecl* container_decl;
+        AstNodeBranchStatement* branch_stmt;
+        AstNodeIntLiteral* int_literal;
+        AstNodeFloatLiteral* float_literal;
+        AstNodeStringLiteral* str_literal;
+        AstNodeCharLiteral* char_literal;
         AstNodeBoolLiteral* bool_literal;
-        AstNodeBreakLiteral* break_literal;
-        AstNodeContinueLiteral* continue_literal;
     } data;
 };
 
