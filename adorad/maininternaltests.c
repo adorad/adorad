@@ -16,12 +16,12 @@ int main(int argc, const char* const argv[]) {
     printf("Lexing finished...\n");
     double total = duration(st, end);
 
-    printf("Number of tokens = %d\n", lexer->tokenList->size(lexer->tokenList));
-    printf("Total allocated memory (in bytes) = %d\n", lexer->tokenList->internal.objsize * lexer->tokenList->size(lexer->tokenList));
+    printf("Number of tokens = %d\n", vec_size(lexer->tokenList));
+    printf("Total allocated memory (in bytes) = %d\n", lexer->tokenList->internal.objsize * vec_size(lexer->tokenList));
     
     printf("\033[1;32m\nTokens Vector: \033[0m\n");
-    for(UInt64 i=0; i < lexer->tokenList->size(lexer->tokenList); i++) {
-        Token* tok = lexer->tokenList->at(lexer->tokenList, i);
+    for(UInt64 i=0; i < vec_size(lexer->tokenList); i++) {
+        Token* tok = vec_at(lexer->tokenList, i);
         printf("TOKEN(%s, \"%s\")\n", token_to_string(tok->kind), tok->value);
     } 
     printf("Total time = %lfs\n", total);
