@@ -14,13 +14,18 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #ifndef CSTL_OS_H
 #define CSTL_OS_H
 
-#define _XOPEN_SOURCE 700
 #include <stdlib.h>
-#include <unistd.h>
 #include <adorad/core/buffer.h>
 #include <adorad/core/os_defs.h>
 #include <adorad/core/types.h>
 #include <adorad/core/debug.h>
+
+#if defined(CSTL_OS_POSIX)
+    #define _XOPEN_SOURCE 700
+    #include <unistd.h>
+#else
+    #include <adorad/core/headers.h>
+#endif // CSTL_OS_POSIX
 
 static Buff* os_get_cwd();
 static Buff* os_path_dirname(Buff* path);

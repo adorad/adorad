@@ -27,9 +27,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     #define _LARGEFILE64_SOURCE
 #endif
 
-
 // TODO(jasmcaus): How many of these headers do I really need?
-// #include <stdarg.h>
 #if !defined(CSTL_OS_WINDOWS)
     #include <stddef.h>
     #include <stdarg.h>
@@ -37,12 +35,18 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 
 #if defined(CSTL_OS_WINDOWS)
     #if !defined(CSTL_NO_WINDOWS_H)
-        #define NOMINMAX 1
-        #if !defined(CSTL_WINDOWS_H_INCLUDED)
+        #ifndef NOMINMAX
+            #define NOMINMAX 1
+        #endif // NOMINMAX
+        #ifndef WIN32_LEAN_AND_MEAN
             #define WIN32_LEAN_AND_MEAN 1
+        #endif // WIN32_LEAN_AND_MEAN
+        #ifndef WIN32_MEAN_AND_LEAN
             #define WIN32_MEAN_AND_LEAN 1
+        #endif // WIN32_MEAN_AND_LEAN
+        #ifndef VC_EXTRALEAN
             #define VC_EXTRALEAN        1
-        #endif
+        #endif // VC_EXTRALEAN
         
         #pragma warning(push, 0)
             #include <Windows.h>
