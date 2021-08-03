@@ -21,9 +21,7 @@ Token* token_init() {
     token->offset = 0;
     token->value = "";
     token->start = 0;
-    token->loc->line = 1;
-    token->loc->col = 1;
-    token->loc->fname = "";
+    token->loc = loc_new(null);
 
     return token;
 }

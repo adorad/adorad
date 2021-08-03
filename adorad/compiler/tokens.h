@@ -231,7 +231,7 @@ typedef struct Token {
 } Token;
 
 // Create a basic (ILLEGAL) token
-Token* token_init(void);
+Token* token_init();
 // Reset a Token instance
 void token_reset_token(Token* token);
 // Convert a Token to its respective String representation

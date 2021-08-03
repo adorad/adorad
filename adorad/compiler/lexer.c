@@ -95,7 +95,7 @@ static const char* tokenHash[] = {
 Lexer* lexer_init(const char* buffer, const char* fname) {
     Lexer* lexer = (Lexer*)calloc(1, sizeof(Lexer));
 
-    lexer->offset = 0;    
+    lexer->offset = 0;
     lexer->buffer = buff_new(buffer);
     lexer->tokenList = vec_new(sizeof(Token), TOKENLIST_ALLOC_CAPACITY);
     lexer->loc = loc_new(fname);
@@ -180,14 +180,14 @@ static inline char lexer_peekn(Lexer* lexer, UInt32 n) {
 }
 
 static void lexer_maketoken(Lexer* lexer, TokenKind kind, char* value, UInt32 offset, UInt32 line, UInt32 col) {  
-    Token* token = (Token*)calloc(1, sizeof(Token));
+    Token* token = token_init();
     CSTL_CHECK_NOT_NULL(token, "Could not allocate memory. Memory full.");
 
     if(value == null) {
         value = token_to_string(kind);
 
         if(kind == STRING || kind == IDENTIFIER || kind == INTEGER || kind == HEX_INT || kind == BIN_INT ||
-        kind == OCT_INT)
+           kind == OCT_INT)
             CSTL_WARN("Expected a token value. Got `null`\n");
     }
 
@@ -298,7 +298,6 @@ static inline void lexer_lex_string(Lexer* lexer) {
     // We already know that the curr char is _not_ a quote (`"`) --> an empty string token (`""`) is
     // handled by `lexer_lex()`
     CSTL_CHECK_NE(LEXER_CURR_CHAR, '"');
-
     char ch = lexer_advance(lexer);
     int str_length = 0; // length of string
     UInt32 prev_offset = lexer->offset - 1;
@@ -347,6 +346,7 @@ static inline void lexer_lex_identifier(Lexer* lexer) {
     CSTL_CHECK(isLetter(lexer_prev(lexer)) || isDigit(lexer_prev(lexer)),
                "This message means you've encountered a serious bug within Adorad. Please file an issue on "
                "Adorad's Github repo.\nError: `lexer_lex_identifier()` hasn't been called with a valid identifier character");
+
     UInt32 prev_offset = lexer->offset;
     UInt32 line = lexer->loc->line;
     UInt32 col = lexer->loc->col;
@@ -527,7 +527,6 @@ static void lexer_lex(Lexer* lexer) {
         //      next = buff[1]
         curr = lexer_advance(lexer);
         next = lexer_peek(lexer);
-
         tokenkind = TOK_ILLEGAL;
 
         switch(curr) {

@@ -71,6 +71,7 @@ def main():
                 s = f.read()
 
                 s = s.replace('adorad', 'AdoradInternalTests')
+                s = s.replace('/AdoradInternalTests/', '/adorad/')
                 s = s.replace('AdoradInternalTests Language', 'Adorad Language')
                 s = s.replace('adorad.h', 'AdoradInternalTests.h')
 
