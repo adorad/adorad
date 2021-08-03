@@ -27,8 +27,6 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 
 #if defined(CSTL_OS_WINDOWS)
     #include <direct.h>
-    // Does this work?
-    #define _POSIX_C_SOURCE 1
     #include <limits.h>
 #endif // CSTL_OS_WINDOWS
 
@@ -40,6 +38,7 @@ static bool os_is_sep(char ch);
 
 static Buff* os_get_cwd() {
 #if defined(CSTL_OS_WINDOWS)
+    #define PATH_MAX 4096
     char result[PATH_MAX];
     _getcwd(result, PATH_MAX);
     if(!result) {
