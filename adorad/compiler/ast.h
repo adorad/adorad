@@ -35,7 +35,7 @@ typedef enum AstNodeKind {
     NodeKindCharLiteral,   // 'a', 'b'...
     NodeKindStringLiteral, // 'str` or "str"
     NodeKindBoolLiteral,   // `bool`
-    NodeKindNillLiteral,   // `nil`
+    NodeKindNilLiteral,    // `nil`
 
     // Declarations
     NodeKindEnumDecl,      // `enum Fruits { ... }`
