@@ -50,6 +50,8 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
         
         #pragma warning(push, 0)
             #include <Windows.h>
+            // #include <ntsecapi.h>
+            #include <io.h>
             // This conflicts with certain functionalities, especially in the Adorad Language
             #ifdef CONST
                 #undef CONST
@@ -57,7 +59,9 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
             #ifdef IN
                 #undef IN
             #endif // IN
-            // #include <io.h>
+            #ifdef STRING
+                #undef STRING
+            #endif // STRING
         #pragma warning(pop)
         #undef NOMINMAX
 

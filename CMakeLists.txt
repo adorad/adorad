@@ -160,7 +160,9 @@ else()
 
     # Ignore some MSVC warnings
     string(APPEND CMAKE_C_FLAGS " /wd4018")
+    string(APPEND CMAKE_C_FLAGS " /wd4255")
     string(APPEND CMAKE_C_FLAGS " /wd4267")
+    string(APPEND CMAKE_C_FLAGS " /wd4242")
     string(APPEND CMAKE_C_FLAGS " /wd4061")
     string(APPEND CMAKE_C_FLAGS " /wd4668")
     string(APPEND CMAKE_C_FLAGS " /wd4090")
