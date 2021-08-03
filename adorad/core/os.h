@@ -24,7 +24,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 static Buff* os_get_cwd();
 static Buff* os_path_dirname(Buff* path);
 static Buff* os_path_extname(Buff* path);
-static Buff* os_path_join(Buff* path);
+static Buff* os_path_join(Buff* path1, Buff* path2);
 static bool os_is_sep(char ch);
 
 static Buff* os_get_cwd() {
@@ -42,11 +42,11 @@ static Buff* os_get_cwd() {
 }
 
 static Buff* __os_dirname_basename(Buff* path, bool is_basename) {
-    Buff* result = buff_new(null);
     UInt64 length = path->length;
     if(!length)
-        return null;
+        return path;
 
+    Buff* result = buff_new(null);
     char* end = buff_end(path);
     if(!is_basename) {
         // If the last character is a `sep`, `path` is the dirname
@@ -109,8 +109,17 @@ static Buff* os_path_extname(Buff* path) {
     return basename;
 }
 
-static Buff* os_path_join(Buff* path) {
-    
+
+static Buff* os_path_join(Buff* path1, Buff* path2) {
+    UInt64 length = path1->length;
+    if(!length)
+        return path1;
+        
+    char* end = buff_end(path1);
+    if(!os_is_sep(*end))
+        buff_append_char(path1, CSTL_OS_SEP_CHAR);
+    buff_append(path1, path2);
+    return path1;
 }
 
 static bool os_is_sep(char ch) {
