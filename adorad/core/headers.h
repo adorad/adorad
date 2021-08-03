@@ -14,10 +14,8 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #ifndef CSTL_HEADERS_H
 #define CSTL_HEADERS_H
 
-#include <adorad/core/os.h>
+#include <adorad/core/os_defs.h>
 
-
-// Headers ==========================================
 #if defined(_WIN32) && !defined(__MINGW32__)
     #ifndef _CRT_SECURE_NO_WARNINGS
         #define _CRT_SECURE_NO_WARNINGS
