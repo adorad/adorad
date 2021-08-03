@@ -53,17 +53,18 @@ CREDITS
     #include <adorad/core/cmake_macros.h>
 #endif // CSTL_USING_CUSTOM_GENERATED_MACROS
 
+#include <adorad/core/os_defs.h>
+#include <adorad/core/cpu.h>
+#include <adorad/core/compilers.h>
+#include <adorad/core/types.h>
 #include <adorad/core/headers.h>
 #include <adorad/core/clock.h>
-#include <adorad/core/compilers.h>
-#include <adorad/core/cpu.h>
 #include <adorad/core/debug.h>
 #include <adorad/core/misc.h>
-#include <adorad/core/types.h>
 #include <adorad/core/io.h>
 #include <adorad/core/memory.h>
-#include <adorad/core/os.h>
 #include <adorad/core/math.h>
+#include <adorad/core/os.h>
 #include <adorad/core/buffer.h>
 #include <adorad/core/string.h>
 #include <adorad/core/vector.h>
