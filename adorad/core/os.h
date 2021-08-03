@@ -27,6 +27,8 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 
 #if defined(CSTL_OS_WINDOWS)
     #include <direct.h>
+    // Does this work?
+    #define _POSIX_C_SOURCE 1
     #include <limits.h>
 #endif // CSTL_OS_WINDOWS
 
