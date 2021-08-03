@@ -38,8 +38,12 @@ static char* buff_end(cstlBuffer* buffer);
 static bool buff_is_empty(cstlBuffer* buffer);
 // Assign `new` to the buffer data
 static void buff_set(cstlBuffer* buffer, char* new_buff);
-// Free the cstlBuffer from it's associated memory
+// Reset a buffer
 static void buff_reset(cstlBuffer* buffer);
+// Reverse a buffer (non-destructive)
+static cstlBuffer* buff_rev(cstlBuffer* buffer);
+// Free the buffer from its associated memory
+static void buff_free(cstlBuffer* buffer);
 
 // Create a new `cstlBuffer`
 static cstlBuffer* buff_new(char* buff_data) {
@@ -97,13 +101,33 @@ static void buff_set(cstlBuffer* buffer, char* new_buff) {
     buffer->length = (UInt64)strlen(new_buff);
 }
 
-// Free the cstlBuffer from it's associated memory
+// Free the buffer from its associated memory
 static void buff_reset(cstlBuffer* buffer) {
     if(buffer == null)
         return;
 
     buffer->data = null;
     buffer->length = 0;
+}
+
+// Reverse a buffer (non-destructive)
+static Buff* buff_rev(Buff* buffer) {
+    Buff* rev = buff_new(null);
+    UInt64 length = buffer->length;
+    if(!length)
+        return rev;
+    
+    char* temp = (char*)calloc(1, length + 1);
+    for(UInt64 i=0; i<length; i++)
+        *(temp + i) = *(buffer->data + length - i - 1);
+    
+    buff_set(rev, temp);
+    return rev;
+}
+
+// Free the buffer from its associated memory
+static void buff_free(cstlBuffer* buffer) {
+    free(buffer);
 }
 
 #endif // CSTL_BUFFER_H
