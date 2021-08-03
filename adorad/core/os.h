@@ -18,6 +18,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #include <stdlib.h>
 #include <unistd.h>
 #include <adorad/core/buffer.h>
+#include <adorad/core/os_defs.h>
 #include <adorad/core/types.h>
 #include <adorad/core/debug.h>
 
@@ -28,6 +29,15 @@ static Buff* os_path_join(Buff* path1, Buff* path2);
 static bool os_is_sep(char ch);
 
 static Buff* os_get_cwd() {
+#if defined(CSTL_OS_WINDOWS)
+    Pathspace path_space;
+    if (GetCurrentDirectoryW(PATH_MAX_WIDE, &path_space.data.items[0]) == 0) {
+        fprintf(stderr, "Unable to `os_get_cwd()`. 'GetCurrentDirectoryW()' failed");
+        exit(1);
+    }
+    Buff* buff = buff_new(path_space.data.items[0]);
+    return buff;
+#elif defined(CSTL_OS_POSIX)
     long n;
     char *buf;
 
@@ -35,10 +45,17 @@ static Buff* os_get_cwd() {
     CSTL_CHECK_NE(n, -1);
     buf = (char*)calloc(n, sizeof(*buf));
     CSTL_CHECK_NOT_NULL(buf, "calloc failed. Out of memory");
-    getcwd(buf, n);
-    
+    char* result = getcwd(buf, n);
+    if(!result) {
+        fprintf(stderr, "Unable to `os_get_cwd()`. 'getcwd()' failed");
+        exit(1);
+    }
     Buff* buff = buff_new(buf);
     return buff;
+#else
+    #error "No `os_get_cwd()` implementation supported for your platform."
+    return null;
+#endif // CSTL_OS_WINDOWS
 }
 
 static Buff* __os_dirname_basename(Buff* path, bool is_basename) {

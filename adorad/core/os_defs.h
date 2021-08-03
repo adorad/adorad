@@ -52,6 +52,10 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     #error This Operating System is not supported by Adorad
 #endif
 
+#if !defined(_MSC_VER) && !defined(_WIN64)
+    #define CSTL_OS_POSIX 1
+#endif
+
 // Architetures
 #if defined(__x86_64__)
     #define CSTL_ARCH_X86_64    1
