@@ -103,7 +103,7 @@ static void buff_set(cstlBuffer* buffer, char* new_buff) {
     }
 
     buffer->data = new_buff;
-    buffer->length = (UInt64)strlen(new_buff);
+    buffer->length = len;
 }
 
 // Free the buffer from its associated memory
