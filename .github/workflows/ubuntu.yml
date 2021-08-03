@@ -40,7 +40,7 @@ jobs:
       - name: Test
         run: |
           cd build/test ; ls; ctest -j 10 -C ${{ matrix.build_type }} --output-on-failure
-          cd .. ; cd build/bin ; ./AdoradInternalTestsWithMain
+          cd ../.. ; cd build/bin ; ./AdoradInternalTestsWithMain
 
 
   Clang:

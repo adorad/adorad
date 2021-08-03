@@ -42,7 +42,7 @@ jobs:
       - name: Test
         run: |
           cd build/test ; dir; ctest -j 10 -C ${{ matrix.build_type }} --output-on-failure
-          cd ../.. ; dir; cd build/bin ; AdoradInternalTestsWithMain
+          cd .. ; dir; cd ${{ matrix.build_type }}/bin ; dir; AdoradInternalTestsWithMain
 
   # Slight hack when it comes to building on using Windows on Github runners:
   # CMake apparently defaults to an older Windows SDK Version that has quite a few bugs which lead to compilation
@@ -94,7 +94,7 @@ jobs:
     - name: Test
       run: |
         cd build/test ; dir; ctest -j 10 -C ${{ matrix.build_type }} --output-on-failure
-          cd ../.. ; dir; cd build/bin ; AdoradInternalTestsWithMain
+          cd .. ; dir; cd ${{ matrix.build_type }}/bin ; dir; AdoradInternalTestsWithMain
 
 
   MSVC2017_latest:
@@ -117,7 +117,7 @@ jobs:
     - name: Test
       run: |
         cd build/test ; dir; ctest -j 10 -C Release --output-on-failure
-        cd ../.. ; dir; cd build/bin ; AdoradInternalTestsWithMain
+        cd .. ; dir; cd ${{ matrix.build_type }}/bin ; dir; AdoradInternalTestsWithMain
 
 
   MSVC2019:
@@ -145,7 +145,7 @@ jobs:
     - name: Test
       run: |
         cd build/test ; dir; ctest -j 10 -C ${{ matrix.build_type }} --output-on-failure
-        cd ../.. ; dir; cd build/bin ; AdoradInternalTestsWithMain
+        cd .. ; dir; cd ${{ matrix.build_type }}/bin ; dir; AdoradInternalTestsWithMain
 
 
   MSVC2019_latest:
@@ -168,7 +168,7 @@ jobs:
     - name: Test
       run: |
         cd build/test ; dir; ctest -j 10 -C Release --output-on-failure
-        cd ../.. ; dir; cd build/bin ; AdoradInternalTestsWithMain
+        cd .. ; dir; cd ${{ matrix.build_type }}/bin ; dir; AdoradInternalTestsWithMain
 
 
   Clang:
@@ -201,7 +201,7 @@ jobs:
       - name: Test
         run: |
           cd build/test ; dir; ctest -j 10 -C ${{ matrix.build_type }} --output-on-failure
-          cd ../.. ; dir; cd build/bin ; AdoradInternalTestsWithMain
+          cd .. ; dir; cd ${{ matrix.build_type }}/bin ; dir; AdoradInternalTestsWithMain
 
 
   Clang-cl-11:
@@ -230,4 +230,4 @@ jobs:
       - name: Test
         run: |
           cd build/test ; dir; ctest -j 10 -C ${{ matrix.build_type }} --output-on-failure
-          cd ../.. ; dir; cd build/bin ; AdoradInternalTestsWithMain
+          cd .. ; dir; cd ${{ matrix.build_type }}/bin ; dir; AdoradInternalTestsWithMain
