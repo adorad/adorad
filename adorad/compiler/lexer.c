@@ -19,43 +19,41 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 
 // Get the current character in the Lexical buffer
 // NB: This does not increase the offset
-#define LEXER_CURR_CHAR                   buff_at(lexer->buffer, lexer->offset)
+#define LEXER_CURR_CHAR           buff_at(lexer->buffer, lexer->offset)
 
 // Reset the line
-#define LEXER_RESET_LINENO                lexer->loc->line = 0
+#define LEXER_RESET_LINENO        lexer->loc->line = 0
 // Reset the column number 
-#define LEXER_RESET_COLNO                 lexer->loc->col = 0
+#define LEXER_RESET_COLNO         lexer->loc->col = 0
 
 // Increment the line number
-#define LEXER_INCREMENT_LINENO            ++lexer->loc->line; LEXER_RESET_COLNO
+#define LEXER_INCREMENT_LINENO    ++lexer->loc->line; LEXER_RESET_COLNO
 // Decrement the line
-#define LEXER_DECREMENT_LINENO            --lexer->loc->line; LEXER_RESET_COLNO
+#define LEXER_DECREMENT_LINENO    --lexer->loc->line; LEXER_RESET_COLNO
 // Increment the column number
-#define LEXER_INCREMENT_COLNO             ++lexer->loc->col 
+#define LEXER_INCREMENT_COLNO     ++lexer->loc->col 
 // Decrement the col
-#define LEXER_DECREMENT_COLNO             --lexer->loc->col
+#define LEXER_DECREMENT_COLNO     --lexer->loc->col
 
 // Increment the Lexical Buffer offset
-#define LEXER_INCREMENT_OFFSET            ++lexer->offset; LEXER_INCREMENT_COLNO
+#define LEXER_INCREMENT_OFFSET    ++lexer->offset; LEXER_INCREMENT_COLNO
 // Decrement the Lexical Buffer offset
-#define LEXER_DECREMENT_OFFSET            --lexer->offset; LEXER_DECREMENT_COLNO
+#define LEXER_DECREMENT_OFFSET    --lexer->offset; LEXER_DECREMENT_COLNO
 
 // Increment the Lexical Buffer offset without affecting `col`
-#define LEXER_INCREMENT_OFFSET_ONLY       ++lexer->offset;
+#define LEXER_INCREMENT_OFFSET_ONLY   ++lexer->offset;
 // Decrement the Lexical Buffer offset without affecting `col`
-#define LEXER_DECREMENT_OFFSET_ONLY       --lexer->offset;
+#define LEXER_DECREMENT_OFFSET_ONLY   --lexer->offset;
 
 // Reset the buffer 
-#define LEXER_RESET_BUFFER              \
-    lexer->buffer->free(lexer->buffer)
+#define LEXER_RESET_BUFFER      \
+    buff_reset(lexer->buffer)
 
 // Reset the Lexer state
-#define LEXER_RESET                     \
-    lexer->buffer->free(lexer->buffer); \
-    lexer->offset = 0;                  \
-    lexer->loc->line = 1;                  \
-    lexer->loc->col = 1;                   \
-    lexer->loc->fname = ""
+#define LEXER_RESET             \
+    buff_reset(lexer->buffer);  \
+    lexer->offset = 0;          \
+    loc_reset(lexer->loc)
 
 // String representation of a TokenKind
 // To access the string representation of a TokenKind object, simply use `tokenHash[tokenkind]`

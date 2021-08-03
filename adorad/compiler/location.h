@@ -24,5 +24,6 @@ struct Location {
 };
 
 Location* loc_new(const char* fname);
+void loc_reset(Location* loc);
 
 #endif // ADORAD_LOCATION_H

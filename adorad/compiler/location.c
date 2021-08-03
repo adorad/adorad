@@ -24,3 +24,9 @@ Location* loc_new(const char* fname) {
     
     return loc;
 }
+
+void loc_reset(Location* loc) {
+    loc->line = 1;
+    loc->col = 1;
+    loc->fname = "";
+}

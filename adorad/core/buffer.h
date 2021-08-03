@@ -39,14 +39,14 @@ static bool buff_is_empty(cstlBuffer* buffer);
 // Assign `new` to the buffer data
 static void buff_set(cstlBuffer* buffer, char* new_buff);
 // Free the cstlBuffer from it's associated memory
-static void buff_free(cstlBuffer* buffer);
+static void buff_reset(cstlBuffer* buffer);
 
 // Create a new `cstlBuffer`
 static cstlBuffer* buff_new(char* buff_data) {
     cstlBuffer* buffer = (cstlBuffer*)calloc(1, sizeof(cstlBuffer));
     CSTL_CHECK_NOT_NULL(buffer, "Could not allocate memory. Memory full.");
 
-    UInt64 len = buff_data == null ? 0 : (UInt64)strlen(buff_data);
+    UInt64 len = !buff_data ? 0 : (UInt64)strlen(buff_data);
 
     buffer->data = buff_data;
     buffer->length = len;
@@ -98,7 +98,7 @@ static void buff_set(cstlBuffer* buffer, char* new_buff) {
 }
 
 // Free the cstlBuffer from it's associated memory
-static void buff_free(cstlBuffer* buffer) {
+static void buff_reset(cstlBuffer* buffer) {
     if(buffer == null)
         return;
 
