@@ -15,8 +15,8 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #define CSTL_BUFFER_H
 
 #include <string.h>
-#include <adorad/core/types.h>
 #include <adorad/core/debug.h>
+#include <adorad/core/types.h>
 
 typedef struct cstlBuffer cstlBuffer;
 typedef cstlBuffer Buff;

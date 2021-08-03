@@ -18,6 +18,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #include <stdlib.h>
 #include <unistd.h>
 #include <adorad/core/buffer.h>
+#include <adorad/core/types.h>
 #include <adorad/core/debug.h>
 
 #if defined(_WIN32) || defined(_WIN64)
