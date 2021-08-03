@@ -14,6 +14,12 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #include <stdlib.h>
 #include <adorad/compiler/tokens.h>
 
+typedef enum TokenKind {
+    #define TOKENKIND(kind, str)     kind
+        ALLTOKENS
+    #undef TOKENKIND
+} TokenKind;
+
 // Token constructor
 Token* token_init() {
     Token* token = calloc(1, sizeof(Token));
