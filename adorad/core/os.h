@@ -14,7 +14,11 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #ifndef CSTL_OS_H
 #define CSTL_OS_H
 
+#define _XOPEN_SOURCE 700
+#include <stdlib.h>
+#include <unistd.h>
 #include <adorad/core/buffer.h>
+#include <adorad/core/debug.h>
 
 #if defined(_WIN32) || defined(_WIN64)
     #ifndef CSTL_OS_WINDOWS
@@ -88,11 +92,70 @@ static Buff* os_path_join(Buff* path);
 static bool os_is_sep(char ch);
 
 static Buff* os_get_cwd() {
+    long n;
+    char *buf;
 
+    n = pathconf(".", _PC_PATH_MAX);
+    CSTL_CHECK_NE(n, -1);
+    buf = (char*)calloc(n, sizeof(*buf));
+    CSTL_CHECK_NOT_NULL(buf, "calloc failed. Out of memory");
+    getcwd(buf, n);
+    
+    Buff* buff = buff_new(buf);
+    return buff;
 }
 
-static Buff* os_path_dirname(Buff* path) {
+static Buff* __os_dirname_basename(Buff* path, bool is_basename) {
+    Buff* result = buff_new(null);
+    UInt64 length = path->length;
+    if(!length)
+        return null;
 
+    char* end = buff_end(path);
+    if(!is_basename) {
+        // If the last character is a `sep`, `path` is the dirname
+        if(os_is_sep(*end))
+            return path;
+
+        // If there is no `sep` in `path`, the dirname is empty
+        if(!(strstr(path->data, "/") || strstr(path->data, "\\")))
+            return result;
+        
+        Buff* rev = buff_rev(path);
+        char* rev_dir = strchr(rev->data, *(CSTL_OS_SEP));
+        buff_set(result, rev_dir);
+        result = buff_rev(result);
+        buff_free(rev);
+    } else {
+        // If the last character is a `sep`, `basename` is empty
+        if(os_is_sep(*end))
+            return buff_new(null);
+        
+        // If there is no `sep` in `path`, `path` is the basename
+        if(!(strstr(path->data, "/") || strstr(path->data, "\\")))
+            return path;
+        
+        Buff* rev = buff_rev(path);
+        for(UInt64 i = 0; i<length; i++) {
+            if(os_is_sep(*(rev->data + i))) {
+                *(rev->data + i) = nullchar;
+                break;
+            }
+        }
+        buff_set(result, rev->data);
+        result = buff_rev(result);
+        free(rev);
+    }
+    
+    return result;
+}
+
+static Buff* os_get_dirname(Buff* path) {
+    return __os_dirname_basename(path, false);
+}
+
+static Buff* os_get_basename(Buff* path) {
+    return __os_dirname_basename(path, true);
 }
 
 static Buff* os_path_extname(Buff* path) {

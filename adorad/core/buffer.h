@@ -50,7 +50,13 @@ static cstlBuffer* buff_new(char* buff_data) {
     cstlBuffer* buffer = (cstlBuffer*)calloc(1, sizeof(cstlBuffer));
     CSTL_CHECK_NOT_NULL(buffer, "Could not allocate memory. Memory full.");
 
-    UInt64 len = !buff_data ? 0 : (UInt64)strlen(buff_data);
+    UInt64 len;
+    if(!buff_data) {
+        len = 0;
+        buff_data = "";
+    } else {
+        len = (UInt64)strlen(buff_data);
+    }
 
     buffer->data = buff_data;
     buffer->length = len;
