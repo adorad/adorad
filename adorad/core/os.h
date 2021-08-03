@@ -144,7 +144,7 @@ static Buff* __os_dirname_basename(Buff* path, bool is_basename) {
         }
         buff_set(result, rev->data);
         result = buff_rev(result);
-        buff_free(rev);
+        free(rev);
     }
     
     return result;
