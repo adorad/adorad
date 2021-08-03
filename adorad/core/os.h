@@ -35,6 +35,13 @@ static Buff* os_path_extname(Buff* path);
 static Buff* os_path_join(Buff* path1, Buff* path2);
 static bool os_is_sep(char ch);
 
+#ifndef CSTL_OS_FUNC_ALIASES
+    #define CSTL_OS_FUNC_ALIASES
+    #define ospd    os_path_dirname
+    #define ospb    os_path_basename
+    #define ospj    os_path_join
+#endif // CSTL_OS_FUNC_ALIASES
+
 static Buff* os_get_cwd() {
 #if defined(CSTL_OS_WINDOWS)
     // This (or its equivalent) is not defined in any include in Windows as far as I've come across
