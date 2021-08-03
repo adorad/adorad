@@ -14,18 +14,16 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #ifndef CSTL_OS_H
 #define CSTL_OS_H
 
-// Operating Systems
-// CSTL_OS_...
+#include <adorad/core/buffer.h>
+
 #if defined(_WIN32) || defined(_WIN64)
     #ifndef CSTL_OS_WINDOWS
         #define CSTL_OS_WINDOWS 1
     #endif
-
 #elif defined(__APPLE__) && defined(__MACH__)
     #ifndef CSTL_OS_OSX
         #define CSTL_OS_OSX 1
     #endif
-
 #elif defined(unix) || defined(__unix__) || defined(__unix) || defined(__APPLE__)
     #ifndef CSTL_OS_UNIX
         #define CSTL_OS_UNIX 1
@@ -35,44 +33,26 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
         #ifndef CSTL_OS_LINUX
             #define CSTL_OS_LINUX 1
         #endif
-    
     #elif defined(__FreeBSD__) && defined(__FreeBSD_kernel__)
         #ifndef CSTL_OS_FREEBSD
             #define CSTL_OS_FREEBSD 1
         #endif
-
     #else 
-        #error This Unix Operating System in not supported by Adorad.
+        #error This Unix Operating System is not supported by Adorad.
     #endif 
-
 #elif defined(_gnu_linux_) || defined(__linux__) && !defined(CSTL_OS_LINUX)
     #define CSTL_OS_LINUX 1
-
 #elif defined(__NetBSD__)
     #define CSTL_OS_NETBSD
-    
 #elif defined(__DragonFly__)
     #define CSTL_OS_DRAGONFLY
-    
 #elif defined(__OpenBSD__)
     #define CSTL_OS_OPENBSD
-    
 #elif defined(__HAIKU__)
     #define CSTL_OS_HAIKU
-
 #else
-    #error This Operating System in not supported by Adorad
+    #error This Operating System is not supported by Adorad
 #endif
-
-
-#if defined(_WIN32)
-	#define CSTL_API GB_EXTERN __declspec(dllexport)
-	#define GB_DLL_IMPORT GB_EXTERN __declspec(dllimport)
-#else
-	#define CSTL_API GB_EXTERN __attribute__((visibility("default")))
-	#define GB_DLL_IMPORT GB_EXTERN
-#endif
-
 
 // Architetures
 #if defined(__x86_64__)
@@ -100,6 +80,36 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     #define CSTL_OS_SEP         "/"
     #define CSTL_OS_SEP_CHAR    '/'
 #endif // CSTL_OS_WINDOWS
+
+static Buff* os_get_cwd();
+static Buff* os_path_dirname(Buff* path);
+static Buff* os_path_extname(Buff* path);
+static Buff* os_path_join(Buff* path);
+static bool os_is_sep(char ch);
+
+static Buff* os_get_cwd() {
+
+}
+
+static Buff* os_path_dirname(Buff* path) {
+
+}
+
+static Buff* os_path_extname(Buff* path) {
+
+}
+
+static Buff* os_path_join(Buff* path) {
+
+}
+
+static bool os_is_sep(char ch) {
+#ifdef CSTL_OS_WINDOWS
+    return ch == '\\' || ch == '/';
+#else
+    return ch == '/';
+#endif // CSTL_OS_WINDOWS
+}
 
 
 #endif // CSTL_OS_H

@@ -95,7 +95,6 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #define CSTL_STRINGIZE_IMPL(x)          #x
 #define CSTL_STRINGIZE(x)               CSTL_STRINGIZE_IMPL(x)
 
-
 // printf format-string specifiers for Int64 and UInt64 respectively
 #if defined(_MSC_VER) && (_MSC_VER < 1920)
     #define CSTL_PRId64 "I64d"
@@ -110,12 +109,10 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     #define CSTL_PRIu64 PRIu64
 #endif
 
-
 // A signed sizeof is more useful 
 #ifndef CSTL_SIZEOF
     #define CSTL_SIZEOF(x)    (Ll)(sizeof(x))
 #endif 
-
 
 // Statics!
 // static means 3-4 different things in C/C++!!
