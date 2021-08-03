@@ -200,18 +200,8 @@ jobs:
 
       - name: Test
         run: |
-          cd build/test
-          dir
-          ctest -j 10 -C ${{ matrix.build_type }} --output-on-failure
-          cd .. 
-          echo "Finished cd .."
-          dir
-          cd bin/
-          echo "Inside bin"
-          dir
-          cd ${{ matrix.build_type }}
-          dir
-          ./AdoradInternalTestsWithMain.exe
+          cd build/test ; dir; ctest -j 10 -C ${{ matrix.build_type }} --output-on-failure
+          cd .. ; dir; cd bin/ ; dir; ./AdoradInternalTestsWithMain.exe
 
 
   Clang-cl-11:
