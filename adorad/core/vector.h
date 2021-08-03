@@ -35,19 +35,6 @@ typedef struct cstlVector cstlVector;
 typedef cstlVector Vec;
 struct cstlVector {
     cstlVectorInternal internal;
-
-#ifndef _ADORAD_
-    void* (*at)(cstlVector*, UInt64);
-    void* (*begin)(cstlVector*);
-    void* (*end)(cstlVector*);
-    bool (*is_empty)(cstlVector*);
-    UInt64 (*size)(cstlVector*);
-    UInt64 (*capacity)(cstlVector*);
-    bool (*clear)(cstlVector*);
-    bool (*push)(cstlVector*, const void*);
-    bool (*pop)(cstlVector*);
-    void (*free)(cstlVector*);
-#endif // _ADORAD_
 };
 
 // Create a new `cstlVector`
@@ -100,19 +87,6 @@ static cstlVector* vec_new(UInt64 objsize, UInt64 capacity) {
     vec->internal.capacity = capacity;
     vec->internal.size = 0;
     vec->internal.objsize = objsize;
-
-#ifndef _ADORAD_
-    vec->at = &vec_at;
-    vec->size = &vec_size;
-    vec->capacity = &vec_cap;
-    vec->push = &vec_push;
-    vec->pop = &vec_pop;
-    vec->begin = &vec_begin;
-    vec->end = &vec_end;
-    vec->is_empty = &vec_is_empty;
-    vec->clear = &vec_clear;
-    vec->free = &vec_free;
-#endif // _ADORAD_
 
     return vec;
 } 
