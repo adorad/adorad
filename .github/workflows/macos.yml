@@ -36,4 +36,6 @@ jobs:
         run: cmake --build build --config=${{ matrix.build_type }} --parallel 10
 
       - name: Test
-        run: cd build ; ls; ctest -j 10 -C ${{ matrix.build_type }} --output-on-failure
+        run: |
+          cd build ; ls; ctest -j 10 -C ${{ matrix.build_type }} --output-on-failure
+          cd bin; ./AdoradInternalTestsWithMain
