@@ -27,7 +27,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 
 #if defined(CSTL_OS_WINDOWS)
     #include <direct.h>
-    #include <limits.h>
+    // #include <limits.h>
 #endif // CSTL_OS_WINDOWS
 
 static Buff* os_get_cwd();
