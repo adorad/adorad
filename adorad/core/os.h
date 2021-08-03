@@ -38,7 +38,7 @@ static bool os_is_sep(char ch);
 
 static Buff* os_get_cwd() {
 #if defined(CSTL_OS_WINDOWS)
-    Pathspace path_space;
+    PathSpace path_space;
     if (GetCurrentDirectoryW(PATH_MAX_WIDE, &path_space.data.items[0]) == 0) {
         fprintf(stderr, "Unable to `os_get_cwd()`. 'GetCurrentDirectoryW()' failed");
         exit(1);
