@@ -36,7 +36,9 @@ static char* buff_begin(cstlBuffer* buffer);
 static char* buff_end(cstlBuffer* buffer);
 // Is the buffer data empty?
 static bool buff_is_empty(cstlBuffer* buffer);
-// Assign `new` to the buffer data
+// Append `buff2` to the buffer data
+static void buff_append(cstlBuffer* buffer, cstlBuffer* buff2);
+// Assign `new_buff` to the buffer data
 static void buff_set(cstlBuffer* buffer, char* new_buff);
 // Reset a buffer
 static void buff_reset(cstlBuffer* buffer);
@@ -90,7 +92,36 @@ static bool buff_is_empty(cstlBuffer* buffer) {
     return buffer->length == 0;
 }
 
-// Assign `new` to the buffer data
+// Append `buff2` to the buffer data
+// Returns `buffer`
+static void buff_append(cstlBuffer* buffer, cstlBuffer* buff2) {
+    CSTL_CHECK_NOT_NULL(buffer, "Expected not null");
+    CSTL_CHECK_NOT_NULL(buffer->data, "Expected not null");
+    CSTL_CHECK_NOT_NULL(buff2, "Expected not null");
+    CSTL_CHECK_NOT_NULL(buff2->data, "Expected not null");
+
+    UInt64 new_len = buffer->length + buff2->length + 1;
+    char* newstr = (char*)calloc(1, new_len);
+    strcpy(newstr, buffer->data);
+    strcat(newstr, buff2->data);
+    buff_set(buffer, newstr);
+}
+
+// Append a character to the buffer data
+static void buff_append_char(cstlBuffer* buffer, char ch) {
+    CSTL_CHECK_NOT_NULL(buffer, "Expected not null");
+    CSTL_CHECK_NOT_NULL(buffer->data, "Expected not null");
+
+    UInt64 len = buffer->length;
+    char* newstr = (char*)calloc(1, len + 1);
+    strcpy(newstr, buffer->data);
+    newstr[len] = ch;
+    newstr[len + 1] = nullchar;
+    buff_set(buffer, newstr);
+    buffer->length += 2;
+}
+
+// Assign `new_buff` to the buffer data
 static void buff_set(cstlBuffer* buffer, char* new_buff) {
     CSTL_CHECK_NOT_NULL(buffer, "Expected not null");
 
