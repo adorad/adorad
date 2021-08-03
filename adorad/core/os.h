@@ -23,9 +23,12 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #if defined(CSTL_OS_POSIX)
     #define _XOPEN_SOURCE 700
     #include <unistd.h>
-#else
-    #include <adorad/core/headers.h>
 #endif // CSTL_OS_POSIX
+
+#if defined(CSTL_OS_WINDOWS)
+    #include <direct.h>
+    #include <limits.h>
+#endif // CSTL_OS_WINDOWS
 
 static Buff* os_get_cwd();
 static Buff* os_path_dirname(Buff* path);
@@ -35,12 +38,13 @@ static bool os_is_sep(char ch);
 
 static Buff* os_get_cwd() {
 #if defined(CSTL_OS_WINDOWS)
-    PathSpace path_space;
-    if (GetCurrentDirectoryW(PATH_MAX_WIDE, &path_space.data.items[0]) == 0) {
-        fprintf(stderr, "Unable to `os_get_cwd()`. 'GetCurrentDirectoryW()' failed");
+    char result[PATH_MAX];
+    _getcwd(result, PATH_MAX);
+    if(!result) {
+        fprintf(stderr, "Unable to `os_get_cwd()`. 'getcwd()' failed");
         exit(1);
     }
-    Buff* buff = buff_new(path_space.data.items[0]);
+    Buff* buff = buff_new(result);
     return buff;
 #elif defined(CSTL_OS_POSIX)
     long n;
