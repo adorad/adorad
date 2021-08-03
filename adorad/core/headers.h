@@ -50,7 +50,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
         
         #pragma warning(push, 0)
             #include <Windows.h>
-            // #include <ntsecapi.h>
+            #include <ntsecapi.h>
             #include <io.h>
             // This conflicts with certain functionalities, especially in the Adorad Language
             #ifdef CONST

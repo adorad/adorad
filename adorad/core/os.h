@@ -25,8 +25,6 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     #include <unistd.h>
 #else
     #include <adorad/core/headers.h>
-    #include <shlobj.h>
-    #include <fcntl.h>
 #endif // CSTL_OS_POSIX
 
 static Buff* os_get_cwd();
