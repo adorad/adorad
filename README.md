@@ -105,8 +105,8 @@ Our guarantee: Adorad is always going to be lightweight, portable and *extremely
 ### Linux, macOS, Windows, *BSD, Solaris, WSL, Android, Raspbian
 
 ```shell
-git clone https://github.com/AdoradLang/Adorad
-cd Adorad
+git clone https://github.com/adorad/adorad
+cd adorad
 cmake -S . -B build
 ```
 
