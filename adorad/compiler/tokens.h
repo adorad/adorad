@@ -215,6 +215,12 @@ TOKENKIND(TOK___KEYWORDS_END, ""),    \
 \
     TOKENKIND(TOK_COUNT, "")
 
+typedef enum TokenKind {
+    #define TOKENKIND(kind, str)     kind
+        ALLTOKENS
+    #undef TOKENKIND
+} TokenKind;
+
 // Main Token Struct 
 typedef struct Token {
     TokenKind kind;     // Token Kind
