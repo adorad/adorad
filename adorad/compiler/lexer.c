@@ -90,7 +90,7 @@ static const char* tokenHash[] = {
          'b': case 'o': case 'x': case 'B': case 'O': case 'X': case ALPHA_EXCEPT_B_O_X
 
 
-Lexer* lexer_init(const char* buffer, const char* fname) {
+Lexer* lexer_init(char* buffer, const char* fname) {
     Lexer* lexer = (Lexer*)calloc(1, sizeof(Lexer));
 
     lexer->offset = 0;
