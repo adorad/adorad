@@ -49,10 +49,10 @@ jobs:
           cd .. 
           echo ' <<<<<<<<<<<<<<<<<<<<<<< cd bin/  <<<<<<<<<<<<<<<<<<<<<<<'
           cd bin/ 
-          echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain.exe <<<<<<<<<<<<<<<<<<<<<<<'
+          echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain <<<<<<<<<<<<<<<<<<<<<<<'
           dir
-          ./AdoradInternalTestsWithMain.exe
-          echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain.exe <<<<<<<<<<<<<<<<<<<<<<<'
+          ./AdoradInternalTestsWithMain
+          echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain <<<<<<<<<<<<<<<<<<<<<<<'
 
   # Slight hack when it comes to building on using Windows on Github runners:
   # CMake apparently defaults to an older Windows SDK Version that has quite a few bugs which lead to compilation
@@ -111,10 +111,10 @@ jobs:
         cd .. 
         echo ' <<<<<<<<<<<<<<<<<<<<<<< cd bin/  <<<<<<<<<<<<<<<<<<<<<<<'
         cd bin/ 
-        echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain.exe <<<<<<<<<<<<<<<<<<<<<<<'
+        echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain <<<<<<<<<<<<<<<<<<<<<<<'
         dir
-        bash -c "./AdoradInternalTestsWithMain.exe"
-        echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain.exe <<<<<<<<<<<<<<<<<<<<<<<'
+        bash -c "./AdoradInternalTestsWithMain"
+        echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain <<<<<<<<<<<<<<<<<<<<<<<'
 
 
   MSVC2017_latest:
@@ -144,10 +144,10 @@ jobs:
         cd .. 
         echo ' <<<<<<<<<<<<<<<<<<<<<<< cd bin/  <<<<<<<<<<<<<<<<<<<<<<<'
         cd bin/ 
-        echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain.exe <<<<<<<<<<<<<<<<<<<<<<<'
+        echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain <<<<<<<<<<<<<<<<<<<<<<<'
         dir
-        bash -c "./AdoradInternalTestsWithMain.exe"
-        echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain.exe <<<<<<<<<<<<<<<<<<<<<<<'
+        bash -c "./AdoradInternalTestsWithMain"
+        echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain <<<<<<<<<<<<<<<<<<<<<<<'
 
 
   MSVC2019:
@@ -182,10 +182,10 @@ jobs:
         cd .. 
         echo ' <<<<<<<<<<<<<<<<<<<<<<< cd bin/  <<<<<<<<<<<<<<<<<<<<<<<'
         cd bin/ 
-        echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain.exe <<<<<<<<<<<<<<<<<<<<<<<'
+        echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain <<<<<<<<<<<<<<<<<<<<<<<'
         dir
-        bash -c "./AdoradInternalTestsWithMain.exe"
-        echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain.exe <<<<<<<<<<<<<<<<<<<<<<<'
+        bash -c "./AdoradInternalTestsWithMain"
+        echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain <<<<<<<<<<<<<<<<<<<<<<<'
 
 
   MSVC2019_latest:
@@ -214,10 +214,10 @@ jobs:
         cd .. 
         echo ' <<<<<<<<<<<<<<<<<<<<<<< cd bin/  <<<<<<<<<<<<<<<<<<<<<<<'
         cd bin/ 
-        echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain.exe <<<<<<<<<<<<<<<<<<<<<<<'
+        echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain <<<<<<<<<<<<<<<<<<<<<<<'
         dir
-        bash -c "./AdoradInternalTestsWithMain.exe"
-        echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain.exe <<<<<<<<<<<<<<<<<<<<<<<'
+        bash -c "./AdoradInternalTestsWithMain"
+        echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain <<<<<<<<<<<<<<<<<<<<<<<'
 
 
   Clang:
@@ -255,10 +255,10 @@ jobs:
           cd .. 
           echo ' <<<<<<<<<<<<<<<<<<<<<<< cd bin/  <<<<<<<<<<<<<<<<<<<<<<<'
           cd bin/ 
-          echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain.exe <<<<<<<<<<<<<<<<<<<<<<<'
+          echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain <<<<<<<<<<<<<<<<<<<<<<<'
           dir
-          ./AdoradInternalTestsWithMain.exe
-          echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain.exe <<<<<<<<<<<<<<<<<<<<<<<'
+          ./AdoradInternalTestsWithMain
+          echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain <<<<<<<<<<<<<<<<<<<<<<<'
 
 
   Clang-cl-11:
@@ -294,7 +294,7 @@ jobs:
           cd .. 
           echo ' <<<<<<<<<<<<<<<<<<<<<<< cd bin/  <<<<<<<<<<<<<<<<<<<<<<<'
           cd bin/ 
-          echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain.exe <<<<<<<<<<<<<<<<<<<<<<<'
+          echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain <<<<<<<<<<<<<<<<<<<<<<<'
           dir
-          ./AdoradInternalTestsWithMain.exe
-          echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain.exe <<<<<<<<<<<<<<<<<<<<<<<'
+          ./AdoradInternalTestsWithMain
+          echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain <<<<<<<<<<<<<<<<<<<<<<<'
