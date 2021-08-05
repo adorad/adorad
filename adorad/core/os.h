@@ -76,7 +76,7 @@ static Buff* os_get_cwd() {
 }
 
 static Buff* __os_dirname_basename(Buff* path, bool is_basename) {
-    UInt64 length = path->length;
+    UInt64 length = path->len;
     if(!length)
         return path;
 
@@ -145,7 +145,7 @@ static Buff* os_path_extname(Buff* path) {
 
 
 static Buff* os_path_join(Buff* path1, Buff* path2) {
-    UInt64 length = path1->length;
+    UInt64 length = path1->len;
     if(!length)
         return path1;
         

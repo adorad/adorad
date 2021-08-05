@@ -22,6 +22,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 // these many tokens), having a large number reduces the number of `realloc`s.
 #define VEC_INIT_ALLOC_CAP  4096
 #define VECTOR_AT_MACRO(v, i)   ((void *)((char *) (v)->internal.data + (i) * (v)->internal.objsize))
+#define vec_new(obj, nelem)     _vec_new(sizeof(obj), (nelem))
 
 typedef struct {
     void** data;      // pointer to the underlying memory
@@ -41,7 +42,7 @@ struct cstlVector {
 // size     => size of each element (in bytes)
 // capacity => number of elements
 // Returns `null` in the event of an error (e.g memory full; could not allocate)
-static cstlVector* vec_new(UInt64 objsize, UInt64 capacity);
+static cstlVector* _vec_new(UInt64 objsize, UInt64 capacity);
 // Grow the capacity of `vec` to at least `capacity`.
 // If more space is needed, grow `vec` to `capacity`, but at least by a factor of 1.5.
 static bool vec_grow(cstlVector* vec, UInt64 capacity);
@@ -71,7 +72,7 @@ static bool vec_pop(cstlVector* vec);
 // size     => size of each element (in bytes)
 // capacity => number of elements
 // Returns `null` in the event of an error (e.g memory full; could not allocate)
-static cstlVector* vec_new(UInt64 objsize, UInt64 capacity) {
+static cstlVector* _vec_new(UInt64 objsize, UInt64 capacity) {
     if(capacity == 0)
         capacity = VEC_INIT_ALLOC_CAP;
     
@@ -93,15 +94,11 @@ static cstlVector* vec_new(UInt64 objsize, UInt64 capacity) {
 
 // Free a cstlVector from it's associated memory
 static void vec_free(cstlVector* vec) {
-    if(vec == null) 
-        return;
-    if(vec->internal.data != null) {
-        free(vec->internal.data);
-        vec->internal.data = null;
+    if(vec) {
+        if(vec->internal.data)
+            free(vec->internal.data);
+        free(vec);
     }
-    vec->internal.capacity = 0;
-    vec->internal.size = 0;
-    vec->internal.objsize = 0;
 }
 
 // Return a pointer to element `i` in `vec`
