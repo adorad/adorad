@@ -167,7 +167,7 @@ static UInt32 __internal_strlength(const char* str, bool is_utf8) {
     else {
         UInt32 count = 0;
         for(; *str; count++) {
-            char c = *str;
+            UInt8 c = *str;
             UInt32 increment = 0;
                  if(c < 0x80)               increment = 1;
             else if((c & 0xe0) == 0xc0)     increment = 2;
