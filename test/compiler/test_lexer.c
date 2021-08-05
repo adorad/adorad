@@ -7,13 +7,13 @@ TEST(Lexer, Init) {
     Lexer* lexer = lexer_init(buffer, null);
 
     CHECK_STRNE(lexer->buffer->data, "");
-    CHECK_EQ(lexer->buffer->length, strlen(buffer));
-    CHECK_EQ(vec_cap(lexer->tokenList), TOKENLIST_ALLOC_CAPACITY);
-    CHECK_EQ(vec_size(lexer->tokenList), 0);
+    CHECK_EQ(lexer->buffer->len, strlen(buffer));
+    CHECK_EQ(vec_cap(lexer->toklist), TOKENLIST_ALLOC_CAPACITY);
+    CHECK_EQ(vec_size(lexer->toklist), 0);
     CHECK_EQ(lexer->offset, 0);
     CHECK_EQ(lexer->loc->line, 1);
     CHECK_EQ(lexer->loc->col, 1);
-    CHECK_STREQ(lexer->loc->fname, "");
+    CHECK_STREQ(lexer->loc->fname->data, "");
 
     free(lexer);
 }
@@ -26,8 +26,8 @@ TEST(Lexer, Init) {
 //     for(UInt32 i=0; i < strlen(buffer); i++) {
 //         CHECK_STREQ(lexer->buffer->data, buffer);
 //         CHECK_EQ(lexer_advance(lexer), lexer->buffer->data[lexer->offset-1]);
-//         CHECK_EQ(vec_cap(lexer->tokenList), TOKENLIST_ALLOC_CAPACITY);
-//         CHECK_EQ(vec_size(lexer->tokenList), 0);
+//         CHECK_EQ(vec_cap(lexer->toklist), TOKENLIST_ALLOC_CAPACITY);
+//         CHECK_EQ(vec_size(lexer->toklist), 0);
 //         CHECK_EQ(lexer->offset, i+1);
 //         CHECK_EQ(lexer->loc->col, i+2);
 //         CHECK_EQ(lexer->loc->line, 1);
@@ -42,8 +42,8 @@ TEST(Lexer, Init) {
 //     CHECK_STREQ(lexer->buffer->data, buffer);
 //     CHECK_EQ(lexer_advance(lexer), 'a');
 //     CHECK_EQ(lexer->offset, 1);
-//     CHECK_EQ(vec_cap(lexer->tokenList), TOKENLIST_ALLOC_CAPACITY);
-//     CHECK_EQ(vec_size(lexer->tokenList), 0);
+//     CHECK_EQ(vec_cap(lexer->toklist), TOKENLIST_ALLOC_CAPACITY);
+//     CHECK_EQ(vec_size(lexer->toklist), 0);
 //     CHECK_EQ(lexer->loc->col, 2);
 //     CHECK_EQ(lexer->loc->line, 1);
 
@@ -51,8 +51,8 @@ TEST(Lexer, Init) {
 //     CHECK_STREQ(lexer->buffer->data, buffer);
 //     CHECK_EQ(lexer_advance(lexer), '\n');
 //     CHECK_EQ(lexer->offset, 2);
-//     CHECK_EQ(vec_cap(lexer->tokenList), TOKENLIST_ALLOC_CAPACITY);
-//     CHECK_EQ(vec_size(lexer->tokenList), 0);
+//     CHECK_EQ(vec_cap(lexer->toklist), TOKENLIST_ALLOC_CAPACITY);
+//     CHECK_EQ(vec_size(lexer->toklist), 0);
 //     CHECK_EQ(lexer->loc->col, 3);
 //     CHECK_EQ(lexer->loc->line, 1);
 // }
@@ -64,8 +64,8 @@ TEST(Lexer, Init) {
 //     // Go ahead 4 chars
 //     char e = lexer_advancen(lexer, 4); // should be 'e'
 //     CHECK_EQ(e, 'e');
-//     CHECK_EQ(vec_cap(lexer->tokenList), TOKENLIST_ALLOC_CAPACITY);
-//     CHECK_EQ(vec_size(lexer->tokenList), 0);
+//     CHECK_EQ(vec_cap(lexer->toklist), TOKENLIST_ALLOC_CAPACITY);
+//     CHECK_EQ(vec_size(lexer->toklist), 0);
 //     CHECK_EQ(lexer->offset, 4);
 //     CHECK_EQ(lexer->loc->col, 5);
 //     CHECK_EQ(lexer->loc->line, 1);
@@ -73,8 +73,8 @@ TEST(Lexer, Init) {
 //     // Go ahead 1 char
 //     char f = lexer_advancen(lexer, 1); // 'f'
 //     CHECK_EQ(f, 'f');
-//     CHECK_EQ(vec_cap(lexer->tokenList), TOKENLIST_ALLOC_CAPACITY);
-//     CHECK_EQ(vec_size(lexer->tokenList), 0);
+//     CHECK_EQ(vec_cap(lexer->toklist), TOKENLIST_ALLOC_CAPACITY);
+//     CHECK_EQ(vec_size(lexer->toklist), 0);
 //     CHECK_EQ(lexer->offset, 5);
 //     CHECK_EQ(lexer->loc->col, 6);
 //     CHECK_EQ(lexer->loc->line, 1);
@@ -82,8 +82,8 @@ TEST(Lexer, Init) {
 //     // Go ahead 3 chars
 //     char i = lexer_advancen(lexer, 3); // 'i'
 //     CHECK_EQ(i, 'i');
-//     CHECK_EQ(vec_cap(lexer->tokenList), TOKENLIST_ALLOC_CAPACITY);
-//     CHECK_EQ(vec_size(lexer->tokenList), 0);
+//     CHECK_EQ(vec_cap(lexer->toklist), TOKENLIST_ALLOC_CAPACITY);
+//     CHECK_EQ(vec_size(lexer->toklist), 0);
 //     CHECK_EQ(lexer->offset, 8);
 //     CHECK_EQ(lexer->loc->col, 9);
 //     CHECK_EQ(lexer->loc->line, 1);
@@ -91,8 +91,8 @@ TEST(Lexer, Init) {
 //     // Go ahead 7 chars
 //     char p = lexer_advancen(lexer, 7); // 'p'
 //     CHECK_EQ(p, 'p');
-//     CHECK_EQ(vec_cap(lexer->tokenList), TOKENLIST_ALLOC_CAPACITY);
-//     CHECK_EQ(vec_size(lexer->tokenList), 0);
+//     CHECK_EQ(vec_cap(lexer->toklist), TOKENLIST_ALLOC_CAPACITY);
+//     CHECK_EQ(vec_size(lexer->toklist), 0);
 //     CHECK_EQ(lexer->offset, 15);
 //     CHECK_EQ(lexer->loc->col, 16);
 //     CHECK_EQ(lexer->loc->line, 1);
@@ -100,8 +100,8 @@ TEST(Lexer, Init) {
 //     // Go ahead 10 chars
 //     char z = lexer_advancen(lexer, 10); // 'z'
 //     CHECK_EQ(z, 'z');
-//     CHECK_EQ(vec_cap(lexer->tokenList), TOKENLIST_ALLOC_CAPACITY);
-//     CHECK_EQ(vec_size(lexer->tokenList), 0);
+//     CHECK_EQ(vec_cap(lexer->toklist), TOKENLIST_ALLOC_CAPACITY);
+//     CHECK_EQ(vec_size(lexer->toklist), 0);
 //     CHECK_EQ(lexer->offset, 25);
 //     CHECK_EQ(lexer->loc->col, 26);
 //     CHECK_EQ(lexer->loc->line, 1);
@@ -109,8 +109,8 @@ TEST(Lexer, Init) {
 //     // Go ahead 10 chars
 //     char nine = lexer_advancen(lexer, 10); // '9'
 //     CHECK_EQ(nine, '9');
-//     CHECK_EQ(vec_cap(lexer->tokenList), TOKENLIST_ALLOC_CAPACITY);
-//     CHECK_EQ(vec_size(lexer->tokenList), 0);
+//     CHECK_EQ(vec_cap(lexer->toklist), TOKENLIST_ALLOC_CAPACITY);
+//     CHECK_EQ(vec_size(lexer->toklist), 0);
 //     CHECK_EQ(lexer->offset, 35);
 //     CHECK_EQ(lexer->loc->col, 36);
 //     CHECK_EQ(lexer->loc->line, 1);
@@ -119,8 +119,8 @@ TEST(Lexer, Init) {
 //     char eof1 = lexer_advancen(lexer, 1);
 //     CHECK_EQ(eof1, nullchar);
 //     // Options should remain the same
-//     CHECK_EQ(vec_cap(lexer->tokenList), TOKENLIST_ALLOC_CAPACITY);
-//     CHECK_EQ(vec_size(lexer->tokenList), 0);
+//     CHECK_EQ(vec_cap(lexer->toklist), TOKENLIST_ALLOC_CAPACITY);
+//     CHECK_EQ(vec_size(lexer->toklist), 0);
 //     CHECK_EQ(lexer->offset, 35);
 //     CHECK_EQ(lexer->loc->col, 36);
 //     CHECK_EQ(lexer->loc->line, 1);
@@ -129,14 +129,14 @@ TEST(Lexer, Init) {
 //     char eof2 = lexer_advancen(lexer, 4);
 //     CHECK_EQ(eof2, nullchar);
 //     // Options should remain the same
-//     CHECK_EQ(vec_cap(lexer->tokenList), TOKENLIST_ALLOC_CAPACITY);
-//     CHECK_EQ(vec_size(lexer->tokenList), 0);
+//     CHECK_EQ(vec_cap(lexer->toklist), TOKENLIST_ALLOC_CAPACITY);
+//     CHECK_EQ(vec_size(lexer->toklist), 0);
 //     CHECK_EQ(lexer->offset, 35);
 //     CHECK_EQ(lexer->loc->col, 36);
 //     CHECK_EQ(lexer->loc->line, 1);
 // }
 
-// #define lt  lexer->tokenList
+// #define lt  lexer->toklist
 
 // TEST(lexer, lex_keywords) {
 //     char* buffer = "atomic UInt32 var = 0x123;";
@@ -225,16 +225,16 @@ TEST(Lexer, Init) {
 // //     // Call lexer_lex()
 // //     lexer_lex(lexer);
 
-// //     CHECK_EQ(vec_size(lexer->tokenList), nbin_digits + 1);
+// //     CHECK_EQ(vec_size(lexer->toklist), nbin_digits + 1);
 // //     CHECK_EQ(lta->cap, nbin_digits);
 
 // //     for(int i = 0; i<nbin_digits; i++) {
-// //         CHECK(lexer->tokenList->kind == lta->token->kind);
-// //         // CHECK_EQ(lexer->tokenList->offset, lta->token->offset);
-// //         // CHECK_EQ(lexer->tokenList->line, lta->token->line);
-// //         // CHECK_EQ(lexer->tokenList->col, lta->token->col);
-// //         CHECK_STREQ(lexer->tokenList->value, lta->token->value);
-// //         CHECK_STREQ(lexer->tokenList->fname, lta->token->fname);
+// //         CHECK(lexer->toklist->kind == lta->token->kind);
+// //         // CHECK_EQ(lexer->toklist->offset, lta->token->offset);
+// //         // CHECK_EQ(lexer->toklist->line, lta->token->line);
+// //         // CHECK_EQ(lexer->toklist->col, lta->token->col);
+// //         CHECK_STREQ(lexer->toklist->value, lta->token->value);
+// //         CHECK_STREQ(lexer->toklist->fname, lta->token->fname);
 // //     }
 
 // //     lexer_free(lexer);
