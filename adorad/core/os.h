@@ -82,21 +82,23 @@ static cstlBuffer* __os_dirname_basename(cstlBuffer* path, bool is_basename) {
 
     cstlBuffer* result = buff_new(null);
     char* end = buff_end(path);
-    if(!is_basename) {
-        // If the last character is a `sep`, `path` is the dirname
-        if(os_is_sep(*end))
-            return path;
 
-        // If there is no `sep` in `path`, the dirname is empty
-        if(!(strstr(path->data, "/") || strstr(path->data, "\\")))
-            return result;
-        
+    // dirname
+    if(!is_basename) {
         cstlBuffer* rev = buff_rev(path);
+
+        // The `/` or `\\` is not so important in getting the dirname, but it does interfere with `strchr`, so
+        // we skip over it (if present)
+        if(*rev->data == *(CSTL_OS_SEP))
+            rev->data++;
         char* rev_dir = strchr(rev->data, *(CSTL_OS_SEP));
         buff_set(result, rev_dir);
         result = buff_rev(result);
         buff_free(rev);
-    } else {
+    } 
+
+    // basename
+    else {
         // If the last character is a `sep`, `basename` is empty
         if(os_is_sep(*end))
             return buff_new(null);
@@ -114,7 +116,7 @@ static cstlBuffer* __os_dirname_basename(cstlBuffer* path, bool is_basename) {
         }
         buff_set(result, rev->data);
         result = buff_rev(result);
-        free(rev);
+        buff_free(rev);
     }
     
     return result;
