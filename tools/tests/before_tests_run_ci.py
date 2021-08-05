@@ -25,6 +25,8 @@ SOURCEROOT = ROOT
 DESTROOT = os.path.join(SOURCEROOT, 'build', 'bin')
 
 def run(CMAKE_BUILD_TYPE: str):
+    print(' ---------------------- PYTHON BEFORE TESTS CI ----------------------')
+    print(' ----------------------          RUN           ----------------------')
     copied = []
     path : str = os.path.join(DESTROOT, CMAKE_BUILD_TYPE)
     for binary in os.listdir(path):
@@ -38,6 +40,9 @@ def run(CMAKE_BUILD_TYPE: str):
     for i in copied:
         print(f'    {c}: {i}')
         c += 1
+
+    print(' ----------------------          EXIT           ----------------------')
+    
 
 if __name__ == '__main__':
     if(len(sys.argv) < 2):
