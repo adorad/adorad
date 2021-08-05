@@ -52,7 +52,6 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 
 #else
     #error Unknown CPU Type
-#endif // CSTL_CPU_...
-
+#endif
 
 #endif // CSTL_CPU_H

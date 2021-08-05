@@ -19,16 +19,16 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 
 // Base types
 /*
-typedef unsigned char       UInt8; 
-typedef          char       Int8;  
-typedef unsigned short      UInt16;
-typedef signed short        Int16; 
-typedef unsigned int        UInt32;
-typedef signed int          Int32; 
-typedef unsigned long long  UInt64;
-typedef long long           Int64; 
-typedef float               Float32; 
-typedef double              Float64; 
+    typedef unsigned char       UInt8; 
+    typedef          char       Int8;  
+    typedef unsigned short      UInt16;
+    typedef signed short        Int16; 
+    typedef unsigned int        UInt32;
+    typedef signed int          Int32; 
+    typedef unsigned long long  UInt64;
+    typedef long long           Int64; 
+    typedef float               Float32; 
+    typedef double              Float64; 
 */
 #if defined(CSTL_COMPILER_MSVC)
     #if _MSVC_VER < 1300 
@@ -181,7 +181,7 @@ typedef Int32 Rune;
 
 CSTL_DEBUG_CHECK(sizeof(UIntptr) == sizeof(Intptr));
 
-// More Useful types/
+// More Useful types
 #define nullchar '\0' 
  
 #ifndef null 

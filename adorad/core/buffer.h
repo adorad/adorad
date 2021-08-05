@@ -18,6 +18,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #include <adorad/core/debug.h>
 #include <adorad/core/types.h>
 #include <adorad/core/string.h>
+#include <adorad/core/misc.h>
 
 typedef struct cstlBuffer cstlBuffer;
 typedef cstlBuffer Buff;
@@ -74,7 +75,7 @@ static char* buff_begin(cstlBuffer* buffer) {
     CSTL_CHECK_NOT_NULL(buffer, "Expected not null");
     CSTL_CHECK_NOT_NULL(buffer->data, "Expected not null");
 
-    return (char*)buffer->data;
+    return cast(char*)buffer->data;
 }
 
 // Returns a pointer to the end of the buffer data
@@ -82,7 +83,7 @@ static char* buff_end(cstlBuffer* buffer) {
     CSTL_CHECK_NOT_NULL(buffer, "Expected not null");
     CSTL_CHECK_NOT_NULL(buffer->data, "Expected not null");
 
-    return (char*)(buffer->data + ((buffer->len - 1) * sizeof(char)));
+    return cast(char*)(buffer->data + ((buffer->len - 1) * sizeof(char)));
 }
 
 // Is the buffer data empty?
@@ -190,7 +191,7 @@ static void buff_append(cstlBuffer* buffer, cstlBuffer* buff2) {
     CSTL_CHECK_NOT_NULL(buff2->data, "Expected not null");
 
     UInt64 new_len = buffer->len + buff2->len + 1;
-    char* newstr = (char*)calloc(1, new_len);
+    char* newstr = cast(char*)calloc(1, new_len);
     strcpy(newstr, buffer->data);
     strcat(newstr, buff2->data);
     buff_set(buffer, newstr);
@@ -202,7 +203,7 @@ static void buff_append_char(cstlBuffer* buffer, char ch) {
     CSTL_CHECK_NOT_NULL(buffer->data, "Expected not null");
 
     UInt64 len = buffer->len;
-    char* newstr = (char*)calloc(1, len + 1);
+    char* newstr = cast(char*)calloc(1, len + 1);
     strcpy(newstr, buffer->data);
     newstr[len] = ch;
     newstr[len + 1] = nullchar;
@@ -247,7 +248,7 @@ static cstlBuffer* buff_rev(cstlBuffer* buffer) {
     if(!length)
         return rev;
     
-    char* temp = (char*)calloc(1, length + 1);
+    char* temp = cast(char*)calloc(1, length + 1);
     for(UInt64 i=0; i<length; i++)
         *(temp + i) = *(buffer->data + length - i - 1);
     
@@ -261,13 +262,13 @@ static bool buff_cmp(cstlBuffer* buff1, cstlBuffer* buff2) {
     if(buff1->len != buff2->len)
         return false;
     
-    const unsigned char* s1 = (const unsigned char*) buff1->data;
-    const unsigned char* s2 = (const unsigned char*) buff2->data;
+    const unsigned char* s1 = cast(const unsigned char*) buff1->data;
+    const unsigned char* s2 = cast(const unsigned char*) buff2->data;
     unsigned char ch1, ch2;
 
     do {
-        ch1 = (unsigned char) *s1++;
-        ch2 = (unsigned char) *s2++;
+        ch1 = cast(unsigned char) *s1++;
+        ch2 = cast(unsigned char) *s2++;
         if(ch1 == nullchar)
             return (ch1 - ch2) == 0 ? true : false;
     } while(ch1 == ch2);
@@ -281,8 +282,8 @@ static bool buff_cmp_nocase(cstlBuffer* buff1, cstlBuffer* buff2) {
     if(buff1->len != buff2->len)
         return false;
     
-    const unsigned char* s1 = (const unsigned char*) buff1->data;
-    const unsigned char* s2 = (const unsigned char*) buff2->data;
+    const unsigned char* s1 = cast(const unsigned char*) buff1->data;
+    const unsigned char* s2 = cast(const unsigned char*) buff2->data;
     unsigned char ch1, ch2;
     int result;
 
@@ -304,7 +305,7 @@ static cstlBuffer* buff_slice(cstlBuffer* buffer, int begin, int bytes) {
 
     cstlBuffer* slice = buff_new(null);
     CSTL_CHECK_NOT_NULL(slice, "`slice` cannot be null");
-    char* temp = (char*)calloc(1, bytes);
+    char* temp = cast(char*)calloc(1, bytes);
     strncpy(temp, &(buffer->data[begin]), bytes);
     buff_set(slice, temp);
     CSTL_CHECK_NOT_NULL(slice, "`slice source` cannot be null");
@@ -315,7 +316,7 @@ static cstlBuffer* buff_slice(cstlBuffer* buffer, int begin, int bytes) {
 static cstlBuffer* buff_clone(cstlBuffer* buffer) {
     CSTL_CHECK_NOT_NULL(buffer, "Cannot clone a null buffer :(");
     cstlBuffer* clone = buff_new(null);
-    char* dest = (char*)calloc(1, buff_len(buffer));
+    char* dest = cast(char*)calloc(1, buff_len(buffer));
     char* source = buffer->data;
 
     if(source) {
@@ -333,7 +334,7 @@ static cstlBuffer* buff_clone_n(cstlBuffer* buffer, int n) {
     CSTL_CHECK_GT(n, 0);
     CSTL_CHECK_LT(n, buffer->len);
     cstlBuffer* clone = buff_new(null);
-    char* dest = (char*)calloc(1, buff_len(buffer));
+    char* dest = cast(char*)calloc(1, buff_len(buffer));
     char* source = buffer->data;
 
     if(source) {
@@ -360,7 +361,7 @@ static inline cstlBuffer* buff_tolower(cstlBuffer* buffer) {
     if(!buffer->data) 
         return lower;
 
-    char* temp = (char*)calloc(1, buffer->len);    
+    char* temp = cast(char*)calloc(1, buffer->len);    
     strcpy(temp, buffer->data);
     int i = 0;
     while(*temp) {
@@ -380,7 +381,7 @@ static inline cstlBuffer* buff_toupper(cstlBuffer* buffer) {
     if(!buffer->data) 
         return upper;
 
-    char* temp = (char*)calloc(1, buffer->len);    
+    char* temp = cast(char*)calloc(1, buffer->len);    
     strcpy(temp, buffer->data);
     int i = 0;
     while(*temp) {

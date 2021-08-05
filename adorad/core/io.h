@@ -47,7 +47,7 @@ char* readFile(const char* fname) {
     long buff_length = ftell(file); 
     fseek(file, 0, SEEK_SET);
 
-    char* buffer = (char*)malloc(sizeof(char) * (buff_length + 1) );
+    char* buffer = cast(char*)malloc(sizeof(char) * (buff_length + 1) );
     if(!buffer) {
         printf("Could not allocate memory for buffer for file at %s\n", fname);
 		exit(1);

@@ -135,12 +135,7 @@ cstlColouredPrintf(int colour, const char* fmt, ...) {
 
 
 static inline int CSTL_isDigit(char c) { return c >= '0' && c <= '9'; }
-// If the macro arguments can be decomposed further, we need to print the `In macro ..., so and so failed`
-// This method signals whether this message should be printed
-// 
-// Note: the arguments are of type `char const*` as opposed to `char*`
-// This helps mitigate the ``warning: ISO C++ forbids converting a string constant to 'char*'``
-// See: https://stackoverflow.com/questions/20944784/why-is-conversion-from-string-constant-to-char-valid-in-c-but-invalid-in-c/20944858
+
 static inline int cstlShouldDecomposeMacro(char const* actual, char const* expected, int isStringCmp) {
     // Signal that the macro can be further decomposed if either of the following symbols are present
     int dots = 0;

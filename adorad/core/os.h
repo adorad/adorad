@@ -60,7 +60,7 @@ static cstlBuffer* os_get_cwd() {
 
     n = pathconf(".", _PC_PATH_MAX);
     CSTL_CHECK_NE(n, -1);
-    buf = (char*)calloc(n, sizeof(*buf));
+    buf = cast(char*)calloc(n, sizeof(*buf));
     CSTL_CHECK_NOT_NULL(buf, "calloc failed. Out of memory");
     char* result = getcwd(buf, n);
     if(!result) {

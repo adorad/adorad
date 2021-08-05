@@ -21,8 +21,8 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     #define TB_TO_BYTES(x)    GB_TO_BYTES(x) * (Int64)(1024)
 #endif 
 
-#define CSTL__ONES            cast(Ull)-1/UInt8_MAX
-#define CSTL__HIGHS           CSTL__ONES * (UInt8_MAX/2+1)
-#define CSTL__HAS_ZERO(x)     (x)-CSTL__ONES & ~(x) & CSTL__HIGHS
+#define CSTL_ONES            cast(Ull)-1/UInt8_MAX
+#define CSTL_HIGHS           CSTL_ONES * (UInt8_MAX/2+1)
+#define CSTL_HAS_ZERO(x)     (x)-CSTL_ONES & ~(x) & CSTL_HIGHS
 
 #endif // CSTL_MEMORY_H

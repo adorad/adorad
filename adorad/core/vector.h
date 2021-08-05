@@ -131,7 +131,7 @@ static void* vec_end(cstlVector* vec) {
     if(vec->internal.data == 0)
         return null;
     
-    return (void*)((char*)vec->internal.data + (vec->internal.size - 1) * sizeof(cstlVector));
+    return (void*)(cast(char*)vec->internal.data + (vec->internal.size - 1) * sizeof(cstlVector));
 }
 
 // Is `vec` empty (i.e no elements)?
