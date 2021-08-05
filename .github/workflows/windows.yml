@@ -43,8 +43,14 @@ jobs:
 
       - name: Test
         run: |
-          cd build/test ; ctest -j 10 -C ${{ matrix.build_type }} --output-on-failure
-          cd .. ; cd bin/ ; ./AdoradInternalTestsWithMain.exe
+          cd build/test 
+          ctest -j 10 -C ${{ matrix.build_type }} --output-on-failure
+          echo ' <<<<<<<<<<<<<<<<<<<<<<< cd .. <<<<<<<<<<<<<<<<<<<<<<<'
+          cd .. 
+          echo ' <<<<<<<<<<<<<<<<<<<<<<< cd bin/  <<<<<<<<<<<<<<<<<<<<<<<'
+          cd bin/ 
+          echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain.exe <<<<<<<<<<<<<<<<<<<<<<<'
+          ./AdoradInternalTestsWithMain.exe
 
   # Slight hack when it comes to building on using Windows on Github runners:
   # CMake apparently defaults to an older Windows SDK Version that has quite a few bugs which lead to compilation
@@ -95,9 +101,16 @@ jobs:
 
     - name: Test
       run: |
-        cd build/test ; ctest -j 10 -C ${{ matrix.build_type }} --output-on-failure
+        cd build/test 
+        ctest -j 10 -C ${{ matrix.build_type }} --output-on-failure
+        echo ' <<<<<<<<<<<<<<<<<<<<<<< PYTHON <<<<<<<<<<<<<<<<<<<<<<<'
         python ../../tools/tests/before_tests_run_ci.py ${{ matrix.build_type }}
-        cd .. ; cd bin/ ; ./AdoradInternalTestsWithMain.exe
+      echo ' <<<<<<<<<<<<<<<<<<<<<<< cd .. <<<<<<<<<<<<<<<<<<<<<<<'
+        cd .. 
+      echo ' <<<<<<<<<<<<<<<<<<<<<<< cd bin/  <<<<<<<<<<<<<<<<<<<<<<<'
+        cd bin/ 
+      echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain.exe <<<<<<<<<<<<<<<<<<<<<<<'
+        ./AdoradInternalTestsWithMain.exe
 
 
   MSVC2017_latest:
@@ -119,9 +132,16 @@ jobs:
 
     - name: Test
       run: |
-        cd build/test ; ctest -j 10 -C Release --output-on-failure
+        cd build/test 
+        ctest -j 10 -C Release --output-on-failure
+        echo ' <<<<<<<<<<<<<<<<<<<<<<< PYTHON <<<<<<<<<<<<<<<<<<<<<<<'
         python ../../tools/tests/before_tests_run_ci.py Release
-        cd .. ; cd bin/ ; ./AdoradInternalTestsWithMain.exe
+      echo ' <<<<<<<<<<<<<<<<<<<<<<< cd .. <<<<<<<<<<<<<<<<<<<<<<<'
+        cd .. 
+      echo ' <<<<<<<<<<<<<<<<<<<<<<< cd bin/  <<<<<<<<<<<<<<<<<<<<<<<'
+        cd bin/ 
+      echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain.exe <<<<<<<<<<<<<<<<<<<<<<<'
+        ./AdoradInternalTestsWithMain.exe
 
 
   MSVC2019:
@@ -148,9 +168,16 @@ jobs:
 
     - name: Test
       run: |
-        cd build/test ; ctest -j 10 -C ${{ matrix.build_type }} --output-on-failure
+        cd build/test 
+        ctest -j 10 -C ${{ matrix.build_type }} --output-on-failure
+        echo ' <<<<<<<<<<<<<<<<<<<<<<< PYTHON <<<<<<<<<<<<<<<<<<<<<<<'
         python ../../tools/tests/before_tests_run_ci.py ${{ matrix.build_type }}
-        cd .. ; cd bin/ ; ./AdoradInternalTestsWithMain.exe
+      echo ' <<<<<<<<<<<<<<<<<<<<<<< cd .. <<<<<<<<<<<<<<<<<<<<<<<'
+        cd .. 
+      echo ' <<<<<<<<<<<<<<<<<<<<<<< cd bin/  <<<<<<<<<<<<<<<<<<<<<<<'
+        cd bin/ 
+      echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain.exe <<<<<<<<<<<<<<<<<<<<<<<'
+        ./AdoradInternalTestsWithMain.exe
 
 
   MSVC2019_latest:
@@ -171,9 +198,16 @@ jobs:
 
     - name: Test
       run: |
-        cd build/test ; ctest -j 10 -C Release --output-on-failure
+        cd build/test 
+        ctest -j 10 -C Release --output-on-failure
+        echo ' <<<<<<<<<<<<<<<<<<<<<<< PYTHON <<<<<<<<<<<<<<<<<<<<<<<'
         python ../../tools/tests/before_tests_run_ci.py Release
-        cd .. ; cd bin/ ; ./AdoradInternalTestsWithMain.exe
+      echo ' <<<<<<<<<<<<<<<<<<<<<<< cd .. <<<<<<<<<<<<<<<<<<<<<<<'
+        cd .. 
+      echo ' <<<<<<<<<<<<<<<<<<<<<<< cd bin/  <<<<<<<<<<<<<<<<<<<<<<<'
+        cd bin/ 
+      echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain.exe <<<<<<<<<<<<<<<<<<<<<<<'
+        ./AdoradInternalTestsWithMain.exe
 
 
   Clang:
@@ -205,8 +239,14 @@ jobs:
 
       - name: Test
         run: |
-          cd build/test ; ctest -j 10 -C ${{ matrix.build_type }} --output-on-failure
-          cd .. ; cd bin/ ; ./AdoradInternalTestsWithMain.exe
+          cd build/test 
+          ctest -j 10 -C ${{ matrix.build_type }} --output-on-failure
+          echo ' <<<<<<<<<<<<<<<<<<<<<<< cd .. <<<<<<<<<<<<<<<<<<<<<<<'
+          cd .. 
+          echo ' <<<<<<<<<<<<<<<<<<<<<<< cd bin/  <<<<<<<<<<<<<<<<<<<<<<<'
+          cd bin/ 
+          echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain.exe <<<<<<<<<<<<<<<<<<<<<<<'
+          ./AdoradInternalTestsWithMain.exe
 
 
   Clang-cl-11:
@@ -234,6 +274,13 @@ jobs:
 
       - name: Test
         run: |
-          cd build/test ; ctest -j 10 -C ${{ matrix.build_type }} --output-on-failure
+          cd build/test 
+          ctest -j 10 -C ${{ matrix.build_type }} --output-on-failure
+          echo ' <<<<<<<<<<<<<<<<<<<<<<< PYTHON <<<<<<<<<<<<<<<<<<<<<<<'
           python ../../tools/tests/before_tests_run_ci.py ${{ matrix.build_type }}
-          cd .. ; cd bin/ ; ./AdoradInternalTestsWithMain.exe
+          echo ' <<<<<<<<<<<<<<<<<<<<<<< cd .. <<<<<<<<<<<<<<<<<<<<<<<'
+          cd .. 
+          echo ' <<<<<<<<<<<<<<<<<<<<<<< cd bin/  <<<<<<<<<<<<<<<<<<<<<<<'
+          cd bin/ 
+          echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain.exe <<<<<<<<<<<<<<<<<<<<<<<'
+          ./AdoradInternalTestsWithMain.exe
