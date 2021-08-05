@@ -42,6 +42,8 @@ static bool buff_cmp(cstlBuffer* buff1, cstlBuffer* buff2);
 static bool buff_cmp_nocase(cstlBuffer* buff1, cstlBuffer* buff2);
 static cstlBuffer* buff_slice(cstlBuffer* buffer, int begin, int bytes);
 static void buff_free(cstlBuffer* buffer);
+static inline void buff_toupper(cstlBuffer* buffer);
+static inline void buff_tolower(cstlBuffer* buffer);
 
 // Create a new `cstlBuffer`
 static cstlBuffer* buff_new(char* buff_data) {
