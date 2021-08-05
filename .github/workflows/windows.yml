@@ -113,7 +113,7 @@ jobs:
         cd bin/ 
         echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain.exe <<<<<<<<<<<<<<<<<<<<<<<'
         dir
-        ./AdoradInternalTestsWithMain.exe
+        bash -c "./AdoradInternalTestsWithMain.exe"
         echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain.exe <<<<<<<<<<<<<<<<<<<<<<<'
 
 
@@ -146,7 +146,7 @@ jobs:
         cd bin/ 
         echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain.exe <<<<<<<<<<<<<<<<<<<<<<<'
         dir
-        ./AdoradInternalTestsWithMain.exe
+        bash -c "./AdoradInternalTestsWithMain.exe"
         echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain.exe <<<<<<<<<<<<<<<<<<<<<<<'
 
 
@@ -184,7 +184,7 @@ jobs:
         cd bin/ 
         echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain.exe <<<<<<<<<<<<<<<<<<<<<<<'
         dir
-        ./AdoradInternalTestsWithMain.exe
+        bash -c "./AdoradInternalTestsWithMain.exe"
         echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain.exe <<<<<<<<<<<<<<<<<<<<<<<'
 
 
@@ -216,7 +216,7 @@ jobs:
         cd bin/ 
         echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain.exe <<<<<<<<<<<<<<<<<<<<<<<'
         dir
-        ./AdoradInternalTestsWithMain.exe
+        bash -c "./AdoradInternalTestsWithMain.exe"
         echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain.exe <<<<<<<<<<<<<<<<<<<<<<<'
 
 
