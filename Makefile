@@ -21,13 +21,17 @@ cmakeclean:
 .PHONY: cmakeclean
 
 test:
-	gcc test.c -o test.exe -I .
+	gcc test.c -o test.exe -g -I .
 	./test.exe
 .PHONY: test
 
 testclean:
 	rm test.exe 
 .PHONY: testclean
+
+testvalgrind:
+	valgrind ./test.exe --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose
+.PHONY: testvalgrind
 
 emitoutput:
 	gcc -E adorad/core/buffer.h -I . -o adoradoutput.txt

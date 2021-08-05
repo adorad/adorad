@@ -51,6 +51,8 @@ static bool buff_cmp(cstlBuffer* buff1, cstlBuffer* buff2);
 // Compare two buffers (ignoring case)
 // Returns true if `buff1` is lexicographically equal to `buff2`
 static bool buff_cmp_nocase(cstlBuffer* buff1, cstlBuffer* buff2);
+// Get a slice of a buffer
+static cstlBuffer* buff_slice(cstlBuffer* buffer, int begin, int bytes);
 // Free the buffer from its associated memory
 static void buff_free(cstlBuffer* buffer);
 
@@ -207,7 +209,19 @@ static bool buff_cmp_nocase(cstlBuffer* buff1, cstlBuffer* buff2) {
             break;
     }
     return result == 0 ? true : false;
+}
 
+// Get a slice of a buffer
+static cstlBuffer* buff_slice(cstlBuffer* buffer, int begin, int bytes) {
+    CSTL_CHECK_NOT_NULL(buffer, "`source` cannot be null");
+    CSTL_CHECK_GE(begin, 0);
+    CSTL_CHECK_GT(bytes, 0);
+
+    cstlBuffer* slice = buff_new(null);
+    char* temp = (char*)calloc(1, bytes);
+    strncpy(temp, &(buffer->data[begin]), bytes);
+    buff_set(slice, temp);
+    return slice;
 }
 
 // Free the buffer from its associated memory
