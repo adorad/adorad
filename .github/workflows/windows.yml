@@ -105,11 +105,11 @@ jobs:
         ctest -j 10 -C ${{ matrix.build_type }} --output-on-failure
         echo ' <<<<<<<<<<<<<<<<<<<<<<< PYTHON <<<<<<<<<<<<<<<<<<<<<<<'
         python ../../tools/tests/before_tests_run_ci.py ${{ matrix.build_type }}
-      echo ' <<<<<<<<<<<<<<<<<<<<<<< cd .. <<<<<<<<<<<<<<<<<<<<<<<'
+        echo ' <<<<<<<<<<<<<<<<<<<<<<< cd .. <<<<<<<<<<<<<<<<<<<<<<<'
         cd .. 
-      echo ' <<<<<<<<<<<<<<<<<<<<<<< cd bin/  <<<<<<<<<<<<<<<<<<<<<<<'
+        echo ' <<<<<<<<<<<<<<<<<<<<<<< cd bin/  <<<<<<<<<<<<<<<<<<<<<<<'
         cd bin/ 
-      echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain.exe <<<<<<<<<<<<<<<<<<<<<<<'
+        echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain.exe <<<<<<<<<<<<<<<<<<<<<<<'
         ./AdoradInternalTestsWithMain.exe
 
 
@@ -136,11 +136,11 @@ jobs:
         ctest -j 10 -C Release --output-on-failure
         echo ' <<<<<<<<<<<<<<<<<<<<<<< PYTHON <<<<<<<<<<<<<<<<<<<<<<<'
         python ../../tools/tests/before_tests_run_ci.py Release
-      echo ' <<<<<<<<<<<<<<<<<<<<<<< cd .. <<<<<<<<<<<<<<<<<<<<<<<'
+        echo ' <<<<<<<<<<<<<<<<<<<<<<< cd .. <<<<<<<<<<<<<<<<<<<<<<<'
         cd .. 
-      echo ' <<<<<<<<<<<<<<<<<<<<<<< cd bin/  <<<<<<<<<<<<<<<<<<<<<<<'
+        echo ' <<<<<<<<<<<<<<<<<<<<<<< cd bin/  <<<<<<<<<<<<<<<<<<<<<<<'
         cd bin/ 
-      echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain.exe <<<<<<<<<<<<<<<<<<<<<<<'
+        echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain.exe <<<<<<<<<<<<<<<<<<<<<<<'
         ./AdoradInternalTestsWithMain.exe
 
 
@@ -172,11 +172,11 @@ jobs:
         ctest -j 10 -C ${{ matrix.build_type }} --output-on-failure
         echo ' <<<<<<<<<<<<<<<<<<<<<<< PYTHON <<<<<<<<<<<<<<<<<<<<<<<'
         python ../../tools/tests/before_tests_run_ci.py ${{ matrix.build_type }}
-      echo ' <<<<<<<<<<<<<<<<<<<<<<< cd .. <<<<<<<<<<<<<<<<<<<<<<<'
+        echo ' <<<<<<<<<<<<<<<<<<<<<<< cd .. <<<<<<<<<<<<<<<<<<<<<<<'
         cd .. 
-      echo ' <<<<<<<<<<<<<<<<<<<<<<< cd bin/  <<<<<<<<<<<<<<<<<<<<<<<'
+        echo ' <<<<<<<<<<<<<<<<<<<<<<< cd bin/  <<<<<<<<<<<<<<<<<<<<<<<'
         cd bin/ 
-      echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain.exe <<<<<<<<<<<<<<<<<<<<<<<'
+        echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain.exe <<<<<<<<<<<<<<<<<<<<<<<'
         ./AdoradInternalTestsWithMain.exe
 
 
@@ -202,11 +202,11 @@ jobs:
         ctest -j 10 -C Release --output-on-failure
         echo ' <<<<<<<<<<<<<<<<<<<<<<< PYTHON <<<<<<<<<<<<<<<<<<<<<<<'
         python ../../tools/tests/before_tests_run_ci.py Release
-      echo ' <<<<<<<<<<<<<<<<<<<<<<< cd .. <<<<<<<<<<<<<<<<<<<<<<<'
+        echo ' <<<<<<<<<<<<<<<<<<<<<<< cd .. <<<<<<<<<<<<<<<<<<<<<<<'
         cd .. 
-      echo ' <<<<<<<<<<<<<<<<<<<<<<< cd bin/  <<<<<<<<<<<<<<<<<<<<<<<'
+        echo ' <<<<<<<<<<<<<<<<<<<<<<< cd bin/  <<<<<<<<<<<<<<<<<<<<<<<'
         cd bin/ 
-      echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain.exe <<<<<<<<<<<<<<<<<<<<<<<'
+        echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain.exe <<<<<<<<<<<<<<<<<<<<<<<'
         ./AdoradInternalTestsWithMain.exe
 
 
