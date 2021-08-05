@@ -23,7 +23,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     on tokens (printing, predicates).
 
     NOTE: 
-    Any changes made to this function _MUST_ be reflect in the token_to_string() (in <adorad/compiler/tokens.c>)
+    Any changes made to this function _MUST_ be reflect in the token_to_buff() (in <adorad/compiler/tokens.c>)
     as well as in Syntax.toml (adorad/compiler/syntax/syntax.toml)
 */
 #define ALLTOKENS \
@@ -225,7 +225,7 @@ typedef enum TokenKind {
 typedef struct Token {
     TokenKind kind;     // Token Kind
     UInt32 offset;      // Offset of the first character of the Token
-    const char* value;  // Token value
+    Buff* value;        // Token value
     UInt32 start;       // Starting offset of the token (used in substring-ing tokens of length >1)
     Location* loc;      // location of the token in the source code
 } Token;
@@ -235,6 +235,6 @@ Token* token_init();
 // Reset a Token instance
 void token_reset_token(Token* token);
 // Convert a Token to its respective String representation
-char* token_to_string(TokenKind kind);
+Buff* token_to_buff(TokenKind kind);
 
 #endif // ADORAD_TOKEN_H

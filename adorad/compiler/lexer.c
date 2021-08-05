@@ -95,31 +95,42 @@ Lexer* lexer_init(char* buffer, const char* fname) {
 
     lexer->offset = 0;
     lexer->buffer = buff_new(buffer);
-    lexer->tokenList = vec_new(sizeof(Token), TOKENLIST_ALLOC_CAPACITY);
+    lexer->toklist = vec_new(Token, TOKENLIST_ALLOC_CAPACITY);
     lexer->loc = loc_new(fname);
 
     return lexer;
 }
 
-static void lexer_tokenlist_push(Lexer* lexer, Token* token) {
-    vec_push(lexer->tokenList, token);
+static void lexer_toklist_push(Lexer* lexer, Token* token) {
+    vec_push(lexer->toklist, token);
 }
 
 static void lexer_free(Lexer* lexer) {
     if(lexer) {
-        vec_free(lexer->tokenList);
+        vec_free(lexer->toklist);
         buff_free(lexer->buffer);
+        loc_free(lexer->loc);
         free(lexer);
     }
 }
 
 // Report an error and exit
-void lexer_error(Lexer* lexer, const char* format, ...) {
+void lexer_error(Lexer* lexer, Error e, const char* format, ...) {
     va_list vl;
     va_start(vl, format);
-    fprintf(stderr, "%sSyntaxError: ", "\033[1;31m");
+    switch(e) {
+        case SyntaxError:
+            fprintf(stderr, "%sSyntaxError: ", "\033[1;31m");
+            break;
+        case ParseError:
+            fprintf(stderr, "%sSyntaxError: ", "\033[1;31m");
+            break;
+        default:
+            fprintf(stderr, "%sError: ", "\033[1;31m");
+            break;
+    }
     vfprintf(stderr, format, vl);
-    fprintf(stderr, " at %s:%d:%d%s\n", lexer->loc->fname, lexer->loc->line,lexer->loc->col, "\033[0m");
+    fprintf(stderr, " at %s:%d:%d%s\n", lexer->loc->fname->data, lexer->loc->line,lexer->loc->col, "\033[0m");
     va_end(vl);
     exit(1);
 }
@@ -127,17 +138,18 @@ void lexer_error(Lexer* lexer, const char* format, ...) {
 // Returns the curent character in the Lexical Buffer and advances to the next element
 // It does this by incrementing the buffer offset.
 static inline char lexer_advance(Lexer* lexer) {
-    if(lexer->offset >= lexer->buffer->length)
+    if(lexer->offset >= buff_len(lexer->buffer))
         return nullchar;
     
     LEXER_INCREMENT_COLNO;
+    // Do _not_ use `buff_at(lexer->buffer, lexer->offset++)` here
     return lexer->buffer->data[lexer->offset++];
 }
 
 // Advance `n` characters in the Lexical Buffer
 static inline char lexer_advancen(Lexer* lexer, UInt32 n) {
     // The '>=' is here because offset and buffer_capacity are off by 1 (0-index vs 1-index respectively)
-    if(lexer->offset + n >= lexer->buffer->length)
+    if(lexer->offset + n >= buff_len(lexer->buffer))
         return nullchar;
     
     lexer->loc->col += n;
@@ -171,18 +183,21 @@ static inline char lexer_peek(Lexer* lexer) {
 // "Look ahead" `n` characters in the Lexical buffer.
 // It _does not_ increment the buffer offset.
 static inline char lexer_peekn(Lexer* lexer, UInt32 n) {
-    if(lexer->offset + n >= lexer->buffer->length)
+    if(lexer->offset + n >= buff_len(lexer->buffer))
         return nullchar;
     
     return (char)lexer->buffer->data[lexer->offset + n];
 }
 
-static void lexer_maketoken(Lexer* lexer, TokenKind kind, char* value, UInt32 offset, UInt32 line, UInt32 col) {  
+static void lexer_maketoken(Lexer* lexer, TokenKind kind, Buff* value, UInt32 offset, UInt32 line, UInt32 col) {  
     Token* token = token_init();
     CSTL_CHECK_NOT_NULL(token, "Could not allocate memory. Memory full.");
 
     if(value == null) {
-        value = token_to_string(kind);
+        printf("VALUE IS NONE!!!\n");
+    }
+    if(!value->data) {
+        value = token_to_buff(kind);
 
         if(kind == STRING || kind == IDENTIFIER || kind == INTEGER || kind == HEX_INT || kind == BIN_INT ||
            kind == OCT_INT)
@@ -193,9 +208,9 @@ static void lexer_maketoken(Lexer* lexer, TokenKind kind, char* value, UInt32 of
     token->offset = offset;
     token->loc->col = col;
     token->loc->line = line;
-    token->loc->fname = lexer->loc->fname;
-    token->value = value;
-    lexer_tokenlist_push(lexer, token);
+    buff_set(token->value, value->data);
+    buff_set(token->loc->fname, lexer->loc->fname->data);
+    lexer_toklist_push(lexer, token);
 }
 
 // Scan a comment (single line)
@@ -203,7 +218,7 @@ static void lexer_maketoken(Lexer* lexer, TokenKind kind, char* value, UInt32 of
 // aren't
 static inline void lexer_lex_sl_comment(Lexer* lexer) {
     char ch = lexer_advance(lexer);
-    int comment_length = 0; // no. of chars in the comment (useful for allocating memory for `comment_value`)
+    int comment_length = 0;
     UInt32 prev_offset = lexer->offset - 1;
     UInt32 line = lexer->loc->line;
     UInt32 col = lexer->loc->col;
@@ -215,14 +230,14 @@ static inline void lexer_lex_sl_comment(Lexer* lexer) {
 
     CSTL_CHECK_EQ(ch, '\n');
     
-    // Do not store empty comments. Eg:
-    //     `#`
+    // Do not store empty comments
     if(comment_length == 0) 
         return;
 
-    char* comment_value = (char*)calloc(comment_length + 1, sizeof(char));
-    substr(comment_value, lexer->buffer->data, prev_offset, comment_length - 1);
-    CSTL_CHECK_NOT_NULL(comment_value, "`comment_value` must not be null.");
+    Buff* comment_value = buff_slice(lexer->buffer, prev_offset, comment_length - 1);
+    CSTL_CHECK_NOT_NULL(comment_value, "`comment_value` must not be null");
+    if(!comment_value)
+        printf("comment_value = null\n");
     lexer_maketoken(lexer, COMMENT, comment_value, prev_offset, line, col);
 
     LEXER_DECREMENT_OFFSET;
@@ -265,7 +280,7 @@ static inline void lexer_lex_esc_char(Lexer* lexer) {
 // Scan a macro (begins with `@`)
 static inline void lexer_lex_macro(Lexer* lexer) {
     char ch = lexer_advance(lexer);
-    int macro_length = 0; // length of macro
+    int macro_length = 0;
 
     // Don't include the `@` in the macro symbol name
     UInt32 prev_offset = lexer->offset;
@@ -283,9 +298,10 @@ static inline void lexer_lex_macro(Lexer* lexer) {
     UInt32 offset_diff = lexer->offset - prev_offset;
     printf("Offset_diff = %d\n", offset_diff);
 
-    char* macro_value = (char*)calloc(macro_length + 1, sizeof(char));
-    substr(macro_value, lexer->buffer->data, prev_offset - 1, offset_diff);
-    CSTL_CHECK_NOT_NULL(macro_value, "macro_value must not be null");
+    Buff* macro_value = buff_slice(lexer->buffer, prev_offset - 1, offset_diff);
+    CSTL_CHECK_NOT_NULL(macro_value, "`macro_value` must not be null");
+    if(!macro_value)
+        printf("macro_value = null\n");
     lexer_maketoken(lexer, MACRO, macro_value, prev_offset - 1, line, col - 1);
 
     LEXER_DECREMENT_OFFSET;
@@ -293,11 +309,11 @@ static inline void lexer_lex_macro(Lexer* lexer) {
 
 // Scan a string
 static inline void lexer_lex_string(Lexer* lexer) {
-    // We already know that the curr char is _not_ a quote (`"`) --> an empty string token (`""`) is
+    // We already know that the curr char is _not_ a quote (`"`) since an empty string token (`""`) is
     // handled by `lexer_lex()`
     CSTL_CHECK_NE(LEXER_CURR_CHAR, '"');
     char ch = lexer_advance(lexer);
-    int str_length = 0; // length of string
+    int str_length = 0;
     UInt32 prev_offset = lexer->offset - 1;
     UInt32 line = lexer->loc->line;
     UInt32 col = lexer->loc->col;
@@ -317,10 +333,11 @@ static inline void lexer_lex_string(Lexer* lexer) {
     CSTL_CHECK_EQ(ch, '"');
     UInt32 offset_diff = lexer->offset - prev_offset;
 
-    char* str_value = (char*)calloc(str_length + 1, sizeof(char));
     // `offset_diff - 1` so as to ignore the closing quote `"`
-    substr(str_value, lexer->buffer->data, prev_offset, offset_diff - 1);
-    CSTL_CHECK_NOT_NULL(str_value, "str_value must not be null");
+    Buff* str_value = buff_slice(lexer->buffer, prev_offset, offset_diff - 1);
+    CSTL_CHECK_NOT_NULL(str_value, "`str_value` must not be null");
+    if(!str_value)
+        printf("str_value = null\n");
     lexer_maketoken(lexer, STRING, str_value, prev_offset - 1, line, col - 1);
 }
 
@@ -348,7 +365,7 @@ static inline void lexer_lex_identifier(Lexer* lexer) {
     UInt32 prev_offset = lexer->offset;
     UInt32 line = lexer->loc->line;
     UInt32 col = lexer->loc->col;
-    int ident_length = 0; // length of identifier
+    int ident_length = 0;
     char ch = lexer_advance(lexer);
 
     while(isLetter(ch) || isDigit(ch)) {
@@ -360,13 +377,13 @@ static inline void lexer_lex_identifier(Lexer* lexer) {
         CSTL_WARN(An identifier can never have more than 256 characters);
 
     UInt32 offset_diff = lexer->offset - prev_offset;
-
-    char* ident_value = (char*)calloc(ident_length + 1, sizeof(char));
-    substr(ident_value, lexer->buffer->data, prev_offset - 1, offset_diff);
-    CSTL_CHECK_NOT_NULL(ident_value, "ident_value must not be null");
+    Buff* ident_value = buff_slice(lexer->buffer, prev_offset - 1, offset_diff);
+    CSTL_CHECK_NOT_NULL(ident_value, "`ident_value` must not be null");
+    if(!ident_value)
+        printf("Ident value = null\n");
 
     // Determine if a keyword or just a regular identifier
-    TokenKind tokenkind = lexer_is_keyword_or_identifier(ident_value);
+    TokenKind tokenkind = lexer_is_keyword_or_identifier(ident_value->data);
     lexer_maketoken(lexer, tokenkind, ident_value, prev_offset - 1, line, col - 1);
 
     LEXER_DECREMENT_OFFSET;
@@ -402,7 +419,7 @@ static inline void lexer_lex_digit(Lexer* lexer) {
                         ch = lexer_advance(lexer);
                     }
                     if(hexcount == 0)
-                        lexer_error(lexer, "Expected hexadecimal digits [0-9A-Fa-f] after `0x`");
+                        lexer_error(lexer, SyntaxError, "Expected hexadecimal digits [0-9A-Fa-f] after `0x`");
                     
                     tokenkind = HEX_INT;
                     digit_length = hexcount + 1; // Account for the '0'
@@ -417,7 +434,7 @@ static inline void lexer_lex_digit(Lexer* lexer) {
                         ch = lexer_advance(lexer);
                     }
                     if(bincount == 0)
-                        lexer_error(lexer, "Expected binary digit [0-1] after `0b`");
+                        lexer_error(lexer, SyntaxError, "Expected binary digit [0-1] after `0b`");
                     
                     tokenkind = BIN_INT;
                     digit_length = bincount + 1; // Account for the '0'
@@ -434,18 +451,18 @@ static inline void lexer_lex_digit(Lexer* lexer) {
                         ch = lexer_advance(lexer);
                     }
                     if(octcount == 0)
-                        lexer_error(lexer, "Expected octal digits [0-7] after `0o`");
+                        lexer_error(lexer, SyntaxError, "Expected octal digits [0-7] after `0o`");
                     
                     tokenkind = OCT_INT;
                     digit_length = octcount + 1; // Account for the '0'
                     break;
                 case ALPHA_EXCEPT_B_O_X:
                     // Error
-                    lexer_error(lexer, "Invalid character `%c`. Adorad currently supports [xXbBoO] after `0`", ch);
+                    lexer_error(lexer, SyntaxError, "Invalid character `%c`. Adorad currently supports [xXbBoO] after `0`", ch);
                     break;
                 default:
                     // An integer?
-                    // lexer_error(lexer, "Cannot have an integer beginning with `0`");     
+                    // lexer_error(lexer, SyntaxError, "Cannot have an integer beginning with `0`");     
                     break;               
             } // switch(ch)
         }
@@ -462,7 +479,7 @@ static inline void lexer_lex_digit(Lexer* lexer) {
                 if(ch == '+' || ch == '-') { 
                     ch = lexer_advance(lexer);
                 } else {
-                    lexer_error(lexer, "Expected [+-] after exponent `e`. Got `%c`", ch);
+                    lexer_error(lexer, SyntaxError, "Expected [+-] after exponent `e`. Got `%c`", ch);
                 }
                 
                 int exp_digits = 0;
@@ -471,7 +488,7 @@ static inline void lexer_lex_digit(Lexer* lexer) {
                     ++exp_digits;
                 }
                 if(exp_digits == 0)
-                    lexer_error(lexer, "Invalid character after exponent `e`. Expected a digit, got `%c`", ch);
+                    lexer_error(lexer, SyntaxError, "Invalid character after exponent `e`. Expected a digit, got `%c`", ch);
                 
                 // (TODO) Verify this is correct
                 digit_length = exp_digits + 1; // Account for the prev digit
@@ -496,10 +513,10 @@ static inline void lexer_lex_digit(Lexer* lexer) {
     // This function is guaranteed to be called when there's at least one "number-like". We simply check if
     // there are more digits to lex.
     // If digit_length = 0, this means that there's only one digit in the number (eg. 0, 2, 9)
-    char* digit_value = (char*)calloc(digit_length + 1, sizeof(char));
-    substr(digit_value, lexer->buffer->data, prev_offset, offset_diff - 1);
-    CSTL_CHECK_NOT_NULL(digit_value, "digit_value must not be null");
-
+    Buff* digit_value = buff_slice(lexer->buffer, prev_offset, offset_diff - 1);
+    CSTL_CHECK_NOT_NULL(digit_value, "`digit_value` must not be null");
+    if(!digit_value)
+        printf("digit_value = null\n");
     lexer_maketoken(lexer, tokenkind, digit_value, prev_offset, line, col);
 
     LEXER_DECREMENT_OFFSET;
@@ -529,7 +546,7 @@ static void lexer_lex(Lexer* lexer) {
 
         switch(curr) {
             case nullchar: goto lex_eof;
-            // The `-1` is there to prevent an ILLEGAL token kind from being appended to `lexer->tokenList`
+            // The `-1` is there to prevent an ILLEGAL token kind from being appended to `lexer->toklist`
             // NB: Whitespace as a token is useless for our case (will this change later?)
             case WHITESPACE_NO_NEWLINE: tokenkind = -1; break;
             case '\n':
@@ -543,7 +560,7 @@ static void lexer_lex(Lexer* lexer) {
             case '"':
                 switch(next) {
                     // Empty String literal 
-                    case '"': LEXER_INCREMENT_OFFSET; lexer_maketoken(lexer, STRING, "\"\"", lexer->offset - 1, 
+                    case '"': LEXER_INCREMENT_OFFSET; lexer_maketoken(lexer, STRING, buff_new("\"\""), lexer->offset - 1, 
                                                                       lexer->loc->line, lexer->loc->col - 1); 
                               break;
                     default: tokenkind = -1; lexer_lex_string(lexer); break;
@@ -712,15 +729,15 @@ static void lexer_lex(Lexer* lexer) {
             case '?': tokenkind = QUESTION; break;
             case '@': tokenkind = -1; lexer_lex_macro(lexer); break;
             default:
-                lexer_error(lexer, "Invalid character `%c`", curr);
+                lexer_error(lexer, SyntaxError, "Invalid character `%c`", curr);
                 break;
         } // switch(ch)
 
         if(tokenkind == -1) continue;
-        lexer_maketoken(lexer, tokenkind, null, lexer->offset - 1, lexer->loc->line, lexer->loc->col - 1);
+        lexer_maketoken(lexer, tokenkind, buff_new(null), lexer->offset - 1, lexer->loc->line, lexer->loc->col - 1);
     } // while
 
 lex_eof:;
 
-    lexer_maketoken(lexer, TOK_EOF, null, lexer->offset - 1, lexer->loc->line, lexer->loc->col - 1);
+    lexer_maketoken(lexer, TOK_EOF, buff_new(null), lexer->offset - 1, lexer->loc->line, lexer->loc->col - 1);
 }

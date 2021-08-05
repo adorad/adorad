@@ -18,9 +18,7 @@ Location* loc_new(const char* fname) {
     Location* loc = (Location*)calloc(1, sizeof(Location));
     loc->line = 1;
     loc->col = 1;
-    if(!fname)
-        fname = "";
-    loc->fname = fname;
+    loc->fname = buff_new(fname);
     
     return loc;
 }
@@ -28,5 +26,12 @@ Location* loc_new(const char* fname) {
 void loc_reset(Location* loc) {
     loc->line = 1;
     loc->col = 1;
-    loc->fname = "";
+    loc->fname->data = "";
+}
+
+void loc_free(Location* loc) {
+    if(loc) {
+        buff_free(loc->fname);
+        free(loc);
+    }
 }

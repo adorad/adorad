@@ -19,8 +19,7 @@ Token* token_init() {
     Token* token = calloc(1, sizeof(Token));
     token->kind = TOK_ILLEGAL;
     token->offset = 0;
-    token->value = "";
-    token->start = 0;
+    token->value = buff_new(null);
     token->loc = loc_new(null);
 
     return token;
@@ -30,176 +29,180 @@ Token* token_init() {
 void token_reset_token(Token* token) {
     token->kind = TOK_ILLEGAL; 
     token->offset = 0; 
-    token->value = "";
-    token->loc->line = 0; 
-    token->loc->col = 0; 
-    token->loc->fname = "";
+    buff_set(token->value, "");
+    loc_reset(token->loc);
 }
 
 // Convert a Token to its respective String representation
-char* token_to_string(TokenKind kind) {
+Buff* token_to_buff(TokenKind kind) {
+    Buff* buf = buff_new(null);
+    char* value;
+
     switch(kind) {
         // Special (internal usage only)
-        case TOK_EOF: return "EOF";
-        case TOK_NULL: return "TOK_NULL";
-        case TOK_ILLEGAL: return "ILLEGAL";
-        case COMMENT: return "COMMENT";
-        case DOCS_COMMENT: return "DOCS_COMMENT";
+        case TOK_EOF: value = "EOF"; break;
+        case TOK_NULL: value = "TOK_NULL"; break;
+        case TOK_ILLEGAL: value = "ILLEGAL"; break;
+        case COMMENT: value = "COMMENT"; break;
+        case DOCS_COMMENT: value = "DOCS_COMMENT"; break;
 
         // Literals
-        case IDENTIFIER: return "IDENTIFIER";
-        case INTEGER: return "INTEGER";
-        case BIN_INT: return "BIN_INT";
-        case HEX_INT: return "HEX_INT";
-        case OCT_INT: return "OCT_INT";
-        case INT8_LIT: return "INT8_LIT";
-        case INT16_LIT: return "INT16_LIT";
-        case INT32_LIT: return "INT32_LIT";
-        case INT64_LIT: return "INT64_LIT";
-        case UINT_LIT: return "UINT_LIT";
-        case UINT8_LIT: return "UINT8_LIT";
-        case UINT16_LIT: return "UINT16_LIT";
-        case UINT32_LIT: return "UINT32_LIT";
-        case UINT64_LIT: return "UINT64_LIT";
-        case TOK_FLOAT: return "FLOAT";
-        case FLOAT32_LIT: return "FLOAT32_LIT";
-        case FLOAT64_LIT: return "FLOAT64_LIT";
-        case FLOAT128_LIT: return "FLOAT128_LIT";
-        case IMAG: return "IMAG";
-        case RUNE: return "RUNE";
-        case STRING: return "STRING";
-        case RAW_STRING: return "RAW_STRING";
-        case TRIPLE_STRING: return "TRIPLE_STRING"; 
-        case TOK_TRUE: return "TRUE";
-        case TOK_FALSE: return "FALSE";
+        case IDENTIFIER: value = "IDENTIFIER"; break;
+        case INTEGER: value = "INTEGER"; break;
+        case BIN_INT: value = "BIN_INT"; break;
+        case HEX_INT: value = "HEX_INT"; break;
+        case OCT_INT: value = "OCT_INT"; break;
+        case INT8_LIT: value = "INT8_LIT"; break;
+        case INT16_LIT: value = "INT16_LIT"; break;
+        case INT32_LIT: value = "INT32_LIT"; break;
+        case INT64_LIT: value = "INT64_LIT"; break;
+        case UINT_LIT: value = "UINT_LIT"; break;
+        case UINT8_LIT: value = "UINT8_LIT"; break;
+        case UINT16_LIT: value = "UINT16_LIT"; break;
+        case UINT32_LIT: value = "UINT32_LIT"; break;
+        case UINT64_LIT: value = "UINT64_LIT"; break;
+        case TOK_FLOAT: value = "FLOAT"; break;
+        case FLOAT32_LIT: value = "FLOAT32_LIT"; break;
+        case FLOAT64_LIT: value = "FLOAT64_LIT"; break;
+        case FLOAT128_LIT: value = "FLOAT128_LIT"; break;
+        case IMAG: value = "IMAG_LIT"; break;
+        case RUNE: value = "RUNE_LIT"; break;
+        case STRING: value = "STRING_LIT"; break;
+        case RAW_STRING: value = "RAW_STRING_LIT"; break;
+        case TRIPLE_STRING: value = "TRIPLE_STRING_LIT";  break;
+        case TOK_TRUE: value = "TRUE"; break;
+        case TOK_FALSE: value = "FALSE"; break;
 
         // Operators 
-        case PLUS: return "+";
-        case MINUS: return "-";
-        case MULT: return "*";
-        case SLASH: return "/";
-        case MOD: return "%";
-        case MOD_MOD: return "%%";
-        case PLUS_PLUS: return "++";
-        case MINUS_MINUS: return "--";
-        case MULT_MULT: return "**";
-        case SLASH_SLASH: return "//";
-        case AT_SIGN: return "@";
-        case HASH_SIGN: return "#";
-        case QUESTION: return "?";
+        case PLUS: value = "+"; break;
+        case MINUS: value = "-"; break;
+        case MULT: value = "*"; break;
+        case SLASH: value = "/"; break;
+        case MOD: value = "%"; break;
+        case MOD_MOD: value = "%%"; break;
+        case PLUS_PLUS: value = "++"; break;
+        case MINUS_MINUS: value = "--"; break;
+        case MULT_MULT: value = "**"; break;
+        case SLASH_SLASH: value = "//"; break;
+        case AT_SIGN: value = "@"; break;
+        case HASH_SIGN: value = "#"; break;
+        case QUESTION: value = "?"; break;
 
         // Comparison Operators
-        case GREATER_THAN: return ">";
-        case LESS_THAN: return "<";
-        case GREATER_THAN_OR_EQUAL_TO: return ">=";
-        case LESS_THAN_OR_EQUAL_TO: return "<=";
-        case EQUALS_EQUALS: return "==";
-        case EXCLAMATION_EQUALS: return "!=";
+        case GREATER_THAN: value = ">"; break;
+        case LESS_THAN: value = "<"; break;
+        case GREATER_THAN_OR_EQUAL_TO: value = ">="; break;
+        case LESS_THAN_OR_EQUAL_TO: value = "<="; break;
+        case EQUALS_EQUALS: value = "=="; break;
+        case EXCLAMATION_EQUALS: value = "!="; break;
 
         // Assignment Operators
-        case EQUALS: return "=";
-        case PLUS_EQUALS: return "+=";
-        case MINUS_EQUALS: return "-=";
-        case MULT_EQUALS: return "*=";
-        case SLASH_EQUALS: return "/=";
-        case MOD_EQUALS: return "%=";
-        case AND_EQUALS: return "&=";
-        case OR_EQUALS: return "|=";
-        case XOR_EQUALS: return "^=";
-        case LBITSHIFT_EQUALS: return "<<=";
-        case RBITSHIFT_EQUALS: return ">>=";
-        case TILDA: return "~";
-        case TILDA_EQUALS: return "~=";
+        case EQUALS: value = "="; break;
+        case PLUS_EQUALS: value = "+="; break;
+        case MINUS_EQUALS: value = "-="; break;
+        case MULT_EQUALS: value = "*="; break;
+        case SLASH_EQUALS: value = "/="; break;
+        case MOD_EQUALS: value = "%="; break;
+        case AND_EQUALS: value = "&="; break;
+        case OR_EQUALS: value = "|="; break;
+        case XOR_EQUALS: value = "^="; break;
+        case LBITSHIFT_EQUALS: value = "<<="; break;
+        case RBITSHIFT_EQUALS: value = ">>="; break;
+        case TILDA: value = "~"; break;
+        case TILDA_EQUALS: value = "~="; break;
 
         // Arrows
-        case EQUALS_ARROW: return "=>";
-        case RARROW: return "->";
-        case LARROW: return "<-";
+        case EQUALS_ARROW: value = "=>"; break;
+        case RARROW: value = "->"; break;
+        case LARROW: value = "<-"; break;
 
         // Delimiters
-        case LSQUAREBRACK: return "[";
-        case RSQUAREBRACK: return "]";
-        case LBRACE: return "{";
-        case RBRACE: return "}";
-        case LPAREN: return "(";
-        case RPAREN: return ")";
+        case LSQUAREBRACK: value = "["; break;
+        case RSQUAREBRACK: value = "]"; break;
+        case LBRACE: value = "{"; break;
+        case RBRACE: value = "}"; break;
+        case LPAREN: value = "("; break;
+        case RPAREN: value = ")"; break;
 
         // Bitwise
-        case LBITSHIFT: return "<<";
-        case RBITSHIFT: return ">>";
-        case AND: return "&";
-        case OR: return "|";
-        case EXCLAMATION: return "!";
-        case XOR: return "^";
-        case AND_NOT: return "&^";
-        case AND_AND: return "&&";
-        case OR_OR: return "||";
+        case LBITSHIFT: value = "<<"; break;
+        case RBITSHIFT: value = ">>"; break;
+        case AND: value = "&"; break;
+        case OR: value = "|"; break;
+        case EXCLAMATION: value = "!"; break;
+        case XOR: value = "^"; break;
+        case AND_NOT: value = "&^"; break;
+        case AND_AND: value = "&&"; break;
+        case OR_OR: value = "||"; break;
 
         // Separators
-        case COLON: return ":";
-        case COLON_COLON: return "::";
-        case SEMICOLON: return ";";
-        case COMMA: return ":";
-        case DOT: return ".";
-        case DDOT: return "..";
-        case ELLIPSIS: return "...";
-        case BACKSLASH: return "\\";
+        case COLON: value = ":"; break;
+        case COLON_COLON: value = "::"; break;
+        case SEMICOLON: value = ";"; break;
+        case COMMA: value = ":"; break;
+        case DOT: value = "."; break;
+        case DDOT: value = ".."; break;
+        case ELLIPSIS: value = "..."; break;
+        case BACKSLASH: value = "\\"; break;
 
         // Keywords
-        case ANY: return "any";
-        case AS: return "as";
-        case ATOMIC: return "atomic";
-        case BEGIN: return "begin";
-        case BREAK: return "break";
-        case CASE: return "case";
-        case CAST: return "cast";
-        case CATCH: return "catch";
-        case CLASS: return "class";
-        case CONST: return "const";
-        case CONTINUE: return "continue";
-        case DO: return "do";
-        case DECL: return "decl";
-        case DEFAULT: return "default";
-        case ENUM: return "enum";
-        case ELSE: return "else";
-        case ELSEIF: return "elseif";
-        case EXCEPT: return "except";
-        case EXPORT: return "export";
-        case EXTERN: return "inline";
-        case FINALLY: return "finally";
-        case FOR: return "for";
-        case FROM: return "from";
-        case FUNC: return "func";
-        case IF: return "if";
-        case IMPORT: return "import";
-        case IN: return "in";
-        case INCLUDE: return "include";
-        case INLINE: return "inline";
-        case ISA: return "isa"; 
-        case MACRO: return "macro";
-        case MAP: return "map";
-        case MATCH: return "match";
-        case MIXIN: return "mixin";
-        case MODULE: return "module";
-        case MUTABLE: return "mutable";
-        case NO_INLINE: return "noinline";
-        case NOT: return "not";
-        case NOT_IN: return "notin";
-        case PRAGMA: return "pragma";  
-        case RAISE: return "raise";
-        case RANGE: return "range";
-        case RETURN: return "return";
-        case STRUCT: return "struct";
-        case TRY: return "try";
-        case TUPLE: return "tuple";
-        case TYPE: return "type";
-        case TYPEOF: return "typeof";
-        case WHEN: return "when";
-        case WHERE: return "where";
-        case WHILE: return "while";
-        case UNION: return "union";
-        case USE: return "use";
+        case ANY: value = "any"; break;
+        case AS: value = "as"; break;
+        case ATOMIC: value = "atomic"; break;
+        case BEGIN: value = "begin"; break;
+        case BREAK: value = "break"; break;
+        case CASE: value = "case"; break;
+        case CAST: value = "cast"; break;
+        case CATCH: value = "catch"; break;
+        case CLASS: value = "class"; break;
+        case CONST: value = "const"; break;
+        case CONTINUE: value = "continue"; break;
+        case DO: value = "do"; break;
+        case DECL: value = "decl"; break;
+        case DEFAULT: value = "default"; break;
+        case ENUM: value = "enum"; break;
+        case ELSE: value = "else"; break;
+        case ELSEIF: value = "elseif"; break;
+        case EXCEPT: value = "except"; break;
+        case EXPORT: value = "export"; break;
+        case EXTERN: value = "inline"; break;
+        case FINALLY: value = "finally"; break;
+        case FOR: value = "for"; break;
+        case FROM: value = "from"; break;
+        case FUNC: value = "func"; break;
+        case IF: value = "if"; break;
+        case IMPORT: value = "import"; break;
+        case IN: value = "in"; break;
+        case INCLUDE: value = "include"; break;
+        case INLINE: value = "inline"; break;
+        case ISA: value = "isa";  break;
+        case MACRO: value = "macro"; break;
+        case MAP: value = "map"; break;
+        case MATCH: value = "match"; break;
+        case MIXIN: value = "mixin"; break;
+        case MODULE: value = "module"; break;
+        case MUTABLE: value = "mutable"; break;
+        case NO_INLINE: value = "noinline"; break;
+        case NOT: value = "not"; break;
+        case NOT_IN: value = "notin"; break;
+        case PRAGMA: value = "pragma";   break;
+        case RAISE: value = "raise"; break;
+        case RANGE: value = "range"; break;
+        case RETURN: value = "value ="; break;
+        case STRUCT: value = "struct"; break;
+        case TRY: value = "try"; break;
+        case TUPLE: value = "tuple"; break;
+        case TYPE: value = "type"; break;
+        case TYPEOF: value = "typeof"; break;
+        case WHEN: value = "when"; break;
+        case WHERE: value = "where"; break;
+        case WHILE: value = "while"; break;
+        case UNION: value = "union"; break;
+        case USE: value = "use"; break;
         // We should _never_ reach here
-        default: return "ILLEGAL";
+        default: value = "ILLEGAL"; break;
     }
+
+    buff_set(buf, value);
+    return buf;
 }
