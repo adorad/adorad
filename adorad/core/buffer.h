@@ -27,7 +27,7 @@ struct cstlBuffer {
     UInt64 len;    // buffer size
 };
 
-/
+
 static cstlBuffer* buff_new(char* buff_data);
 static char buff_at(cstlBuffer* buffer, UInt64 n);
 static char* buff_begin(cstlBuffer* buffer);
@@ -275,14 +275,16 @@ static bool buff_cmp_nocase(cstlBuffer* buff1, cstlBuffer* buff2) {
 
 // Get a slice of a buffer
 static cstlBuffer* buff_slice(cstlBuffer* buffer, int begin, int bytes) {
-    CSTL_CHECK_NOT_NULL(buffer, "`source` cannot be null");
+    CSTL_CHECK_NOT_NULL(buffer, "`buffer` cannot be null");
     CSTL_CHECK_GE(begin, 0);
     CSTL_CHECK_GT(bytes, 0);
 
     cstlBuffer* slice = buff_new(null);
+    CSTL_CHECK_NOT_NULL(slice, "`slice` cannot be null");
     char* temp = (char*)calloc(1, bytes);
     strncpy(temp, &(buffer->data[begin]), bytes);
     buff_set(slice, temp);
+    CSTL_CHECK_NOT_NULL(slice, "`slice source` cannot be null");
     return slice;
 }
 
