@@ -294,4 +294,20 @@ static void buff_free(cstlBuffer* buffer) {
         free(buffer);
 }
 
+static inline void buff_tolower(cstlBuffer* buffer) {
+    if(!buffer->data) return; 
+    while(*(buffer->data)) {
+        *(buffer->data) = toLower((*buffer->data));
+        buffer->data++;
+    }
+}
+
+static inline void buff_toupper(cstlBuffer* buffer) {
+    if(!buffer->data) return; 
+    while(*(buffer->data)) {
+        *(buffer->data) = toUpper((*buffer->data));
+        buffer->data++;
+    }
+}
+
 #endif // CSTL_BUFFER_H

@@ -17,13 +17,11 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #include <adorad/core/types.h>
 #include <adorad/core/math.h>
 #include <adorad/core/debug.h>
-#include <stdlib.h> // for exit(1)
 
 // UTF8 Inspiration: https://github.com/sheredom/utf8.h/blob/master/utf8.h
 
-// Char Things ==========================================
-static inline bool isUpper(char c) { return c>='A' && c<='Z'; }
-static inline bool isLower(char c) { return c>='a' && c<='z'; }
+static inline bool isUpper(char c) { return c >= 'A' && c <= 'Z'; }
+static inline bool isLower(char c) { return c >= 'a' && c <= 'z'; }
 static inline bool isDigit(char c) { return c >= '0' && c <= '9'; }
 static inline bool isAlpha(char c) { return isUpper(c) || isLower(c); }
 static inline bool isAlphanumeric(char c) { return isAlpha(c) || isDigit(c); }
@@ -41,7 +39,6 @@ static inline bool isHexDigit(char c) {
            CSTL_IS_BETWEEN(c, 'a', 'f') ||
            CSTL_IS_BETWEEN(c, 'A', 'F'); 
 }
-
 
 static inline bool isLetter(char c) {
     return  (c >= 'a' && c <= 'z') || 
@@ -67,7 +64,9 @@ static inline bool isWhitespace(char c) {
     return false;
 }
 
-static inline Int32 digitToInt(char c) { return isDigit(c) ? c-'0' : c-'W'; }
+static inline Int32 digitToInt(char c) { 
+    return isDigit(c) ? c - '0' : c - 'W'; 
+}
 
 static inline Int32 hexDigitToInt(char c) {
     if(isDigit(c))
@@ -80,22 +79,6 @@ static inline Int32 hexDigitToInt(char c) {
         return c-'A' + 10; 
 
     return -1; 
-}
-
-static inline void strToLower(char* str) {
-    if(!str) return; 
-    while(*str) {
-        *str = toLower(*str);
-        str++;
-    }
-}
-
-static inline void strToUpper(char* str) {
-    if(!str) return; 
-    while(*str) {
-        *str = toUpper(*str);
-        str++;
-    }
 }
 
 #endif // CSTL_STRING_H
