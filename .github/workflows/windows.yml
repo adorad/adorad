@@ -5,10 +5,12 @@ on:
     branches:
       - dev
       - master
+      - temp
   pull_request:
     branches:
       - dev
       - master
+      - temp
 
 jobs:
   mingw:
@@ -153,7 +155,6 @@ jobs:
 
   MSVC2019_latest:
     runs-on: windows-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: Set up AdoradInternalTests folder
