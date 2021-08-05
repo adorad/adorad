@@ -241,8 +241,8 @@ static void buff_reset(cstlBuffer* buffer) {
 }
 
 // Reverse a buffer (non-destructive)
-static Buff* buff_rev(Buff* buffer) {
-    Buff* rev = buff_new(null);
+static cstlBuffer* buff_rev(cstlBuffer* buffer) {
+    cstlBuffer* rev = buff_new(null);
     UInt64 length = buffer->len;
     if(!length)
         return rev;
@@ -356,7 +356,7 @@ static void buff_free(cstlBuffer* buffer) {
 
 // Convert a buffer to lowercase
 static inline cstlBuffer* buff_tolower(cstlBuffer* buffer) {
-    Buff* lower = buff_new(null);
+    cstlBuffer* lower = buff_new(null);
     if(!buffer->data) 
         return lower;
 
@@ -376,7 +376,7 @@ static inline cstlBuffer* buff_tolower(cstlBuffer* buffer) {
 
 // Convert a buffer to uppercase
 static inline cstlBuffer* buff_toupper(cstlBuffer* buffer) {
-    Buff* upper = buff_new(null);
+    cstlBuffer* upper = buff_new(null);
     if(!buffer->data) 
         return upper;
 

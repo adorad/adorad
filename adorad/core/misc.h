@@ -63,11 +63,11 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 
 // Casts
 #ifdef __cplusplus
-    #define CSTL_CAST(type, x)       static_cast<type>(x)
-    #define CSTL_PTRCAST(type, x)    reinterpret_cast<type>(x)
+    #define cast(type, x)       static_cast<type>(x)
+    #define ptrcast(type, x)    reinterpret_cast<type>(x)
 #else
-    #define CSTL_CAST(type, x)       ((type)x)
-    #define CSTL_PTRCAST(type, x)    ((type)x)
+    #define cast(type, x)       ((type)x)
+    #define ptrcast(type, x)    ((type)x)
 #endif // __cplusplus
 
 
