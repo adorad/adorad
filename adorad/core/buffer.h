@@ -17,6 +17,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #include <string.h>
 #include <adorad/core/debug.h>
 #include <adorad/core/types.h>
+#include <adorad/core/string.h>
 
 typedef struct cstlBuffer cstlBuffer;
 typedef cstlBuffer Buff;
@@ -44,6 +45,12 @@ static void buff_set(cstlBuffer* buffer, char* new_buff);
 static void buff_reset(cstlBuffer* buffer);
 // Reverse a buffer (non-destructive)
 static cstlBuffer* buff_rev(cstlBuffer* buffer);
+// Compare two buffers (case-sensitive)
+// Returns true if `buff1` is lexicographically equal to `buff2`
+static bool buff_cmp(cstlBuffer* buff1, cstlBuffer* buff2);
+// Compare two buffers (ignoring case)
+// Returns true if `buff1` is lexicographically equal to `buff2`
+static bool buff_cmp_nocase(cstlBuffer* buff1, cstlBuffer* buff2);
 // Free the buffer from its associated memory
 static void buff_free(cstlBuffer* buffer);
 
@@ -159,6 +166,48 @@ static Buff* buff_rev(Buff* buffer) {
     
     buff_set(rev, temp);
     return rev;
+}
+
+// Compare two buffers (case-sensitive)
+// Returns true if `buff1` is lexicographically equal to `buff2`
+static bool buff_cmp(cstlBuffer* buff1, cstlBuffer* buff2) {
+    if(buff1->length != buff2->length)
+        return false;
+    
+    const unsigned char* s1 = (const unsigned char*) buff1->data;
+    const unsigned char* s2 = (const unsigned char*) buff2->data;
+    unsigned char ch1, ch2;
+
+    do {
+        ch1 = (unsigned char) *s1++;
+        ch2 = (unsigned char) *s2++;
+        if(ch1 == nullchar)
+            return (ch1 - ch2) == 0 ? true : false;
+    } while(ch1 == ch2);
+
+    return (ch1 - ch2) == 0 ? true : false;
+}
+
+// Compare two buffers (ignoring case)
+// Returns true if `buff1` is lexicographically equal to `buff2`
+static bool buff_cmp_nocase(cstlBuffer* buff1, cstlBuffer* buff2) {
+    if(buff1->length != buff2->length)
+        return false;
+    
+    const unsigned char* s1 = (const unsigned char*) buff1->data;
+    const unsigned char* s2 = (const unsigned char*) buff2->data;
+    unsigned char ch1, ch2;
+    int result;
+
+    if(s1 == s2)
+        return true;
+    
+    while((result = toLower(*s1) - toLower(*s2++)) == 0) {
+        if(*s1++ == nullchar)
+            break;
+    }
+    return result == 0 ? true : false;
+
 }
 
 // Free the buffer from its associated memory
