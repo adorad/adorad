@@ -38,7 +38,7 @@ static bool buff_is_empty(cstlBuffer* buffer);
 static void buff_append(cstlBuffer* buffer, cstlBuffer* buff2);
 static void buff_set(cstlBuffer* buffer, char* new_buff);
 static cstlBuffer* buff_clone(cstlBuffer* buffer);
-static UInt32 buff_len(cstlBuffer* buffer);
+static UInt64 buff_len(cstlBuffer* buffer);
 static void buff_reset(cstlBuffer* buffer);
 static cstlBuffer* buff_rev(cstlBuffer* buffer);
 static bool buff_cmp(cstlBuffer* buff1, cstlBuffer* buff2);
@@ -228,7 +228,7 @@ static void buff_set(cstlBuffer* buffer, char* new_buff) {
 }
 
 // Returns the buffer length
-static UInt32 buff_len(cstlBuffer* buffer) {
+static UInt64 buff_len(cstlBuffer* buffer) {
     return buffer->len;
 }
 
@@ -284,7 +284,6 @@ static bool buff_cmp_nocase(cstlBuffer* buff1, cstlBuffer* buff2) {
     
     const unsigned char* s1 = cast(const unsigned char*) buff1->data;
     const unsigned char* s2 = cast(const unsigned char*) buff2->data;
-    unsigned char ch1, ch2;
     int result;
 
     if(s1 == s2)
