@@ -42,8 +42,8 @@ static bool buff_cmp(cstlBuffer* buff1, cstlBuffer* buff2);
 static bool buff_cmp_nocase(cstlBuffer* buff1, cstlBuffer* buff2);
 static cstlBuffer* buff_slice(cstlBuffer* buffer, int begin, int bytes);
 static void buff_free(cstlBuffer* buffer);
-static inline void buff_toupper(cstlBuffer* buffer);
-static inline void buff_tolower(cstlBuffer* buffer);
+static inline cstlBuffer* buff_toupper(cstlBuffer* buffer);
+static inline cstlBuffer* buff_tolower(cstlBuffer* buffer);
 
 // Create a new `cstlBuffer`
 static cstlBuffer* buff_new(char* buff_data) {
@@ -296,20 +296,44 @@ static void buff_free(cstlBuffer* buffer) {
         free(buffer);
 }
 
-static inline void buff_tolower(cstlBuffer* buffer) {
-    if(!buffer->data) return; 
-    while(*(buffer->data)) {
-        *(buffer->data) = toLower((*buffer->data));
-        buffer->data++;
+// Convert a buffer to lowercase
+static inline cstlBuffer* buff_tolower(cstlBuffer* buffer) {
+    Buff* lower = buff_new(null);
+    if(!buffer->data) 
+        return lower;
+
+    char* temp = (char*)calloc(1, buffer->len);    
+    strcpy(temp, buffer->data);
+    int i = 0;
+    while(*temp) {
+        *temp = toLower(*temp);
+        temp++;
+        i++;
     }
+    // Backtrack `i` times
+    temp -= i;
+    buff_set(lower, temp);
+    return lower;
 }
 
-static inline void buff_toupper(cstlBuffer* buffer) {
-    if(!buffer->data) return; 
-    while(*(buffer->data)) {
-        *(buffer->data) = toUpper((*buffer->data));
-        buffer->data++;
+// Convert a buffer to uppercase
+static inline cstlBuffer* buff_toupper(cstlBuffer* buffer) {
+    Buff* upper = buff_new(null);
+    if(!buffer->data) 
+        return upper;
+
+    char* temp = (char*)calloc(1, buffer->len);    
+    strcpy(temp, buffer->data);
+    int i = 0;
+    while(*temp) {
+        *temp = toUpper(*temp);
+        temp++;
+        i++;
     }
+    // Backtrack `i` times
+    temp -= i;
+    buff_set(upper, temp);
+    return upper;
 }
 
 #endif // CSTL_BUFFER_H
