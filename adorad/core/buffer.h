@@ -25,6 +25,7 @@ typedef cstlBuffer Buff;
 struct cstlBuffer {
     char* data;    // buffer data
     UInt64 len;    // buffer size
+    bool is_utf8;  // UTF-8 Strings
 };
 
 
@@ -35,6 +36,7 @@ static char* buff_end(cstlBuffer* buffer);
 static bool buff_is_empty(cstlBuffer* buffer);
 static void buff_append(cstlBuffer* buffer, cstlBuffer* buff2);
 static void buff_set(cstlBuffer* buffer, char* new_buff);
+static cstlBuffer* buff_clone(cstlBuffer* buffer);
 static UInt32 buff_len(cstlBuffer* buffer);
 static void buff_reset(cstlBuffer* buffer);
 static cstlBuffer* buff_rev(cstlBuffer* buffer);
@@ -288,6 +290,22 @@ static cstlBuffer* buff_slice(cstlBuffer* buffer, int begin, int bytes) {
     buff_set(slice, temp);
     CSTL_CHECK_NOT_NULL(slice, "`slice source` cannot be null");
     return slice;
+}
+
+// Clone a buffer
+static cstlBuffer* buff_clone(cstlBuffer* buffer) {
+    CSTL_CHECK_NOT_NULL(buffer, "Cannot clone a null buffer :(");
+    cstlBuffer* clone = buff_new(null);
+    char* dest = (char*)calloc(1, buff_len(buffer));
+    char* source = buffer->data;
+
+    if(source) {
+        char* str = dest;
+        while(*source)
+            *str++ = *source++;
+    }
+    buff_set(clone, dest);
+    return clone;
 }
 
 // Free the buffer from its associated memory
