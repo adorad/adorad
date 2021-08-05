@@ -94,7 +94,8 @@ jobs:
     - name: Test
       run: |
         cd build/test ; dir; ctest -j 10 -C ${{ matrix.build_type }} --output-on-failure
-          cd .. ; dir; cd bin/${{ matrix.build_type }} ; dir; ./AdoradInternalTestsWithMain.exe
+        python ../tools/tests/before_tests_run_ci.py ${{ matrix.build_type }}
+        cd .. ; dir; cd bin/ ; dir; ./AdoradInternalTestsWithMain.exe
 
 
   MSVC2017_latest:
@@ -117,7 +118,8 @@ jobs:
     - name: Test
       run: |
         cd build/test ; dir; ctest -j 10 -C Release --output-on-failure
-        cd .. ; dir; cd bin/Release ; dir; ./AdoradInternalTestsWithMain.exe
+        python ../tools/tests/before_tests_run_ci.py Release
+        cd .. ; dir; cd bin/ ; dir; ./AdoradInternalTestsWithMain.exe
 
 
   MSVC2019:
@@ -145,7 +147,8 @@ jobs:
     - name: Test
       run: |
         cd build/test ; dir; ctest -j 10 -C ${{ matrix.build_type }} --output-on-failure
-        cd .. ; dir; cd bin/${{ matrix.build_type }} ; dir; ./AdoradInternalTestsWithMain.exe
+        python ../tools/tests/before_tests_run_ci.py ${{ matrix.build_type }}
+        cd .. ; dir; cd bin/ ; dir; ./AdoradInternalTestsWithMain.exe
 
 
   MSVC2019_latest:
@@ -168,7 +171,8 @@ jobs:
     - name: Test
       run: |
         cd build/test ; dir; ctest -j 10 -C Release --output-on-failure
-        cd .. ; dir; cd bin/Release ; dir; ./AdoradInternalTestsWithMain.exe
+        python ../tools/tests/before_tests_run_ci.py Release
+        cd .. ; dir; cd bin/ ; dir; ./AdoradInternalTestsWithMain.exe
 
 
   Clang:
@@ -230,4 +234,5 @@ jobs:
       - name: Test
         run: |
           cd build/test ; dir; ctest -j 10 -C ${{ matrix.build_type }} --output-on-failure
-          cd .. ; dir; cd bin/${{ matrix.build_type }} ; dir; ./AdoradInternalTestsWithMain.exe
+          python ../tools/tests/before_tests_run_ci.py ${{ matrix.build_type }}
+          cd .. ; dir; cd bin/ ; dir; ./AdoradInternalTestsWithMain.exe

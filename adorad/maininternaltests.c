@@ -1,14 +1,10 @@
 #include <adorad/adorad.h>
+#include <adorad/core/os.h>
 
 int main(int argc, const char* const argv[]) {
-    // Buff* buf = os_get_cwd();
-    // printf("CWD: %s\n", buf->data);
-
-	char* buffer = readFile("/home/jas/Documents/dev/adorad/test/LexerDemo.ad");
-    // char* buffer = "0123456789abcdefghijklmnopqrstuvwxyz";
+    // The CWD for this executable is in ".../build/bin"
+	char* buffer = readFile("../../test/LexerDemo.ad");
 	Lexer* lexer = lexer_init(buffer, "test/LexerDemo.ad"); 
-    // printf("-- LEXER_BUFFER: \n%s\n", lexer->buffer->data);
-    printf("--------------\n");
 
     clock_t st, end;
     printf("Lexing beginning...\n");
