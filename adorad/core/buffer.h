@@ -308,6 +308,27 @@ static cstlBuffer* buff_clone(cstlBuffer* buffer) {
     return clone;
 }
 
+// Clone a buffer (upto `n` chars)
+static cstlBuffer* buff_clone_n(cstlBuffer* buffer, int n) {
+    CSTL_CHECK_NOT_NULL(buffer, "Cannot clone a null buffer :(");
+    CSTL_CHECK_GT(n, 0);
+    CSTL_CHECK_LT(n, buffer->len);
+    cstlBuffer* clone = buff_new(null);
+    char* dest = (char*)calloc(1, buff_len(buffer));
+    char* source = buffer->data;
+
+    if(source) {
+        char* str = dest;
+        while(n > 0 && *source) {
+            *str++ = *source++;
+            n--;
+        }
+    }
+    buff_set(clone, dest);
+    return clone;
+}
+
+
 // Free the buffer from its associated memory
 static void buff_free(cstlBuffer* buffer) {
     if(buffer)
