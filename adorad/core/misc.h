@@ -116,9 +116,11 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 
 // Statics!
 // static means 3-4 different things in C/C++!!
-#ifndef CSTL_EXTERN
-    #define CSTL_EXTERN       extern
-#endif 
+#ifdef __cplusplus
+    #define CSTL_EXTERN     extern "C"
+#else
+    #define CSTL_EXTERN     extern
+#endif // __cplusplus
 
 #ifndef CSTL_STATIC
     #define CSTL_STATIC       static

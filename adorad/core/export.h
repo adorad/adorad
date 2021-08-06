@@ -37,6 +37,14 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     Adorad is building shared or static libraries.
 */
 
+#if defined(_WIN32)
+	#define CSTL_DLL_EXPORT     CSTL_EXTERN __declspec(dllexport)
+	#define CSTL_DLL_IMPORT     CSTL_EXTERN __declspec(dllimport)
+#else
+	#define CSTL_DLL_EXPORT     CSTL_EXTERN __attribute__((visibility("default")))
+	#define CSTL_DLL_IMPORT     CSTL_EXTERN
+#endif
+
 #ifdef _WIN32
     #define CSTL_HIDDEN
     #if defined(CSTL_BUILD_SHARED_LIB)
