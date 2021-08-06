@@ -17,7 +17,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #include <adorad/core/debug.h>
 #include <adorad/core/compilers.h>
 
-// Base types
+//================================== Built-in types ================================*/
 /*
     typedef unsigned char       UInt8; 
     typedef          char       Int8;  
@@ -65,10 +65,18 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     typedef int32_t   Int32; 
     typedef uint64_t  UInt64; 
     typedef int64_t   Int64; 
-#endif // Adorad Basic types/ 
+#endif // Adorad Basic types
 
-typedef float  Float32; 
-typedef double Float64; 
+typedef char* charptr;
+typedef void* voidptr;
+
+typedef float  Float32;
+typedef double Float64;
+
+// Bool-sy
+typedef Int8  Bool8; 
+typedef Int16 Bool16;
+typedef Int32 Bool32; // Prefer this!
 
 CSTL_DEBUG_CHECK(sizeof(UInt8)  == sizeof(Int8));
 CSTL_DEBUG_CHECK(sizeof(UInt16) == sizeof(Int16));
@@ -83,17 +91,22 @@ CSTL_DEBUG_CHECK(sizeof(UInt64) == 8);
 CSTL_DEBUG_CHECK(sizeof(Float32) == 4);
 CSTL_DEBUG_CHECK(sizeof(Float64) == 8);
 
-// Bool-sy
-typedef Int8  Bool8; 
-typedef Int16 Bool16;
-typedef Int32 Bool32; // Prefer this!
+CSTL_DEBUG_CHECK(sizeof(Bool8)  == 1);
+CSTL_DEBUG_CHECK(sizeof(Bool16) == 2);
+CSTL_DEBUG_CHECK(sizeof(Bool32) == 4);
 
 // Unicode codepoint
-typedef Int32 Rune; 
+typedef UInt8  Byte;
+typedef UInt32 Rune;
+typedef unsigned char* Byteptr;
+
 #define CSTL_RUNE_INVALID cast(Rune)(0xfffd)
 #define CSTL_RUNE_MAX     cast(Rune)(0x0010ffff)
 #define CSTL_RUNE_BOM     cast(Rune)(0xfeff)
 #define CSTL_RUNE_EOF     cast(Rune)(-1)
+
+CSTL_DEBUG_CHECK(sizeof(Byte) == 1);
+CSTL_DEBUG_CHECK(sizeof(Rune) == 4);
 
 // Max and Min 
 #ifndef UInt8_MIN 
