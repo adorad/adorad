@@ -17,7 +17,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #include <string.h>
 #include <adorad/core/debug.h>
 #include <adorad/core/types.h>
-#include <adorad/core/string.h>
+#include <adorad/core/char.h>
 #include <adorad/core/misc.h>
 
 /*
@@ -294,7 +294,7 @@ static bool buff_cmp_nocase(cstlBuffer* buff1, cstlBuffer* buff2) {
     if(s1 == s2)
         return true;
     
-    while((result = toLower(*s1) - toLower(*s2++)) == 0) {
+    while((result = char_to_lower(*s1) - char_to_lower(*s2++)) == 0) {
         if(*s1++ == nullchar)
             break;
     }
@@ -369,7 +369,7 @@ static inline cstlBuffer* buff_tolower(cstlBuffer* buffer) {
     strcpy(temp, buffer->data);
     int i = 0;
     while(*temp) {
-        *temp = toLower(*temp);
+        *temp = char_to_lower(*temp);
         temp++;
         i++;
     }
@@ -389,7 +389,7 @@ static inline cstlBuffer* buff_toupper(cstlBuffer* buffer) {
     strcpy(temp, buffer->data);
     int i = 0;
     while(*temp) {
-        *temp = toUpper(*temp);
+        *temp = char_to_upper(*temp);
         temp++;
         i++;
     }

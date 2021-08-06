@@ -134,7 +134,7 @@ cstlColouredPrintf(int colour, const char* fmt, ...) {
 }
 
 
-static inline int CSTL_isDigit(char c) { return c >= '0' && c <= '9'; }
+static inline int CSTL_char_is_digit(char c) { return c >= '0' && c <= '9'; }
 
 static inline int cstlShouldDecomposeMacro(char const* actual, char const* expected, int isStringCmp) {
     // Signal that the macro can be further decomposed if either of the following symbols are present
@@ -147,7 +147,7 @@ static inline int cstlShouldDecomposeMacro(char const* actual, char const* expec
     // - for floats, we allow a maximum of 1 '.' char)
     if(!isStringCmp) {
         for(int i=0; i < strlen(actual); i++) {
-            if(CSTL_isDigit(actual[i])) { numActualDigits++; }
+            if(CSTL_char_is_digit(actual[i])) { numActualDigits++; }
             else if(actual[i] == '.') { 
                 dots++; 
                 if(dots > 1) { return 1; }
@@ -157,7 +157,7 @@ static inline int cstlShouldDecomposeMacro(char const* actual, char const* expec
         // Do the same for `expected`
         dots = 0;
         for(int i=0; i < strlen(expected); i++) {
-            if(CSTL_isDigit(expected[i])) { numExpectedDigits++; }
+            if(CSTL_char_is_digit(expected[i])) { numExpectedDigits++; }
             else if(expected[i] == '.') { 
                 dots++; 
                 if(dots > 1) { return 1; }

@@ -287,7 +287,7 @@ static inline void lexer_lex_macro(Lexer* lexer) {
     UInt32 line = lexer->loc->line;
     UInt32 col = lexer->loc->col;
 
-    while(isLetter(ch) || isDigit(ch)) {
+    while(char_is_letter(ch) || char_is_digit(ch)) {
         ch = lexer_advance(lexer);
         ++macro_length;
     }
@@ -358,7 +358,7 @@ static inline void lexer_lex_identifier(Lexer* lexer) {
     // When this function is called, we alread know that the first character statisfies the `case ALPHA`.
     // So, the remaining characters are ALPHA, DIGIT, or `_`
     // Still, we check it either way to ensure sanity.
-    CSTL_CHECK(isLetter(lexer_prev(lexer)) || isDigit(lexer_prev(lexer)),
+    CSTL_CHECK(char_is_letter(lexer_prev(lexer)) || char_is_digit(lexer_prev(lexer)),
                "This message means you've encountered a serious bug within Adorad. Please file an issue on "
                "Adorad's Github repo.\nError: `lexer_lex_identifier()` hasn't been called with a valid identifier character");
 
@@ -368,7 +368,7 @@ static inline void lexer_lex_identifier(Lexer* lexer) {
     int ident_length = 0;
     char ch = lexer_advance(lexer);
 
-    while(isLetter(ch) || isDigit(ch)) {
+    while(char_is_letter(ch) || char_is_digit(ch)) {
         ch = lexer_advance(lexer);
         ++ident_length;
     }
@@ -403,8 +403,8 @@ static inline void lexer_lex_digit(Lexer* lexer) {
     TokenKind tokenkind = TOK_ILLEGAL;
     int digit_length = 0; // no. of digits in the number
 
-    CSTL_CHECK_TRUE(isDigit(ch));
-    while(isDigit(ch)) {
+    CSTL_CHECK_TRUE(char_is_digit(ch));
+    while(char_is_digit(ch)) {
         // Hex, Octal, or Binary?
         if(ch == '0') {
             ch = lexer_advance(lexer);
@@ -414,7 +414,7 @@ static inline void lexer_lex_digit(Lexer* lexer) {
                     // Skip [xX]
                     ch = lexer_advance(lexer);
                     int hexcount = 0;
-                    while(isHexDigit(ch)) {
+                    while(char_is_hex_digit(ch)) {
                         ++hexcount; 
                         ch = lexer_advance(lexer);
                     }
@@ -429,7 +429,7 @@ static inline void lexer_lex_digit(Lexer* lexer) {
                     // Skip [bB]
                     ch = lexer_advance(lexer);
                     int bincount = 0;
-                    while(isBinaryDigit(ch)) {
+                    while(char_is_binary_digit(ch)) {
                         ++bincount; 
                         ch = lexer_advance(lexer);
                     }
@@ -446,7 +446,7 @@ static inline void lexer_lex_digit(Lexer* lexer) {
                     // Skip [oO]
                     ch = lexer_advance(lexer);
                     int octcount = 0;
-                    while(isOctalDigit(ch)) {
+                    while(char_is_octal_digit(ch)) {
                         ++octcount; 
                         ch = lexer_advance(lexer);
                     }
@@ -483,7 +483,7 @@ static inline void lexer_lex_digit(Lexer* lexer) {
                 }
                 
                 int exp_digits = 0;
-                while(isDigit(ch)) {
+                while(char_is_digit(ch)) {
                     ch = lexer_advance(lexer);
                     ++exp_digits;
                 }

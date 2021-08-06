@@ -15,7 +15,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 
 #include <adorad/core/misc.h>
 #include <adorad/core/types.h>
-#include <adorad/core/string.h> 
+#include <adorad/core/char.h> 
 #include <adorad/core/vector.h>
 #include <adorad/core/buffer.h>
 #include <adorad/core/debug.h>
