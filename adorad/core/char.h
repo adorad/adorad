@@ -34,6 +34,8 @@ static inline char char_to_upper(char c) ;
 static inline bool char_is_whitespace(char c);
 static inline Int32 digit_to_int(char c);
 static inline Int32 hexdigit_to_int(char c);
+static inline char* char_first_occurence(char* str, char ch);
+static inline char* char_last_occurence(char* str, char ch);
 
 static inline bool char_is_upper(char c) { return c >= 'A' && c <= 'Z'; }
 static inline bool char_is_lower(char c) { return c >= 'a' && c <= 'z'; }
@@ -86,5 +88,23 @@ static inline Int32 hexdigit_to_int(char c) {
 
     return -1; 
 }
+
+static inline char* char_first_occurence(char* str, char ch) {
+    for(; *str != ch; str++) {
+        if(*str == nullchar)
+            return null; // didn't find a `ch`
+    }
+    return str;
+}
+
+static inline char* char_last_occurence(char* str, char ch) {
+    char* result = null;
+    do {
+        if(*str == ch)
+            result = str;
+    } while(*str++);
+    return result;
+}
+
 
 #endif // CSTL_CHAR_H
