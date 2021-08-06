@@ -15,6 +15,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #define CSTL_WINDOWS_H
 
 #include <adorad/core/compilers.h>
+#include <adorad/core/types.h>
 #include <adorad/core/misc.h>
 
 // Jason's Mini <Windows.h>
@@ -181,7 +182,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
         void* BaseAddress;
         void* AllocationBase;
         DWORD AllocationProtect;
-        usize RegionSize;
+        Ll RegionSize;
         DWORD State;
         DWORD Protect;
         DWORD Type;
@@ -464,7 +465,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 	                                                 LONG maximum_count, char const* name);
     CSTL_DLL_IMPORT BOOL    WINAPI ReleaseSemaphore   (HANDLE semaphore, LONG release_count, LONG* previous_count);
     CSTL_DLL_IMPORT DWORD   WINAPI WaitForSingleObject(HANDLE handle, DWORD milliseconds);
-    CSTL_DLL_IMPORT HANDLE  WINAPI CreateThread       (SECURITY_ATTRIBUTES* semaphore_attributes, usize stack_size,
+    CSTL_DLL_IMPORT HANDLE  WINAPI CreateThread       (SECURITY_ATTRIBUTES* semaphore_attributes, Ll stack_size,
 	                                                 THREAD_START_ROUTINE* start_address, void* parameter,
 	                                                 DWORD creation_flags, DWORD* thread_id);
     CSTL_DLL_IMPORT DWORD   WINAPI GetThreadId        (HANDLE handle);
@@ -501,9 +502,9 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     #define MEM_4MB_PAGES    0x80000000
 
 /*
-    CSTL_DLL_IMPORT void*  WINAPI VirtualAlloc (void* addr, usize size, DWORD allocation_type, DWORD protect);
-    CSTL_DLL_IMPORT usize  WINAPI VirtualQuery (void const* address, MEMORY_BASIC_INFORMATION* buffer, usize length);
-    CSTL_DLL_IMPORT BOOL   WINAPI VirtualFree  (void* address, usize size, DWORD free_type);
+    CSTL_DLL_IMPORT void*  WINAPI VirtualAlloc (void* addr, Ll size, DWORD allocation_type, DWORD protect);
+    CSTL_DLL_IMPORT Ll  WINAPI VirtualQuery (void const* address, MEMORY_BASIC_INFORMATION* buffer, Ll length);
+    CSTL_DLL_IMPORT BOOL   WINAPI VirtualFree  (void* address, Ll size, DWORD free_type);
     CSTL_DLL_IMPORT void   WINAPI GetSystemInfo(SYSTEM_INFO* system_info);
 */
 
@@ -944,7 +945,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     CSTL_DLL_IMPORT BOOL           EnumDisplaySettingsW(wchar_t const* lpszDeviceName, DWORD iModeNum, DEVMODEW* lpDevMode);
     CSTL_DLL_IMPORT void*   WINAPI GlobalLock(HGLOBAL hMem);
     CSTL_DLL_IMPORT BOOL    WINAPI GlobalUnlock(HGLOBAL hMem);
-    CSTL_DLL_IMPORT HGLOBAL WINAPI GlobalAlloc(UINT uFlags, usize dwBytes);
+    CSTL_DLL_IMPORT HGLOBAL WINAPI GlobalAlloc(UINT uFlags, Ll dwBytes);
     CSTL_DLL_IMPORT HANDLE  WINAPI GetClipboardData(UINT uFormat);
     CSTL_DLL_IMPORT BOOL    WINAPI IsClipboardFormatAvailable(UINT format);
     CSTL_DLL_IMPORT BOOL    WINAPI OpenClipboard(HWND hWndNewOwner);
