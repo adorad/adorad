@@ -456,7 +456,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     #define INFINITE 0xffffffffl
     #define INVALID_HANDLE_VALUE ((void* )(intptr)(-1))
 /*
-	typedef DWORD WINAPI THREAD_START_ROUTINE(void* parameter);
+    typedef DWORD WINAPI THREAD_START_ROUTINE(void* parameter);
 
     CSTL_DLL_IMPORT DWORD   WINAPI GetLastError       (void);
     CSTL_DLL_IMPORT BOOL    WINAPI CloseHandle        (HANDLE object);
