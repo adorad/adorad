@@ -17,9 +17,9 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #include <adorad/core/types.h>
 #include <adorad/core/debug.h>
 
-// We require this to be a large number, much more than what you might eventually use for more projects,
-// but because CSTL is of great use and importance in the Adorad Programming Language (which potentially requires
-// these many tokens), having a large number reduces the number of `realloc`s.
+// We require this to be a large number, much more than what you might eventually use for more projects.
+// This is because CSTL is of great use and importance in the Adorad Programming Language (which requires
+// these many tokens during lexing/tokenization). Having a large number reduces the number of `realloc`s.
 #define VEC_INIT_ALLOC_CAP  4096
 #define VECTOR_AT_MACRO(v, i)   ((void *)((char *) (v)->internal.data + (i) * (v)->internal.objsize))
 #define vec_new(obj, nelem)     _vec_new(sizeof(obj), (nelem))
@@ -38,49 +38,31 @@ struct cstlVector {
     cstlVectorInternal internal;
 };
 
-// Create a new `cstlVector`
-// size     => size of each element (in bytes)
-// capacity => number of elements
-// Returns `null` in the event of an error (e.g memory full; could not allocate)
 static cstlVector* _vec_new(UInt64 objsize, UInt64 capacity);
-// Grow the capacity of `vec` to at least `capacity`.
-// If more space is needed, grow `vec` to `capacity`, but at least by a factor of 1.5.
-static bool vec_grow(cstlVector* vec, UInt64 capacity);
-// Free a cstlVector from it's associated memory
+static bool __vec_grow(cstlVector* vec, UInt64 capacity);
 static void vec_free(cstlVector* vec);
-// Return a pointer to element `i` in `vec`
 static void* vec_at(cstlVector* vec, UInt64 elem);
-// Return a pointer to first element in `vec`
 static void* vec_begin(cstlVector* vec);
-// Return a pointer to last element in `vec`
 static void* vec_end(cstlVector* vec);
-// Is `vec` empty (i.e no elements)?
 static bool vec_is_empty(cstlVector* vec);
-// Returns the size of `vec` (i.e the number of bytes)
 static UInt64 vec_size(cstlVector* vec);
-// Returns the allocated capacity of `vec` (i.e the number of bytes)
 static UInt64 vec_cap(cstlVector* vec);
-// Clear all contents of `vec`
 static bool vec_clear(cstlVector* vec);
-// Push an element into `vec` (at the end)
-// Returns false if `data` == null
 static bool vec_push(cstlVector* vec, const void* data);
-// Pop an element from the end of `vec`
 static bool vec_pop(cstlVector* vec);
 
 // Create a new `cstlVector`
-// size     => size of each element (in bytes)
-// capacity => number of elements
-// Returns `null` in the event of an error (e.g memory full; could not allocate)
+// size = size of each element (in bytes)
+// capacity = number of elements
 static cstlVector* _vec_new(UInt64 objsize, UInt64 capacity) {
     if(capacity == 0)
         capacity = VEC_INIT_ALLOC_CAP;
     
-    cstlVector* vec = (cstlVector*)calloc(1, sizeof(cstlVector));
+    cstlVector* vec = cast(cstlVector*)calloc(1, sizeof(cstlVector));
     CSTL_CHECK_NOT_NULL(vec, "Could not allocate memory. Memory full.");
 
-    vec->internal.data = (void*)calloc(objsize, capacity);
-    if(vec->internal.data == null) {
+    vec->internal.data = cast(void*)calloc(objsize, capacity);
+    if(!vec->internal.data) {
         free(vec);
         CSTL_CHECK_NOT_NULL(vec->internal.data, "Could not allocate memory. Memory full.");
     }
@@ -134,7 +116,7 @@ static void* vec_end(cstlVector* vec) {
     return (void*)(cast(char*)vec->internal.data + (vec->internal.size - 1) * sizeof(cstlVector));
 }
 
-// Is `vec` empty (i.e no elements)?
+// Is `vec` empty?
 static bool vec_is_empty(cstlVector* vec) {
     CSTL_CHECK_NOT_NULL(vec, "Expected not null");
     CSTL_CHECK_NOT_NULL(vec->internal.data, "Expected not null");
@@ -168,13 +150,12 @@ static bool vec_clear(cstlVector* vec) {
 }
 
 // Push an element into `vec` (at the end)
-// Returns false if `data` == null
 static bool vec_push(cstlVector* vec, const void* data) {
     CSTL_CHECK_NOT_NULL(vec, "Expected not null");
     CSTL_CHECK_NOT_NULL(vec->internal.data, "Expected not null");
 
     if(vec->internal.size + 1 > vec->internal.capacity) {
-        bool result = vec_grow(vec, vec->internal.size + 1);
+        bool result = __vec_grow(vec, vec->internal.size + 1);
         if(!result)
             return false;
     }
@@ -202,7 +183,7 @@ static bool vec_pop(cstlVector* vec) {
 
 // Grow the capacity of `vec` to at least `capacity`.
 // If more space is needed, grow `vec` to `capacity`, but at least by a factor of 1.5.
-static bool vec_grow(cstlVector* vec, UInt64 capacity) {
+static bool __vec_grow(cstlVector* vec, UInt64 capacity) {
     void* newdata;
     UInt64 newcapacity;
 
@@ -216,7 +197,7 @@ static bool vec_grow(cstlVector* vec, UInt64 capacity) {
     CSTL_CHECK_LT(capacity, (UInt64)-1/vec->internal.objsize);
 
     // Grow small vectors by a factor of 2, and 1.5 for larger ones
-    if (vec->internal.capacity < 4096 / vec->internal.objsize) {
+    if (vec->internal.capacity < VEC_INIT_ALLOC_CAP / vec->internal.objsize) {
         newcapacity = vec->internal.capacity + vec->internal.capacity + 1;
     } else {
         newcapacity = vec->internal.capacity + vec->internal.capacity / 2 + 1;

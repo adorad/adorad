@@ -16,6 +16,9 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 
 #include <time.h>
 
+static double now();
+static double duration(clock_t start, clock_t end);
+
 // Returns the current time (in clock_t)
 static double now() {
     return clock();

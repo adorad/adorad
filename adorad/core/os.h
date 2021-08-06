@@ -166,5 +166,4 @@ static bool os_is_sep(char ch) {
 #endif // CSTL_OS_WINDOWS
 }
 
-
 #endif // CSTL_OS_H

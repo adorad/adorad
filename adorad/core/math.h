@@ -43,36 +43,16 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #endif
 
 // Some fun with macros
-#ifndef CSTL_MAX
-    #define CSTL_MAX(x, y)     ((x) > (y) ? (x) : (y))
-#endif 
-
-#ifndef CSTL_MIN
-    #define CSTL_MIN(x, y)     ((x) < (y) ? (x) : (y))
-#endif 
-
-#ifndef CSTL_CLAMP
-    #define CSTL_CLAMP(x, lower, upper)     CSTL_MIN(CSTL_MAX((x), (lower)), (upper))
-#endif 
-
-#ifndef CSTL_CLAMP01
-	#define CSTL_CLAMP01(x)		CSTL_CLAMP((x), 0, 1)
-#endif 
-
-#ifndef CSTL_IS_BETWEEN
-    #define CSTL_IS_BETWEEN(x, lower, upper)     (((lower) <= (x)) && ((x) <= (upper)))
-#endif 
-
-#ifndef CSTL_ABS
-    #define CSTL_ABS(x)     ((x) < 0 ? -(x) : (x))
-#endif
-
-#ifndef CSTL_SQUARE
-	#define CSTL_SQUARE(x)	((x)*(x))
-#endif 
-
-#ifndef CSTL_CUBE
-	#define CSTL_CUBE(x)	((x)*(x)*(x))
-#endif 
+#ifndef CSTL_MATH_MACROS
+    #define CSTL_MATH_MACROS
+    #define CSTL_MAX(x, y)                ((x) > (y) ? (x) : (y))
+    #define CSTL_MIN(x, y)                ((x) < (y) ? (x) : (y))
+    #define CSTL_CLAMP(x, low, up)        CSTL_MIN(CSTL_MAX((x), (low)), (up))
+	#define CSTL_CLAMP01(x)		          CSTL_CLAMP((x), 0, 1)
+    #define CSTL_IS_BETWEEN(x, low, up)   (((low) <= (x)) && ((x) <= (up)))
+    #define CSTL_ABS(x)                   ((x) < 0 ? -(x) : (x))
+	#define CSTL_SQUARE(x)	              ((x)*(x))
+	#define CSTL_CUBE(x)	              ((x)*(x)*(x))
+#endif // CSTL_MATH_MACROS
 
 #endif // CSTL_MATH_H
