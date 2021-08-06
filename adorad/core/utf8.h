@@ -25,6 +25,8 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
         2 bytes: 110xxxxx  10xxxxxx
         3 bytes: 1110xxxx  10xxxxxx  10xxxxxx
         4 bytes: 11110xxx  10xxxxxx  10xxxxxx  10xxxxxx
+    
+    Further reading: https://stackoverflow.com/questions/2241348/what-is-unicode-utf-8-utf-16
 */
 
 #include <stddef.h>
@@ -37,6 +39,67 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     #pragma clang diagnostic ignored "-Wcast-qual"
 #endif
 
+// Is UTF-8 codepoint valid?
+bool utf8_is_codepoint_valid(Rune uc);
+// Return a UTF-8 char
+char* utf8_encode(Rune value);
+// Returns the number of character bytes
+Ll utf8_bytes(Rune value);
+
+bool utf8_is_codepoint_valid(Rune uc) {
+    if(uc < 0 || uc >= 0x110000 || ((uc & 0xFFFF) >= 0xFFFE) || (uc >= 0xD800 && uc < 0xE000) || 
+      (uc >= 0xFDD0 && uc < 0xFDF0))
+        return false;
+    return true;
+}
+
+// Codepoint size
+Ll utf8_bytes(Rune value) {
+    Ll nbytes = 0;
+    CSTL_CHECK(value >= 0, "Cannot encode a negative value :(");
+
+    if(value <= 0x7f) nbytes = 1;     // 127
+    if(value <= 0x7ff) nbytes = 2;    // 2047
+    if(value <= 0xffff) nbytes = 3;   // 65535
+    if(value <= 0x10ffff) nbytes = 4; // 1114111
+    else nbytes = 0;
+    CSTL_CHECK(nbytes > 0, "Invalid code point");
+    return nbytes;
+}
+
+char* utf8_encode(Rune value) {
+    Byte mask = 0x3f; // 63
+    char* buff = cast(char*)calloc(4, sizeof(char));
+
+    if(value <= (value << 7) - 1) {
+        buff[0] = cast(char)value;
+        return buff;
+    } else if(value <= (value << 11) - 1) {
+        buff[0] = 0xc0 | cast(char)(value >> 6);
+        buff[1] = 0x80 | cast(char)(value) & mask;
+        return buff;
+    } 
+    // Invalid/Surrogate range
+    if(value > CSTL_RUNE_MAX || CSTL_IS_BETWEEN(value, 0xd800, 0xdff)) {
+        value = CSTL_RUNE_INVALID;
+        buff[0] = 0xe0 | cast(char)(value >> 12);
+        buff[1] = 0x80 | cast(char)(value >> 12) & mask;
+        buff[2] = 0x80 | cast(char)(value) & mask;
+        return buff;
+    } else if(value <= (value << 16) - 1) {
+        buff[0] = 0xe0 | cast(char)(value >> 12);
+        buff[1] = 0x80 | cast(char)(value >> 6) & mask;
+        buff[2] = 0x80 | cast(char)(value) & mask;
+        return buff;
+    }
+
+    buff[0] = 0xf0 | cast(char)(value >> 18);
+    buff[1] = 0x80 | cast(char)(value >> 12) & mask;
+    buff[2] = 0x80 | cast(char)(value >> 6) & mask;
+    buff[3] = 0x80 | cast(char)(value) & mask;
+
+    return buff;
+}
 
 // Compare two UTF-8 strings
 int utf8_cmp(const void* src1, const void* src2);
@@ -151,7 +214,7 @@ Ull utf8codepointsize(Rune chr);
 // place after the written codepoint. Pass how many bytes left in the buffer to
 // n. If there is not enough space for the codepoint, this function returns
 // null.
-void* utf8catcodepoint(void* str, Rune chr, ll n);
+void* utf8catcodepoint(void* str, Rune chr, Ll n);
 
 // Returns 1 if the given character is lowercase, or 0 if it is not.
 int utf8islower(Rune chr);
