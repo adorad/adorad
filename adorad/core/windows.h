@@ -18,7 +18,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #include <adorad/core/misc.h>
 
 // Jason's Mini <Windows.h>
-#ifndef CSTL_COMPILER_MSVC
+#ifdef CSTL_COMPILER_MSVC
     #define WINAPI          __stdcall
     #define WINAPIV         __cdecl
     #define CALLBACK        __stdcall
