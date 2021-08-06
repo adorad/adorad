@@ -15,6 +15,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #define CSTL_HASH_H
 
 #include <adorad/core/types.h>
+#include <adorad/core/os_defs.h>
 
 /*
     Hashing & Checksum Functions
@@ -31,7 +32,7 @@ UInt32 hash_fnv32a(void const* data, Ull len);
 UInt64 hash_fnv64a(void const* data, Ull len);
 
 // Default seed of 0x9747b28c
-// I prefer using `murmur64` for most hashes
+// I prefer using `murmur64` formost hashes
 UInt32 hash_murmur32(void const* data, Ull len);
 UInt64 hash_murmur64(void const* data, Ull len);
 
@@ -46,8 +47,8 @@ UInt32 hash_adler32(void const* data, Ll len) {
 
     block_len = len % 5552;
 
-    while (len) {
-        for (i = 0; i+7 < block_len; i += 8) {
+    while(len) {
+        for(i = 0; i+7 < block_len; i += 8) {
             a += bytes[0], b += a;
             a += bytes[1], b += a;
             a += bytes[2], b += a;
@@ -59,9 +60,8 @@ UInt32 hash_adler32(void const* data, Ll len) {
 
             bytes += 8;
         }
-        for (; i < block_len; i++) {
+        for(; i < block_len; i++)
             a += *bytes++, b += a;
-        }
 
         a %= MOD_ALDER, b %= MOD_ALDER;
         len -= block_len;
@@ -210,9 +210,8 @@ UInt32 hash_crc32(void const* data, Ll len) {
     Ll remaining;
     UInt32 result = ~(cast(UInt32)0);
     UInt8 const* c = cast(UInt8 const* )data;
-    for (remaining = len; remaining--; c++) {
+    for(remaining = len; remaining--; c++)
         result = (result >> 8) ^ (CSTL__CRC32_TABLE[(result ^ *c) & 0xff]);
-    }
     return ~result;
 }
 
@@ -220,9 +219,8 @@ UInt64 hash_crc64(void const* data, Ll len) {
     Ll remaining;
     UInt64 result = ~(cast(UInt64)0);
     UInt8 const* c = cast(UInt8 const* )data;
-    for (remaining = len; remaining--; c++) {
+    for(remaining = len; remaining--; c++)
         result = (result >> 8) ^ (CSTL__CRC64_TABLE[(result ^ *c) & 0xff]);
-    }
     return ~result;
 }
 
@@ -231,9 +229,8 @@ UInt32 hash_fnv32(void const* data, Ll len) {
     UInt32 h = 0x811c9dc5;
     UInt8 const* c = cast(UInt8 const* )data;
 
-    for (i = 0; i < len; i++) {
+    for(i = 0; i < len; i++)
         h = (h * 0x01000193) ^ c[i];
-    }
 
     return h;
 }
@@ -243,9 +240,8 @@ UInt64 hash_fnv64(void const* data, Ll len) {
     UInt64 h = 0xcbf29ce484222325ull;
     UInt8 const* c = cast(UInt8 const* )data;
 
-    for (i = 0; i < len; i++) {
+    for(i = 0; i < len; i++)
         h = (h * 0x100000001b3ll) ^ c[i];
-    }
 
     return h;
 }
@@ -255,9 +251,8 @@ UInt32 hash_fnv32a(void const* data, Ll len) {
     UInt32 h = 0x811c9dc5;
     UInt8 const* c = cast(UInt8 const* )data;
 
-    for (i = 0; i < len; i++) {
+    for(i = 0; i < len; i++)
         h = (h ^ c[i]) * 0x01000193;
-    }
 
     return h;
 }
@@ -267,9 +262,8 @@ UInt64 hash_fnv64a(void const* data, Ll len) {
     UInt64 h = 0xcbf29ce484222325ull;
     UInt8 const* c = cast(UInt8 const* )data;
 
-    for (i = 0; i < len; i++) {
+    for(i = 0; i < len; i++)
         h = (h ^ c[i]) * 0x100000001b3ll;
-    }
 
     return h;
 }
@@ -295,7 +289,7 @@ UInt32 hash_murmur32_seed(void const* data, Ll len, UInt32 seed) {
     UInt32 const* blocks = cast(UInt32 const*)data;
     UInt8 const* tail = cast(UInt8 const* )(data) + nblocks*4;
 
-    for (i = 0; i < nblocks; i++) {
+    for(i = 0; i < nblocks; i++) {
         UInt32 k = blocks[i];
         k *= c1;
         k = (k << r1) | (k >> (32 - r1));
@@ -330,7 +324,7 @@ UInt32 hash_murmur32_seed(void const* data, Ll len, UInt32 seed) {
 }
 
 UInt64 hash_murmur64_seed(void const* data_, Ll len, UInt64 seed) {
-#if defined(GB_ARCH_64_BIT)
+#if defined(CSTL_ARCH_64BIT)
     UInt64 const m = 0xc6a4a7935bd1e995ULL;
     Int32 const r = 47;
 
@@ -340,7 +334,7 @@ UInt64 hash_murmur64_seed(void const* data_, Ll len, UInt64 seed) {
     UInt8  const* data2 = cast(UInt8 const* )data_;
     UInt64 const* end = data + (len / 8);
 
-    while (data != end) {
+    while(data != end) {
         UInt64 k = *data++;
 
         k *= m;
@@ -377,7 +371,7 @@ UInt64 hash_murmur64_seed(void const* data_, Ll len, UInt64 seed) {
 
     UInt32 const* data = cast(UInt32 const* )data_;
 
-    while (len >= 8) {
+    while(len >= 8) {
         UInt32 k1, k2;
         k1 = *data++;
         k1 *= m;
@@ -426,7 +420,7 @@ UInt64 hash_murmur64_seed(void const* data_, Ll len, UInt64 seed) {
     h = (h << 32) | h2;
 
     return h;
-#endif
+#endif // CSTL_ARCH_64BIT
 }
 
 #endif // CSTL_HASH_H

@@ -106,7 +106,7 @@ static UInt32 __internal_strlength(const char* str, bool is_utf8) {
 
         // Handle the first few characters by reading one character at a time.
         // Do this until CHAR_PTR is aligned on a longword boundary.
-        for (char_ptr = str; ((unsigned long int) char_ptr & (sizeof (longword) - 1)) != 0; ++char_ptr) {
+        for(char_ptr = str; ((unsigned long int) char_ptr & (sizeof (longword) - 1)) != 0; ++char_ptr) {
             if (*char_ptr == nullchar)
                 return char_ptr - str;
         }
@@ -120,7 +120,7 @@ static UInt32 __internal_strlength(const char* str, bool is_utf8) {
         //     bits:  01111110 11111110 11111110 11111111
         //     bytes: AAAAAAAA BBBBBBBB CCCCCCCC DDDDDDDD
         // The 1-bits make sure that carries propagate to the next 0-bit.
-        // The 0-bits provide holes for carries to fall into.
+        // The 0-bits provide holes forcarries to fall into.
         himagic = 0x80808080L;
         lomagic = 0x01010101L;
 
@@ -135,7 +135,7 @@ static UInt32 __internal_strlength(const char* str, bool is_utf8) {
 
         // Instead of the traditional loop which tests each character, we will test a longword at a time.
         // The tricky part is testing if *any of the four* bytes in the longword in question are zero.
-        for (;;) {
+        for(;;) {
             longword = *longword_ptr++;
 
             if (((longword - lomagic) & ~longword & himagic) != 0) {

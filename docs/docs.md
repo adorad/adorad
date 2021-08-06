@@ -3745,7 +3745,7 @@ Let's create a simple program `test.c` first:
 #include "stdio.h"
 
 int main() {
-	for (int i = 0; i < 10; i++) {
+	for(int i = 0; i < 10; i++) {
 		printf("hello world\n");
 	}
         return 0;
