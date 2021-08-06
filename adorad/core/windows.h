@@ -455,7 +455,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 
     #define INFINITE 0xffffffffl
     #define INVALID_HANDLE_VALUE ((void* )(intptr)(-1))
-
+/*
 	typedef DWORD WINAPI THREAD_START_ROUTINE(void* parameter);
 
     CSTL_DLL_IMPORT DWORD   WINAPI GetLastError       (void);
@@ -474,6 +474,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     CSTL_DLL_IMPORT BOOL      WINAPI GetLogicalProcessorInformation(SYSTEM_LOGICAL_PROCESSOR_INFORMATION* buffer, DWORD* return_length);
     CSTL_DLL_IMPORT DWORD_PTR WINAPI SetThreadAffinityMask(HANDLE thread, DWORD_PTR check_mask);
     CSTL_DLL_IMPORT HANDLE    WINAPI GetCurrentThread(void);
+*/
 
     #define PAGE_NOACCESS          0x01
     #define PAGE_READONLY          0x02
@@ -499,10 +500,12 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     #define MEM_LARGE_PAGES  0x20000000
     #define MEM_4MB_PAGES    0x80000000
 
+/*
     CSTL_DLL_IMPORT void*  WINAPI VirtualAlloc (void* addr, usize size, DWORD allocation_type, DWORD protect);
     CSTL_DLL_IMPORT usize  WINAPI VirtualQuery (void const* address, MEMORY_BASIC_INFORMATION* buffer, usize length);
     CSTL_DLL_IMPORT BOOL   WINAPI VirtualFree  (void* address, usize size, DWORD free_type);
     CSTL_DLL_IMPORT void   WINAPI GetSystemInfo(SYSTEM_INFO* system_info);
+*/
 
 	#ifndef VK_UNKNOWN
         #define VK_UNKNOWN 0
@@ -705,6 +708,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     #define STD_OUTPUT_HANDLE        ((DWORD)-11)
     #define STD_ERROR_HANDLE         ((DWORD)-12)
 
+/*
     CSTL_DLL_IMPORT int           MultiByteToWideChar(UINT code_page, DWORD flags, char const*    multi_byte_str, int multi_byte_len, wchar_t const* wide_char_str,  int wide_char_len);
     CSTL_DLL_IMPORT int           WideCharToMultiByte(UINT code_page, DWORD flags, wchar_t const* wide_char_str,  int wide_char_len, char const*     multi_byte_str, int multi_byte_len);
     CSTL_DLL_IMPORT BOOL   WINAPI SetFilePointerEx(HANDLE file, LARGE_INTEGER distance_to_move,
@@ -734,7 +738,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     CSTL_DLL_IMPORT void WINAPI ExitProcess(UINT exit_code);
 
     CSTL_DLL_IMPORT BOOL WINAPI SetEnvironmentVariableA(char const* name, char const* value);
-
+*/
 
     #define WM_NULL                   0x0000
     #define WM_CREATE                 0x0001
@@ -839,9 +843,11 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     #define MAPVK_VK_TO_CHAR   2
     #define MAPVK_VSC_TO_VK_EX 3
 
+/*
     CSTL_DLL_IMPORT BOOL WINAPI RegisterRawInputDevices(RAWINPUTDEVICE const* raw_input_devices, UINT num_devices, UINT size);
     CSTL_DLL_IMPORT UINT WINAPI GetRawInputData(HRAWINPUT raw_input, UINT ui_command, void* data, UINT* size, UINT size_header);
     CSTL_DLL_IMPORT UINT WINAPI MapVirtualKeyW(UINT code, UINT map_type);
+*/
 
     #define CS_DBLCLKS         0x0008
     #define CS_VREDRAW         0x0001
@@ -853,11 +859,13 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     #define MB_HELP            0x4000l
     #define MB_ICONEXCLAMATION 0x0030l
 
+/*
     CSTL_DLL_IMPORT LRESULT WINAPI DefWindowProcW(HWND wnd, UINT msg, WPARAM wParam, LPARAM lParam);
     CSTL_DLL_IMPORT HGDIOBJ WINAPI GetStockObject(int object);
     CSTL_DLL_IMPORT HMODULE WINAPI GetModuleHandleW(wchar_t const* );
     CSTL_DLL_IMPORT ATOM    WINAPI RegisterClassExW(WNDCLASSEXW const* wcx); // u16 == ATOM
     CSTL_DLL_IMPORT int     WINAPI MessageBoxW(void* wnd, wchar_t const* text, wchar_t const* caption, unsigned int type);
+*/
 
     #define DM_BITSPERPEL 0x00040000l
     #define DM_PELSWIDTH  0x00080000l
@@ -916,6 +924,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     #define ENUM_CURRENT_SETTINGS  cast(DWORD)-1
     #define ENUM_REGISTRY_SETTINGS cast(DWORD)-2
 
+/*
     CSTL_DLL_IMPORT LONG    WINAPI ChangeDisplaySettingsW(DEVMODEW* dev_mode, DWORD flags);
     CSTL_DLL_IMPORT BOOL    WINAPI AdjustWindowRect(RECT* rect, DWORD style, BOOL enu);
     CSTL_DLL_IMPORT HWND    WINAPI CreateWindowExW(DWORD ex_style, wchar_t const* class_name, wchar_t const* window_name,
@@ -942,6 +951,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     CSTL_DLL_IMPORT BOOL    WINAPI EmptyClipboard(void);
     CSTL_DLL_IMPORT BOOL    WINAPI CloseClipboard(void);
     CSTL_DLL_IMPORT HANDLE  WINAPI SetClipboardData(UINT uFormat, HANDLE hMem);
+*/
 
     #define PFD_TYPE_RGBA             0
     #define PFD_TYPE_COLORINDEX       1
@@ -970,6 +980,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     #define GWL_ID    -12
     #define GWL_STYLE -16
 
+/*
     CSTL_DLL_IMPORT BOOL  WINAPI SetPixelFormat   (HDC hdc, int pixel_format, PIXELFORMATDESCRIPTOR const* pfd);
     CSTL_DLL_IMPORT int   WINAPI ChoosePixelFormat(HDC hdc, PIXELFORMATDESCRIPTOR const* pfd);
     CSTL_DLL_IMPORT HGLRC WINAPI wglCreateContext (HDC hdc);
@@ -992,13 +1003,16 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     CSTL_DLL_IMPORT BOOL     WINAPI MoveWindow(HWND hWnd, int X, int Y, int nWidth, int nHeight, BOOL bRepaint);
     CSTL_DLL_IMPORT BOOL     WINAPI SetWindowTextW(HWND hWnd, wchar_t const* lpString);
     CSTL_DLL_IMPORT DWORD    WINAPI GetWindowLongW(HWND hWnd, int nIndex);
+*/
 
     #define PM_NOREMOVE 0
     #define PM_REMOVE   1
 
+/*
     CSTL_DLL_IMPORT BOOL    WINAPI PeekMessageW(MSG* lpMsg, HWND hWnd, UINT wMsgFilterMin, UINT wMsgFilterMax, UINT wRemoveMsg);
     CSTL_DLL_IMPORT BOOL    WINAPI TranslateMessage(MSG const* lpMsg);
     CSTL_DLL_IMPORT LRESULT WINAPI DispatchMessageW(MSG const* lpMsg);
+*/
 
 	typedef enum {
         DIB_RGB_COLORS  = 0x00,
