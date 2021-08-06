@@ -16,7 +16,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 
 // Initialize a new Parser
 static Parser* parser_init() {
-    Parser* parser = (Parser*)calloc(1, sizeof(Parser));
+    Parser* parser = cast(Parser*)calloc(1, sizeof(Parser));
     return parser;
 }
 
@@ -50,7 +50,7 @@ static inline TokenKind parser_expect_token(Parser* parser, TokenKind tokenkind)
 }
 
 static AstNode* ast_create_node(AstNodeKind type) {
-    AstNode* node = (AstNode*)calloc(1, sizeof(AstNode));
+    AstNode* node = cast(AstNode*)calloc(1, sizeof(AstNode));
     node->type = type;
     return node;
 }

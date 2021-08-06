@@ -16,7 +16,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 
 // Token constructor
 Token* token_init() {
-    Token* token = calloc(1, sizeof(Token));
+    Token* token = cast(Token*)calloc(1, sizeof(Token));
     token->kind = TOK_ILLEGAL;
     token->offset = 0;
     token->value = buff_new(null);

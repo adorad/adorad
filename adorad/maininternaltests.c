@@ -1,5 +1,4 @@
 #include <adorad/adorad.h>
-#include <adorad/core/os.h>
 
 int main(int argc, const char* const argv[]) {
     // The CWD for this executable is in ".../build/bin"

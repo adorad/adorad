@@ -91,7 +91,7 @@ static const char* tokenHash[] = {
 
 
 Lexer* lexer_init(char* buffer, const char* fname) {
-    Lexer* lexer = (Lexer*)calloc(1, sizeof(Lexer));
+    Lexer* lexer = cast(Lexer*)calloc(1, sizeof(Lexer));
 
     lexer->offset = 0;
     lexer->buffer = buff_new(buffer);

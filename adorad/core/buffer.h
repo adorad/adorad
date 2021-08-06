@@ -50,7 +50,7 @@ static inline cstlBuffer* buff_tolower(cstlBuffer* buffer);
 
 // Create a new `cstlBuffer`
 static cstlBuffer* buff_new(char* buff_data) {
-    cstlBuffer* buffer = (cstlBuffer*)calloc(1, sizeof(cstlBuffer));
+    cstlBuffer* buffer = cast(cstlBuffer*)calloc(1, sizeof(cstlBuffer));
     CSTL_CHECK_NOT_NULL(buffer, "Could not allocate memory. Memory full.");
 
     buffer->is_utf8 = false;
