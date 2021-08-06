@@ -67,6 +67,7 @@ CREDITS
 #include <adorad/core/os.h>
 #include <adorad/core/buffer.h>
 #include <adorad/core/char.h>
+#include <adorad/core/utf8.h>
 #include <adorad/core/vector.h>
 
 #ifdef CSTL_INCLUDE_HASH_H
