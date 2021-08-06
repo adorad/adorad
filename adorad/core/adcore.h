@@ -69,6 +69,10 @@ CREDITS
 #include <adorad/core/string.h>
 #include <adorad/core/vector.h>
 
+#ifdef CSTL_INCLUDE_HASH_H
+    #include <adorad/core/hash.h>
+#endif // CSTL_INCLUDE_HASH_H
+
 #ifdef CSTL_INCLUDE_WINDOWS_H
     #include <adorad/core/windows.h>
 #endif // CSTL_INCLUDE_WINDOWS_H
