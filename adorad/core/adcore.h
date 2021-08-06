@@ -69,4 +69,8 @@ CREDITS
 #include <adorad/core/string.h>
 #include <adorad/core/vector.h>
 
+#ifdef CSTL_INCLUDE_WINDOWS_H
+    #include <adorad/core/windows.h>
+#endif // CSTL_INCLUDE_WINDOWS_H
+
 #endif // CSTL_CORE_CSTL_H
