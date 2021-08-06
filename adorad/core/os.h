@@ -92,9 +92,9 @@ static cstlBuffer* __os_dirname_basename(cstlBuffer* path, bool is_basename) {
 
         // The `/` or `\\` is not so important in getting the dirname, but it does interfere with `strchr`, so
         // we skip over it (if present)
-        if(*rev->data == *(CSTL_OS_SEP))
+        if(*rev->data == CSTL_OS_SEP_CHAR)
             rev->data++;
-        char* rev_dir = strchr(rev->data, *(CSTL_OS_SEP));
+        char* rev_dir = strchr(rev->data, CSTL_OS_SEP_CHAR);
         buff_set(result, rev_dir);
         result = buff_rev(result);
         buff_free(rev);
