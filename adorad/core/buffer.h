@@ -20,6 +20,11 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #include <adorad/core/string.h>
 #include <adorad/core/misc.h>
 
+/*
+    A `cstlBuffer` is a Fixed-Size Buffer.
+    It works like a string, except that the actual type is just a pointer to the first `char` element
+*/
+
 typedef struct cstlBuffer cstlBuffer;
 typedef cstlBuffer Buff;
 
