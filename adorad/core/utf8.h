@@ -35,7 +35,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     UTF8-4      = %xF0 %x90-BF 2( UTF8-tail ) / %xF1-F3 3( UTF8-tail ) /
                   %xF4 %x80-8F 2( UTF8-tail )
     UTF8-tail   = %x80-BF
-	
+
 	Further reading: https://stackoverflow.com/questions/2241348/what-is-unicode-utf-8-utf-16
 */
 
@@ -101,28 +101,28 @@ char* utf8_encode(Rune value) {
 		buff[0] = cast(char)value;
 		return buff;
 	} else if(value <= (value << 11) - 1) {
-		buff[0] = 0xc0 | cast(char)(value >> 6);
-		buff[1] = 0x80 | cast(char)(value) & mask;
+		buff[0] = (0xc0) | (cast(char)(value >> 6));
+		buff[1] = (0x80) | (cast(char)(value) & mask);
 		return buff;
 	} 
 	// Invalid/Surrogate range
 	if(value > CSTL_RUNE_MAX || CSTL_IS_BETWEEN(value, 0xd800, 0xdff)) {
 		value = CSTL_RUNE_INVALID;
-		buff[0] = 0xe0 | cast(char)(value >> 12);
-		buff[1] = 0x80 | cast(char)(value >> 12) & mask;
-		buff[2] = 0x80 | cast(char)(value) & mask;
+		buff[0] = (0xe0) | (cast(char)(value >> 12));
+		buff[1] = (0x80) | (cast(char)(value >> 12) & mask);
+		buff[2] = (0x80) | (cast(char)(value) & mask);
 		return buff;
 	} else if(value <= (value << 16) - 1) {
-		buff[0] = 0xe0 | cast(char)(value >> 12);
-		buff[1] = 0x80 | cast(char)(value >> 6) & mask;
-		buff[2] = 0x80 | cast(char)(value) & mask;
+		buff[0] = (0xe0) | (cast(char)(value >> 12));
+		buff[1] = (0x80) | (cast(char)(value >> 6) & mask);
+		buff[2] = (0x80) | (cast(char)(value) & mask);
 		return buff;
 	}
 
-	buff[0] = 0xf0 | cast(char)(value >> 18);
-	buff[1] = 0x80 | cast(char)(value >> 12) & mask;
-	buff[2] = 0x80 | cast(char)(value >> 6) & mask;
-	buff[3] = 0x80 | cast(char)(value) & mask;
+	buff[0] = (0xf0) | (cast(char)(value >> 18));
+	buff[1] = (0x80) | (cast(char)(value >> 12) & mask);
+	buff[2] = (0x80) | (cast(char)(value >> 6) & mask);
+	buff[3] = (0x80) | (cast(char)(value) & mask);
 
 	return buff;
 }
