@@ -41,9 +41,9 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 
 #include <stddef.h>
 #include <stdlib.h>
-#include <AdoradInternalTests/core/types.h>
-#include <AdoradInternalTests/core/misc.h>
-#include <AdoradInternalTests/core/debug.h>
+#include <adorad/core/types.h>
+#include <adorad/core/misc.h>
+#include <adorad/core/debug.h>
 
 #define uBuff	cstlUTF8Str
 
