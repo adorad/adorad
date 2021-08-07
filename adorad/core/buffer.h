@@ -56,7 +56,7 @@ static inline cstlBuffer* buff_tolower(cstlBuffer* buffer);
 // Create a new `cstlBuffer`
 static cstlBuffer* buff_new(char* buff_data) {
     cstlBuffer* buffer = cast(cstlBuffer*)calloc(1, sizeof(cstlBuffer));
-    CSTL_CHECK_NOT_NULL(buffer, "Could not allocate memory. Memory full.");
+    CHECK_NOT_NULL(buffer, "Could not allocate memory. Memory full.");
 
     buffer->is_utf8 = false;
     buff_set(buffer, buff_data);
@@ -66,8 +66,8 @@ static cstlBuffer* buff_new(char* buff_data) {
 
 // Return the n'th character in the buffer data
 static char buff_at(cstlBuffer* buffer, UInt64 n) {
-    CSTL_CHECK_NOT_NULL(buffer, "Expected not null");
-    CSTL_CHECK_NOT_NULL(buffer->data, "Expected not null");
+    CHECK_NOT_NULL(buffer, "Expected not null");
+    CHECK_NOT_NULL(buffer->data, "Expected not null");
     
     if(n >= buffer->len)
         return nullchar;
@@ -77,24 +77,24 @@ static char buff_at(cstlBuffer* buffer, UInt64 n) {
 
 // Returns a pointer to the beginning of the buffer data
 static char* buff_begin(cstlBuffer* buffer) {
-    CSTL_CHECK_NOT_NULL(buffer, "Expected not null");
-    CSTL_CHECK_NOT_NULL(buffer->data, "Expected not null");
+    CHECK_NOT_NULL(buffer, "Expected not null");
+    CHECK_NOT_NULL(buffer->data, "Expected not null");
 
     return cast(char*)buffer->data;
 }
 
 // Returns a pointer to the end of the buffer data
 static char* buff_end(cstlBuffer* buffer) {
-    CSTL_CHECK_NOT_NULL(buffer, "Expected not null");
-    CSTL_CHECK_NOT_NULL(buffer->data, "Expected not null");
+    CHECK_NOT_NULL(buffer, "Expected not null");
+    CHECK_NOT_NULL(buffer->data, "Expected not null");
 
     return cast(char*)(buffer->data + ((buffer->len - 1) * sizeof(char)));
 }
 
 // Is the buffer data empty?
 static bool buff_is_empty(cstlBuffer* buffer) {
-    CSTL_CHECK_NOT_NULL(buffer, "Expected not null");
-    CSTL_CHECK_NOT_NULL(buffer->data, "Expected not null");
+    CHECK_NOT_NULL(buffer, "Expected not null");
+    CHECK_NOT_NULL(buffer->data, "Expected not null");
 
     return buffer->len == 0;
 }
@@ -190,10 +190,10 @@ static UInt32 __internal_strlength(const char* str, bool is_utf8) {
 // Append `buff2` to the buffer data
 // Returns `buffer`
 static void buff_append(cstlBuffer* buffer, cstlBuffer* buff2) {
-    CSTL_CHECK_NOT_NULL(buffer, "Expected not null");
-    CSTL_CHECK_NOT_NULL(buffer->data, "Expected not null");
-    CSTL_CHECK_NOT_NULL(buff2, "Expected not null");
-    CSTL_CHECK_NOT_NULL(buff2->data, "Expected not null");
+    CHECK_NOT_NULL(buffer, "Expected not null");
+    CHECK_NOT_NULL(buffer->data, "Expected not null");
+    CHECK_NOT_NULL(buff2, "Expected not null");
+    CHECK_NOT_NULL(buff2->data, "Expected not null");
 
     UInt64 new_len = buffer->len + buff2->len + 1;
     char* newstr = cast(char*)calloc(1, new_len);
@@ -204,8 +204,8 @@ static void buff_append(cstlBuffer* buffer, cstlBuffer* buff2) {
 
 // Append a character to the buffer data
 static void buff_append_char(cstlBuffer* buffer, char ch) {
-    CSTL_CHECK_NOT_NULL(buffer, "Expected not null");
-    CSTL_CHECK_NOT_NULL(buffer->data, "Expected not null");
+    CHECK_NOT_NULL(buffer, "Expected not null");
+    CHECK_NOT_NULL(buffer->data, "Expected not null");
 
     UInt64 len = buffer->len;
     char* newstr = cast(char*)calloc(1, len + 1);
@@ -218,7 +218,7 @@ static void buff_append_char(cstlBuffer* buffer, char ch) {
 
 // Assign `new_buff` to the buffer data
 static void buff_set(cstlBuffer* buffer, char* new_buff) {
-    CSTL_CHECK_NOT_NULL(buffer, "Expected not null");
+    CHECK_NOT_NULL(buffer, "Expected not null");
 
     UInt64 len;
     if(!new_buff) {
@@ -303,22 +303,22 @@ static bool buff_cmp_nocase(cstlBuffer* buff1, cstlBuffer* buff2) {
 
 // Get a slice of a buffer
 static cstlBuffer* buff_slice(cstlBuffer* buffer, int begin, int bytes) {
-    CSTL_CHECK_NOT_NULL(buffer, "`buffer` cannot be null");
-    CSTL_CHECK_GE(begin, 0);
-    CSTL_CHECK_GT(bytes, 0);
+    CHECK_NOT_NULL(buffer, "`buffer` cannot be null");
+    CHECK_GE(begin, 0);
+    CHECK_GT(bytes, 0);
 
     cstlBuffer* slice = buff_new(null);
-    CSTL_CHECK_NOT_NULL(slice, "`slice` cannot be null");
+    CHECK_NOT_NULL(slice, "`slice` cannot be null");
     char* temp = cast(char*)calloc(1, bytes);
     strncpy(temp, &(buffer->data[begin]), bytes);
     buff_set(slice, temp);
-    CSTL_CHECK_NOT_NULL(slice, "`slice source` cannot be null");
+    CHECK_NOT_NULL(slice, "`slice source` cannot be null");
     return slice;
 }
 
 // Clone a buffer
 static cstlBuffer* buff_clone(cstlBuffer* buffer) {
-    CSTL_CHECK_NOT_NULL(buffer, "Cannot clone a null buffer :(");
+    CHECK_NOT_NULL(buffer, "Cannot clone a null buffer :(");
     cstlBuffer* clone = buff_new(null);
     char* dest = cast(char*)calloc(1, buff_len(buffer));
     char* source = buffer->data;
@@ -334,9 +334,9 @@ static cstlBuffer* buff_clone(cstlBuffer* buffer) {
 
 // Clone a buffer (upto `n` chars)
 static cstlBuffer* buff_clone_n(cstlBuffer* buffer, int n) {
-    CSTL_CHECK_NOT_NULL(buffer, "Cannot clone a null buffer :(");
-    CSTL_CHECK_GT(n, 0);
-    CSTL_CHECK_LT(n, buffer->len);
+    CHECK_NOT_NULL(buffer, "Cannot clone a null buffer :(");
+    CHECK_GT(n, 0);
+    CHECK_LT(n, buffer->len);
     cstlBuffer* clone = buff_new(null);
     char* dest = cast(char*)calloc(1, buff_len(buffer));
     char* source = buffer->data;

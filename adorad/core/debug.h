@@ -25,7 +25,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 
 // ========================= Debug + Asserts =========================
 // This macro is only for simple assertion checks (that don't require a message to STDOUT).
-// Note that this is not recommended. Use CSTL_CHECK instead
+// Note that this is not recommended. Use CHECK instead
 // If a condition fails, this raises a compilation error (negative index) --> 0*2 == 0 + (-1) == -1!
 #ifndef CSTL_DEBUG_CHECK
     // NOTE(jasmcaus): Token pasting madness!!
@@ -357,27 +357,27 @@ static inline int cstlShouldDecomposeMacro(char const* actual, char const* expec
         }                                                                           \
     } while(0)
 
-#define CSTL_CHECK_EQ(actual, expected)     __CSTLCMP__(actual, expected, ==, "", CSTL_CHECK_EQ)
-#define CSTL_CHECK_NE(actual, expected)     __CSTLCMP__(actual, expected, !=, "", CSTL_CHECK_NE)
-#define CSTL_CHECK_LT(actual, expected)     __CSTLCMP__(actual, expected, < , " ", CSTL_CHECK_LT)
-#define CSTL_CHECK_LE(actual, expected)     __CSTLCMP__(actual, expected, <=, "", CSTL_CHECK_LE)
-#define CSTL_CHECK_GT(actual, expected)     __CSTLCMP__(actual, expected, > , " ", CSTL_CHECK_GT)
-#define CSTL_CHECK_GE(actual, expected)     __CSTLCMP__(actual, expected, >=, "", CSTL_CHECK_GE)
+#define CHECK_EQ(actual, expected)     __CSTLCMP__(actual, expected, ==, "", CHECK_EQ)
+#define CHECK_NE(actual, expected)     __CSTLCMP__(actual, expected, !=, "", CHECK_NE)
+#define CHECK_LT(actual, expected)     __CSTLCMP__(actual, expected, < , " ", CHECK_LT)
+#define CHECK_LE(actual, expected)     __CSTLCMP__(actual, expected, <=, "", CHECK_LE)
+#define CHECK_GT(actual, expected)     __CSTLCMP__(actual, expected, > , " ", CHECK_GT)
+#define CHECK_GE(actual, expected)     __CSTLCMP__(actual, expected, >=, "", CHECK_GE)
 
 // Whole-string checks
-#define CSTL_CHECK_STREQ(actual, expected)     __CSTLCMP_STR__(actual, expected, !=, ==, not equal, CSTL_CHECK_STREQ)
-#define CSTL_CHECK_STRNEQ(actual, expected)    __CSTLCMP_STR__(actual, expected, ==, !=, equal, CSTL_CHECK_STRNEQ)
+#define CHECK_STREQ(actual, expected)     __CSTLCMP_STR__(actual, expected, !=, ==, not equal, CHECK_STREQ)
+#define CHECK_STRNEQ(actual, expected)    __CSTLCMP_STR__(actual, expected, ==, !=, equal, CHECK_STRNEQ)
 
 // Substring Checks
-#define CSTL_CHECK_STRNE(actual, expected, n)     __CSTLCMP_STRN__(actual, expected, n, !=, ==, unequal substrings, CSTL_CHECK_STRNE)
-#define CSTL_CHECK_STRNNE(actual, expected, n)    __CSTLCMP_STRN__(actual, expected, n, ==, !=, equal substrings, CSTL_CHECK_STRNNE) 
+#define CHECK_STRNE(actual, expected, n)     __CSTLCMP_STRN__(actual, expected, n, !=, ==, unequal substrings, CHECK_STRNE)
+#define CHECK_STRNNE(actual, expected, n)    __CSTLCMP_STRN__(actual, expected, n, ==, !=, equal substrings, CHECK_STRNNE) 
 
-// Note: The negate sign `!` must be there for CSTL_CHECK_TRUE
+// Note: The negate sign `!` must be there for CHECK_TRUE
 // Do not remove it
-#define CSTL_CHECK_TRUE(cond)      __CSTLCMP_TF(cond, false, true, !, CSTL_CHECK_TRUE)
-#define CSTL_CHECK_FALSE(cond)     __CSTLCMP_TF(cond, true, false, , CSTL_CHECK_FALSE)
+#define CHECK_TRUE(cond)      __CSTLCMP_TF(cond, false, true, !, CHECK_TRUE)
+#define CHECK_FALSE(cond)     __CSTLCMP_TF(cond, true, false, , CHECK_FALSE)
 
-#define __CSTL_CHECK__(cond, macroName, ...)                                             \
+#define __CHECK__(cond, macroName, ...)                                             \
     do {                                                                                 \
         if(!(cond)) {                                                                    \
             printf("%s:%u: ", __FILE__, __LINE__);                                       \
@@ -407,14 +407,14 @@ static inline int cstlShouldDecomposeMacro(char const* actual, char const* expec
 // and: https://stackoverflow.com/questions/11761703/overloading-macro-on-number-of-arguments
 #define GET_3RD_ARG(arg1, arg2, arg3, ...)   arg3
 
-#define CSTL_CHECK_1_ARGS(cond)              __CSTL_CHECK__(cond, CHECK, "FAILED")
-#define CSTL_CHECK_2_ARGS(cond, ...)         __CSTL_CHECK__(cond, CHECK, __VA_ARGS__)
-#define CSTL_CHECK_MACRO_CHOOSER(...)        GET_3RD_ARG(__VA_ARGS__, CSTL_CHECK_2_ARGS, CSTL_CHECK_1_ARGS, )
+#define CHECK_1_ARGS(cond)              __CHECK__(cond, CHECK, "FAILED")
+#define CHECK_2_ARGS(cond, ...)         __CHECK__(cond, CHECK, __VA_ARGS__)
+#define CHECK_MACRO_CHOOSER(...)        GET_3RD_ARG(__VA_ARGS__, CHECK_2_ARGS, CHECK_1_ARGS, )
 
-#define CSTL_CHECK(...)      CSTL_CHECK_MACRO_CHOOSER(__VA_ARGS__)(__VA_ARGS__)
+#define CHECK(...)      CHECK_MACRO_CHOOSER(__VA_ARGS__)(__VA_ARGS__)
 
-#define CSTL_CHECK_NULL(val,...)       CSTL_CHECK((val) == null, __VA_ARGS__)
-#define CSTL_CHECK_NOT_NULL(val,...)   CSTL_CHECK((val) != null, __VA_ARGS__)
+#define CHECK_NULL(val,...)       CHECK((val) == null, __VA_ARGS__)
+#define CHECK_NOT_NULL(val,...)   CHECK((val) != null, __VA_ARGS__)
 
 #define CSTL_WARN(msg)     \
     cstlColouredPrintf(CSTL_COLOUR_WARN, "%s:%u:\nWARNING: %s\n", __FILE__, __LINE__, #msg)

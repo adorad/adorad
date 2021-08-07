@@ -222,7 +222,7 @@ const Byte utf8class[256] = {
 
 static cstlUTF8Str* ubuff_new(Rune* data) {
     cstlUTF8Str* ubuff = cast(cstlUTF8Str*)calloc(1, sizeof(ubuff));
-    CSTL_CHECK_NOT_NULL(ubuff, "Could not allocate memory. Memory full.");
+    CHECK_NOT_NULL(ubuff, "Could not allocate memory. Memory full.");
 
     // ubuff_set(ubuff, data);
 
@@ -230,8 +230,8 @@ static cstlUTF8Str* ubuff_new(Rune* data) {
 }
 
 void __grow_ubuff(cstlUTF8Str* ubuff, int grow_by) {
-    CSTL_CHECK_NOT_NULL(ubuff, "Expected not null");
-    CSTL_CHECK_GT(grow_by, 0);
+    CHECK_NOT_NULL(ubuff, "Expected not null");
+    CHECK_GT(grow_by, 0);
 
     ubuff->data = cast(Byte*)realloc(ubuff->data, grow_by);
     memset(ubuff->data + ubuff->nbytes, 0, grow_by);
@@ -239,7 +239,7 @@ void __grow_ubuff(cstlUTF8Str* ubuff, int grow_by) {
 }
 
 void ubuff_push_char(cstlUTF8Str* ubuff, Rune ch) {
-    CSTL_CHECK_EQ(ubuff->data[ubuff->len], 0); // ensure this is writeable (we shouldn't overwrite over a char)
+    CHECK_EQ(ubuff->data[ubuff->len], 0); // ensure this is writeable (we shouldn't overwrite over a char)
 
     // 0b0xxxxxxx
     if(ch <= 0x7f) {
@@ -289,7 +289,7 @@ void ubuff_push_char(cstlUTF8Str* ubuff, Rune ch) {
 }
 
 void __push_byte(cstlUTF8Str* ubuff, Byte byte) {
-    CSTL_CHECK_LE(byte, 0x7F);
+    CHECK_LE(byte, 0x7F);
     __grow_ubuff(ubuff, 1);
     ubuff->data[ubuff->nbytes++] = byte;
     ubuff->data[ubuff->nbytes] = 0;
@@ -315,11 +315,11 @@ static UInt64 ubuff_nbytes(cstlUTF8Str* ubuff) {
 // Return the byte at the `n`th byte offset
 // If `out` is null, we don't intend on knowing how many bytes the UTF8 character uses.
 static int __byte_offset_at(cstlUTF8Str* ubuff, Int64 n, int* out) {
-    CSTL_CHECK_NOT_NULL(ubuff, "Expected not null");
-    CSTL_CHECK_NOT_NULL(ubuff->data, "Expected not null");
+    CHECK_NOT_NULL(ubuff, "Expected not null");
+    CHECK_NOT_NULL(ubuff->data, "Expected not null");
     // Fail-fast approach. If this changes, comment this, and uncomment the following (commented) snippet
-    CSTL_CHECK_LT(n, ubuff->nbytes);
-    CSTL_CHECK_GT(n, 0);
+    CHECK_LT(n, ubuff->nbytes);
+    CHECK_GT(n, 0);
     // if((n >= ubuff->nbytes) || (n < 0)) {
     // 	return nullchar;
     // }
@@ -370,10 +370,10 @@ static Byte ubuff_byte_offset_at(cstlUTF8Str* ubuff, Int64 n) {
 
 // Returns the byte at `n`th character offset
 static Byte ubuff_at(cstlUTF8Str* ubuff, Int64 n) {
-    CSTL_CHECK_NOT_NULL(ubuff, "Expected not null");
-    CSTL_CHECK_NOT_NULL(ubuff->data, "Expected not null");
-    CSTL_CHECK_LT(n, ubuff->len);
-    CSTL_CHECK_GT(n, 0);
+    CHECK_NOT_NULL(ubuff, "Expected not null");
+    CHECK_NOT_NULL(ubuff->data, "Expected not null");
+    CHECK_LT(n, ubuff->len);
+    CHECK_GT(n, 0);
     int a[1];
 
     UInt64 byte_offset = 0;
@@ -409,14 +409,14 @@ static inline bool utf8_is_codepoint_valid(Rune uc) {
 // Theoretically, this number can extend to 6, and even 7, bytes, but this is rare
 static inline Ll utf8_encode_nbytes(Rune value) {
     Ll nbytes = 0;
-    CSTL_CHECK(value > 0, "Cannot encode a negative value :(");
+    CHECK(value > 0, "Cannot encode a negative value :(");
 
     if(value <= 0x7f) nbytes = 1;     // 127
     if(value <= 0x7ff) nbytes = 2;    // 2047
     if(value <= 0xffff) nbytes = 3;   // 65535
     if(value <= 0x10ffff) nbytes = 4; // 1114111
     else nbytes = 0;
-    CSTL_CHECK(nbytes > 0, "Invalid code point");
+    CHECK(nbytes > 0, "Invalid code point");
     return nbytes;
 }
 
@@ -424,7 +424,7 @@ static inline Ll utf8_encode_nbytes(Rune value) {
 // This can be one in <1, 2, 3, 4>
 // Theoretically, this number can extend to 6, and even 7, bytes, but this is rare
 static inline Ll utf8_decode_nbytes(Rune byte) {
-    CSTL_CHECK(byte > 0, "Cannot decode  a negative value :(");
+    CHECK(byte > 0, "Cannot decode  a negative value :(");
     Ll nbytes;
 
     // If the byte starts with 10xxxxx, it's the middle of a UTF-8 sequence, so don't count it at all.
@@ -435,7 +435,7 @@ static inline Ll utf8_decode_nbytes(Rune byte) {
     else if((byte & 0xf0) == 0xe0) nbytes = 3;
     else if((byte & 0xe0) == 0xc0) nbytes = 2;
     else nbytes = 0;
-    CSTL_CHECK(nbytes > 0, "Invalid code point");
+    CHECK(nbytes > 0, "Invalid code point");
     return nbytes;
 }
 

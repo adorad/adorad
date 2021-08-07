@@ -74,6 +74,10 @@ def main():
                 s = s.replace('/AdoradInternalTests/', '/adorad/')
                 s = s.replace('AdoradInternalTests Language', 'Adorad Language')
                 s = s.replace('adorad.h', 'AdoradInternalTests.h')
+                # Don't run into `redefinition of macro` errors when testing with Tau (which defines the same
+                # macros)
+                s = s.replace('CHECK_', 'CSTL_CHECK_')
+                s = s.replace('REQUIRE_', 'CSTL_REQUIRE_')
 
                 if root.endswith(ACCEPTABLE_REMOVEABLE_DIRS):
                     s = s.replace('static inline ', '')
