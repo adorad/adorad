@@ -548,22 +548,22 @@ static void lexer_lex(Lexer* lexer) {
             case nullchar: goto lex_eof;
             // The `-1` is there to prevent an ILLEGAL token kind from being appended to `lexer->toklist`
             // NB: Whitespace as a token is useless for our case (will this change later?)
-            case WHITESPACE_NO_NEWLINE: tokenkind = -1; break;
+            case WHITESPACE_NO_NEWLINE: tokenkind = TOK_NULL; break;
             case '\n':
                 LEXER_INCREMENT_LINENO;
                 LEXER_RESET_COLNO;
-                tokenkind = -1;
+                tokenkind = TOK_NULL;
                 break;
             // Identifier
-            case ALPHA: case '_': tokenkind = -1; lexer_lex_identifier(lexer); break;
-            case DIGIT: tokenkind = -1; lexer_lex_digit(lexer); break;
+            case ALPHA: case '_': tokenkind = TOK_NULL; lexer_lex_identifier(lexer); break;
+            case DIGIT: tokenkind = TOK_NULL; lexer_lex_digit(lexer); break;
             case '"':
                 switch(next) {
                     // Empty String literal 
                     case '"': LEXER_INCREMENT_OFFSET; lexer_maketoken(lexer, STRING, buff_new("\"\""), lexer->offset - 1, 
                                                                       lexer->loc->line, lexer->loc->col - 1); 
                               break;
-                    default: tokenkind = -1; lexer_lex_string(lexer); break;
+                    default: tokenkind = TOK_NULL; lexer_lex_string(lexer); break;
                 }
                 break;
             case ';':  tokenkind = SEMICOLON; break;
@@ -612,8 +612,8 @@ static void lexer_lex(Lexer* lexer) {
                 switch(next) {
                     // Add tokenkind here? 
                     // (TODO) jasmcaus
-                    case '/': tokenkind = -1; lexer_lex_sl_comment(lexer); break;
-                    case '*': tokenkind = -1; lexer_lex_ml_comment(lexer); break;
+                    case '/': tokenkind = TOK_NULL; lexer_lex_sl_comment(lexer); break;
+                    case '*': tokenkind = TOK_NULL; lexer_lex_ml_comment(lexer); break;
                     case '=': LEXER_INCREMENT_OFFSET; tokenkind = SLASH_EQUALS; break;
                     default: tokenkind = SLASH; break;
                 }
@@ -621,14 +621,14 @@ static void lexer_lex(Lexer* lexer) {
             case '#': 
                 // Ignore shebang on the first line
                 if(lexer->loc->line == 1 && next == '!' && lexer_peekn(lexer, 1) == '/') {
-                    tokenkind = -1;
+                    tokenkind = TOK_NULL;
                     // Skip till end of line
                     while(LEXER_CURR_CHAR && (LEXER_CURR_CHAR != '\n' || LEXER_CURR_CHAR != nullchar))
                         curr = lexer_advance(lexer);
                 }
                 // Comment
                 else {
-                    tokenkind = -1;
+                    tokenkind = TOK_NULL;
                     lexer_lex_sl_comment(lexer);
                 }
                 break;
@@ -716,7 +716,7 @@ static void lexer_lex(Lexer* lexer) {
                         break;
                     // Fractions are possible here:
                     // Eg: `.0192` or `.9983838`
-                    case DIGIT: tokenkind = -1; lexer_lex_digit(lexer); break;
+                    case DIGIT: tokenkind = TOK_NULL; lexer_lex_digit(lexer); break;
                     default: tokenkind = DOT; break;
                 }
                 break;
@@ -727,13 +727,13 @@ static void lexer_lex(Lexer* lexer) {
                 }
                 break;
             case '?': tokenkind = QUESTION; break;
-            case '@': tokenkind = -1; lexer_lex_macro(lexer); break;
+            case '@': tokenkind = TOK_NULL; lexer_lex_macro(lexer); break;
             default:
                 lexer_error(lexer, SyntaxError, "Invalid character `%c`", curr);
                 break;
         } // switch(ch)
 
-        if(tokenkind == -1) continue;
+        if(tokenkind == TOK_NULL) continue;
         lexer_maketoken(lexer, tokenkind, buff_new(null), lexer->offset - 1, lexer->loc->line, lexer->loc->col - 1);
     } // while
 

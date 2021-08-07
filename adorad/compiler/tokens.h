@@ -28,9 +28,9 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 */
 #define ALLTOKENS \
     /* Special (internal usage only) */ \
-    TOKENKIND(TOK_ILLEGAL = 0,  ""),        \
+    TOKENKIND(TOK_NULL = 0,  ""),        \
+    TOKENKIND(TOK_ILLEGAL,  ""),        \
     TOKENKIND(TOK_EOF, "TOK_EOF"),  /* End of Input */ \
-    TOKENKIND(TOK_NULL,"TOK_NULL"),         \
     TOKENKIND(COMMENT, "COMMENT"),          \
     TOKENKIND(DOCS_COMMENT, "DOCS_COMMENT"), \
 \
@@ -157,16 +157,13 @@ TOKENKIND(TOK___KEYWORDS_BEGIN, ""),  \
     TOKENKIND(ANY,       "any"),      \
     TOKENKIND(AS,        "as"),       \
     TOKENKIND(ATOMIC,    "atomic"),   \
-    TOKENKIND(BEGIN,     "begin"),    \
     TOKENKIND(BREAK,     "break"),    \
     TOKENKIND(CASE,      "case"),     \
     TOKENKIND(CAST,      "cast"),     \
     TOKENKIND(CATCH,     "catch"),    \
-    TOKENKIND(CLASS,     "class"),    \
     TOKENKIND(CONST,     "const"),    \
     TOKENKIND(CONTINUE,  "continue"), \
     TOKENKIND(DO,        "do"),       \
-    /* TOKENKIND(DEF, "def"), */      \
     TOKENKIND(DECL,      "decl"),     \
     TOKENKIND(DEFAULT,   "default"),  \
     TOKENKIND(ENUM,      "enum"),     \
@@ -179,8 +176,7 @@ TOKENKIND(TOK___KEYWORDS_BEGIN, ""),  \
     TOKENKIND(FOR,       "for"),      \
     TOKENKIND(FROM,      "from"),     \
     TOKENKIND(FUNC,      "func"),     \
-    /* GLOBAL is not required tbh coz we follow a no-globals approach */ \
-    /* TOKENKIND(GLOBAL, "global"), */\
+    TOKENKIND(GLOBAL,    "global"),   \
     TOKENKIND(IF,        "if"),       \
     TOKENKIND(IMPORT,    "import"),   \
     TOKENKIND(IN,        "in"),       \
@@ -189,19 +185,15 @@ TOKENKIND(TOK___KEYWORDS_BEGIN, ""),  \
     TOKENKIND(ISA,       "isa"),      \
     TOKENKIND(MACRO,     "macro"),    \
     TOKENKIND(MAP,       "map"),      \
-    TOKENKIND(MATCH,     "match"), /* similar to 'switch' in C++, Java and others */ \
-    TOKENKIND(MIXIN,     "mixin"),    \
+    TOKENKIND(MATCH,     "match"), /* similar to 'switch' in C++ & Java */ \
     TOKENKIND(MODULE,    "module"),   \
     TOKENKIND(MUTABLE,   "mutable"),  \
-    /* TOKENKIND(NEW, "new"), */ /* if we go for a memory-safe approach like Rust */ \
-    TOKENKIND(NO_INLINE, "noinline"), \
     TOKENKIND(NOT,       "not"),      \
     TOKENKIND(NOT_IN,    "notin"),    \
     TOKENKIND(PRAGMA,    "pragma"),   \
     TOKENKIND(RAISE,     "raise"),    \
     TOKENKIND(RANGE,     "range"),    \
     TOKENKIND(RETURN,    "return"),   \
-    TOKENKIND(STRUCT,    "struct"),   \
     TOKENKIND(TRY,       "try"),      \
     TOKENKIND(TUPLE,     "tuple"),    \
     TOKENKIND(TYPE,      "type"),     \

@@ -41,7 +41,7 @@ Buff* token_to_buff(TokenKind kind) {
     switch(kind) {
         // Special (internal usage only)
         case TOK_EOF: value = "EOF"; break;
-        case TOK_NULL: value = "TOK_NULL"; break;
+        case TOK_NULL: value = "<INTERNAL>"; break;
         case TOK_ILLEGAL: value = "ILLEGAL"; break;
         case COMMENT: value = "COMMENT"; break;
         case DOCS_COMMENT: value = "DOCS_COMMENT"; break;
@@ -149,12 +149,10 @@ Buff* token_to_buff(TokenKind kind) {
         case ANY: value = "any"; break;
         case AS: value = "as"; break;
         case ATOMIC: value = "atomic"; break;
-        case BEGIN: value = "begin"; break;
         case BREAK: value = "break"; break;
         case CASE: value = "case"; break;
         case CAST: value = "cast"; break;
         case CATCH: value = "catch"; break;
-        case CLASS: value = "class"; break;
         case CONST: value = "const"; break;
         case CONTINUE: value = "continue"; break;
         case DO: value = "do"; break;
@@ -179,17 +177,14 @@ Buff* token_to_buff(TokenKind kind) {
         case MACRO: value = "macro"; break;
         case MAP: value = "map"; break;
         case MATCH: value = "match"; break;
-        case MIXIN: value = "mixin"; break;
         case MODULE: value = "module"; break;
         case MUTABLE: value = "mutable"; break;
-        case NO_INLINE: value = "noinline"; break;
         case NOT: value = "not"; break;
         case NOT_IN: value = "notin"; break;
         case PRAGMA: value = "pragma";   break;
         case RAISE: value = "raise"; break;
         case RANGE: value = "range"; break;
         case RETURN: value = "value ="; break;
-        case STRUCT: value = "struct"; break;
         case TRY: value = "try"; break;
         case TUPLE: value = "tuple"; break;
         case TYPE: value = "type"; break;
