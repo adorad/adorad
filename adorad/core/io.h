@@ -30,7 +30,7 @@ typedef struct File {
 } File;
 
 char* readFile(const char* fname);
-bool file_exists(char* path);
+bool file_exists(const char* path);
 
 char* readFile(const char* fname) {
     FILE* file = fopen(fname, "rb"); 
@@ -61,9 +61,15 @@ char* readFile(const char* fname) {
 }
 
 
-bool file_exists(char* path) {
-    struct stat st;
-    return !stat(path, &st);
+bool file_exists(const char* path) {
+#ifdef WIN32
+    if (GetFileAttributesA(path) != INVALID_FILE_ATTRIBUTES) return true;
+#else
+    if(access(path, 0) == 0) return true;
+    // struct stat st;
+    // return !stat(path, &st);
+#endif // WIN32
+    return false;
 }
 
 #endif // CSTL_IO_H
