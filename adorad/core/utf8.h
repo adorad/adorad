@@ -15,28 +15,28 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #define CSTL_UTF8_H
 
 /*
-	UTF-8 refresher:
+    UTF-8 refresher:
 
-	UTF-8 encodes text in sequences of "code points", each one from 1-4 bytes. For each code point 
-	that is longer than one byte, the code point begins with a unique prefix that specifies how many bytes
-	follow. All bytes in the code point after this first have a continuationmarker. All code points in UTF-8 
-	will thus look like one of the following binary sequences, with x meaning "don't care":
-		1 byte:  0xxxxxxx
-		2 bytes: 110xxxxx  10xxxxxx
-		3 bytes: 1110xxxx  10xxxxxx  10xxxxxx
-		4 bytes: 11110xxx  10xxxxxx  10xxxxxx  10xxxxxx
+    UTF-8 encodes text in sequences of "code points", each one from 1-4 bytes. For each code point 
+    that is longer than one byte, the code point begins with a unique prefix that specifies how many bytes
+    follow. All bytes in the code point after this first have a continuationmarker. All code points in UTF-8 
+    will thus look like one of the following binary sequences, with x meaning "don't care":
+        1 byte:  0xxxxxxx
+        2 bytes: 110xxxxx  10xxxxxx
+        3 bytes: 1110xxxx  10xxxxxx  10xxxxxx
+        4 bytes: 11110xxx  10xxxxxx  10xxxxxx  10xxxxxx
 	
-	UTF8-octets = *( UTF8-char )
-    UTF8-char   = UTF8-1 / UTF8-2 / UTF8-3 / UTF8-4
-    UTF8-1      = %x00-7F
-    UTF8-2      = %xC2-DF UTF8-tail
-    UTF8-3      = %xE0 %xA0-BF UTF8-tail / %xE1-EC 2( UTF8-tail ) /
-                  %xED %x80-9F UTF8-tail / %xEE-EF 2( UTF8-tail )
-    UTF8-4      = %xF0 %x90-BF 2( UTF8-tail ) / %xF1-F3 3( UTF8-tail ) /
-                  %xF4 %x80-8F 2( UTF8-tail )
-    UTF8-tail   = %x80-BF
+    UTF8-octets = *( UTF8-char )
+	UTF8-char   = UTF8-1 / UTF8-2 / UTF8-3 / UTF8-4
+	UTF8-1      = %x00-7F
+	UTF8-2      = %xC2-DF UTF8-tail
+	UTF8-3      = %xE0 %xA0-BF UTF8-tail / %xE1-EC 2( UTF8-tail ) /
+				  %xED %x80-9F UTF8-tail / %xEE-EF 2( UTF8-tail )
+	UTF8-4      = %xF0 %x90-BF 2( UTF8-tail ) / %xF1-F3 3( UTF8-tail ) /
+				  %xF4 %x80-8F 2( UTF8-tail )
+	UTF8-tail   = %x80-BF
 
-	Further reading: https://stackoverflow.com/questions/2241348/what-is-unicode-utf-8-utf-16
+    Further reading: https://stackoverflow.com/questions/2241348/what-is-unicode-utf-8-utf-16
 */
 
 #include <stddef.h>
@@ -207,7 +207,7 @@ const Rune codepoint_decoded_length[256] = {
 
 static cstlUTF8Str* ubuff_new(Rune* data) {
 	cstlUTF8Str* ubuff = cast(cstlUTF8Str*)calloc(1, sizeof(ubuff));
-    CSTL_CHECK_NOT_NULL(ubuff, "Could not allocate memory. Memory full.");
+	CSTL_CHECK_NOT_NULL(ubuff, "Could not allocate memory. Memory full.");
 
 	// ubuff_set(ubuff, data);
 
@@ -218,16 +218,16 @@ static cstlUTF8Str* ubuff_new(Rune* data) {
 static cstlUTF8Str* ubuff_set(cstlUTF8Str* ubuff, Rune* data) {
 	CSTL_CHECK_NOT_NULL(ubuff, "Expected not null");
 
-    UInt64 len;
-    if(!data) {
-        len = 0;
-        data = 0;
-    } else {
-        len = (UInt64)__internal_strlength(data);
-    }
+	UInt64 len;
+	if(!data) {
+		len = 0;
+		data = 0;
+	} else {
+		len = (UInt64)__internal_strlength(data);
+	}
 
-    buffer->data = data;
-    buffer->len = len;
+	buffer->data = data;
+	buffer->len = len;
 }
 */
 
@@ -317,7 +317,7 @@ static UInt64 ubuff_nbytes(cstlUTF8Str* ubuff) {
 // If `out` is null, we don't intend on knowing how many bytes the UTF8 character uses.
 static int __byte_offset_at(cstlUTF8Str* ubuff, Int64 n, int* out) {
 	CSTL_CHECK_NOT_NULL(ubuff, "Expected not null");
-    CSTL_CHECK_NOT_NULL(ubuff->data, "Expected not null");
+	CSTL_CHECK_NOT_NULL(ubuff->data, "Expected not null");
 	// Fail-fast approach. If this changes, comment this, and uncomment the following (commented) snippet
 	CSTL_CHECK_LT(n, ubuff->nbytes);
 	CSTL_CHECK_GT(n, 0);
@@ -372,7 +372,7 @@ static Byte ubuff_byte_offset_at(cstlUTF8Str* ubuff, Int64 n) {
 // Returns the byte at `n`th character offset
 static Byte ubuff_at(cstlUTF8Str* ubuff, Int64 n) {
 	CSTL_CHECK_NOT_NULL(ubuff, "Expected not null");
-    CSTL_CHECK_NOT_NULL(ubuff->data, "Expected not null");
+	CSTL_CHECK_NOT_NULL(ubuff->data, "Expected not null");
 	CSTL_CHECK_LT(n, ubuff->len);
 	CSTL_CHECK_GT(n, 0);
 	int a[1];
