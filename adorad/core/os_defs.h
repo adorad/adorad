@@ -40,6 +40,10 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     #endif 
 #elif defined(_gnu_linux_) || defined(__linux__) && !defined(CSTL_OS_LINUX)
     #define CSTL_OS_LINUX 1
+#elif defined(__EMSCRIPTEN__)
+    #define CSTL_OS_EMSCRIPTEN
+#elif defined(__MACH__)
+    #define CSTL_OS_MACH
 #elif defined(__NetBSD__)
     #define CSTL_OS_NETBSD
 #elif defined(__DragonFly__)

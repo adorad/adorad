@@ -3,7 +3,7 @@
 	/\   |  __ \ / __ \|  __ \     /\   |  __ \ 
    /  \  | |  | | |  | | |__) |   /  \  | |  | | Adorad - The Fast, Expressive & Elegant Programming Language
   / /\ \ | |  | | |  | |  _  /   / /\ \ | |  | | Languages: C, C++, and Assembly
- / ____ \| |__| | |__| | | \ \  / ____ \| |__| | https://github.com/adorad/adorad/
+ / ____ \| |__| | |__| | | \ \  / ____ \| |__| | https://github.com/adorad/AdoradInternalTests/
 /_/    \_\_____/ \____/|_|  \_\/_/    \_\_____/ 
 
 Licensed under the MIT License <http://opensource.org/licenses/MIT>
@@ -41,9 +41,9 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 
 #include <stddef.h>
 #include <stdlib.h>
-#include <adorad/core/types.h>
-#include <adorad/core/misc.h>
-#include <adorad/core/debug.h>
+#include <AdoradInternalTests/core/types.h>
+#include <AdoradInternalTests/core/misc.h>
+#include <AdoradInternalTests/core/debug.h>
 
 #define uBuff	cstlUTF8Str
 
@@ -63,6 +63,147 @@ static UInt64 ubuff_len(cstlUTF8Str* ubuff);
 static UInt64 ubuff_nbytes(cstlUTF8Str* ubuff);
 static Byte ubuff_byte_offset_at(cstlUTF8Str* ubuff, Int64 n);
 static Byte ubuff_at(cstlUTF8Str* ubuff, Int64 n);
+
+/*
+	The following macros define the last codepoint part of a UTF-8 category
+*/
+// Basic Latin (U+0000 - U+007F)
+#define UTF8_MAX_BASIC_LATIN	0x007F
+// Latin-1 Supplement (U+0080 - U+00FF)
+#define UTF8_MAX_LATIN_1		0x00FF
+// Basic Multilingual Plane (BMP)
+#define UTF8_MAX_BMP			0xFFFF
+// Last legal character in Unicode
+#define UTF8_MAX_UNICODE		0x10FFFF
+
+/*
+	Replacement character
+*/
+// The codepoint used to replace illegal codepoints
+#define UTF8_REPLACEMENT_CHAR	0xFFFD
+// Replacement character as a UTF8-encoded string
+#define UTF8_REPLACEMENT_STRING	"\xEF\xBF\xBD"
+// Length of the replacement character
+#define UTF8_REPLACEMENT_STRLEN	3
+
+/*
+	Surrogates
+*/
+// The minimum codepoint for the high member of the surrogate pair
+#define UTF8_SURROGATE_HIGH_START	0xD800
+// The maximum codepoint for the high member of the surrogate pair
+#define UTF8_SURROGATE_HIGH_END		0xDBFF
+// The minimum codepoint for the low member of the surrogate pair
+#define UTF8_SURROGATE_LOW_START	0xDC00
+// The maximum codepoint for the low member of the surrogate pair
+#define UTF8_SURROGATE_LOW_END		0xDFFF
+
+/*
+	Hangul Jamo
+*/
+// The first codepoint part of the HJ block
+#define UTF8_HANGUL_JAMO_FIRST      0x1100
+// The last codepoint part of the HJ block
+#define UTF8_HANGUL_JAMO_LAST       0x11FF
+// The first codepoint part of the HJ L section used for normalization
+#define UTF8_HANGUL_L_FIRST         0x1100
+// The last codepoint part of the HJ L section used for normalization
+#define UTF8_HANGUL_L_LAST          0x1112
+// The number of codepoints in the HJ L section
+#define UTF8_HANGUL_L_COUNT         19
+// The first codepoint part of the HJ V section used for normalization
+#define UTF8_HANGUL_V_FIRST         0x1161
+// The last codepoint part of the HJ V section used for normalization
+#define UTF8_HANGUL_V_LAST          0x1175
+// The number of codepoints in the HJ V section
+#define UTF8_HANGUL_V_COUNT         21
+// The first codepoint part of the HJ T section used for normalization
+#define UTF8_HANGUL_T_FIRST         0x11A7
+// The last codepoint part of the HJ V section used for normalization
+#define UTF8_HANGUL_T_LAST          0x11C2
+// The number of codepoints in the HJ T section
+#define UTF8_HANGUL_T_COUNT         28
+// Number of codepoints part of the HJ V and T sections
+// VCount * TCount
+#define UTF8_HANGUL_N_COUNT         588
+// The first codepoint in the Hangul Syllables block
+#define UTF8_HANGUL_S_FIRST         0xAC00
+// The last codepoint in the Hangul Syllables block
+#define UTF8_HANGUL_S_LAST          0xD7A3
+// The number of codepoints in the Hangul Syllables block
+// LCount * NCount
+#define UTF8_HANGUL_S_COUNT         11172
+
+#define UTF8_CP_LATIN_CAPITAL_LETTER_I                 0x0049
+#define UTF8_CP_LATIN_CAPITAL_LETTER_J                 0x004A
+#define UTF8_CP_LATIN_SMALL_LETTER_I                   0x0069
+#define UTF8_CP_LATIN_SMALL_LETTER_J                   0x006A
+#define UTF8_CP_LATIN_CAPITAL_LETTER_I_WITH_GRAVE      0x00CC
+#define UTF8_CP_LATIN_CAPITAL_LETTER_I_WITH_ACUTE      0x00CD
+#define UTF8_CP_LATIN_CAPITAL_LETTER_I_WITH_TILDE      0x0128
+#define UTF8_CP_LATIN_CAPITAL_LETTER_I_WITH_OGONEK     0x012E
+#define UTF8_CP_LATIN_SMALL_LETTER_I_WITH_OGONEK       0x012F
+#define UTF8_CP_LATIN_CAPITAL_LETTER_I_WITH_DOT_ABOVE  0x0130
+#define UTF8_CP_LATIN_SMALL_LETTER_DOTLESS_I           0x0131
+#define UTF8_CP_COMBINING_GRAVE_ACCENT                 0x0300
+#define UTF8_CP_COMBINING_ACUTE_ACCENT                 0x0301
+#define UTF8_CP_COMBINING_TILDE_ACCENT                 0x0303
+#define UTF8_CP_COMBINING_DOT_ABOVE                    0x0307
+#define UTF8_CP_COMBINING_GREEK_YPOGEGRAMMENI          0x0345
+#define UTF8_CP_COMBINING_GRAPHEME_JOINER              0x034F
+#define UTF8_CP_GREEK_CAPITAL_LETTER_SIGMA             0x03A3
+
+const Rune codepoint_decoded_length[256] = {
+	// Basic Latin
+	1, 1, 1, 1, 1, 1, 1, 1, // 0x00 - 0x07
+	1, 1, 1, 1, 1, 1, 1, 1, // 0x08 - 0x0F
+	1, 1, 1, 1, 1, 1, 1, 1, // 0x10 - 0x17
+	1, 1, 1, 1, 1, 1, 1, 1, // 0x18 - 0x1F
+	1, 1, 1, 1, 1, 1, 1, 1, // 0x20 - 0x27
+	1, 1, 1, 1, 1, 1, 1, 1, // 0x28 - 0x2F
+	1, 1, 1, 1, 1, 1, 1, 1, // 0x30 - 0x37
+	1, 1, 1, 1, 1, 1, 1, 1, // 0x38 - 0x3F
+	1, 1, 1, 1, 1, 1, 1, 1, // 0x40 - 0x47
+	1, 1, 1, 1, 1, 1, 1, 1, // 0x48 - 0x4F
+	1, 1, 1, 1, 1, 1, 1, 1, // 0x50 - 0x57
+	1, 1, 1, 1, 1, 1, 1, 1, // 0x58 - 0x5F
+	1, 1, 1, 1, 1, 1, 1, 1, // 0x60 - 0x67
+	1, 1, 1, 1, 1, 1, 1, 1, // 0x68 - 0x6F
+	1, 1, 1, 1, 1, 1, 1, 1, // 0x70 - 0x77
+	1, 1, 1, 1, 1, 1, 1, 1, // 0x78 - 0x7F
+
+	// Malformed continuation byte
+	0, 0, 0, 0, 0, 0, 0, 0, // 0x80 - 0x87
+	0, 0, 0, 0, 0, 0, 0, 0, // 0x88 - 0x8F
+	0, 0, 0, 0, 0, 0, 0, 0, // 0x90 - 0x97
+	0, 0, 0, 0, 0, 0, 0, 0, // 0x98 - 0x9F
+	0, 0, 0, 0, 0, 0, 0, 0, // 0xA0 - 0xA7
+	0, 0, 0, 0, 0, 0, 0, 0, // 0xA8 - 0xAF
+	0, 0, 0, 0, 0, 0, 0, 0, // 0xB0 - 0xB7
+	0, 0, 0, 0, 0, 0, 0, 0, // 0xB8 - 0xBF
+
+	// Two bytes
+	2, 2, 2, 2, 2, 2, 2, 2, // 0xC0 - 0xC7
+	2, 2, 2, 2, 2, 2, 2, 2, // 0xC8 - 0xCF
+	2, 2, 2, 2, 2, 2, 2, 2, // 0xD0 - 0xD7
+	2, 2, 2, 2, 2, 2, 2, 2, // 0xD8 - 0xDF
+
+	// Three bytes
+	3, 3, 3, 3, 3, 3, 3, 3, // 0xE0 - 0xE7
+	3, 3, 3, 3, 3, 3, 3, 3, // 0xE8 - 0xEF
+
+	// Four bytes
+	4, 4, 4, 4, 4, 4, 4, 4, // 0xF0 - 0xF7
+
+	// Five bytes
+	5, 5, 5, 5,             // 0xF8 - 0xFB
+
+	// Six bytes
+	6, 6,                   // 0xFC - 0xFD
+
+	// Invalid
+	7, 7                    // 0xFE - 0xFF
+};
 
 static cstlUTF8Str* ubuff_new(Rune* data) {
 	cstlUTF8Str* ubuff = cast(cstlUTF8Str*)calloc(1, sizeof(ubuff));

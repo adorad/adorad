@@ -25,6 +25,10 @@ test:
 	./test.exe
 .PHONY: test
 
+testoutput:
+	gcc -E test.c -o test.txt -g -I .
+.PHONY: testoutput
+
 testclean:
 	rm test.exe 
 .PHONY: testclean
