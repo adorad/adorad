@@ -37,6 +37,11 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     UTF8-tail   = %x80-BF
 
     Further reading: https://stackoverflow.com/questions/2241348/what-is-unicode-utf-8-utf-16
+
+    Useful UTF8 Libraries (in C):
+        1. https://github.com/ZHaskell/utf8rewind
+        2. https://github.com/osa1/utf8
+        3. https://github.com/JuliaStrings/utf8proc
 */
 
 #include <stddef.h>
@@ -101,38 +106,29 @@ static Byte ubuff_at(cstlUTF8Str* ubuff, Int64 n);
 /*
     Hangul Jamo
 */
-// The first codepoint part of the HJ block
+// The first & last codepoint part of the HJ block
 #define UTF8_HANGUL_JAMO_FIRST      0x1100
-// The last codepoint part of the HJ block
 #define UTF8_HANGUL_JAMO_LAST       0x11FF
-// The first codepoint part of the HJ L section used for normalization
+// The first & last codepoint part of the HJ L section used for normalization
 #define UTF8_HANGUL_L_FIRST         0x1100
-// The last codepoint part of the HJ L section used for normalization
 #define UTF8_HANGUL_L_LAST          0x1112
-// The number of codepoints in the HJ L section
-#define UTF8_HANGUL_L_COUNT         19
-// The first codepoint part of the HJ V section used for normalization
+// The first & last codepoint part of the HJ V section used for normalization
 #define UTF8_HANGUL_V_FIRST         0x1161
-// The last codepoint part of the HJ V section used for normalization
 #define UTF8_HANGUL_V_LAST          0x1175
-// The number of codepoints in the HJ V section
-#define UTF8_HANGUL_V_COUNT         21
-// The first codepoint part of the HJ T section used for normalization
+// The first & last codepoint part of the HJ T section used for normalization
 #define UTF8_HANGUL_T_FIRST         0x11A7
-// The last codepoint part of the HJ V section used for normalization
 #define UTF8_HANGUL_T_LAST          0x11C2
-// The number of codepoints in the HJ T section
-#define UTF8_HANGUL_T_COUNT         28
-// Number of codepoints part of the HJ V and T sections
-// 	(VCount * TCount)
-#define UTF8_HANGUL_N_COUNT         588
-// The first codepoint in the Hangul Syllables block
+// The first & last codepoint in the Hangul Syllables block
 #define UTF8_HANGUL_S_FIRST         0xAC00
-// The last codepoint in the Hangul Syllables block
 #define UTF8_HANGUL_S_LAST          0xD7A3
-// The number of codepoints in the Hangul Syllables block
-// 	(LCount * NCount)
-#define UTF8_HANGUL_S_COUNT         11172
+
+// The number of codepoints in the HJ ... sections (where `...` is either L,V,T,N,S) 
+#define UTF8_HANGUL_LCOUNT         19
+#define UTF8_HANGUL_VCOUNT         21
+#define UTF8_HANGUL_TCOUNT         28
+#define UTF8_HANGUL_NCOUNT         588
+#define UTF8_HANGUL_SCOUNT         11172
+
 
 #define UTF8_CP_LATIN_CAPITAL_LETTER_I                 0x0049
 #define UTF8_CP_LATIN_CAPITAL_LETTER_J                 0x004A
@@ -205,6 +201,25 @@ const Rune codepoint_decoded_length[256] = {
     7, 7                    // 0xFE - 0xFF
 };
 
+const Byte utf8class[256] = {
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+    2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+    3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+    4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0 
+};
+
 static cstlUTF8Str* ubuff_new(Rune* data) {
     cstlUTF8Str* ubuff = cast(cstlUTF8Str*)calloc(1, sizeof(ubuff));
     CSTL_CHECK_NOT_NULL(ubuff, "Could not allocate memory. Memory full.");
@@ -213,23 +228,6 @@ static cstlUTF8Str* ubuff_new(Rune* data) {
 
     return ubuff;
 }
-
-/*
-static cstlUTF8Str* ubuff_set(cstlUTF8Str* ubuff, Rune* data) {
-    CSTL_CHECK_NOT_NULL(ubuff, "Expected not null");
-
-    UInt64 len;
-    if(!data) {
-        len = 0;
-        data = 0;
-    } else {
-        len = (UInt64)__internal_strlength(data);
-    }
-
-    buffer->data = data;
-    buffer->len = len;
-}
-*/
 
 void __grow_ubuff(cstlUTF8Str* ubuff, int grow_by) {
     CSTL_CHECK_NOT_NULL(ubuff, "Expected not null");
@@ -395,13 +393,13 @@ static inline bool utf8_is_codepoint_valid(Rune uc);
 static inline char* utf8_encode(Rune value);
 static inline Ll utf8_encode_nbytes(Rune value);
 static inline Ll utf8_decode_nbytes(Rune byte);
-static inline char* utf8_encode(Rune value);
 
 static inline bool utf8_is_codepoint_valid(Rune uc) {
-    if(uc < 0 || uc >= 0x110000 || ((uc & 0xFFFF) >= 0xFFFE) || (uc >= 0xD800 && uc < 0xE000) || 
-      (uc >= 0xFDD0 && uc < 0xFDF0))
-        return false;
-    return true;
+    // if(uc < 0 || uc >= 0x110000 || ((uc & 0xFFFF) >= 0xFFFE) || (uc >= 0xD800 && uc < 0xE000) || 
+    //   (uc >= 0xFDD0 && uc < 0xFDF0))
+    //     return false;
+    // return true;
+    return ((cast(Rune)uc) - 0xd800 > 0x07ff) && (cast(Rune)uc < 0x110000);
 }
 
 // Determine the number of bytes needed to store the UTF-8 character
@@ -441,36 +439,36 @@ static inline Ll utf8_decode_nbytes(Rune byte) {
 
 static inline char* utf8_encode(Rune value) {
     Byte mask = 0x3f; // 63
-    char* buff = cast(char*)calloc(4, sizeof(char));
+    char* dst = cast(char*)calloc(4, sizeof(char));
 
     if(value <= (value << 7) - 1) {
-        buff[0] = cast(char)value;
-        return buff;
+        dst[0] = cast(char)value;
+        return dst;
     } else if(value <= (value << 11) - 1) {
-        buff[0] = (0xc0) | (cast(char)(value >> 6));
-        buff[1] = (0x80) | (cast(char)(value) & mask);
-        return buff;
+        dst[0] = (0xc0) | (cast(char)(value >> 6));
+        dst[1] = (0x80) | (cast(char)(value) & mask);
+        return dst;
     } 
     // Invalid/Surrogate range
     if(value > CSTL_RUNE_MAX || CSTL_IS_BETWEEN(value, 0xd800, 0xdff)) {
         value = CSTL_RUNE_INVALID;
-        buff[0] = (0xe0) | (cast(char)(value >> 12));
-        buff[1] = (0x80) | (cast(char)(value >> 12) & mask);
-        buff[2] = (0x80) | (cast(char)(value) & mask);
-        return buff;
+        dst[0] = (0xe0) | (cast(char)(value >> 12));
+        dst[1] = (0x80) | (cast(char)(value >> 12) & mask);
+        dst[2] = (0x80) | (cast(char)(value) & mask);
+        return dst;
     } else if(value <= (value << 16) - 1) {
-        buff[0] = (0xe0) | (cast(char)(value >> 12));
-        buff[1] = (0x80) | (cast(char)(value >> 6) & mask);
-        buff[2] = (0x80) | (cast(char)(value) & mask);
-        return buff;
+        dst[0] = (0xe0) | (cast(char)(value >> 12));
+        dst[1] = (0x80) | (cast(char)(value >> 6) & mask);
+        dst[2] = (0x80) | (cast(char)(value) & mask);
+        return dst;
     }
 
-    buff[0] = (0xf0) | (cast(char)(value >> 18));
-    buff[1] = (0x80) | (cast(char)(value >> 12) & mask);
-    buff[2] = (0x80) | (cast(char)(value >> 6) & mask);
-    buff[3] = (0x80) | (cast(char)(value) & mask);
+    dst[0] = (0xf0) | (cast(char)(value >> 18));
+    dst[1] = (0x80) | (cast(char)(value >> 12) & mask);
+    dst[2] = (0x80) | (cast(char)(value >> 6) & mask);
+    dst[3] = (0x80) | (cast(char)(value) & mask);
 
-    return buff;
+    return dst;
 }
 
 #endif // CSTL_UTF8_H
