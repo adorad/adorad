@@ -2,7 +2,6 @@
 
 int main(int argc, const char* const argv[]) {
     // The CWD for this executable is in ".../build/bin"
-    printf("Proof that executable works!!!\n");
 	char* buffer = readFile("../../test/LexerDemo.ad");
 	Lexer* lexer = lexer_init(buffer, "test/LexerDemo.ad"); 
 

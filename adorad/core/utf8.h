@@ -310,6 +310,7 @@ static UInt64 ubuff_nbytes(cstlUTF8Str* ubuff) {
     return ubuff->nbytes;
 }
 
+/*
 #define WRITE_OUT(val)	if(out)	*out = (val)
 // Return the byte at the `n`th byte offset
 // If `out` is null, we don't intend on knowing how many bytes the UTF8 character uses.
@@ -383,6 +384,7 @@ static Byte ubuff_at(cstlUTF8Str* ubuff, Int64 n) {
     }
     return ubuff_byte_offset_at(ubuff, byte_offset);
 }
+*/
 
 //
 // ----------------------------------------------------------------

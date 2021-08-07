@@ -65,9 +65,9 @@ bool file_exists(const char* path) {
 #ifdef WIN32
     if (GetFileAttributesA(path) != INVALID_FILE_ATTRIBUTES) return true;
 #else
-    if(access(path, 0) == 0) return true;
-    // struct stat st;
-    // return !stat(path, &st);
+    // if(access(path, 0) == 0) return true;
+    struct stat st;
+    return !stat(path, &st);
 #endif // WIN32
     return false;
 }
