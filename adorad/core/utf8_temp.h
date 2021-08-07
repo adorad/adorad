@@ -1,4 +1,10 @@
 
+#if defined(__clang__)
+	#pragma clang diagnostic push
+	#pragma clang diagnostic ignored "-Wold-style-cast"
+	#pragma clang diagnostic ignored "-Wcast-qual"
+#endif
+
 // Compare two UTF-8 strings
 int utf8_cmp(const void* src1, const void* src2);
 // Append the utf8 string src onto the utf8 string dest.
