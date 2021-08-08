@@ -10,7 +10,7 @@ file(GLOB_RECURSE CSTL_HEADERS
 
 set(
     CSTL_BUILD_INCLUDE_DIRS
-    "${ADORAD_ROOT_DIR}/adorad/core"
+    # "${ADORAD_ROOT_DIR}/adorad/core" # results in weird <windows.h> errors (conflicts with adorad/core/windows.h)
     "${ADORAD_ROOT_DIR}/adorad"
     "${ADORAD_ROOT_DIR}"
 )
