@@ -14,7 +14,6 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #ifndef CSTL_TYPES_H
 #define CSTL_TYPES_H
 
-// #include <adorad/core/debug.h>
 #include <adorad/core/compilers.h>
 
 // This macro is only for simple assertion checks (that don't require a message to STDOUT).

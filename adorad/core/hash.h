@@ -16,6 +16,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 
 #include <adorad/core/types.h>
 #include <adorad/core/os_defs.h>
+#include <adorad/core/misc.h>
 
 /*
     Hashing & Checksum Functions

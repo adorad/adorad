@@ -20,16 +20,13 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #include <stdlib.h>
 #include <adorad/core/os_defs.h>
 #include <adorad/core/misc.h>
-// #include <adorad/core/headers.h>
 
-// ========================= Debug + Asserts =========================
-#if defined(_WIN32) || defined(__WIN32__) || defined(__WINDOWS__)
-    #define TAU_WIN_        1
-    #pragma warning(push, 0)
-        #include <Windows.h>
-        #include <io.h>
-    #pragma warning(pop)
-#endif // _WIN32
+// Enable the use of the non-standard keyword __attribute__ to silence warnings under some compilers
+#if defined(__GNUC__) || defined(CSTL_COMPILER_CLANG)
+    #define CSTL_ATTRIBUTE_(attr)    __attribute__((attr))
+#else
+    #define CSTL_ATTRIBUTE_(attr)
+#endif // __GNUC__
 
 #if defined(__cplusplus)
     #include <exception>
@@ -40,13 +37,6 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #else
     #define CSTL_ABORT()     exit(1)
 #endif //__cplusplus
-
-// Enable the use of the non-standard keyword __attribute__ to silence warnings under some compilers
-#if defined(__GNUC__) || defined(CSTL_COMPILER_CLANG)
-    #define CSTL_ATTRIBUTE_(attr)    __attribute__((attr))
-#else
-    #define CSTL_ATTRIBUTE_(attr)
-#endif // __GNUC__
 
 #ifdef __cplusplus
     // On C++, default to its polymorphism capabilities
@@ -71,107 +61,10 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #define CSTL_COLOUR_CYAN      4
 #define CSTL_COLOUR_BOLD      5
 
-static inline int CSTL_ATTRIBUTE_(format (printf, 2, 3))
+int CSTL_ATTRIBUTE_(format (printf, 2, 3))
 cstlColouredPrintf(int colour, const char* fmt, ...);
-static inline int CSTL_ATTRIBUTE_(format (printf, 2, 3))
-cstlColouredPrintf(int colour, const char* fmt, ...) {
-    va_list args;
-    char buffer[256];
-    int n;
-
-    va_start(args, fmt);
-    vsnprintf(buffer, sizeof(buffer), fmt, args);
-    va_end(args);
-    buffer[sizeof(buffer)-1] = '\0';
-
-#ifdef CSTL_OS_UNIX
-    {
-        const char* str;
-        switch(colour) {
-            case CSTL_COLOUR_ERROR:    str = "\033[1;31m"; break;
-            case CSTL_COLOUR_SUCCESS:  str = "\033[1;32m"; break;
-            case CSTL_COLOUR_WARN:     str = "\033[1;33m"; break;
-            case CSTL_COLOUR_CYAN:     str = "\033[1;36m"; break;
-            case CSTL_COLOUR_BOLD:     str = "\033[1m"; break;
-            default:                   str = "\033[0m"; break;
-        }
-        printf("%s", str);
-        n = printf("%s", buffer);
-        printf("\033[0m"); // Reset the colour
-        return n;
-    }
-#elif defined(CSTL_OS_WINDOWS)
-    {
-        HANDLE h;
-        CONSOLE_SCREEN_BUFFER_INFO info;
-        WORD attr;
-
-        h = GetStdHandle(STD_OUTPUT_HANDLE);
-        GetConsoleScreenBufferInfo(h, &info);
-
-        switch(colour) {
-            case CSTL_COLOUR_ERROR:      attr = FOREGROUND_RED | FOREGROUND_INTENSITY; break;
-            case CSTL_COLOUR_SUCCESS:    attr = FOREGROUND_GREEN | FOREGROUND_INTENSITY; break;
-            case CSTL_COLOUR_CYAN:       attr = FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY; break;
-            case CSTL_COLOUR_WARN:       attr = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY; break;
-            case CSTL_COLOUR_BOLD:       attr = FOREGROUND_BLUE | FOREGROUND_GREEN |FOREGROUND_RED | 
-                                         FOREGROUND_INTENSITY; break;
-            default:                     attr = 0; break;
-        }
-        if(attr != 0)
-            SetConsoleTextAttribute(h, attr);
-        n = printf("%s", buffer);
-        SetConsoleTextAttribute(h, info.wAttributes);
-        return n;
-    }
-#else
-    n = printf("%s", buffer);
-    return n;
-#endif // CSTL_UNIX_
-}
-
-
-static inline int CSTL_char_is_digit(char c) { return c >= '0' && c <= '9'; }
-
-static inline int cstlShouldDecomposeMacro(char const* actual, char const* expected, int isStringCmp) {
-    // Signal that the macro can be further decomposed if either of the following symbols are present
-    int dots = 0;
-    int numActualDigits = 0;
-    int numExpectedDigits = 0;
-
-    // If not inside a string comparison, we will return `1` only if we determine that `actual` is a variable 
-    // name/expression (i.e for a value, we search through each character verifying that each is a digit
-    // - for floats, we allow a maximum of 1 '.' char)
-    if(!isStringCmp) {
-        for(int i=0; i < strlen(actual); i++) {
-            if(CSTL_char_is_digit(actual[i])) { numActualDigits++; }
-            else if(actual[i] == '.') { 
-                dots++; 
-                if(dots > 1) { return 1; }
-            }
-            else { return 1; }
-        }
-        // Do the same for `expected`
-        dots = 0;
-        for(int i=0; i < strlen(expected); i++) {
-            if(CSTL_char_is_digit(expected[i])) { numExpectedDigits++; }
-            else if(expected[i] == '.') { 
-                dots++; 
-                if(dots > 1) { return 1; }
-            }
-            else { return 1; }
-        }
-    } 
-    // Inside a string comparison, we search for common expression tokens like the following:
-    // '(', ')', '-'
-    else {
-        if(strchr(actual, '(') != NULL || strchr(expected, '(') != NULL || 
-           actual[0] != '"' || expected[0] != '"' ) {
-            return 1;
-        }
-    }
-    return 0;
-}
+int CSTL_char_is_digit(char c);
+int cstlShouldDecomposeMacro(char const* actual, char const* expected, int isStringCmp);
 
 #ifdef CSTL_OVERLOADABLE
     #ifndef CSTL_CAN_USE_OVERLOADABLES
@@ -415,6 +308,5 @@ static inline int cstlShouldDecomposeMacro(char const* actual, char const* expec
 
 #define CSTL_WARN(msg)     \
     cstlColouredPrintf(CSTL_COLOUR_WARN, "%s:%u:\nWARNING: %s\n", __FILE__, __LINE__, #msg)
-
 
 #endif // CSTL_DEBUG_H
