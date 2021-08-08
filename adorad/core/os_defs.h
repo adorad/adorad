@@ -14,27 +14,17 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #ifndef CSTL_OS_DEFS_H
 #define CSTL_OS_DEFS_H
 
-#if defined(_WIN32) || defined(_WIN64)
-    #ifndef CSTL_OS_WINDOWS
-        #define CSTL_OS_WINDOWS 1
-    #endif
+#if defined(_WIN32) || defined(__WIN32__) || defined(_WIN64) || defined(__WINDOWS__)
+    #define CSTL_OS_WINDOWS     1
 #elif defined(__APPLE__) && defined(__MACH__)
-    #ifndef CSTL_OS_OSX
-        #define CSTL_OS_OSX 1
-    #endif
+    #define CSTL_OS_OSX         1
 #elif defined(unix) || defined(__unix__) || defined(__unix) || defined(__APPLE__)
-    #ifndef CSTL_OS_UNIX
-        #define CSTL_OS_UNIX 1
-    #endif
+    #define CSTL_OS_UNIX        1
 
     #if defined(__linux__)
-        #ifndef CSTL_OS_LINUX
-            #define CSTL_OS_LINUX 1
-        #endif
+        #define CSTL_OS_LINUX   1
     #elif defined(__FreeBSD__) && defined(__FreeBSD_kernel__)
-        #ifndef CSTL_OS_FREEBSD
-            #define CSTL_OS_FREEBSD 1
-        #endif
+        #define CSTL_OS_FREEBSD 1
     #else 
         #error AdoradError: This Unix Operating System is not supported by Adorad.
     #endif 
@@ -86,5 +76,4 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     #define CSTL_OS_SEP         "/"
     #define CSTL_OS_SEP_CHAR    '/'
 #endif // CSTL_OS_WINDOWS
-
 #endif // CSTL_OS_DEFS_H
