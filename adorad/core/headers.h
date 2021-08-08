@@ -49,7 +49,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
         #endif // VC_EXTRALEAN
         
         #pragma warning(push, 0)
-            #include <Windows.h>
+            #include <windows.h>
             #include <io.h>
             // #include <Shlwapi.h>
             // This conflicts with certain functionalities, especially in the Adorad Language

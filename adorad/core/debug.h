@@ -19,8 +19,8 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #include <stdio.h>
 #include <stdlib.h>
 #include <adorad/core/os_defs.h>
-#include <adorad/core/headers.h>
 #include <adorad/core/misc.h>
+#include <adorad/core/headers.h>
 
 
 // ========================= Debug + Asserts =========================
