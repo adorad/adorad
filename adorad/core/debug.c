@@ -14,13 +14,6 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #include <adorad/core/debug.h>
 // #include <adorad/core/headers.h>
 
-#define XSTR(x) STR(x)
-#define STR(x) #x
-#pragma message "The value of _WIN32: " XSTR(_WIN32)
-#pragma message "The value of __WIN32__: " XSTR(__WIN32__)
-#pragma message "The value of __WINDOWS__: " XSTR(__WINDOWS__)
-#pragma message "The value of CSTL_OS_WINDOWS: " XSTR(CSTL_OS_WINDOWS)
-
 #if defined(_WIN32) || defined(__WIN32__) || defined(__WINDOWS__)
     #pragma warning(push, 0)
         #include <windows.h>
