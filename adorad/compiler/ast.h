@@ -147,10 +147,12 @@ typedef struct {
 } AstNodeVarDecl;
 
 enum IdentifierKind {
-    IdentifierKindBlankIdent, // `_`
-    IdentifierKindVariable,
-    IdentifierKindConst,
-    IdentifierKindFunction
+    IdentifierKind__unresolved,
+    IdentifierKind__blankident, // `_`
+    IdentifierKind__variable,
+    IdentifierKind__const,
+    IdentifierKind__function,
+    IdentifierKind__global,     // if declared within a `global` scope
 };
 
 typedef struct {
