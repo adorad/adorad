@@ -38,11 +38,11 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #endif
 
 #if defined(CSTL_BYTE_ORDER) && CSTL_BYTE_ORDER == CSTL_LITTLE_ENDIAN
-    const bool native_is_big_endian = false;
+    #define NATIVE_IS_BIG_ENDIAN    0
 #elif defined(CSTL_BYTE_ORDER) && CSTL_BYTE_ORDER == CSTL_BIG_ENDIAN
-    const bool native_is_big_endian = true;
+    #define NATIVE_IS_BIG_ENDIAN    1
 #else
-    #error Unsupported endianness
+    #error AdoradError: Unsupported endianness
 #endif
 
 static inline UInt16 endian_swap16(UInt16 i);
