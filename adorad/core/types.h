@@ -14,8 +14,14 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #ifndef CSTL_TYPES_H
 #define CSTL_TYPES_H
 
-#include <adorad/core/debug.h>
+// #include <adorad/core/debug.h>
 #include <adorad/core/compilers.h>
+
+// This macro is only for simple assertion checks (that don't require a message to STDOUT).
+// Note that this is not recommended. Use CHECK instead
+// If a condition fails, this raises a compilation error (negative index) --> 0*2 == 0 + (-1) == -1!
+#define CSTL_DEBUG_CHECK1(cond, line)      typedef char static_assertion_at_line_##line[(!!(cond))*2-1]
+#define CSTL_DEBUG_CHECK(cond)             CSTL_DEBUG_CHECK1(cond, __LINE__)
 
 //================================== Built-in types ================================*/
 /*

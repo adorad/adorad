@@ -20,15 +20,16 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #include <stdlib.h>
 #include <adorad/core/os_defs.h>
 #include <adorad/core/misc.h>
-#include <adorad/core/headers.h>
-
+// #include <adorad/core/headers.h>
 
 // ========================= Debug + Asserts =========================
-// This macro is only for simple assertion checks (that don't require a message to STDOUT).
-// Note that this is not recommended. Use CHECK instead
-// If a condition fails, this raises a compilation error (negative index) --> 0*2 == 0 + (-1) == -1!
-#define CSTL_DEBUG_CHECK1(cond, line)      typedef char static_assertion_at_line_##line[(!!(cond))*2-1]
-#define CSTL_DEBUG_CHECK(cond)             CSTL_DEBUG_CHECK1(cond, __LINE__)
+#if defined(_WIN32) || defined(__WIN32__) || defined(__WINDOWS__)
+    #define TAU_WIN_        1
+    #pragma warning(push, 0)
+        #include <Windows.h>
+        #include <io.h>
+    #pragma warning(pop)
+#endif // _WIN32
 
 #if defined(__cplusplus)
     #include <exception>

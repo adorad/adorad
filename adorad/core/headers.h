@@ -58,16 +58,9 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     #pragma warning(pop)
 
     #undef NOMINMAX
-
-    #if !defined(CSTL_WINDOWS_H_INCLUDED)
-        #undef WIN32_LEAN_AND_MEAN
-        #undef WIN32_MEAN_AND_LEAN
-        #undef VC_EXTRALEAN
-    #endif
-
-    // #include <malloc.h> // NOTE(jasmcaus): _aligned_*()
-    // #include <intrin.h>
-
+    #undef WIN32_LEAN_AND_MEAN
+    #undef WIN32_MEAN_AND_LEAN
+    #undef VC_EXTRALEAN
 #else
     // #include <dlfcn.h>
     // #include <errno.h>
