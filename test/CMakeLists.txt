@@ -47,7 +47,6 @@ file(GLOB_RECURSE CSTLINTERNALTESTS_HEADERS
 set(
     CSTLINTERNALTESTS_BUILD_INCLUDE_DIRS
     # "${ADORAD_ROOT_DIR}/AdoradInternalTests/core" # results in weird <windows.h> errors (conflicts with adorad/core/windows.h)
-    "${ADORAD_ROOT_DIR}/AdoradInternalTests"
     "${ADORAD_ROOT_DIR}"
 )
 
