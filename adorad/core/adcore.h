@@ -31,7 +31,7 @@ WARNING
 	- This library is **slightly** experimental and features may not work as expected.
 	- This also means that many functions are not documented.
 CREDITS
-	Written Jason Dsouza
+	Written by Jason Dsouza <@jasmcaus>
 */
 
 /*

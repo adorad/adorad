@@ -49,7 +49,6 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #include <adorad/core/types.h>
 #include <adorad/core/misc.h>
 #include <adorad/core/debug.h>
-// #include <adorad/core/utf8_data.h>
 
 #define uBuff	cstlUTF8Str
 
@@ -150,9 +149,9 @@ static Byte ubuff_at(cstlUTF8Str* ubuff, Int64 n);
 #define UTF8_CP_COMBINING_GRAPHEME_JOINER              0x034F
 #define UTF8_CP_GREEK_CAPITAL_LETTER_SIGMA             0x03A3
 
-#ifndef UTF8_UTF8_UINT16_MAX
-    #define UTF8_UTF8_UINT16_MAX     65535U
-#endif // UTF8_UTF8_UINT16_MAX
+#ifndef UTF8_UINT16_MAX
+    #define UTF8_UINT16_MAX     65535U
+#endif // UTF8_UINT16_MAX
 
 // Unicode categories
 typedef enum {
@@ -588,5 +587,11 @@ static inline char* utf8_encode(Rune value) {
 
     return dst;
 }
+
+#include <adorad/core/utf8_data.h>
+// Include this file _only_ when CSTL has the capability of being built separately as a static/shared library
+// with CMake. All sorts of error messages pop up (``warning: excess elements in scalar initializer``). 
+// These error messages disappear when this file is included in its own .c[pp] file.
+// #include <adorad/core/utf8_properties.h>
 
 #endif // CSTL_UTF8_H

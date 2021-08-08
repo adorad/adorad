@@ -22,5 +22,5 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #include <adorad/compiler/types.h>
 #include <adorad/compiler/tokens.h>
 #include <adorad/compiler/lexer.h>
-#include <adorad/compiler/ast.h>
+// #include <adorad/compiler/ast.h>
 #include <adorad/compiler/parser.h>

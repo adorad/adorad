@@ -49,8 +49,8 @@ static inline TokenKind parser_expect_token(Parser* parser, TokenKind tokenkind)
     exit(1);
 }
 
-static AstNode* ast_create_node(AstNodeKind type) {
-    AstNode* node = cast(AstNode*)calloc(1, sizeof(AstNode));
-    node->type = type;
-    return node;
-}
+// static AstNode* ast_create_node(AstNodeKind type) {
+//     AstNode* node = cast(AstNode*)calloc(1, sizeof(AstNode));
+//     node->type = type;
+//     return node;
+// }
