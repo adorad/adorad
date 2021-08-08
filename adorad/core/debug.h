@@ -62,9 +62,9 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #define CSTL_COLOUR_CYAN      4
 #define CSTL_COLOUR_BOLD      5
 
-static int CSTL_ATTRIBUTE_(format (printf, 2, 3))
+static inline int CSTL_ATTRIBUTE_(format (printf, 2, 3))
 cstlColouredPrintf(int colour, const char* fmt, ...);
-int CSTL_ATTRIBUTE_(format (printf, 2, 3))
+static inline int CSTL_ATTRIBUTE_(format (printf, 2, 3))
 cstlColouredPrintf(int colour, const char* fmt, ...) {
     va_list args;
     char buffer[256];
@@ -126,8 +126,8 @@ static int CSTL_char_is_digit(char c) {
     return c >= '0' && c <= '9'; 
 }
 
-static int cstlShouldDecomposeMacro(char const* actual, char const* expected, int isStringCmp);
-static int cstlShouldDecomposeMacro(char const* actual, char const* expected, int isStringCmp) {
+static inline int cstlShouldDecomposeMacro(char const* actual, char const* expected, int isStringCmp);
+static inline int cstlShouldDecomposeMacro(char const* actual, char const* expected, int isStringCmp) {
     // Signal that the macro can be further decomposed if either of the following symbols are present
     int dots = 0;
     int numActualDigits = 0;
