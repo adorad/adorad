@@ -28,6 +28,9 @@ file(GLOB_RECURSE ADORAD_HEADERS
     *.h
 )
 
+# Build the CSTL target
+add_subdirectory(core)
+
 # 
 # Build the Shared/Static Library
 #
@@ -57,6 +60,7 @@ if(ADORAD_BUILD_STATIC_LIB)
     # main.c (or whatever demo file you want to link against)
     add_executable(AdoradStatic ${CMAKE_CURRENT_SOURCE_DIR}/main.c)
     target_link_libraries(AdoradStatic libAdoradStatic)
+    target_link_libraries(AdoradStatic CSTL)
 
     target_compile_definitions(AdoradStatic PUBLIC
         _ADORAD_=1
@@ -99,6 +103,7 @@ if(ADORAD_BUILD_SHARED_LIB)
         # main.c (or whatever demo file you want to link against) =
         add_executable(AdoradShared ${CMAKE_CURRENT_SOURCE_DIR}/main.c)
         target_link_libraries(AdoradShared libAdoradShared)
+        target_link_libraries(AdoradShared CSTL)
 
         install(TARGETS libAdoradShared DESTINATION lib)
     endif() # MSVC
