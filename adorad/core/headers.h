@@ -28,48 +28,41 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #endif
 
 // TODO(jasmcaus): How many of these headers do I really need?
-#if !defined(CSTL_OS_WINDOWS)
-    #include <stddef.h>
-    #include <stdarg.h>
-#endif
-
 #if defined(CSTL_OS_WINDOWS)
-    #if !defined(CSTL_NO_WINDOWS_H)
-        #ifndef NOMINMAX
-            #define NOMINMAX 1
-        #endif // NOMINMAX
-        #ifndef WIN32_LEAN_AND_MEAN
-            #define WIN32_LEAN_AND_MEAN 1
-        #endif // WIN32_LEAN_AND_MEAN
-        #ifndef WIN32_MEAN_AND_LEAN
-            #define WIN32_MEAN_AND_LEAN 1
-        #endif // WIN32_MEAN_AND_LEAN
-        #ifndef VC_EXTRALEAN
-            #define VC_EXTRALEAN        1
-        #endif // VC_EXTRALEAN
-        
-        #pragma warning(push, 0)
-            #include <Windows.h>
-            // #include <io.h>
-            // This conflicts with certain functionalities, especially in the Adorad Language
-            #ifdef CONST
-                #undef CONST
-            #endif // CONST
-            #ifdef IN
-                #undef IN
-            #endif // IN
-            #ifdef STRING
-                #undef STRING
-            #endif // STRING
-        #pragma warning(pop)
+    #ifndef NOMINMAX
+        #define NOMINMAX 1
+    #endif // NOMINMAX
+    #ifndef WIN32_LEAN_AND_MEAN
+        #define WIN32_LEAN_AND_MEAN 1
+    #endif // WIN32_LEAN_AND_MEAN
+    #ifndef WIN32_MEAN_AND_LEAN
+        #define WIN32_MEAN_AND_LEAN 1
+    #endif // WIN32_MEAN_AND_LEAN
+    #ifndef VC_EXTRALEAN
+        #define VC_EXTRALEAN        1
+    #endif // VC_EXTRALEAN
+    
+    #pragma warning(push, 0)
+        #include <Windows.h>
+        #include <io.h>
+        // This conflicts with certain functionalities, especially in the Adorad Language
+        #ifdef CONST
+            #undef CONST
+        #endif // CONST
+        #ifdef IN
+            #undef IN
+        #endif // IN
+        #ifdef STRING
+            #undef STRING
+        #endif // STRING
+    #pragma warning(pop)
 
-        #undef NOMINMAX
+    #undef NOMINMAX
 
-        #if !defined(CSTL_WINDOWS_H_INCLUDED)
-            #undef WIN32_LEAN_AND_MEAN
-            #undef WIN32_MEAN_AND_LEAN
-            #undef VC_EXTRALEAN
-        #endif
+    #if !defined(CSTL_WINDOWS_H_INCLUDED)
+        #undef WIN32_LEAN_AND_MEAN
+        #undef WIN32_MEAN_AND_LEAN
+        #undef VC_EXTRALEAN
     #endif
 
     // #include <malloc.h> // NOTE(jasmcaus): _aligned_*()
