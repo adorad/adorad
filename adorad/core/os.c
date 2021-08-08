@@ -19,7 +19,7 @@ static cstlBuffer* os_get_cwd() {
     #define PATH_MAX 4096
     char result[PATH_MAX];
     _getcwd(result, PATH_MAX);
-    if(!result) {
+    if(!*result) {
         fprintf(stderr, "Unable to `os_get_cwd()`. 'getcwd()' failed");
         exit(1);
     }
