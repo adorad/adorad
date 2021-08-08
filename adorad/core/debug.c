@@ -25,7 +25,7 @@ cstlColouredPrintf(int colour, const char* fmt, ...) {
     va_end(args);
     buffer[sizeof(buffer)-1] = '\0';
 
-#ifdef CSTL_OS_UNIX
+// #ifdef CSTL_OS_UNIX
     {
         const char* str;
         switch(colour) {
@@ -41,34 +41,34 @@ cstlColouredPrintf(int colour, const char* fmt, ...) {
         printf("\033[0m"); // Reset the colour
         return n;
     }
-#elif defined(CSTL_OS_WINDOWS)
-    {
-        HANDLE h;
-        CONSOLE_SCREEN_BUFFER_INFO info;
-        WORD attr;
+// #elif defined(CSTL_OS_WINDOWS)
+//     {
+//         HANDLE h;
+//         CONSOLE_SCREEN_BUFFER_INFO info;
+//         WORD attr;
 
-        h = GetStdHandle(STD_OUTPUT_HANDLE);
-        GetConsoleScreenBufferInfo(h, &info);
+//         h = GetStdHandle(STD_OUTPUT_HANDLE);
+//         GetConsoleScreenBufferInfo(h, &info);
 
-        switch(colour) {
-            case CSTL_COLOUR_ERROR:      attr = FOREGROUND_RED | FOREGROUND_INTENSITY; break;
-            case CSTL_COLOUR_SUCCESS:    attr = FOREGROUND_GREEN | FOREGROUND_INTENSITY; break;
-            case CSTL_COLOUR_CYAN:       attr = FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY; break;
-            case CSTL_COLOUR_WARN:       attr = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY; break;
-            case CSTL_COLOUR_BOLD:       attr = FOREGROUND_BLUE | FOREGROUND_GREEN |FOREGROUND_RED | 
-                                         FOREGROUND_INTENSITY; break;
-            default:                     attr = 0; break;
-        }
-        if(attr != 0)
-            SetConsoleTextAttribute(h, attr);
-        n = printf("%s", buffer);
-        SetConsoleTextAttribute(h, info.wAttributes);
-        return n;
-    }
-#else
-    n = printf("%s", buffer);
-    return n;
-#endif // CSTL_UNIX_
+//         switch(colour) {
+//             case CSTL_COLOUR_ERROR:      attr = FOREGROUND_RED | FOREGROUND_INTENSITY; break;
+//             case CSTL_COLOUR_SUCCESS:    attr = FOREGROUND_GREEN | FOREGROUND_INTENSITY; break;
+//             case CSTL_COLOUR_CYAN:       attr = FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY; break;
+//             case CSTL_COLOUR_WARN:       attr = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY; break;
+//             case CSTL_COLOUR_BOLD:       attr = FOREGROUND_BLUE | FOREGROUND_GREEN |FOREGROUND_RED | 
+//                                          FOREGROUND_INTENSITY; break;
+//             default:                     attr = 0; break;
+//         }
+//         if(attr != 0)
+//             SetConsoleTextAttribute(h, attr);
+//         n = printf("%s", buffer);
+//         SetConsoleTextAttribute(h, info.wAttributes);
+//         return n;
+//     }
+// #else
+    // n = printf("%s", buffer);
+    // return n;
+// #endif // CSTL_UNIX_
 }
 
 int CSTL_char_is_digit(char c) { 
