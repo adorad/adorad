@@ -86,7 +86,6 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     #define CSTL_NOTHROW
 #endif // __cplusplus
 
-
 #define CSTL_CONCATENATE_IMPL(s1, s2)   s1##s2
 #define CSTL_CONCATENATE(s1, s2)        CSTL_CONCATENATE_IMPL(s1, s2)
 

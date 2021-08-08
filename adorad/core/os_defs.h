@@ -36,7 +36,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
             #define CSTL_OS_FREEBSD 1
         #endif
     #else 
-        #error This Unix Operating System is not supported by Adorad.
+        #error AdoradError: This Unix Operating System is not supported by Adorad.
     #endif 
 #elif defined(_gnu_linux_) || defined(__linux__) && !defined(CSTL_OS_LINUX)
     #define CSTL_OS_LINUX 1
@@ -53,7 +53,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #elif defined(__HAIKU__)
     #define CSTL_OS_HAIKU
 #else
-    #error This Operating System is not supported by Adorad
+    #error AdoradError: This Operating System is not supported by Adorad
 #endif
 
 #if !defined(_MSC_VER) && !defined(_WIN64)

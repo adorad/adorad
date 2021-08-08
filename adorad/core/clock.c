@@ -11,12 +11,14 @@ SPDX-License-Identifier: MIT
 Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 */
 
-#ifndef CSTL_CLOCK_H
-#define CSTL_CLOCK_H
+#include <adorad/core/clock.h>
 
-#include <time.h>
+// Returns the current time (in clock_t)
+double now() {
+    return clock();
+}
 
-double now();
-double duration(clock_t start, clock_t end);
-
-#endif // CSTL_CLOCK_H
+// Get duration between `start` and `end` in seconds.
+double duration(clock_t start, clock_t end) {
+    return (double)(end - start)/CLOCKS_PER_SEC;
+}

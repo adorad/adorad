@@ -145,7 +145,7 @@ CSTL_DEBUG_CHECK(sizeof(Rune) == 4);
         #define INTSIZE_MAX Int64_MAX
     #endif 
 #else
-        #error Unknown architecture size. Adorad only supports 32-bit and 64-bit architectures.
+    #error AdoradError: Unknown architecture size. Adorad only supports 32-bit and 64-bit architectures.
 #endif 
 
 #define Float32_MIN 1.17549435e-38f
