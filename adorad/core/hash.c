@@ -12,6 +12,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 */
 
 #include <adorad/core/hash.h>
+#include <adorad/core/warnings.h>
 
 UInt32 hash_adler32(void const* data, Ll len) {
     UInt32 const MOD_ALDER = 65521;
@@ -272,7 +273,13 @@ UInt32 hash_murmur32_seed(void const* data, Ll len, UInt32 seed) {
         hash = ((hash << r2) | (hash >> (32 - r2))) * m + n;
     }
 
+    // Fallthrough intended
+    CSTL_GCC_SUPPRESS_WARNING_PUSH
+    CSTL_CLANG_SUPPRESS_WARNING_PUSH
+    CSTL_GCC_SUPPRESS_WARNING("-Wimplicit-fallthrough")
+    CSTL_CLANG_SUPPRESS_WARNING("-Wimplicit-fallthrough")
     switch (len & 3) {
+        // fall through
         case 3:
             k1 ^= tail[2] << 16;
         case 2:
@@ -285,6 +292,8 @@ UInt32 hash_murmur32_seed(void const* data, Ll len, UInt32 seed) {
             k1 *= c2;
             hash ^= k1;
     }
+    CSTL_GCC_SUPPRESS_WARNING_POP
+    CSTL_CLANG_SUPPRESS_WARNING_POP
 
     hash ^= len;
     hash ^= (hash >> 16);
@@ -318,7 +327,13 @@ UInt64 hash_murmur64_seed(void const* data__, Ll len, UInt64 seed) {
         h *= m;
     }
 
+    // Fallthrough intended
+    CSTL_GCC_SUPPRESS_WARNING_PUSH
+    CSTL_CLANG_SUPPRESS_WARNING_PUSH
+    CSTL_GCC_SUPPRESS_WARNING("-Wimplicit-fallthrough")
+    CSTL_CLANG_SUPPRESS_WARNING("-Wimplicit-fallthrough")
     switch (len & 7) {
+        // fall through
         case 7: h ^= cast(UInt64)(data2[6]) << 48;
         case 6: h ^= cast(UInt64)(data2[5]) << 40;
         case 5: h ^= cast(UInt64)(data2[4]) << 32;
@@ -328,6 +343,8 @@ UInt64 hash_murmur64_seed(void const* data__, Ll len, UInt64 seed) {
         case 1: h ^= cast(UInt64)(data2[0]);
             h *= m;
     };
+    CSTL_GCC_SUPPRESS_WARNING_POP
+    CSTL_CLANG_SUPPRESS_WARNING_POP
 
     h ^= h >> r;
     h *= m;
