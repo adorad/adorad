@@ -20,6 +20,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #include <stdlib.h>
 #include <adorad/core/os_defs.h>
 #include <adorad/core/misc.h>
+#include <adorad/core/headers.h>
 
 // Enable the use of the non-standard keyword __attribute__ to silence warnings under some compilers
 #if defined(__GNUC__) || defined(CSTL_COMPILER_CLANG)
