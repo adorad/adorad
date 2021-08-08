@@ -19,7 +19,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #include <adorad/core/vector.h>
 #include <adorad/compiler/location.h>
 
-typedef struct AstNode AstNode;
+typedef struct AstNode__ AstNode__;
 
 typedef enum {
     NodeKindIdentifier = 0,
@@ -56,7 +56,7 @@ typedef enum {
 
     NodeKindBreak,         // `break`
     NodeKindContinue,      // `continue`
-} AstNodeKind;
+} AstNode__Kind;
 
 typedef enum {
     AstAddressingMode__invalid,   // invalid addressing mode
@@ -78,118 +78,118 @@ typedef enum {
 } AstLanguage;
 
 // This can be one of:
-//     | AstNodeAliasDecl
-//     | AstNodeTypeDecl (enum/union/interface)
-//     | AstNodeFuncDecl
-//     | AstNodeConstantDecl
-//     | AstNodeGlobalDecl
-//     | AstNodeSumTypeDecl 
+//     | AstNode__AliasDecl
+//     | AstNode__TypeDecl (enum/union/interface)
+//     | AstNode__FuncDecl
+//     | AstNode__ConstantDecl
+//     | AstNode__GlobalDecl
+//     | AstNode__SumTypeDecl 
 typedef struct {
     union {
-        AstNodeAliasDecl* alias_decl;
-        AstNodeTypeDecl* type_decl;
-        AstNodeFuncDecl* func_decl;
-        AstNodeConstantDecl* const_decl;
-        AstNodeGlobalDecl* global_decl;
-        AstNodeSumTypeDecl* sumtype_decl;
+        AstNode__AliasDecl* alias_decl;
+        AstNode__TypeDecl* type_decl;
+        AstNode__FuncDecl* func_decl;
+        AstNode__ConstantDecl* const_decl;
+        AstNode__GlobalDecl* global_decl;
+        AstNode__SumTypeDecl* sumtype_decl;
     };
     Buff* name;
     bool is_export;
     Location* loc;
-} AstNodeDecl;
+} AstNode__Decl;
 
 // This can be one of:
-//     | AstNodeAsCast
-//     | AstNodeCallExpr
-//     | AstNodeCastExpr
-//     | AstNodeIfExpr   
-//     | AstNodeForExpr
-//     | AstNodeForCExpr   
-//     | AstNodeForInExpr
-//     | AstNodeMatchExpr
-//     | AstNodeCatchExpr
-//     | AstNodeBinaryOpExpr
-//     | AstNodeTypeExpr
-//     | AstNodeTypeOfExpr
+//     | AstNode__AsCast
+//     | AstNode__CallExpr
+//     | AstNode__CastExpr
+//     | AstNode__IfExpr   
+//     | AstNode__ForExpr
+//     | AstNode__ForCExpr   
+//     | AstNode__ForInExpr
+//     | AstNode__MatchExpr
+//     | AstNode__CatchExpr
+//     | AstNode__BinaryOpExpr
+//     | AstNode__TypeExpr
+//     | AstNode__TypeOfExpr
 typedef struct {
     union {
-        AstNodeAsCast*  as_cast;
-        AstNodeCallExpr* call_expr;
-        AstNodeCastExpr* cast_expr;
-        AstNodeIfExpr* if_expr;
-        AstNodeForExpr* for_expr;
-        AstNodeForCExpr* for_c_expr;
-        AstNodeForInExpr* for_in_expr;
-        AstNodeMatchExpr* match_expr;
-        AstNodeCatchExpr* catch_expr;
-        AstNodeBinaryOpExpr* binary_op_expr;
-        AstNodeTypeExpr* type_expr;
-        AstNodeTypeOfExpr* typeof_expr;
+        AstNode__AsCast*  as_cast;
+        AstNode__CallExpr* call_expr;
+        AstNode__CastExpr* cast_expr;
+        AstNode__IfExpr* if_expr;
+        AstNode__ForExpr* for_expr;
+        AstNode__ForCExpr* for_c_expr;
+        AstNode__ForInExpr* for_in_expr;
+        AstNode__MatchExpr* match_expr;
+        AstNode__CatchExpr* catch_expr;
+        AstNode__BinaryOpExpr* binary_op_expr;
+        AstNode__TypeExpr* type_expr;
+        AstNode__TypeOfExpr* typeof_expr;
     }
-} AstNodeExpression;
+} AstNode__Expression;
 
 // This can be one of:
-//     | AstNodeAssignmentStatement
-//     | AstNodeBlock
-//     | AstNodeBranchStatement
-//     | AstNodeDeferStatement
-//     | AstNodeEmptyStatement
-//     | AstNodeExpressionStatement
-//     | AstNodeFuncDecl (prototype only)
-//     | AstNodeImportStatement
-//     | AstNodeModuleStatement
-//     | AstNodeReturnStatement
-//     | AstNodeTypeDecl (prototype only)
+//     | AstNode__AssignmentStatement
+//     | AstNode__Block
+//     | AstNode__BranchStatement
+//     | AstNode__DeferStatement
+//     | AstNode__EmptyStatement
+//     | AstNode__ExpressionStatement
+//     | AstNode__FuncDecl (prototype only)
+//     | AstNode__ImportStatement
+//     | AstNode__ModuleStatement
+//     | AstNode__ReturnStatement
+//     | AstNode__TypeDecl (prototype only)
 typedef struct {
     union{
-        AstNodeAssignmentStatement* assign_stmt;
-        AstNodeBlock* block_stmt;
-        AstNodeBranchStatement* branch_stmt;
-        AstNodeDeferStatement* defer_stmt;
-        AstNodeEmptyStatement* empty_stmt;
-        AstNodeExpressionStatement* expr_stmt;
-        AstNodeFuncDecl* func_proto_decl;
-        AstNodeImportStatement* import_stmt;
-        AstNodeModuleStatement* module_stmt;
-        AstNodeReturnStatement* return_stmt;
-        AstNodeTypeDecl* type_proto_decl;
+        AstNode__AssignmentStatement* assign_stmt;
+        AstNode__Block* block_stmt;
+        AstNode__BranchStatement* branch_stmt;
+        AstNode__DeferStatement* defer_stmt;
+        AstNode__EmptyStatement* empty_stmt;
+        AstNode__ExpressionStatement* expr_stmt;
+        AstNode__FuncDecl* func_proto_decl;
+        AstNode__ImportStatement* import_stmt;
+        AstNode__ModuleStatement* module_stmt;
+        AstNode__ReturnStatement* return_stmt;
+        AstNode__TypeDecl* type_proto_decl;
     };
     Location* loc;
-} AstNodeStatement;
+} AstNode__Statement;
 
 // This can be one of:
-//     | AstNodeConstField
-//     | AstNodeGlobalField
-//     | AstNodeVariable
+//     | AstNode__ConstField
+//     | AstNode__GlobalField
+//     | AstNode__Variable
 typedef struct {
     union {
-        AstNodeConstField* const_field;
-        AstNodeGlobalField* global_field;
-        AstNodeVariable* var;
+        AstNode__ConstField* const_field;
+        AstNode__GlobalField* global_field;
+        AstNode__Variable* var;
     };
     Buff* name;
-    // AstNodeType* type;
-} AstNodeScopeObject;
+    // AstNode__Type* type;
+} AstNode__ScopeObject;
 
 // This can be one of:
-//     | AstNodeEmptyExpression
-//     | AstNodeBoolLiteral
-//     | AstNodeByteLiteral
-//     | AstNodeFloatLiteral (32/64)
-//     | AstNodeIntegerLiteral (8/16/32/64 + unsigned versions) 
-//     | AstNodeCharLiteral
-//     | AstNodeStringLiteral
+//     | AstNode__EmptyExpression
+//     | AstNode__BoolLiteral
+//     | AstNode__ByteLiteral
+//     | AstNode__FloatLiteral (32/64)
+//     | AstNode__IntegerLiteral (8/16/32/64 + unsigned versions) 
+//     | AstNode__CharLiteral
+//     | AstNode__StringLiteral
 typedef struct {
     union {
-        AstNodeEmptyExpression* empty_expr;
-        AstNodeBoolLiteral* bool_value;
-        AstNodeByteLiteral* byte_value;
-        AstNodeFloatLiteral* float_value;
-        AstNodeIntegerLiteral* int_value;
-        AstNodeCharLiteral* char_value;
-        AstNodeStringLiteral* str_value;
+        AstNode__EmptyExpression* empty_expr;
+        AstNode__BoolLiteral* bool_value;
+        AstNode__ByteLiteral* byte_value;
+        AstNode__FloatLiteral* float_value;
+        AstNode__IntegerLiteral* int_value;
+        AstNode__CharLiteral* char_value;
+        AstNode__StringLiteral* str_value;
     }
-} AstNodeCompileTimeConstantValue;
+} AstNode__CompileTimeConstantValue;
 
 // // There are only 4 possible versions of a Type info you will use:
 // //    1. Enum
@@ -198,9 +198,9 @@ typedef struct {
 // //    4. Interface (can be generic)
 // typedef struct {
 //     union {
-//         AstNode
+//         AstNode__
 //     };
-// } AstNodeTypeInfo;
+// } AstNode__TypeInfo;
 
 // Function or Method Declaration
 typedef struct {
@@ -218,7 +218,7 @@ typedef struct {
     AstNode* parameters;
     AstNode* body;      // can be nullptr for no-body functions (just declarations)
     Location* loc;     // location of the `func` declaration
-} AstNodeFuncDecl;
+} AstNode__FuncDecl;
 
 enum FuncInline {
     FuncInline__auto,
@@ -237,28 +237,28 @@ typedef struct {
     bool is_extern;
     bool is_generic;
     bool is_var_args;  // variable arguments used?
-} AstNodeFuncPrototype;
+} AstNode__FuncPrototype;
 
 enum FuncCallModifier {
-    FuncCallModifierNone,
-    FuncCallModifierAsync,
-    FuncCallModifierNeverInline,
-    FuncCallModifierAlwaysInline,
-    FuncCallModifierCompileTime
+    FuncCallModifier__None,
+    FuncCallModifier__Async,
+    FuncCallModifier__NeverInline,
+    FuncCallModifier__AlwaysInline,
+    FuncCallModifier__CompileTime
 };
 
 typedef struct {
     AstNode* func_call_expr;
     Vec* params;
     enum FuncCallModifier modifier;
-} AstNodeFuncCallExpr;
+} AstNode__FuncCallExpr;
 
 typedef struct {
     Buff* name;
     AstNode* type;
     bool is_alias;
     bool is_var_args;
-} AstNodeParamDecls;
+} AstNode__ParamDecls;
 
 // break/continue
 typedef struct {
@@ -266,18 +266,18 @@ typedef struct {
     AstNode* expr;  // can be nullptr (`break`). always nullptr for `continue`
     Location* loc;
     enum {
-        AstNodeBranchStatementBreak,
-        AstNodeBranchStatementContinue
+        AstNode__BranchStatementBreak,
+        AstNode__BranchStatementContinue
     } type;
-} AstNodeBranchStatement;
+} AstNode__BranchStatement;
 
 typedef struct {
     AstNode* expr;
-} AstNodeReturnExpr;
+} AstNode__ReturnExpr;
 
 typedef struct {
     AstNode* expr;
-} AstNodeDefer;
+} AstNode__Defer;
 
 typedef struct {
     Buff* name;
@@ -288,7 +288,7 @@ typedef struct {
     bool is_const;
     bool is_export;
     bool is_mutable;  // This is false unless explicitly mentioned by the user
-} AstNodeVarDecl;
+} AstNode__VarDecl;
 
 enum IdentifierKind {
     IdentifierKind__unresolved,
@@ -306,78 +306,78 @@ typedef struct {
     bool is_const;
     bool is_export;
     bool is_mutable;  // This is false unless explicitly mentioned by the user
-} AstNodeIdentifier;
+} AstNode__Identifier;
 
 // `{ ... }`
 typedef struct {
     Buff* name;
     Vec* statements;
-} AstNodeBlock;
+} AstNode__Block;
 
 typedef struct {
     Buff* name;   // can be nullptr if no name
     AstNode* body;
-} AstNodeTestDecl;
+} AstNode__TestDecl;
 
 typedef struct {
     Buff* symbol;
     AstNode* target_node;
     AstNode* then_node;
     AstNode* else_node;  // null, block node, or an `if expr` node
-} AstNodeTestExpr;
+} AstNode__TestExpr;
 
 enum BinaryOpKind {
-    BinaryOpKindAssignmentInvalid,
-    BinaryOpKindAssignmentPlus,    // =+
-    BinaryOpKindAssignmentMinus,   // =-
-    BinaryOpKindAssignmentMult,    // =*
-    BinaryOpKindAssignmentDiv,     // =/
-    BinaryOpKindAssignmentMod,     // =%
-    BinaryOpKindAssignmentBitshiftLeft,  // =<<
-    BinaryOpKindAssignmentBitshiftRight, // =>>
-    BinaryOpKindAssignmentBitAnd,  // &
-    BinaryOpKindAssignmentBitOr,   // |
-    BinaryOpKindAssignmentBitXor,  // ^
-    BinaryOpKindBoolAnd,
-    BinaryOpKindBoolOr,
-    BinaryOpKindCmpEqual,                 // ==
-    BinaryOpKindCmpNotEqual,              // !=
-    BinaryOpKindCmpLessThan,              // <
-    BinaryOpKindCmpGreaterThan,           // >
-    BinaryOpKindCmpLessThanorEqualTo,     // <=
-    BinaryOpKindCmpGreaterThanorEqualTo,  // >=
-    BinaryOpKindBinaryAnd,
-    BinaryOpKindBinaryOr,
-    BinaryOpKindBinaryXor,
-    BinaryOpKindBitshitLeft,   // <<
-    BinaryOpKindBitshitRight,  // >>
-    BinaryOpKindAdd,      // +
-    BinaryOpKindSubtract, // -
-    BinaryOpKindMult,     // *
-    BinaryOpKindDiv,      // /
-    BinaryOpKindMod,      // %
-    BinaryOpKindTensorSlice,
-    BinaryOpKindTensorMult
+    BinaryOpKind__AssignmentInvalid,
+    BinaryOpKind__AssignmentPlus,    // =+
+    BinaryOpKind__AssignmentMinus,   // =-
+    BinaryOpKind__AssignmentMult,    // =*
+    BinaryOpKind__AssignmentDiv,     // =/
+    BinaryOpKind__AssignmentMod,     // =%
+    BinaryOpKind__AssignmentBitshiftLeft,  // =<<
+    BinaryOpKind__AssignmentBitshiftRight, // =>>
+    BinaryOpKind__AssignmentBitAnd,  // &
+    BinaryOpKind__AssignmentBitOr,   // |
+    BinaryOpKind__AssignmentBitXor,  // ^
+    BinaryOpKind__BoolAnd,
+    BinaryOpKind__BoolOr,
+    BinaryOpKind__CmpEqual,                 // ==
+    BinaryOpKind__CmpNotEqual,              // !=
+    BinaryOpKind__CmpLessThan,              // <
+    BinaryOpKind__CmpGreaterThan,           // >
+    BinaryOpKind__CmpLessThanorEqualTo,     // <=
+    BinaryOpKind__CmpGreaterThanorEqualTo,  // >=
+    BinaryOpKind__BinaryAnd,
+    BinaryOpKind__BinaryOr,
+    BinaryOpKind__BinaryXor,
+    BinaryOpKind__BitshitLeft,   // <<
+    BinaryOpKind__BitshitRight,  // >>
+    BinaryOpKind__Add,      // +
+    BinaryOpKind__Subtract, // -
+    BinaryOpKind__Mult,     // *
+    BinaryOpKind__Div,      // /
+    BinaryOpKind__Mod,      // %
+    BinaryOpKind__TensorSlice,
+    BinaryOpKind__TensorMult
 };
 
 typedef struct {
     AstNode* op1;
     enum BinaryOpKind binary_op;
     AstNode* op2;
-} AstNodeBinaryOpExpr;
+} AstNode__BinaryOpExpr;
 
 enum PrefixOpKind {
-    PrefixOpKindInvalid,
-    PrefixOpKindBoolNot,
-    PrefixOpKindBinaryNot, 
-    PrefixOpKindNegation,  // !var
-    PrefixOpKindAddrOf     // &var
+    PrefixOpKind__Invalid,
+    PrefixOpKind__BoolNot,
+    PrefixOpKind__BinaryNot, 
+    PrefixOpKind__Negation,  // !var
+    PrefixOpKind__AddrOf     // &var
 };
 
 typedef struct {
     enum PrefixOpKind prefix_op;
     AstNode* expr;
-} AstNodePrefixOpExpr;
+} AstNode__PrefixOpExpr;
 
 typedef struct {
     Buff* symbol;
@@ -385,132 +385,137 @@ typedef struct {
     AstNode* then_node;
     AstNode* else_node;
     Buff* err_symbol;
-} AstNodeTryExpr;
+} AstNode__TryExpr;
 
 typedef struct {
     AstNode* op1;
     AstNode* symbol; // can be nullptr
     AstNode* op2;
-} AstNodeCatchExpr;
+} AstNode__CatchExpr;
 
 typedef struct {
     AstNode* condition;
     AstNode* then_block;
     AstNode* else_node; // null, block node, or other `if expr` node
-} AstNodeIfBoolExpr;
+} AstNode__IfBoolExpr;
 
 typedef struct {
     Buff* name;
     AstNode* condition;
     AstNode* continue_expr;
     AstNode* body;
-} AstNodeForExpr;
+} AstNode__ForExpr;
 
 typedef struct {
     AstNode* expr;
     Vec* patterns;
-} AstNodeMatchExpr;
+} AstNode__MatchExpr;
 
 typedef struct {
     AstNode* start;
     AstNode* end;
-} AstNodeMatchRange;
+} AstNode__MatchRange;
 
 typedef struct {
     AstNode* expr;
-} AstNodeCompileTime;
+} AstNode__CompileTime;
 
 // enum / union
 typedef struct {
     Vec* fields;
     Vec* decls;
     enum {
-        ContainerKindEnum,
-        ContainerKindUnion
+        ContainerKind__Enum,
+        ContainerKind__Union,
     } kind;
     enum {
-        ContainerLayoutKindAuto,
-        ContainerLayoutKindPacked
+        ContainerLayoutKind__Auto,
+        ContainerLayoutKind__Packed
     } layout;
-} AstNodeContainerDecl;
+} AstNode__ContainerDecl;
 
 typedef struct {
     Buff* value;
     Location* loc;
     // TODO (jasmcaus) - Come up with a workaround for this
     enum {
-        AstNodeIntLiteral8,
-        AstNodeIntLiteral16,
-        AstNodeIntLiteral32, // default
-        AstNodeIntLiteral64,
-        // AstNodeIntLiteral128 // will be supported later
+        AstNode__IntLiteral8,
+        AstNode__IntLiteral16,
+        AstNode__IntLiteral32, // default
+        AstNode__IntLiteral64,
+        // AstNode__IntLiteral128 // will be supported later
+        AstNode__UIntLiteral8,
+        AstNode__UIntLiteral16,
+        AstNode__UIntLiteral32, // default
+        AstNode__UIntLiteral64,
+        // AstNode__UIntLiteral128 // will be supported later
     } type;
-} AstNodeIntLiteral;
+} AstNode__IntLiteral;
 
 typedef struct {
     Buff* value;
     Location* loc;
     // TODO (jasmcaus) - Come up with a workaround for this
     enum {
-        AstNodeFloatLiteral32,    // default
-        AstNodeFloatLiteral64,
-        // AstNodeFloatLiteral128 // will be supported later
+        AstNode__FloatLiteral32,    // default
+        AstNode__FloatLiteral64,
+        // AstNode__FloatLiteral128 // will be supported later
     } type;
-} AstNodeFloatLiteral;
+} AstNode__FloatLiteral;
 
 typedef struct {
     Buff* value;
     Location* loc;
     bool is_special;   // format / raw string
     enum {
-        AstNodeStringLiteralNone,   // if `is_special` is false
-        AstNodeStringLiteralRaw,    // `r"abc"`
-        AstNodeStringLiteralFormat  // `f"name = {name}"`
+        AstNode__StringLiteralNone,   // if `is_special` is false
+        AstNode__StringLiteralRaw,    // `r"abc"`
+        AstNode__StringLiteralFormat  // `f"name = {name}"`
     } type;
-} AstNodeStringLiteral;
+} AstNode__StringLiteral;
 
 typedef struct {
     Buff* value;
     Location* loc;
-} AstNodeCharLiteral;
+} AstNode__CharLiteral;
 
 typedef struct {
     Buff* value;
     Location* loc;
-} AstNodeBoolLiteral;
+} AstNode__BoolLiteral;
 
-struct AstNode {
-    AstNodeKind type; // type of AST Node
+struct AstNode__ {
+    AstNode__Kind type; // type of AST Node
     UInt64 tok_index; // token index
 
     union {
-        AstNodeFuncDecl* func_def;
-        AstNodeFuncPrototype* func_proto;
-        AstNodeFuncCallExpr* func_call_expr;
-        AstNodeParamDecls* param_decls;
-        AstNodeReturnExpr* return_type;
-        AstNodeDefer* defer;
-        AstNodeVarDecl* var_decl;
-        AstNodeIdentifier* identifier;
-        AstNodeBlock* block;
-        AstNodeTestDecl* test_decl;
-        AstNodeTestExpr* test_expr;
-        AstNodeBinaryOpExpr* binary_op_expr;
-        AstNodePrefixOpExpr* prefix_op_expr;
-        AstNodeTryExpr* try_expr;
-        AstNodeCatchExpr* catch_expr;
-        AstNodeIfBoolExpr* if_bool_expr;
-        AstNodeForExpr* for_expr;
-        AstNodeMatchExpr* match_expr;
-        AstNodeMatchRange* match_range;
-        AstNodeCompileTime* compile_time_expr;
-        AstNodeContainerDecl* container_decl;
-        AstNodeBranchStatement* branch_stmt;
-        AstNodeIntLiteral* int_literal;
-        AstNodeFloatLiteral* float_literal;
-        AstNodeStringLiteral* str_literal;
-        AstNodeCharLiteral* char_literal;
-        AstNodeBoolLiteral* bool_literal;
+        AstNode__FuncDecl* func_def;
+        AstNode__FuncPrototype* func_proto;
+        AstNode__FuncCallExpr* func_call_expr;
+        AstNode__ParamDecls* param_decls;
+        AstNode__ReturnExpr* return_type;
+        AstNode__Defer* defer;
+        AstNode__VarDecl* var_decl;
+        AstNode__Identifier* identifier;
+        AstNode__Block* block;
+        AstNode__TestDecl* test_decl;
+        AstNode__TestExpr* test_expr;
+        AstNode__BinaryOpExpr* binary_op_expr;
+        AstNode__PrefixOpExpr* prefix_op_expr;
+        AstNode__TryExpr* try_expr;
+        AstNode__CatchExpr* catch_expr;
+        AstNode__IfBoolExpr* if_bool_expr;
+        AstNode__ForExpr* for_expr;
+        AstNode__MatchExpr* match_expr;
+        AstNode__MatchRange* match_range;
+        AstNode__CompileTime* compile_time_expr;
+        AstNode__ContainerDecl* container_decl;
+        AstNode__BranchStatement* branch_stmt;
+        AstNode__IntLiteral* int_literal;
+        AstNode__FloatLiteral* float_literal;
+        AstNode__StringLiteral* str_literal;
+        AstNode__CharLiteral* char_literal;
+        AstNode__BoolLiteral* bool_literal;
     } data;
 };
 
@@ -526,7 +531,7 @@ typedef struct {
     Buff* basepath; // file name - `file.ad` (useful for tracing)
     int num_lines;  // number of source code lines in the file (including comments)
     int num_bytes;  // number of processed source code bytes
-    // TODO (jasmcaus) Change the type of `module` to an `AstNodeModule`
+    // TODO (jasmcaus) Change the type of `module` to an `AstNode__Module`
     Buff* module;   // name of the module
     bool is_test;   // true for test_*.ad files
 } AstFile;
