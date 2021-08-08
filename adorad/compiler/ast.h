@@ -21,7 +21,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 
 typedef struct AstNode AstNode;
 
-typedef enum AstNodeKind {
+typedef enum {
     NodeKindIdentifier = 0,
     NodeKindBlock,        // `{ ... }
 
@@ -59,7 +59,7 @@ typedef enum AstNodeKind {
 } AstNodeKind;
 
 // Function or Method Declaration
-typedef struct AstNodeFuncDecl {
+typedef struct {
     Buff* name;
     Buff* module;      // name of the module
     Buff* parent_type; // the `type` of which the function belongs to (nullptr, if not a method)
@@ -77,12 +77,12 @@ typedef struct AstNodeFuncDecl {
 } AstNodeFuncDecl;
 
 enum FuncInline {
-    FI_AUTO,
-    FI_INLINE,
-    FI_NOINLINE
+    FuncInline__auto,
+    FuncInline__inline,
+    FuncInline__noinline
 };
 
-typedef struct AstNodeFuncPrototype {
+typedef struct {
     Buff* name;
     Vec* params;  // vector of `AstNode*`s -> similar to Vec<AstNode*> if C had generics
     AstNode* return_type;
@@ -103,13 +103,13 @@ enum FuncCallModifier {
     FuncCallModifierCompileTime
 };
 
-typedef struct AstNodeFuncCallExpr {
+typedef struct {
     AstNode* func_call_expr;
     Vec* params;
     enum FuncCallModifier modifier;
 } AstNodeFuncCallExpr;
 
-typedef struct AstNodeParamDecls {
+typedef struct {
     Buff* name;
     AstNode* type;
     bool is_alias;
@@ -117,7 +117,7 @@ typedef struct AstNodeParamDecls {
 } AstNodeParamDecls;
 
 // break/continue
-typedef struct AstNodeBranchStatement {
+typedef struct {
     Buff* name;
     AstNode* expr;  // can be nullptr (`break`). always nullptr for `continue`
     Location* loc;
@@ -127,15 +127,15 @@ typedef struct AstNodeBranchStatement {
     } type;
 } AstNodeBranchStatement;
 
-typedef struct AstNodeReturnExpr {
+typedef struct {
     AstNode* expr;
 } AstNodeReturnExpr;
 
-typedef struct AstNodeDefer {
+typedef struct {
     AstNode* expr;
 } AstNodeDefer;
 
-typedef struct AstNodeVarDecl {
+typedef struct {
     Buff* name;
     AstNode* type;    // can be null
     AstNode* expr;
@@ -153,7 +153,7 @@ enum IdentifierKind {
     IdentifierKindFunction
 };
 
-typedef struct AstNodeIdentifier {
+typedef struct {
     AstNode* type;
     UInt64 tok_idx;
 
@@ -163,17 +163,17 @@ typedef struct AstNodeIdentifier {
 } AstNodeIdentifier;
 
 // `{ ... }`
-typedef struct AstNodeBlock {
+typedef struct {
     Buff* name;
     Vec* statements;
 } AstNodeBlock;
 
-typedef struct AstNodeTestDecl {
+typedef struct {
     Buff* name;   // can be nullptr if no name
     AstNode* body;
 } AstNodeTestDecl;
 
-typedef struct AstNodeTestExpr {
+typedef struct {
     Buff* symbol;
     AstNode* target_node;
     AstNode* then_node;
@@ -214,7 +214,7 @@ enum BinaryOpKind {
     BinaryOpKindTensorMult
 };
 
-typedef struct AstNodeBinaryOpExpr {
+typedef struct {
     AstNode* op1;
     enum BinaryOpKind binary_op;
     AstNode* op2;
@@ -228,12 +228,12 @@ enum PrefixOpKind {
     PrefixOpKindAddrOf     // &var
 };
 
-typedef struct AstNodePrefixOpExpr {
+typedef struct {
     enum PrefixOpKind prefix_op;
     AstNode* expr;
 } AstNodePrefixOpExpr;
 
-typedef struct AstNodeTryExpr {
+typedef struct {
     Buff* symbol;
     AstNode* target_node;
     AstNode* then_node;
@@ -241,41 +241,41 @@ typedef struct AstNodeTryExpr {
     Buff* err_symbol;
 } AstNodeTryExpr;
 
-typedef struct AstNodeCatchExpr {
+typedef struct {
     AstNode* op1;
     AstNode* symbol; // can be nullptr
     AstNode* op2;
 } AstNodeCatchExpr;
 
-typedef struct AstNodeIfBoolExpr {
+typedef struct {
     AstNode* condition;
     AstNode* then_block;
     AstNode* else_node; // null, block node, or other `if expr` node
 } AstNodeIfBoolExpr;
 
-typedef struct AstNodeForExpr {
+typedef struct {
     Buff* name;
     AstNode* condition;
     AstNode* continue_expr;
     AstNode* body;
 } AstNodeForExpr;
 
-typedef struct AstNodeMatchExpr {
+typedef struct {
     AstNode* expr;
     Vec* patterns;
 } AstNodeMatchExpr;
 
-typedef struct AstNodeMatchRange {
+typedef struct {
     AstNode* start;
     AstNode* end;
 } AstNodeMatchRange;
 
-typedef struct AstNodeCompileTime {
+typedef struct {
     AstNode* expr;
 } AstNodeCompileTime;
 
 // enum / union
-typedef struct AstNodeContainerDecl {
+typedef struct {
     Vec* fields;
     Vec* decls;
     enum {
@@ -288,7 +288,7 @@ typedef struct AstNodeContainerDecl {
     } layout;
 } AstNodeContainerDecl;
 
-typedef struct AstNodeIntLiteral {
+typedef struct {
     Buff* value;
     Location* loc;
     // TODO (jasmcaus) - Come up with a workaround for this
@@ -301,7 +301,7 @@ typedef struct AstNodeIntLiteral {
     } type;
 } AstNodeIntLiteral;
 
-typedef struct AstNodeFloatLiteral {
+typedef struct {
     Buff* value;
     Location* loc;
     // TODO (jasmcaus) - Come up with a workaround for this
@@ -312,7 +312,7 @@ typedef struct AstNodeFloatLiteral {
     } type;
 } AstNodeFloatLiteral;
 
-typedef struct AstNodeStringLiteral {
+typedef struct {
     Buff* value;
     Location* loc;
     bool is_special;   // format / raw string
@@ -323,12 +323,12 @@ typedef struct AstNodeStringLiteral {
     } type;
 } AstNodeStringLiteral;
 
-typedef struct AstNodeCharLiteral {
+typedef struct {
     Buff* value;
     Location* loc;
 } AstNodeCharLiteral;
 
-typedef struct AstNodeBoolLiteral {
+typedef struct {
     Buff* value;
     Location* loc;
 } AstNodeBoolLiteral;
@@ -369,13 +369,13 @@ struct AstNode {
 };
 
 // The `import` statement
-typedef struct AstImport {
+typedef struct {
     Buff* module;  // the module name
     Buff* alias;   // the `y` in `import x as y`
 } AstImport;
 
 // Each Adorad source file can be represented by one AstFile structure.
-typedef struct AstFile {
+typedef struct {
     Buff* path;     // full path of the source file - `/path/to/file.ad`
     Buff* basepath; // file name - `file.ad` (useful for tracing)
     int num_lines;  // number of source code lines in the file (including comments)
