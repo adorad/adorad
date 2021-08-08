@@ -36,6 +36,35 @@ file(GLOB ADORAD_INTERNALTEST_SOURCES
 file(GLOB_RECURSE ADORAD_INTERNALTEST_HEADERS 
     ${CMAKE_CURRENT_SOURCE_DIR}/../AdoradInternalTests/*.h
 )
+# Main Build File for the main CSTL Library
+
+file(GLOB LIBCSTLINTERNALTESTS_SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/../AdoradInternalTests/core/*.c
+)
+
+file(GLOB_RECURSE CSTLINTERNALTESTS_HEADERS 
+    ${CMAKE_CURRENT_SOURCE_DIR}/../AdoradInternalTests/core/*.c
+)
+
+set(
+    CSTLINTERNALTESTS_BUILD_INCLUDE_DIRS
+    "${ADORAD_ROOT_DIR}/AdoradInternalTests/core"
+    "${ADORAD_ROOT_DIR}/AdoradInternalTests"
+    "${ADORAD_ROOT_DIR}"
+)
+
+add_library(
+    CSTLINTERNALTESTS STATIC
+    ${LIBCSTLINTERNALTESTS_SOURCES}
+    ${CSTLINTERNALTESTS_HEADERS}
+)
+# Add an alias
+add_library(CSTLINTERNALTESTS::CSTLINTERNALTESTS ALIAS CSTLINTERNALTESTS)
+
+target_include_directories(
+    CSTLINTERNALTESTS PUBLIC
+    "$<BUILD_INTERFACE:${CSTLINTERNALTESTS_BUILD_INCLUDE_DIRS}>"
+)
 
 message("--------- [INFO] Building the Static Library for AdoradInternalTests ")
 add_library(libAdoradInternalTests STATIC ${ADORAD_INTERNALTEST_SOURCES} ${ADORAD_INTERNALTEST_HEADERS})
@@ -61,7 +90,11 @@ add_executable(
     # maininternaltests.c is renamed to `main.c` in tools/tests/before_tests_ci.py
     ${CMAKE_CURRENT_SOURCE_DIR}/../AdoradInternalTests/main.c
 )
-target_link_libraries(AdoradInternalTestsWithMain libAdoradInternalTests)
+target_link_libraries(
+    AdoradInternalTestsWithMain PUBLIC
+    libAdoradInternalTests
+    CSTLINTERNALTESTS::CSTLINTERNALTESTS
+)
 
 # Installation
 install(TARGETS libAdoradInternalTests DESTINATION lib)
@@ -82,6 +115,7 @@ foreach(source ${ADORAD_INTERNAL_TESTS_SOURCES})
         ${testcase}
         PRIVATE
         libAdoradInternalTests
+        CSTLINTERNALTESTS::CSTLINTERNALTESTS
         Tau::Tau
     )
 
