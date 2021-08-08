@@ -21,7 +21,7 @@ DESTINATIONROOT = os.path.join(ROOT, 'AdoradInternalTests')
 # We cannot remove it globally as it affects CSTL as well - and results in the `multiple definitions` error
 ACCEPTABLE_REMOVEABLE_DIRS = (
     'compiler',
-    'core'
+    # 'core'    // _never_ uncomment this
 )
 
 def main():
@@ -60,7 +60,6 @@ def main():
             if(file.endswith('maininternaltests.c')):
                 destpath = os.path.join(destroot, 'main.c')
 
-            # print(filepath)
             print(f"[INFO] Copying {destpath}")
 
             # Copy contents
