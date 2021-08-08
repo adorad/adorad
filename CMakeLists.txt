@@ -105,11 +105,13 @@ if(NOT MSVC)
         string(APPEND CMAKE_C_FLAGS " -O2")
     endif()
 
-    if(NOT CMAKE_C_COMPILER_ID STREQUAL "Clang" OR NOT CMAKE_C_COMPILER_ID STREQUAL "AppleClang")
+    if(NOT CMAKE_C_COMPILER_ID STREQUAL "Clang")
         # Clang doesn't have either of these flags
-        string(APPEND CMAKE_C_FLAGS " -fPIC")
-        string(APPEND CMAKE_C_FLAGS " -Wno-discarded-qualifiers")
-        string(APPEND CMAKE_C_FLAGS " -Wno-multistatement-macros")
+        if(NOT CMAKE_C_COMPILER_ID STREQUAL "AppleClang")
+            string(APPEND CMAKE_C_FLAGS " -fPIC")
+            string(APPEND CMAKE_C_FLAGS " -Wno-discarded-qualifiers")
+            string(APPEND CMAKE_C_FLAGS " -Wno-multistatement-macros")
+        else()
     else() # For Clang/AppleClang
         string(APPEND CMAKE_C_FLAGS " -Wno-ignored-qualifiers")
         string(APPEND CMAKE_C_FLAGS " -Wno-newline-eof")
