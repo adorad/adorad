@@ -21,6 +21,7 @@ DESTINATIONROOT = os.path.join(ROOT, 'AdoradInternalTests')
 # We cannot remove it globally as it affects CSTL as well - and results in the `multiple definitions` error
 ACCEPTABLE_REMOVEABLE_DIRS = (
     'compiler',
+    'core'
 )
 
 def main():
@@ -74,8 +75,7 @@ def main():
                 s = s.replace('/AdoradInternalTests/', '/adorad/')
                 s = s.replace('AdoradInternalTests Language', 'Adorad Language')
                 s = s.replace('adorad.h', 'AdoradInternalTests.h')
-                # Don't run into `redefinition of macro` errors when testing with Tau (which defines the same
-                # macros)
+                # Don't run into `redefinition of macro` errors when testing with Tau (which defines the same macros)
                 s = s.replace('CHECK', 'CSTL_CHECK')
                 s = s.replace('REQUIRE', 'CSTL_REQUIRE')
 
