@@ -58,6 +58,150 @@ typedef enum {
     NodeKindContinue,      // `continue`
 } AstNodeKind;
 
+typedef enum {
+    AstAddressingMode__invalid,   // invalid addressing mode
+    AstAddressingMode__compile_time_value,  // value known at compile time
+    AstAddressingMode__variable, // addressable variable (known at runtime)
+    AstAddressingMode__constant, // constant
+    AstAddressingMode__type,     // type  
+} AstAddressingMode;
+
+typedef enum {
+    AstLanguage__adorad,
+    AstLanguage__c,
+    AstLanguage__amd64,
+    AstLanguage__i386,
+    AstLanguage__arm64,
+    AstLanguage__arm32,
+    AstLanguage__rv64,
+    AstLanguage__rv32,
+} AstLanguage;
+
+// This can be one of:
+//     | AstNodeAliasDecl
+//     | AstNodeTypeDecl (enum/union/interface)
+//     | AstNodeFuncDecl
+//     | AstNodeConstantDecl
+//     | AstNodeGlobalDecl
+//     | AstNodeSumTypeDecl 
+typedef struct {
+    union {
+        AstNodeAliasDecl* alias_decl;
+        AstNodeTypeDecl* type_decl;
+        AstNodeFuncDecl* func_decl;
+        AstNodeConstantDecl* const_decl;
+        AstNodeGlobalDecl* global_decl;
+        AstNodeSumTypeDecl* sumtype_decl;
+    };
+    Buff* name;
+    bool is_export;
+    Location* loc;
+} AstNodeDecl;
+
+// This can be one of:
+//     | AstNodeAsCast
+//     | AstNodeCallExpr
+//     | AstNodeCastExpr
+//     | AstNodeIfExpr   
+//     | AstNodeForExpr
+//     | AstNodeForCExpr   
+//     | AstNodeForInExpr
+//     | AstNodeMatchExpr
+//     | AstNodeCatchExpr
+//     | AstNodeBinaryOpExpr
+//     | AstNodeTypeExpr
+//     | AstNodeTypeOfExpr
+typedef struct {
+    union {
+        AstNodeAsCast*  as_cast;
+        AstNodeCallExpr* call_expr;
+        AstNodeCastExpr* cast_expr;
+        AstNodeIfExpr* if_expr;
+        AstNodeForExpr* for_expr;
+        AstNodeForCExpr* for_c_expr;
+        AstNodeForInExpr* for_in_expr;
+        AstNodeMatchExpr* match_expr;
+        AstNodeCatchExpr* catch_expr;
+        AstNodeBinaryOpExpr* binary_op_expr;
+        AstNodeTypeExpr* type_expr;
+        AstNodeTypeOfExpr* typeof_expr;
+    }
+} AstNodeExpression;
+
+// This can be one of:
+//     | AstNodeAssignmentStatement
+//     | AstNodeBlock
+//     | AstNodeBranchStatement
+//     | AstNodeDeferStatement
+//     | AstNodeEmptyStatement
+//     | AstNodeExpressionStatement
+//     | AstNodeFuncDecl (prototype only)
+//     | AstNodeImportStatement
+//     | AstNodeModuleStatement
+//     | AstNodeReturnStatement
+//     | AstNodeTypeDecl (prototype only)
+typedef struct {
+    union{
+        AstNodeAssignmentStatement* assign_stmt;
+        AstNodeBlock* block_stmt;
+        AstNodeBranchStatement* branch_stmt;
+        AstNodeDeferStatement* defer_stmt;
+        AstNodeEmptyStatement* empty_stmt;
+        AstNodeExpressionStatement* expr_stmt;
+        AstNodeFuncDecl* func_proto_decl;
+        AstNodeImportStatement* import_stmt;
+        AstNodeModuleStatement* module_stmt;
+        AstNodeReturnStatement* return_stmt;
+        AstNodeTypeDecl* type_proto_decl;
+    };
+    Location* loc;
+} AstNodeStatement;
+
+// This can be one of:
+//     | AstNodeConstField
+//     | AstNodeGlobalField
+//     | AstNodeVariable
+typedef struct {
+    union {
+        AstNodeConstField* const_field;
+        AstNodeGlobalField* global_field;
+        AstNodeVariable* var;
+    };
+    Buff* name;
+    // AstNodeType* type;
+} AstNodeScopeObject;
+
+// This can be one of:
+//     | AstNodeEmptyExpression
+//     | AstNodeBoolLiteral
+//     | AstNodeByteLiteral
+//     | AstNodeFloatLiteral (32/64)
+//     | AstNodeIntegerLiteral (8/16/32/64 + unsigned versions) 
+//     | AstNodeCharLiteral
+//     | AstNodeStringLiteral
+typedef struct {
+    union {
+        AstNodeEmptyExpression* empty_expr;
+        AstNodeBoolLiteral* bool_value;
+        AstNodeByteLiteral* byte_value;
+        AstNodeFloatLiteral* float_value;
+        AstNodeIntegerLiteral* int_value;
+        AstNodeCharLiteral* char_value;
+        AstNodeStringLiteral* str_value;
+    }
+} AstNodeCompileTimeConstantValue;
+
+// // There are only 4 possible versions of a Type info you will use:
+// //    1. Enum
+// //    2. Union
+// //    3. Sum Type
+// //    4. Interface (can be generic)
+// typedef struct {
+//     union {
+//         AstNode
+//     };
+// } AstNodeTypeInfo;
+
 // Function or Method Declaration
 typedef struct {
     Buff* name;
