@@ -40,41 +40,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #elif defined(__GNUC__) && !defined(INTEL_COMPILER) && !defined(llvm)
     #define CSTL_COMPILER_GCC 1
 #else 
-    #error Unknown Compiler (Adorad currently supports only MSVC, GCC and Clang)
+    #error AdoradError: Unknown Compiler (Adorad currently supports only MSVC, GCC and Clang)
 #endif 
-
-// Disable Compiler Warnings
-// These are a big nuisance when compiling with external code
-#if defined(CSTL_COMPILER_MSVC)
-    #define CSTL_MSVC_SUPPRESS_WARNING_PUSH     __pragma(warning(push))
-    #define CSTL_MSVC_SUPPRESS_WARNING(w)       __pragma(warning(disable : w))
-    #define CSTL_MSVC_SUPPRESS_WARNING_POP      __pragma(warning(pop))
-#else
-    #define CSTL_MSVC_SUPPRESS_WARNING_PUSH
-    #define CSTL_MSVC_SUPPRESS_WARNING(w)
-    #define CSTL_MSVC_SUPPRESS_WARNING_POP
-#endif // CSTL_COMPILER_MSVC
-
-#if defined(CSTL_COMPILER_CLANG)
-    #define PRAGMA_TO_STR(x)                    _Pragma(#x)
-    #define CSTL_CLANG_SUPPRESS_WARNING_PUSH    _Pragma("clang diagnostic push")
-    #define CSTL_CLANG_SUPPRESS_WARNING_POP     _Pragma("clang diagnostic pop")
-    #define CSTL_CLANG_SUPPRESS_WARNING(w)      PRAGMA_TO_STR(clang diagnostic ignored w)
-#else
-    #define CSTL_CLANG_SUPPRESS_WARNING_PUSH
-    #define CSTL_CLANG_SUPPRESS_WARNING(w)
-    #define CSTL_CLANG_SUPPRESS_WARNING_POP
-#endif // CSTL_COMPILER_CLANG
-
-#if defined(CSTL_COMPILER_GCC)
-    #define PRAGMA_TO_STR(x)                    _Pragma(#x)
-    #define CSTL_GCC_SUPPRESS_WARNING_PUSH      _Pragma("GCC diagnostic push")
-    #define CSTL_GCC_SUPPRESS_WARNING_POP       _Pragma("GCC diagnostic pop")
-    #define CSTL_GCC_SUPPRESS_WARNING(w)        PRAGMA_TO_STR(GCC diagnostic ignored w)
-#else
-    #define CSTL_GCC_SUPPRESS_WARNING_PUSH
-    #define CSTL_GCC_SUPPRESS_WARNING(w)
-    #define CSTL_GCC_SUPPRESS_WARNING_POP
-#endif // CSTL_COMPILER_GCC
 
 #endif // CSTL_COMPILERS_H
