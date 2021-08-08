@@ -17,7 +17,8 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #if defined(_WIN32) || defined(__WIN32__) || defined(__WINDOWS__)
     #pragma warning(push, 0)
         #include <Windows.h>
-        // #include <io.h>
+        #include <io.h>
+        #include <Shlwapi.h>
     #pragma warning(pop)
 #endif // _WIN32
 
