@@ -12,15 +12,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 */
 
 #include <adorad/core/debug.h>
-// #include <adorad/core/headers.h>
-
-#if defined(_WIN32) || defined(__WIN32__) || defined(__WINDOWS__)
-    #pragma warning(push, 0)
-        #include <Windows.h>
-        #include <io.h>
-        #include <Shlwapi.h>
-    #pragma warning(pop)
-#endif // _WIN32
+#include <adorad/core/headers.h>
 
 int CSTL_ATTRIBUTE_(format (printf, 2, 3))
 cstlColouredPrintf(int colour, const char* fmt, ...) {
