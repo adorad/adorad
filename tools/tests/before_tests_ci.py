@@ -77,6 +77,7 @@ def main():
                 # Don't run into `redefinition of macro` errors when testing with Tau (which defines the same macros)
                 s = s.replace('CHECK', 'CSTL_CHECK')
                 s = s.replace('REQUIRE', 'CSTL_REQUIRE')
+                s = s.replace('CSTL_DEBUG_CSTL_CHECK', 'CSTL_DEBUG_CHECK')
 
                 if root.endswith(ACCEPTABLE_REMOVEABLE_DIRS):
                     s = s.replace('static inline ', '')
