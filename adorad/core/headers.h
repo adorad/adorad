@@ -51,7 +51,6 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
         #pragma warning(push, 0)
             #include <Windows.h>
             // #include <io.h>
-            // #include <Shlwapi.h>
             // This conflicts with certain functionalities, especially in the Adorad Language
             #ifdef CONST
                 #undef CONST

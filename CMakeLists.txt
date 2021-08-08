@@ -111,7 +111,7 @@ if(NOT MSVC)
             string(APPEND CMAKE_C_FLAGS " -fPIC")
             string(APPEND CMAKE_C_FLAGS " -Wno-discarded-qualifiers")
             string(APPEND CMAKE_C_FLAGS " -Wno-multistatement-macros")
-        else()
+        endif()
     else() # For Clang/AppleClang
         string(APPEND CMAKE_C_FLAGS " -Wno-ignored-qualifiers")
         string(APPEND CMAKE_C_FLAGS " -Wno-newline-eof")
