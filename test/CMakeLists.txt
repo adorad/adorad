@@ -36,16 +36,14 @@ file(GLOB ADORAD_INTERNALTEST_SOURCES
 file(GLOB_RECURSE ADORAD_INTERNALTEST_HEADERS 
     ${CMAKE_CURRENT_SOURCE_DIR}/../AdoradInternalTests/*.h
 )
-# Main Build File for the main CSTL Library
 
+# Main Build File for the main CSTL Library
 file(GLOB LIBCSTLINTERNALTESTS_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/../AdoradInternalTests/core/*.c
 )
-
 file(GLOB_RECURSE CSTLINTERNALTESTS_HEADERS 
     ${CMAKE_CURRENT_SOURCE_DIR}/../AdoradInternalTests/core/*.c
 )
-
 set(
     CSTLINTERNALTESTS_BUILD_INCLUDE_DIRS
     "${ADORAD_ROOT_DIR}/AdoradInternalTests/core"
@@ -53,19 +51,27 @@ set(
     "${ADORAD_ROOT_DIR}"
 )
 
+################
+##  Building CSTL
+################
+
+message("--------- [INFO] Building the Static Library for CSTLInternalTests ")
 add_library(
-    CSTLINTERNALTESTS STATIC
+    libCSTLInternalTests STATIC
     ${LIBCSTLINTERNALTESTS_SOURCES}
     ${CSTLINTERNALTESTS_HEADERS}
 )
 # Add an alias
-add_library(CSTLINTERNALTESTS::CSTLINTERNALTESTS ALIAS CSTLINTERNALTESTS)
+add_library(libCSTLInternalTests::libCSTLInternalTests ALIAS libCSTLInternalTests)
 
 target_include_directories(
-    CSTLINTERNALTESTS PUBLIC
+    libCSTLInternalTests PUBLIC
     "$<BUILD_INTERFACE:${CSTLINTERNALTESTS_BUILD_INCLUDE_DIRS}>"
 )
 
+################
+##  Building AdoradInternalTests
+################
 message("--------- [INFO] Building the Static Library for AdoradInternalTests ")
 add_library(libAdoradInternalTests STATIC ${ADORAD_INTERNALTEST_SOURCES} ${ADORAD_INTERNALTEST_HEADERS})
 # Enable hidden visibility if compiler supports it.
@@ -93,13 +99,14 @@ add_executable(
 target_link_libraries(
     AdoradInternalTestsWithMain PUBLIC
     libAdoradInternalTests
-    CSTLINTERNALTESTS::CSTLINTERNALTESTS
+    libCSTLInternalTests::libCSTLInternalTests
 )
 
 # Installation
 install(TARGETS libAdoradInternalTests DESTINATION lib)
 
 
+message("--------- [INFO] Building the test executables ")
 #############################################################################
 # One executable for each unit test file
 #############################################################################
@@ -115,7 +122,7 @@ foreach(source ${ADORAD_INTERNAL_TESTS_SOURCES})
         ${testcase}
         PRIVATE
         libAdoradInternalTests
-        CSTLINTERNALTESTS::CSTLINTERNALTESTS
+        libCSTLInternalTests::libCSTLInternalTests
         Tau::Tau
     )
 
