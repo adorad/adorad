@@ -11,8 +11,8 @@ SPDX-License-Identifier: MIT
 Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 */
 
-#ifndef CSTL_WARNINGS_H
-#define CSTL_WARNINGS_H
+#ifndef WARNINGS_H
+#define WARNINGS_H
 
 #include <adorad/core/compilers.h>
 
@@ -55,4 +55,4 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     #define CSTL_GCC_SUPPRESS_WARNING_POP
 #endif // CSTL_COMPILER_GCC
 
-#endif // CSTL_WARNINGS_H
+#endif // WARNINGS_H

@@ -30,9 +30,9 @@ static cstlBuffer* os_get_cwd() {
     char *buf;
 
     n = pathconf(".", _PC_PATH_MAX);
-    CHECK_NE(n, -1);
+    ENFORCE_NE(n, -1);
     buf = cast(char*)calloc(n, sizeof(*buf));
-    CHECK_NOT_NULL(buf, "calloc failed. Out of memory");
+    ENFORCE_NOT_NULL(buf, "calloc failed. Out of memory");
     char* result = getcwd(buf, n);
     if(!result) {
         fprintf(stderr, "Unable to `os_get_cwd()`. 'getcwd()' failed");
@@ -138,7 +138,7 @@ static bool os_is_sep(char ch) {
 
 static bool os_path_is_abs(cstlBuffer* path) {
     bool result = false;
-    CHECK_NOT_NULL(path, "Cannot do anything useful on a null path :(");
+    ENFORCE_NOT_NULL(path, "Cannot do anything useful on a null path :(");
 #ifdef CSTL_OS_WINDOWS
 	// The 'C:\...`
     result = path->len > 2 &&
@@ -157,7 +157,7 @@ static bool os_path_is_rel(cstlBuffer* path) {
 
 static bool os_path_is_root(cstlBuffer* path) {
 	bool result = false;
-	CHECK_NOT_NULL(path, "Cannot do anything useful on a null path :(");
+	ENFORCE_NOT_NULL(path, "Cannot do anything useful on a null path :(");
 #ifdef CSTL_OS_WINDOWS
     result = os_path_is_abs(path) && path->len == 3;
 #else

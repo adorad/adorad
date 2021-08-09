@@ -14,7 +14,14 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #ifndef CSTL_UTILS_H
 #define CSTL_UTILS_H
 
+#include <stdlib.h>
 #include <adorad/core/compilers.h>
+
+#ifdef _WIN32
+    #define __func__        __FUNCTION__
+#endif
+
+#define abort()     exit(1)
 
 #ifdef CSTL_COMPILER_MSVC
     #define ATTRIBUTE_COLD        __declspec(noinline)

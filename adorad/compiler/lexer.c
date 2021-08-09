@@ -191,7 +191,7 @@ static inline char lexer_peekn(Lexer* lexer, UInt32 n) {
 
 static void lexer_maketoken(Lexer* lexer, TokenKind kind, Buff* value, UInt32 offset, UInt32 line, UInt32 col) {  
     Token* token = token_init();
-    CHECK_NOT_NULL(token, "Could not allocate memory. Memory full.");
+    ENFORCE_NOT_NULL(token, "Could not allocate memory. Memory full.");
 
     if(value == null) {
         printf("VALUE IS NONE!!!\n");
@@ -201,7 +201,7 @@ static void lexer_maketoken(Lexer* lexer, TokenKind kind, Buff* value, UInt32 of
 
         if(kind == STRING || kind == IDENTIFIER || kind == INTEGER || kind == HEX_INT || kind == BIN_INT ||
            kind == OCT_INT)
-            CSTL_WARN("Expected a token value. Got `null`\n");
+            WARN("Expected a token value. Got `null`\n");
     }
 
     token->kind = kind;
@@ -228,14 +228,14 @@ static inline void lexer_lex_sl_comment(Lexer* lexer) {
         ++comment_length;
     }
 
-    CHECK_EQ(ch, '\n');
+    ENFORCE_EQ(ch, '\n');
     
     // Do not store empty comments
     if(comment_length == 0) 
         return;
 
     Buff* comment_value = buff_slice(lexer->buffer, prev_offset, comment_length - 1);
-    CHECK_NOT_NULL(comment_value, "`comment_value` must not be null");
+    ENFORCE_NOT_NULL(comment_value, "`comment_value` must not be null");
     if(!comment_value)
         printf("comment_value = null\n");
     lexer_maketoken(lexer, COMMENT, comment_value, prev_offset, line, col);
@@ -293,13 +293,13 @@ static inline void lexer_lex_macro(Lexer* lexer) {
     }
 
     if(macro_length > MAX_TOKEN_LENGTH)
-        CSTL_WARN(A number can never have more than 256 characters);
+        WARN(A number can never have more than 256 characters);
 
     UInt32 offset_diff = lexer->offset - prev_offset;
     printf("Offset_diff = %d\n", offset_diff);
 
     Buff* macro_value = buff_slice(lexer->buffer, prev_offset - 1, offset_diff);
-    CHECK_NOT_NULL(macro_value, "`macro_value` must not be null");
+    ENFORCE_NOT_NULL(macro_value, "`macro_value` must not be null");
     if(!macro_value)
         printf("macro_value = null\n");
     lexer_maketoken(lexer, MACRO, macro_value, prev_offset - 1, line, col - 1);
@@ -311,7 +311,7 @@ static inline void lexer_lex_macro(Lexer* lexer) {
 static inline void lexer_lex_string(Lexer* lexer) {
     // We already know that the curr char is _not_ a quote (`"`) since an empty string token (`""`) is
     // handled by `lexer_lex()`
-    CHECK_NE(LEXER_CURR_CHAR, '"');
+    ENFORCE_NE(LEXER_CURR_CHAR, '"');
     char ch = lexer_advance(lexer);
     int str_length = 0;
     UInt32 prev_offset = lexer->offset - 1;
@@ -330,12 +330,12 @@ static inline void lexer_lex_string(Lexer* lexer) {
     }
     lexer->is_inside_str = false;
 
-    CHECK_EQ(ch, '"');
+    ENFORCE_EQ(ch, '"');
     UInt32 offset_diff = lexer->offset - prev_offset;
 
     // `offset_diff - 1` so as to ignore the closing quote `"`
     Buff* str_value = buff_slice(lexer->buffer, prev_offset, offset_diff - 1);
-    CHECK_NOT_NULL(str_value, "`str_value` must not be null");
+    ENFORCE_NOT_NULL(str_value, "`str_value` must not be null");
     if(!str_value)
         printf("str_value = null\n");
     lexer_maketoken(lexer, STRING, str_value, prev_offset - 1, line, col - 1);
@@ -358,7 +358,7 @@ static inline void lexer_lex_identifier(Lexer* lexer) {
     // When this function is called, we alread know that the first character statisfies the `case ALPHA`.
     // So, the remaining characters are ALPHA, DIGIT, or `_`
     // Still, we check it either way to ensure sanity.
-    CHECK(char_is_letter(lexer_prev(lexer)) || char_is_digit(lexer_prev(lexer)),
+    ENFORCE(char_is_letter(lexer_prev(lexer)) || char_is_digit(lexer_prev(lexer)),
                "This message means you've encountered a serious bug within Adorad. Please file an issue on "
                "Adorad's Github repo.\nError: `lexer_lex_identifier()` hasn't been called with a valid identifier character");
 
@@ -374,11 +374,11 @@ static inline void lexer_lex_identifier(Lexer* lexer) {
     }
 
     if(ident_length > MAX_TOKEN_LENGTH)
-        CSTL_WARN(An identifier can never have more than 256 characters);
+        WARN(An identifier can never have more than 256 characters);
 
     UInt32 offset_diff = lexer->offset - prev_offset;
     Buff* ident_value = buff_slice(lexer->buffer, prev_offset - 1, offset_diff);
-    CHECK_NOT_NULL(ident_value, "`ident_value` must not be null");
+    ENFORCE_NOT_NULL(ident_value, "`ident_value` must not be null");
     if(!ident_value)
         printf("Ident value = null\n");
 
@@ -403,7 +403,7 @@ static inline void lexer_lex_digit(Lexer* lexer) {
     TokenKind tokenkind = TOK_ILLEGAL;
     int digit_length = 0; // no. of digits in the number
 
-    CHECK_TRUE(char_is_digit(ch));
+    ENFORCE_TRUE(char_is_digit(ch));
     while(char_is_digit(ch)) {
         // Hex, Octal, or Binary?
         if(ch == '0') {
@@ -501,20 +501,20 @@ static inline void lexer_lex_digit(Lexer* lexer) {
         // ch = lexer_advance(lexer);
     }
 
-    CHECK(tokenkind != TOK_ILLEGAL);
+    ENFORCE(tokenkind != TOK_ILLEGAL);
 
     UInt32 offset_diff = lexer->offset - prev_offset;
-    CHECK_NE(offset_diff, 0);
+    ENFORCE_NE(offset_diff, 0);
 
     if(digit_length > MAX_TOKEN_LENGTH)
-        CSTL_WARN(A number can never have more than 256 characters);
+        WARN(A number can never have more than 256 characters);
 
     // digit_length can be 0 and we can still have a number. Reasoning is as follows:
     // This function is guaranteed to be called when there's at least one "number-like". We simply check if
     // there are more digits to lex.
     // If digit_length = 0, this means that there's only one digit in the number (eg. 0, 2, 9)
     Buff* digit_value = buff_slice(lexer->buffer, prev_offset, offset_diff - 1);
-    CHECK_NOT_NULL(digit_value, "`digit_value` must not be null");
+    ENFORCE_NOT_NULL(digit_value, "`digit_value` must not be null");
     if(!digit_value)
         printf("digit_value = null\n");
     lexer_maketoken(lexer, tokenkind, digit_value, prev_offset, line, col);
