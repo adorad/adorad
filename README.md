@@ -102,15 +102,13 @@ Our guarantee: Adorad is always going to be lightweight, portable and *extremely
 
 ## Installing Adorad from Source
 
-### Linux, macOS, Windows, *BSD, Solaris, WSL, Android, Raspbian
-
 ```shell
 git clone https://github.com/adorad/adorad
 cd adorad
 cmake -S . -B build
 ```
 
-That's it! Now you have a Adorad executable at `[path to Adorad repo]/build/Adorad`. 
+That's it! Now you have a Adorad executable at `[path/to/Adorad/repo]/build/bin/`. 
 <!-- `[path to Adorad repo]` can be anywhere. -->
 <!--
 (On Windows `make` means running `make.bat`, so make sure you use `cmd.exe`)
@@ -122,7 +120,6 @@ Adorad is constantly being updated. To update Adorad, simply run:
 ```shell
 adorad up
 ```
-
 
 ### C compiler
 
