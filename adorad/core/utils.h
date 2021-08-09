@@ -14,6 +14,8 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #ifndef CSTL_UTILS_H
 #define CSTL_UTILS_H
 
-#inc
+#include <adorad/core/compilers.h>
+
+
 
 #endif // CSTL_UTILS_H

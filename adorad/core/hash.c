@@ -276,8 +276,10 @@ UInt32 hash_murmur32_seed(void const* data, Ll len, UInt32 seed) {
     // Fallthrough intended
     CSTL_GCC_SUPPRESS_WARNING_PUSH
     CSTL_CLANG_SUPPRESS_WARNING_PUSH
+    CSTL_MSVC_SUPPRESS_WARNING_PUSH
     CSTL_GCC_SUPPRESS_WARNING("-Wimplicit-fallthrough")
     CSTL_CLANG_SUPPRESS_WARNING("-Wimplicit-fallthrough")
+    CSTL_MSVC_SUPPRESS_WARNING(26819)
     switch (len & 3) {
         // fall through
         case 3:
@@ -294,6 +296,7 @@ UInt32 hash_murmur32_seed(void const* data, Ll len, UInt32 seed) {
     }
     CSTL_GCC_SUPPRESS_WARNING_POP
     CSTL_CLANG_SUPPRESS_WARNING_POP
+    CSTL_MSVC_SUPPRESS_WARNING_POP
 
     hash ^= len;
     hash ^= (hash >> 16);
@@ -330,8 +333,10 @@ UInt64 hash_murmur64_seed(void const* data__, Ll len, UInt64 seed) {
     // Fallthrough intended
     CSTL_GCC_SUPPRESS_WARNING_PUSH
     CSTL_CLANG_SUPPRESS_WARNING_PUSH
+    CSTL_MSVC_SUPPRESS_WARNING_PUSH
     CSTL_GCC_SUPPRESS_WARNING("-Wimplicit-fallthrough")
     CSTL_CLANG_SUPPRESS_WARNING("-Wimplicit-fallthrough")
+    CSTL_MSVC_SUPPRESS_WARNING(26819)
     switch (len & 7) {
         // fall through
         case 7: h ^= cast(UInt64)(data2[6]) << 48;
@@ -345,6 +350,7 @@ UInt64 hash_murmur64_seed(void const* data__, Ll len, UInt64 seed) {
     };
     CSTL_GCC_SUPPRESS_WARNING_POP
     CSTL_CLANG_SUPPRESS_WARNING_POP
+    CSTL_MSVC_SUPPRESS_WARNING_POP
 
     h ^= h >> r;
     h *= m;
