@@ -233,8 +233,6 @@ static inline void lexer_lex_sl_comment(Lexer* lexer) {
 
     Buff* comment_value = buff_slice(lexer->buffer, prev_offset, comment_length - 1);
     ENFORCE_NNULL(comment_value, "`comment_value` must not be null");
-    if(!comment_value)
-        printf("comment_value = null\n");
     lexer_maketoken(lexer, COMMENT, comment_value, prev_offset, line, col);
 
     LEXER_DECREMENT_OFFSET;
@@ -293,12 +291,9 @@ static inline void lexer_lex_macro(Lexer* lexer) {
         WARN(A number can never have more than 256 characters);
 
     UInt32 offset_diff = lexer->offset - prev_offset;
-    printf("Offset_diff = %d\n", offset_diff);
 
     Buff* macro_value = buff_slice(lexer->buffer, prev_offset - 1, offset_diff);
     ENFORCE_NNULL(macro_value, "`macro_value` must not be null");
-    if(!macro_value)
-        printf("macro_value = null\n");
     lexer_maketoken(lexer, MACRO, macro_value, prev_offset - 1, line, col - 1);
 
     LEXER_DECREMENT_OFFSET;
@@ -333,8 +328,6 @@ static inline void lexer_lex_string(Lexer* lexer) {
     // `offset_diff - 1` so as to ignore the closing quote `"`
     Buff* str_value = buff_slice(lexer->buffer, prev_offset, offset_diff - 1);
     ENFORCE_NNULL(str_value, "`str_value` must not be null");
-    if(!str_value)
-        printf("str_value = null\n");
     lexer_maketoken(lexer, STRING, str_value, prev_offset - 1, line, col - 1);
 }
 
@@ -376,8 +369,6 @@ static inline void lexer_lex_identifier(Lexer* lexer) {
     UInt32 offset_diff = lexer->offset - prev_offset;
     Buff* ident_value = buff_slice(lexer->buffer, prev_offset - 1, offset_diff);
     ENFORCE_NNULL(ident_value, "`ident_value` must not be null");
-    if(!ident_value)
-        printf("Ident value = null\n");
 
     // Determine if a keyword or just a regular identifier
     TokenKind tokenkind = lexer_is_keyword_or_identifier(ident_value->data);
@@ -498,9 +489,9 @@ static inline void lexer_lex_digit(Lexer* lexer) {
         // ch = lexer_advance(lexer);
     }
 
-    CORETEN_ENFORCE(tokenkind != TOK_ILLEGAL);
+    // CORETEN_ENFORCE(tokenkind != TOK_ILLEGAL);
 
-    UInt32 offset_diff = lexer->offset - prev_offset;
+    int offset_diff = cast(int)(lexer->offset - prev_offset);
     CORETEN_ENFORCE(offset_diff != 0);
 
     if(digit_length > MAX_TOKEN_LENGTH)

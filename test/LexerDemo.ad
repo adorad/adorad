@@ -1,5 +1,27 @@
+import go
+import os
+import std
+
+const st = std::debug
+
+use std::debug as AbstractArray
+
+for i in range(len("Hello!!")) {
+    print(i);
+}
+
 func hello(Int i) -> Buffer {
     Buffer buf = *anon::node
     print(buf)
     return buf
+}
+
+type Module enum {
+    Visibility mode
+}
+
+type Module = Module | Struct | Hello;
+
+func main() {
+    print("What to do with this?")
 }

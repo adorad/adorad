@@ -21,6 +21,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #include <adorad/compiler/tokens.h>
 
 typedef struct AstNode AstNode;
+typedef enum VisibilityMode VisibilityMode;
 typedef enum AstNodeKind AstNodeKind;
 typedef enum AstAddressingMode AstAddressingMode;
 typedef enum AstLanguage AstLanguage;
@@ -98,13 +99,18 @@ enum AstNodeKind {
     AstNodeKindForInExpr,     // `for i in 0..10 {}`
     AstNodeKindMatchExpr,     // `match expr { ... }`
     AstNodeKindCatchExpr,     // `catch Error`
-    AstNodeKindBinaryOpExpr,
+    AstNodeKindBinaryOpExpr,  // a binary expression like `&&` or `||`
 
     // Fields
-    AstNodeKindTypeField,     // `type name { ... }`
+    AstNodeKindTypeDecl,     // `type name T { ... }`  where T is one of {enum/struct}
 
     AstNodeKindBreak,         // `break`
     AstNodeKindContinue,      // `continue`
+};
+
+enum VisibilityMode {
+    VisibilityModePrivate, // default
+    VisibilityModePublic   // if `export` is used
 };
 
 enum AstAddressingMode {
