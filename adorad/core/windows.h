@@ -14,9 +14,9 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #ifndef CORETEN_WINDOWS_H
 #define CORETEN_WINDOWS_H
 
-#include <adorad/coreten/compilers.h>
-#include <adorad/coreten/types.h>
-#include <adorad/coreten/misc.h>
+#include <adorad/core/compilers.h>
+#include <adorad/core/types.h>
+#include <adorad/core/misc.h>
 
 // Jason's Mini <Windows.h>
 #ifdef CORETEN_COMPILER_MSVC

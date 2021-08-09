@@ -14,10 +14,10 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #ifndef CORETEN_BUFFER_H
 #define CORETEN_BUFFER_H
 
-#include <adorad/coreten/debug.h>
-#include <adorad/coreten/types.h>
-#include <adorad/coreten/char.h>
-#include <adorad/coreten/misc.h>
+#include <adorad/core/debug.h>
+#include <adorad/core/types.h>
+#include <adorad/core/char.h>
+#include <adorad/core/misc.h>
 
 /*
     A `cstlBuffer` is a Fixed-Size Buffer.

@@ -14,7 +14,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #include <stdlib.h>
 #include <sys/stat.h>
 #include <stdio.h>
-#include <adorad/coreten/io.h>
+#include <adorad/core/io.h>
 
 char* readFile(const char* fname) {
     FILE* file = fopen(fname, "rb"); 

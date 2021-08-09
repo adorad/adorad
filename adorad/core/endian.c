@@ -11,7 +11,7 @@ SPDX-License-Identifier: MIT
 Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 */
 
-#include <adorad/coreten/endian.h>
+#include <adorad/core/endian.h>
 
 static inline UInt16 endian_swap16(UInt16 i) {
     return (i >> 8) | (i << 8);

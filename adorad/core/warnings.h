@@ -14,7 +14,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #ifndef WARNINGS_H
 #define WARNINGS_H
 
-#include <adorad/coreten/compilers.h>
+#include <adorad/core/compilers.h>
 
 // Disable Compiler Warnings
 // It isn't recommended to disable compiler warnings, but sometimes, they are a bit of nuisance especially when

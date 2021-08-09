@@ -11,22 +11,14 @@ SPDX-License-Identifier: MIT
 Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 */
 
-#ifndef CORETEN_IO_H
-#define CORETEN_IO_H
+#include <adorad/core/clock.h>
 
-#include <adorad/coreten/types.h>
-#include <adorad/coreten/debug.h>
-#include <adorad/coreten/headers.h>
+// Returns the current time (in clock_t)
+double now() {
+    return clock();
+}
 
-typedef struct File {
-    char* full_path;
-    char* basename;
-    int fileid;
-
-    char* contents;
-} File;
-
-char* readFile(const char* fname);
-bool file_exists(const char* path);
-
-#endif // CORETEN_IO_H
+// Get duration between `start` and `end` in seconds.
+double duration(clock_t start, clock_t end) {
+    return (double)(end - start)/CLOCKS_PER_SEC;
+}

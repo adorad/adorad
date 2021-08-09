@@ -24,7 +24,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     You do not need to edit this part of file unless you are changing the core CSTL export abstractions.
 
     This part defines the CSTL core export and import macros. This is controlled by whether we are building 
-    shared libraries or not, which is determined during build time and codified in CSTL/coreten/cmake_macros.h.
+    shared libraries or not, which is determined during build time and codified in CSTL/core/cmake_macros.h.
     When the library is built as a shared lib, EXPORT and IMPORT will contain visibility attributes. 
     If it is being built as a static lib, then EXPORT and IMPORT basically have no effect.
 

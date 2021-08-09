@@ -14,7 +14,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #ifndef CORETEN_ENDIAN_H_
 #define CORETEN_ENDIAN_H_
 
-#include <adorad/coreten/types.h>
+#include <adorad/core/types.h>
 
 #if defined(__APPLE__)
     #include <machine/endian.h>

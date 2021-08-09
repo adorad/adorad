@@ -11,8 +11,8 @@ SPDX-License-Identifier: MIT
 Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 */
 
-#include <adorad/coreten/debug.h>
-#include <adorad/coreten/headers.h>
+#include <adorad/core/debug.h>
+#include <adorad/core/headers.h>
 
 int CORETEN_ATTRIBUTE_(format (printf, 2, 3))
 cstlColouredPrintf(int colour, const char* fmt, ...) {
@@ -25,7 +25,7 @@ cstlColouredPrintf(int colour, const char* fmt, ...) {
     va_end(args);
     buffer[sizeof(buffer)-1] = '\0';
 
-#ifdef CORETEN_OS_UNIX
+#if defined(CORETEN_OS_UNIX)
     {
         const char* str;
         switch(colour) {

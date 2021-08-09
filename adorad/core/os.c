@@ -13,8 +13,8 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 
 #include <string.h>
 #include <stdlib.h>
-#include <adorad/coreten/os.h>
-#include <adorad/coreten/debug.h>
+#include <adorad/core/os.h>
+#include <adorad/core/debug.h>
 
 static cstlBuffer* os_get_cwd() {
 #if defined(CORETEN_OS_WINDOWS)

@@ -13,8 +13,8 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #ifndef ADORAD_LOCATION_H
 #define ADORAD_LOCATION_H
 
-#include <adorad/coreten/types.h>
-#include <adorad/coreten/buffer.h>
+#include <adorad/core/types.h>
+#include <adorad/core/buffer.h>
 
 typedef struct Location Location;
 

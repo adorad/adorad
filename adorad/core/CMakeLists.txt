@@ -10,7 +10,7 @@ file(GLOB_RECURSE CORETEN_HEADERS
 
 set(
     CORETEN_BUILD_INCLUDE_DIRS
-    # "${ADORAD_ROOT_DIR}/adorad/core" # results in weird <windows.h> errors (conflicts with adorad/coreten/windows.h)
+    # "${ADORAD_ROOT_DIR}/adorad/core" # results in weird <windows.h> errors (conflicts with adorad/core/windows.h)
     "${ADORAD_ROOT_DIR}"
 )
 

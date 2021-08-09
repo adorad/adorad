@@ -13,12 +13,12 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #ifndef ADORAD_LEXER_H
 #define ADORAD_LEXER_H
 
-#include <adorad/coreten/misc.h>
-#include <adorad/coreten/types.h>
-#include <adorad/coreten/char.h> 
-#include <adorad/coreten/vector.h>
-#include <adorad/coreten/buffer.h>
-#include <adorad/coreten/debug.h>
+#include <adorad/core/misc.h>
+#include <adorad/core/types.h>
+#include <adorad/core/char.h> 
+#include <adorad/core/vector.h>
+#include <adorad/core/buffer.h>
+#include <adorad/core/debug.h>
 
 #include <adorad/compiler/tokens.h>
 #include <adorad/compiler/location.h>

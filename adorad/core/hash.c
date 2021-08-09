@@ -11,8 +11,8 @@ SPDX-License-Identifier: MIT
 Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 */
 
-#include <adorad/coreten/hash.h>
-#include <adorad/coreten/warnings.h>
+#include <adorad/core/hash.h>
+#include <adorad/core/warnings.h>
 
 UInt32 hash_adler32(void const* data, Ll len) {
     UInt32 const MOD_ALDER = 65521;

@@ -14,7 +14,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #ifndef CORETEN_HEADERS_H
 #define CORETEN_HEADERS_H
 
-#include <adorad/coreten/os_defs.h>
+#include <adorad/core/os_defs.h>
 
 #if defined(_WIN32) && !defined(__MINGW32__)
     #ifndef _CRT_SECURE_NO_WARNINGS

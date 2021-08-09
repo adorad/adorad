@@ -12,7 +12,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 */
 
 #include <string.h>
-#include <adorad/coreten/buffer.h>
+#include <adorad/core/buffer.h>
 
 
 // Create a new `cstlBuffer`

@@ -11,7 +11,7 @@ SPDX-License-Identifier: MIT
 Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 */
 
-#include <adorad/coreten/char.h>
+#include <adorad/core/char.h>
 
 
 bool char_is_upper(char c) { 
