@@ -191,11 +191,8 @@ static inline char lexer_peekn(Lexer* lexer, UInt32 n) {
 
 static void lexer_maketoken(Lexer* lexer, TokenKind kind, Buff* value, UInt32 offset, UInt32 line, UInt32 col) {  
     Token* token = token_init();
-    ENFORCE_NOT_NULL(token, "Could not allocate memory. Memory full.");
+    ENFORCE_NNULL(token, "Could not allocate memory. Memory full.");
 
-    if(value == null) {
-        printf("VALUE IS NONE!!!\n");
-    }
     if(!value->data) {
         value = token_to_buff(kind);
 
@@ -228,14 +225,14 @@ static inline void lexer_lex_sl_comment(Lexer* lexer) {
         ++comment_length;
     }
 
-    ENFORCE_EQ(ch, '\n');
+    CORETEN_ENFORCE(ch =='\n');
     
     // Do not store empty comments
     if(comment_length == 0) 
         return;
 
     Buff* comment_value = buff_slice(lexer->buffer, prev_offset, comment_length - 1);
-    ENFORCE_NOT_NULL(comment_value, "`comment_value` must not be null");
+    ENFORCE_NNULL(comment_value, "`comment_value` must not be null");
     if(!comment_value)
         printf("comment_value = null\n");
     lexer_maketoken(lexer, COMMENT, comment_value, prev_offset, line, col);
@@ -299,7 +296,7 @@ static inline void lexer_lex_macro(Lexer* lexer) {
     printf("Offset_diff = %d\n", offset_diff);
 
     Buff* macro_value = buff_slice(lexer->buffer, prev_offset - 1, offset_diff);
-    ENFORCE_NOT_NULL(macro_value, "`macro_value` must not be null");
+    ENFORCE_NNULL(macro_value, "`macro_value` must not be null");
     if(!macro_value)
         printf("macro_value = null\n");
     lexer_maketoken(lexer, MACRO, macro_value, prev_offset - 1, line, col - 1);
@@ -311,7 +308,7 @@ static inline void lexer_lex_macro(Lexer* lexer) {
 static inline void lexer_lex_string(Lexer* lexer) {
     // We already know that the curr char is _not_ a quote (`"`) since an empty string token (`""`) is
     // handled by `lexer_lex()`
-    ENFORCE_NE(LEXER_CURR_CHAR, '"');
+    CORETEN_ENFORCE(LEXER_CURR_CHAR != '"');
     char ch = lexer_advance(lexer);
     int str_length = 0;
     UInt32 prev_offset = lexer->offset - 1;
@@ -330,12 +327,12 @@ static inline void lexer_lex_string(Lexer* lexer) {
     }
     lexer->is_inside_str = false;
 
-    ENFORCE_EQ(ch, '"');
+    CORETEN_ENFORCE(ch == '"');
     UInt32 offset_diff = lexer->offset - prev_offset;
 
     // `offset_diff - 1` so as to ignore the closing quote `"`
     Buff* str_value = buff_slice(lexer->buffer, prev_offset, offset_diff - 1);
-    ENFORCE_NOT_NULL(str_value, "`str_value` must not be null");
+    ENFORCE_NNULL(str_value, "`str_value` must not be null");
     if(!str_value)
         printf("str_value = null\n");
     lexer_maketoken(lexer, STRING, str_value, prev_offset - 1, line, col - 1);
@@ -358,7 +355,7 @@ static inline void lexer_lex_identifier(Lexer* lexer) {
     // When this function is called, we alread know that the first character statisfies the `case ALPHA`.
     // So, the remaining characters are ALPHA, DIGIT, or `_`
     // Still, we check it either way to ensure sanity.
-    ENFORCE(char_is_letter(lexer_prev(lexer)) || char_is_digit(lexer_prev(lexer)),
+    CORETEN_ENFORCE(char_is_letter(lexer_prev(lexer)) || char_is_digit(lexer_prev(lexer)),
                "This message means you've encountered a serious bug within Adorad. Please file an issue on "
                "Adorad's Github repo.\nError: `lexer_lex_identifier()` hasn't been called with a valid identifier character");
 
@@ -378,7 +375,7 @@ static inline void lexer_lex_identifier(Lexer* lexer) {
 
     UInt32 offset_diff = lexer->offset - prev_offset;
     Buff* ident_value = buff_slice(lexer->buffer, prev_offset - 1, offset_diff);
-    ENFORCE_NOT_NULL(ident_value, "`ident_value` must not be null");
+    ENFORCE_NNULL(ident_value, "`ident_value` must not be null");
     if(!ident_value)
         printf("Ident value = null\n");
 
@@ -403,7 +400,7 @@ static inline void lexer_lex_digit(Lexer* lexer) {
     TokenKind tokenkind = TOK_ILLEGAL;
     int digit_length = 0; // no. of digits in the number
 
-    ENFORCE_TRUE(char_is_digit(ch));
+    CORETEN_ENFORCE(char_is_digit(ch));
     while(char_is_digit(ch)) {
         // Hex, Octal, or Binary?
         if(ch == '0') {
@@ -501,10 +498,10 @@ static inline void lexer_lex_digit(Lexer* lexer) {
         // ch = lexer_advance(lexer);
     }
 
-    ENFORCE(tokenkind != TOK_ILLEGAL);
+    CORETEN_ENFORCE(tokenkind != TOK_ILLEGAL);
 
     UInt32 offset_diff = lexer->offset - prev_offset;
-    ENFORCE_NE(offset_diff, 0);
+    CORETEN_ENFORCE(offset_diff != 0);
 
     if(digit_length > MAX_TOKEN_LENGTH)
         WARN(A number can never have more than 256 characters);
@@ -514,7 +511,7 @@ static inline void lexer_lex_digit(Lexer* lexer) {
     // there are more digits to lex.
     // If digit_length = 0, this means that there's only one digit in the number (eg. 0, 2, 9)
     Buff* digit_value = buff_slice(lexer->buffer, prev_offset, offset_diff - 1);
-    ENFORCE_NOT_NULL(digit_value, "`digit_value` must not be null");
+    ENFORCE_NNULL(digit_value, "`digit_value` must not be null");
     if(!digit_value)
         printf("digit_value = null\n");
     lexer_maketoken(lexer, tokenkind, digit_value, prev_offset, line, col);
