@@ -16,6 +16,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 
 #include <adorad/coreten/types.h>
 #include <adorad/coreten/debug.h>
+#include <adorad/coreten/headers.h>
 
 typedef struct File {
     char* full_path;
