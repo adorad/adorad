@@ -18,8 +18,9 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #include <adorad/core/buffer.h>
 #include <adorad/core/vector.h>
 #include <adorad/compiler/location.h>
+#include <adorad/compiler/tokens.h>
 
-typedef struct AstNode__ AstNode__;
+typedef struct AstNode AstNode;
 
 typedef enum {
     NodeKindIdentifier = 0,
@@ -77,9 +78,65 @@ typedef enum {
     AstLanguage__rv32,
 } AstLanguage;
 
+typedef struct {
+    Buff* name;
+    Buff* parent_type; // 
+    // AstNodeType* parent_type;
+    Location* loc;
+    Location* parent_type_loc;
+} AstNode__AliasDecl;
+
+typedef struct {
+    bool is_export;
+    bool is_block;  // `const ( ... )`
+    Location* loc;
+    Vec* fields;    // various constant declarations
+}  AstNode__ConstantDecl;
+
+typedef struct {
+    Buff* module;    // globals declared in a module, persist through that module
+    bool is_block;   // `global ( ... )`
+    Location* loc;
+    Vec* fields;     // various global declarations
+} AstNode__GlobalDecl;
+
+typedef struct {
+    Buff* name;
+    bool is_export;
+    Vec* variant_types; // Vec<AstNodeType*>
+    Location* loc;
+} AstNode__SumTypeDecl;
+
+typedef struct {
+    Buff* name;
+    bool is_export;
+    Location* loc;
+    Vec* fields;     // enum value fields
+    Vec* attributes; // enum attributes 
+} AstNode__TypeEnumDecl;
+
+typedef struct {
+    Buff* name;
+    Location* loc;
+    Vec* fields;    // variables, etc
+    Vec* methods;   // methods
+} AstNode__TypeStructDecl;
+
+// This can be one of:
+//     | AstNode__TypeEnumDecl
+//     | AstNode__TypeUnionDecl (disabled for now)
+//     | AstNode__TypeStructDecl
+typedef struct {
+    union {
+        AstNode__TypeEnumDecl* enum_decl;
+        // AstNode__TypeUnionDecl* union_decl;
+        AstNode__TypeStructDecl* struct_decl;
+    };
+} AstNode__TypeDecl;
+
 // This can be one of:
 //     | AstNode__AliasDecl
-//     | AstNode__TypeDecl (enum/union/interface)
+//     | AstNode__TypeDecl (enum/struct)
 //     | AstNode__FuncDecl
 //     | AstNode__ConstantDecl
 //     | AstNode__GlobalDecl
@@ -98,14 +155,84 @@ typedef struct {
     Location* loc;
 } AstNode__Decl;
 
+typedef struct {
+    AstNode__Expression* expr;
+    Location* loc;
+} AstNode__AsCast;
+
+typedef struct {
+    AstNode__Expression* arg;
+    AstNode__Expression* expr;
+    Buff* typename;
+    bool has_arg;
+    Location* loc;
+} AstNode__CastExpr;
+
+typedef struct {
+    bool is_compiletime;
+    bool is_expr;
+    bool has_else;
+    TokenKind tokenkind;
+    AstNode__Expression* left;
+    Vec* branches;
+    Location* loc;
+} AstNode__IfExpr;
+
+typedef struct {
+    Buff* label;
+    AstNode__Expression* cond;
+    Vec* statements;
+    Location* loc;
+    AstNode__Scope* scope;
+} AstNode__ForExpr;
+
+typedef struct {
+    Buff* label;
+    AstNode__Statement* init;
+    bool has_init;
+    AstNode__Expression* cond;
+    bool has_cond;
+    AstNode__Statement* updation;  // increment/decrement
+    bool has_updation;
+    Vec* statements;
+    Location* loc;
+    AstNode__Scope* scope;
+} AstNode__ForCExpr;
+
+typedef struct {
+    Buff* label;
+    Buff* key_var;
+    Buff* val_var;
+    bool is_val_var_mutable;
+    AstNode__Expression* cond;
+    bool is_range;
+    Vec* statements;
+    TokenKind tokenkind;
+    Location* loc;
+    AstNode__Scope* scope;
+} AstNode__ForInExpr;
+
+typedef struct {
+    TokenKind tokenkind;
+    AstNode__Expression* cond;
+    Vec* branches;
+    Location* loc;
+    bool is_sumtype;
+} AstNode__MatchExpr;
+
+typedef struct {
+    AstNode__Expression* expr;
+    Location* loc;
+} AstNode__TypeOfExpr;
+
 // This can be one of:
 //     | AstNode__AsCast
-//     | AstNode__CallExpr
 //     | AstNode__CastExpr
 //     | AstNode__IfExpr   
 //     | AstNode__ForExpr
 //     | AstNode__ForCExpr   
 //     | AstNode__ForInExpr
+//     | AstNode__FuncCallExpr
 //     | AstNode__MatchExpr
 //     | AstNode__CatchExpr
 //     | AstNode__BinaryOpExpr
@@ -114,16 +241,16 @@ typedef struct {
 typedef struct {
     union {
         AstNode__AsCast*  as_cast;
-        AstNode__CallExpr* call_expr;
         AstNode__CastExpr* cast_expr;
         AstNode__IfExpr* if_expr;
         AstNode__ForExpr* for_expr;
         AstNode__ForCExpr* for_c_expr;
         AstNode__ForInExpr* for_in_expr;
+        AstNode__FuncCallExpr* func_call_expr;
         AstNode__MatchExpr* match_expr;
         AstNode__CatchExpr* catch_expr;
         AstNode__BinaryOpExpr* binary_op_expr;
-        AstNode__TypeExpr* type_expr;
+        // AstNode__TypeExpr* type_expr;
         AstNode__TypeOfExpr* typeof_expr;
     }
 } AstNode__Expression;
@@ -484,7 +611,7 @@ typedef struct {
     Location* loc;
 } AstNode__BoolLiteral;
 
-struct AstNode__ {
+struct AstNode {
     AstNode__Kind type; // type of AST Node
     UInt64 tok_index; // token index
 
