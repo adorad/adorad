@@ -11,8 +11,8 @@ SPDX-License-Identifier: MIT
 Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 */
 
-#ifndef CSTL_COMPILERS_H
-#define CSTL_COMPILERS_H
+#ifndef CORETEN_COMPILERS_H
+#define CORETEN_COMPILERS_H
 
 /*
     General compiler feature support table: https://en.cppreference.com/w/cpp/compiler_support
@@ -34,13 +34,13 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 // Compilers
 // Why is Clang here? See https://stackoverflow.com/a/66722270
 #if defined(_MSC_VER) && !defined(__clang__)
-    #define CSTL_COMPILER_MSVC 1
+    #define CORETEN_COMPILER_MSVC 1
 #elif defined(__clang__)
-    #define CSTL_COMPILER_CLANG 1
+    #define CORETEN_COMPILER_CLANG 1
 #elif defined(__GNUC__) && !defined(INTEL_COMPILER) && !defined(llvm)
-    #define CSTL_COMPILER_GCC 1
+    #define CORETEN_COMPILER_GCC 1
 #else 
     #error AdoradError: Unknown Compiler (Adorad currently supports only MSVC, GCC and Clang)
 #endif 
 
-#endif // CSTL_COMPILERS_H
+#endif // CORETEN_COMPILERS_H

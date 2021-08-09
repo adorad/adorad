@@ -1,28 +1,28 @@
-# Main Build File for the main CSTL Library
+# Main Build File for the main Coreten Library
 
-file(GLOB LIBCSTL_SOURCES
+file(GLOB LIBCORETEN_SOURCES
     *.c
 )
 
-file(GLOB_RECURSE CSTL_HEADERS 
+file(GLOB_RECURSE CORETEN_HEADERS 
     *.h
 )
 
 set(
-    CSTL_BUILD_INCLUDE_DIRS
+    CORETEN_BUILD_INCLUDE_DIRS
     # "${ADORAD_ROOT_DIR}/adorad/core" # results in weird <windows.h> errors (conflicts with adorad/core/windows.h)
     "${ADORAD_ROOT_DIR}"
 )
 
 add_library(
-    CSTL STATIC
-    ${LIBCSTL_SOURCES}
-    ${CSTL_HEADERS}
+    Coreten STATIC
+    ${LIBCORETEN_SOURCES}
+    ${CORETEN_HEADERS}
 )
 # Add an alias
-add_library(CSTL::CSTL ALIAS CSTL)
+add_library(Coreten::Coreten ALIAS Coreten)
 
 target_include_directories(
-    CSTL PUBLIC
-    "$<BUILD_INTERFACE:${CSTL_BUILD_INCLUDE_DIRS}>"
+    Coreten PUBLIC
+    "$<BUILD_INTERFACE:${CORETEN_BUILD_INCLUDE_DIRS}>"
 )

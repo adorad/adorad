@@ -11,8 +11,8 @@ SPDX-License-Identifier: MIT
 Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 */
 
-#ifndef CSTL_UTF8_H
-#define CSTL_UTF8_H
+#ifndef CORETEN_UTF8_H
+#define CORETEN_UTF8_H
 
 /*
     UTF-8 refresher:
@@ -187,4 +187,4 @@ typedef enum {
     UTF8_BOUNDCLASS_E_ZWG = 20, /* UTF8_BOUNDCLASS_EXTENDED_PICTOGRAPHIC + ZWJ */
 } cstlUTF8Boundclass;
 
-#endif // CSTL_UTF8_H
+#endif // CORETEN_UTF8_H

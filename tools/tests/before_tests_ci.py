@@ -76,9 +76,9 @@ def main():
                 s = s.replace('adorad.h', 'AdoradInternalTests.h')
                 # Don't run into `redefinition of macro` errors when testing with Tau (which defines the same macros)
                 s = s.replace('WARN', 'CORETEN_WARN')
-                # s = s.replace('CHECK', 'CSTL_CHECK')
-                # s = s.replace('REQUIRE', 'CSTL_REQUIRE')
-                # s = s.replace('CSTL_DEBUG_CSTL_CHECK', 'CSTL_DEBUG_CHECK')
+                # s = s.replace('CHECK', 'CORETEN_CHECK')
+                # s = s.replace('REQUIRE', 'CORETEN_REQUIRE')
+                # s = s.replace('CORETEN_DEBUG_CORETEN_CHECK', 'CORETEN_DEBUG_CHECK')
 
                 if root.endswith(ACCEPTABLE_REMOVEABLE_DIRS):
                     s = s.replace('static inline ', '')

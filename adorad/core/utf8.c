@@ -230,8 +230,8 @@ static inline char* utf8_encode(Rune value) {
         return dst;
     } 
     // Invalid/Surrogate range
-    if(value > CSTL_RUNE_MAX || CSTL_IS_BETWEEN(value, 0xd800, 0xdff)) {
-        value = CSTL_RUNE_INVALID;
+    if(value > CORETEN_RUNE_MAX || CORETEN_IS_BETWEEN(value, 0xd800, 0xdff)) {
+        value = CORETEN_RUNE_INVALID;
         dst[0] = (0xe0) | (cast(char)(value >> 12));
         dst[1] = (0x80) | (cast(char)(value >> 12) & mask);
         dst[2] = (0x80) | (cast(char)(value) & mask);

@@ -11,8 +11,8 @@ SPDX-License-Identifier: MIT
 Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 */
 
-#ifndef CSTL_HASH_H
-#define CSTL_HASH_H
+#ifndef CORETEN_HASH_H
+#define CORETEN_HASH_H
 
 #include <adorad/core/types.h>
 #include <adorad/core/os_defs.h>
@@ -40,4 +40,4 @@ UInt64 hash_murmur64(void const* data, Ll len);
 UInt32 hash_murmur32_seed(void const* data, Ll len, UInt32 seed);
 UInt64 hash_murmur64_seed(void const* data__, Ll len, UInt64 seed);
 
-#endif // CSTL_HASH_H
+#endif // CORETEN_HASH_H

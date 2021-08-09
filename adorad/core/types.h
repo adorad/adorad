@@ -11,16 +11,16 @@ SPDX-License-Identifier: MIT
 Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 */
 
-#ifndef CSTL_TYPES_H
-#define CSTL_TYPES_H
+#ifndef CORETEN_TYPES_H
+#define CORETEN_TYPES_H
 
 #include <adorad/core/compilers.h>
 
 // This macro is only for simple assertion checks (that don't require a message to STDOUT).
 // Note that this is not recommended. Use CHECK instead
 // If a condition fails, this raises a compilation error (negative index) --> 0*2 == 0 + (-1) == -1!
-#define CSTL_DEBUG_CHECK1(cond, line)      typedef char static_assertion_at_line_##line[(!!(cond))*2-1]
-#define CSTL_DEBUG_CORETEN_ENFORCE(cond)             CSTL_DEBUG_CHECK1(cond, __LINE__)
+#define CORETEN_DEBUG_CHECK1(cond, line)      typedef char static_assertion_at_line_##line[(!!(cond))*2-1]
+#define CORETEN_DEBUG_CORETEN_ENFORCE(cond)             CORETEN_DEBUG_CHECK1(cond, __LINE__)
 
 //================================== Built-in types ================================*/
 /*
@@ -35,7 +35,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     typedef float               Float32; 
     typedef double              Float64; 
 */
-#if defined(CSTL_COMPILER_MSVC)
+#if defined(CORETEN_COMPILER_MSVC)
     #if _MSVC_VER < 1300 
         typedef unsigned char     UInt8;
         typedef signed char       Int8;
@@ -83,35 +83,35 @@ typedef Int8  Bool8;
 typedef Int16 Bool16;
 typedef Int32 Bool32; // Prefer this!
 
-CSTL_DEBUG_CORETEN_ENFORCE(sizeof(UInt8)  == sizeof(Int8));
-CSTL_DEBUG_CORETEN_ENFORCE(sizeof(UInt16) == sizeof(Int16));
-CSTL_DEBUG_CORETEN_ENFORCE(sizeof(UInt32) == sizeof(Int32));
-CSTL_DEBUG_CORETEN_ENFORCE(sizeof(UInt64) == sizeof(Int64));
+CORETEN_DEBUG_CORETEN_ENFORCE(sizeof(UInt8)  == sizeof(Int8));
+CORETEN_DEBUG_CORETEN_ENFORCE(sizeof(UInt16) == sizeof(Int16));
+CORETEN_DEBUG_CORETEN_ENFORCE(sizeof(UInt32) == sizeof(Int32));
+CORETEN_DEBUG_CORETEN_ENFORCE(sizeof(UInt64) == sizeof(Int64));
 
-CSTL_DEBUG_CORETEN_ENFORCE(sizeof(UInt8)  == 1);
-CSTL_DEBUG_CORETEN_ENFORCE(sizeof(UInt16) == 2);
-CSTL_DEBUG_CORETEN_ENFORCE(sizeof(UInt32) == 4);
-CSTL_DEBUG_CORETEN_ENFORCE(sizeof(UInt64) == 8);
+CORETEN_DEBUG_CORETEN_ENFORCE(sizeof(UInt8)  == 1);
+CORETEN_DEBUG_CORETEN_ENFORCE(sizeof(UInt16) == 2);
+CORETEN_DEBUG_CORETEN_ENFORCE(sizeof(UInt32) == 4);
+CORETEN_DEBUG_CORETEN_ENFORCE(sizeof(UInt64) == 8);
 
-CSTL_DEBUG_CORETEN_ENFORCE(sizeof(Float32) == 4);
-CSTL_DEBUG_CORETEN_ENFORCE(sizeof(Float64) == 8);
+CORETEN_DEBUG_CORETEN_ENFORCE(sizeof(Float32) == 4);
+CORETEN_DEBUG_CORETEN_ENFORCE(sizeof(Float64) == 8);
 
-CSTL_DEBUG_CORETEN_ENFORCE(sizeof(Bool8)  == 1);
-CSTL_DEBUG_CORETEN_ENFORCE(sizeof(Bool16) == 2);
-CSTL_DEBUG_CORETEN_ENFORCE(sizeof(Bool32) == 4);
+CORETEN_DEBUG_CORETEN_ENFORCE(sizeof(Bool8)  == 1);
+CORETEN_DEBUG_CORETEN_ENFORCE(sizeof(Bool16) == 2);
+CORETEN_DEBUG_CORETEN_ENFORCE(sizeof(Bool32) == 4);
 
 // Unicode codepoint
 typedef UInt8  Byte;
 typedef UInt32 Rune;
 typedef unsigned char* Byteptr;
 
-#define CSTL_RUNE_INVALID cast(Rune)(0xfffd)
-#define CSTL_RUNE_MAX     cast(Rune)(0x0010ffff)
-#define CSTL_RUNE_BOM     cast(Rune)(0xfeff)
-#define CSTL_RUNE_EOF     cast(Rune)(-1)
+#define CORETEN_RUNE_INVALID cast(Rune)(0xfffd)
+#define CORETEN_RUNE_MAX     cast(Rune)(0x0010ffff)
+#define CORETEN_RUNE_BOM     cast(Rune)(0xfeff)
+#define CORETEN_RUNE_EOF     cast(Rune)(-1)
 
-CSTL_DEBUG_CORETEN_ENFORCE(sizeof(Byte) == 1);
-CSTL_DEBUG_CORETEN_ENFORCE(sizeof(Rune) == 4);
+CORETEN_DEBUG_CORETEN_ENFORCE(sizeof(Byte) == 1);
+CORETEN_DEBUG_CORETEN_ENFORCE(sizeof(Rune) == 4);
 
 // Max and Min 
 #ifndef UInt8_MIN 
@@ -135,14 +135,14 @@ CSTL_DEBUG_CORETEN_ENFORCE(sizeof(Rune) == 4);
     #define Int64_MIN  (-0x7fffffffffffffffll - 1)
     #define Int64_MAX  0x7fffffffffffffffll
 
-    #if defined(CSTL_ARCH_32BIT)
+    #if defined(CORETEN_ARCH_32BIT)
         #define UINTSIZE_MIX UInt32_MIN
         #define UINTSIZE_MAX UInt32_MAX
 
         #define INTSIZE_MIX Int32_MIN
         #define INTSIZE_MAX Int32_MAX
     
-    #elif defined(CSTL_ARCH_64BIT)
+    #elif defined(CORETEN_ARCH_64BIT)
         #define UINTSIZE_MIX UInt64_MIN
         #define UINTSIZE_MAX UInt64_MAX
 
@@ -197,7 +197,7 @@ CSTL_DEBUG_CORETEN_ENFORCE(sizeof(Rune) == 4);
     typedef  intptr_t    Intptr;
 #endif
 
-CSTL_DEBUG_CORETEN_ENFORCE(sizeof(UIntptr) == sizeof(Intptr));
+CORETEN_DEBUG_CORETEN_ENFORCE(sizeof(UIntptr) == sizeof(Intptr));
 
 // More Useful types
 #define nullchar '\0' 
@@ -227,4 +227,4 @@ CSTL_DEBUG_CORETEN_ENFORCE(sizeof(UIntptr) == sizeof(Intptr));
     #endif // __cplusplus   
 #endif // Bool_types_defined
 
-#endif // CSTL_TYPES_H
+#endif // CORETEN_TYPES_H

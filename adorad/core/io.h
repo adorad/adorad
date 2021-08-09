@@ -11,8 +11,8 @@ SPDX-License-Identifier: MIT
 Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 */
 
-#ifndef CSTL_IO_H
-#define CSTL_IO_H
+#ifndef CORETEN_IO_H
+#define CORETEN_IO_H
 
 #include <adorad/core/types.h>
 #include <adorad/core/debug.h>
@@ -28,4 +28,4 @@ typedef struct File {
 char* readFile(const char* fname);
 bool file_exists(const char* path);
 
-#endif // CSTL_IO_H
+#endif // CORETEN_IO_H

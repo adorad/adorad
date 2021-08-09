@@ -11,15 +11,15 @@ SPDX-License-Identifier: MIT
 Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 */
 
-#ifndef CSTL_WINDOWS_H
-#define CSTL_WINDOWS_H
+#ifndef CORETEN_WINDOWS_H
+#define CORETEN_WINDOWS_H
 
 #include <adorad/core/compilers.h>
 #include <adorad/core/types.h>
 #include <adorad/core/misc.h>
 
 // Jason's Mini <Windows.h>
-#ifdef CSTL_COMPILER_MSVC
+#ifdef CORETEN_COMPILER_MSVC
     #define WINAPI          __stdcall
     #define WINAPIV         __cdecl
     #define CALLBACK        __stdcall
@@ -459,22 +459,22 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 /*
     typedef DWORD WINAPI THREAD_START_ROUTINE(void* parameter);
 
-    CSTL_DLL_IMPORT DWORD   WINAPI GetLastError       (void);
-    CSTL_DLL_IMPORT BOOL    WINAPI CloseHandle        (HANDLE object);
-    CSTL_DLL_IMPORT HANDLE  WINAPI CreateSemaphoreA   (SECURITY_ATTRIBUTES* semaphore_attributes, LONG initial_count,
+    CORETEN_DLL_IMPORT DWORD   WINAPI GetLastError       (void);
+    CORETEN_DLL_IMPORT BOOL    WINAPI CloseHandle        (HANDLE object);
+    CORETEN_DLL_IMPORT HANDLE  WINAPI CreateSemaphoreA   (SECURITY_ATTRIBUTES* semaphore_attributes, LONG initial_count,
 	                                                 LONG maximum_count, char const* name);
-    CSTL_DLL_IMPORT BOOL    WINAPI ReleaseSemaphore   (HANDLE semaphore, LONG release_count, LONG* previous_count);
-    CSTL_DLL_IMPORT DWORD   WINAPI WaitForSingleObject(HANDLE handle, DWORD milliseconds);
-    CSTL_DLL_IMPORT HANDLE  WINAPI CreateThread       (SECURITY_ATTRIBUTES* semaphore_attributes, Ll stack_size,
+    CORETEN_DLL_IMPORT BOOL    WINAPI ReleaseSemaphore   (HANDLE semaphore, LONG release_count, LONG* previous_count);
+    CORETEN_DLL_IMPORT DWORD   WINAPI WaitForSingleObject(HANDLE handle, DWORD milliseconds);
+    CORETEN_DLL_IMPORT HANDLE  WINAPI CreateThread       (SECURITY_ATTRIBUTES* semaphore_attributes, Ll stack_size,
 	                                                 THREAD_START_ROUTINE* start_address, void* parameter,
 	                                                 DWORD creation_flags, DWORD* thread_id);
-    CSTL_DLL_IMPORT DWORD   WINAPI GetThreadId        (HANDLE handle);
-    CSTL_DLL_IMPORT void    WINAPI RaiseException     (DWORD, DWORD, DWORD, ULONG_PTR const* );
+    CORETEN_DLL_IMPORT DWORD   WINAPI GetThreadId        (HANDLE handle);
+    CORETEN_DLL_IMPORT void    WINAPI RaiseException     (DWORD, DWORD, DWORD, ULONG_PTR const* );
 
 
-    CSTL_DLL_IMPORT BOOL      WINAPI GetLogicalProcessorInformation(SYSTEM_LOGICAL_PROCESSOR_INFORMATION* buffer, DWORD* return_length);
-    CSTL_DLL_IMPORT DWORD_PTR WINAPI SetThreadAffinityMask(HANDLE thread, DWORD_PTR check_mask);
-    CSTL_DLL_IMPORT HANDLE    WINAPI GetCurrentThread(void);
+    CORETEN_DLL_IMPORT BOOL      WINAPI GetLogicalProcessorInformation(SYSTEM_LOGICAL_PROCESSOR_INFORMATION* buffer, DWORD* return_length);
+    CORETEN_DLL_IMPORT DWORD_PTR WINAPI SetThreadAffinityMask(HANDLE thread, DWORD_PTR check_mask);
+    CORETEN_DLL_IMPORT HANDLE    WINAPI GetCurrentThread(void);
 */
 
     #define PAGE_NOACCESS          0x01
@@ -502,10 +502,10 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     #define MEM_4MB_PAGES    0x80000000
 
 /*
-    CSTL_DLL_IMPORT void*  WINAPI VirtualAlloc (void* addr, Ll size, DWORD allocation_type, DWORD protect);
-    CSTL_DLL_IMPORT Ll  WINAPI VirtualQuery (void const* address, MEMORY_BASIC_INFORMATION* buffer, Ll length);
-    CSTL_DLL_IMPORT BOOL   WINAPI VirtualFree  (void* address, Ll size, DWORD free_type);
-    CSTL_DLL_IMPORT void   WINAPI GetSystemInfo(SYSTEM_INFO* system_info);
+    CORETEN_DLL_IMPORT void*  WINAPI VirtualAlloc (void* addr, Ll size, DWORD allocation_type, DWORD protect);
+    CORETEN_DLL_IMPORT Ll  WINAPI VirtualQuery (void const* address, MEMORY_BASIC_INFORMATION* buffer, Ll length);
+    CORETEN_DLL_IMPORT BOOL   WINAPI VirtualFree  (void* address, Ll size, DWORD free_type);
+    CORETEN_DLL_IMPORT void   WINAPI GetSystemInfo(SYSTEM_INFO* system_info);
 */
 
 	#ifndef VK_UNKNOWN
@@ -710,35 +710,35 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     #define STD_ERROR_HANDLE         ((DWORD)-12)
 
 /*
-    CSTL_DLL_IMPORT int           MultiByteToWideChar(UINT code_page, DWORD flags, char const*    multi_byte_str, int multi_byte_len, wchar_t const* wide_char_str,  int wide_char_len);
-    CSTL_DLL_IMPORT int           WideCharToMultiByte(UINT code_page, DWORD flags, wchar_t const* wide_char_str,  int wide_char_len, char const*     multi_byte_str, int multi_byte_len);
-    CSTL_DLL_IMPORT BOOL   WINAPI SetFilePointerEx(HANDLE file, LARGE_INTEGER distance_to_move,
+    CORETEN_DLL_IMPORT int           MultiByteToWideChar(UINT code_page, DWORD flags, char const*    multi_byte_str, int multi_byte_len, wchar_t const* wide_char_str,  int wide_char_len);
+    CORETEN_DLL_IMPORT int           WideCharToMultiByte(UINT code_page, DWORD flags, wchar_t const* wide_char_str,  int wide_char_len, char const*     multi_byte_str, int multi_byte_len);
+    CORETEN_DLL_IMPORT BOOL   WINAPI SetFilePointerEx(HANDLE file, LARGE_INTEGER distance_to_move,
 	                                             LARGE_INTEGER* new_file_pointer, DWORD move_method);
-    CSTL_DLL_IMPORT BOOL   WINAPI ReadFile        (HANDLE file, void* buffer, DWORD bytes_to_read, DWORD* bytes_read, OVERLAPPED* overlapped);
-    CSTL_DLL_IMPORT BOOL   WINAPI WriteFile       (HANDLE file, void const* buffer, DWORD bytes_to_write, DWORD* bytes_written, OVERLAPPED* overlapped);
-    CSTL_DLL_IMPORT HANDLE WINAPI CreateFileW     (wchar_t const* path, DWORD desired_access, DWORD share_mode,
+    CORETEN_DLL_IMPORT BOOL   WINAPI ReadFile        (HANDLE file, void* buffer, DWORD bytes_to_read, DWORD* bytes_read, OVERLAPPED* overlapped);
+    CORETEN_DLL_IMPORT BOOL   WINAPI WriteFile       (HANDLE file, void const* buffer, DWORD bytes_to_write, DWORD* bytes_written, OVERLAPPED* overlapped);
+    CORETEN_DLL_IMPORT HANDLE WINAPI CreateFileW     (wchar_t const* path, DWORD desired_access, DWORD share_mode,
 	                                             SECURITY_ATTRIBUTES* , DWORD creation_disposition,
 	                                             DWORD flags_and_attributes, HANDLE template_file);
-    CSTL_DLL_IMPORT HANDLE WINAPI GetStdHandle    (DWORD std_handle);
-    CSTL_DLL_IMPORT BOOL   WINAPI GetFileSizeEx   (HANDLE file, LARGE_INTEGER* size);
-    CSTL_DLL_IMPORT BOOL   WINAPI SetEndOfFile    (HANDLE file);
-    CSTL_DLL_IMPORT HANDLE WINAPI FindFirstFileW  (wchar_t const* path, WIN32_FIND_DATAW* data);
-    CSTL_DLL_IMPORT BOOL   WINAPI FindClose       (HANDLE find_file);
-    CSTL_DLL_IMPORT BOOL   WINAPI GetFileAttributesExW(wchar_t const* path, GET_FILEEX_INFO_LEVELS info_level_id, WIN32_FILE_ATTRIBUTE_DATA* data);
-    CSTL_DLL_IMPORT BOOL   WINAPI CopyFileW(wchar_t const* old_f, wchar_t const* new_f, BOOL fail_if_exists);
-    CSTL_DLL_IMPORT BOOL   WINAPI MoveFileW(wchar_t const* old_f, wchar_t const* new_f);
+    CORETEN_DLL_IMPORT HANDLE WINAPI GetStdHandle    (DWORD std_handle);
+    CORETEN_DLL_IMPORT BOOL   WINAPI GetFileSizeEx   (HANDLE file, LARGE_INTEGER* size);
+    CORETEN_DLL_IMPORT BOOL   WINAPI SetEndOfFile    (HANDLE file);
+    CORETEN_DLL_IMPORT HANDLE WINAPI FindFirstFileW  (wchar_t const* path, WIN32_FIND_DATAW* data);
+    CORETEN_DLL_IMPORT BOOL   WINAPI FindClose       (HANDLE find_file);
+    CORETEN_DLL_IMPORT BOOL   WINAPI GetFileAttributesExW(wchar_t const* path, GET_FILEEX_INFO_LEVELS info_level_id, WIN32_FILE_ATTRIBUTE_DATA* data);
+    CORETEN_DLL_IMPORT BOOL   WINAPI CopyFileW(wchar_t const* old_f, wchar_t const* new_f, BOOL fail_if_exists);
+    CORETEN_DLL_IMPORT BOOL   WINAPI MoveFileW(wchar_t const* old_f, wchar_t const* new_f);
 
-    CSTL_DLL_IMPORT HMODULE WINAPI LoadLibraryA  (char const* filename);
-    CSTL_DLL_IMPORT BOOL    WINAPI FreeLibrary   (HMODULE module);
-    CSTL_DLL_IMPORT FARPROC WINAPI GetProcAddress(HMODULE module, char const* name);
+    CORETEN_DLL_IMPORT HMODULE WINAPI LoadLibraryA  (char const* filename);
+    CORETEN_DLL_IMPORT BOOL    WINAPI FreeLibrary   (HMODULE module);
+    CORETEN_DLL_IMPORT FARPROC WINAPI GetProcAddress(HMODULE module, char const* name);
 
-    CSTL_DLL_IMPORT BOOL WINAPI QueryPerformanceFrequency(LARGE_INTEGER* frequency);
-    CSTL_DLL_IMPORT BOOL WINAPI QueryPerformanceCounter  (LARGE_INTEGER* counter);
-    CSTL_DLL_IMPORT void WINAPI GetSystemTimeAsFileTime  (FILETIME* system_time_as_file_time);
-    CSTL_DLL_IMPORT void WINAPI Sleep(DWORD milliseconds);
-    CSTL_DLL_IMPORT void WINAPI ExitProcess(UINT exit_code);
+    CORETEN_DLL_IMPORT BOOL WINAPI QueryPerformanceFrequency(LARGE_INTEGER* frequency);
+    CORETEN_DLL_IMPORT BOOL WINAPI QueryPerformanceCounter  (LARGE_INTEGER* counter);
+    CORETEN_DLL_IMPORT void WINAPI GetSystemTimeAsFileTime  (FILETIME* system_time_as_file_time);
+    CORETEN_DLL_IMPORT void WINAPI Sleep(DWORD milliseconds);
+    CORETEN_DLL_IMPORT void WINAPI ExitProcess(UINT exit_code);
 
-    CSTL_DLL_IMPORT BOOL WINAPI SetEnvironmentVariableA(char const* name, char const* value);
+    CORETEN_DLL_IMPORT BOOL WINAPI SetEnvironmentVariableA(char const* name, char const* value);
 */
 
     #define WM_NULL                   0x0000
@@ -845,9 +845,9 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     #define MAPVK_VSC_TO_VK_EX 3
 
 /*
-    CSTL_DLL_IMPORT BOOL WINAPI RegisterRawInputDevices(RAWINPUTDEVICE const* raw_input_devices, UINT num_devices, UINT size);
-    CSTL_DLL_IMPORT UINT WINAPI GetRawInputData(HRAWINPUT raw_input, UINT ui_command, void* data, UINT* size, UINT size_header);
-    CSTL_DLL_IMPORT UINT WINAPI MapVirtualKeyW(UINT code, UINT map_type);
+    CORETEN_DLL_IMPORT BOOL WINAPI RegisterRawInputDevices(RAWINPUTDEVICE const* raw_input_devices, UINT num_devices, UINT size);
+    CORETEN_DLL_IMPORT UINT WINAPI GetRawInputData(HRAWINPUT raw_input, UINT ui_command, void* data, UINT* size, UINT size_header);
+    CORETEN_DLL_IMPORT UINT WINAPI MapVirtualKeyW(UINT code, UINT map_type);
 */
 
     #define CS_DBLCLKS         0x0008
@@ -861,11 +861,11 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     #define MB_ICONEXCLAMATION 0x0030l
 
 /*
-    CSTL_DLL_IMPORT LRESULT WINAPI DefWindowProcW(HWND wnd, UINT msg, WPARAM wParam, LPARAM lParam);
-    CSTL_DLL_IMPORT HGDIOBJ WINAPI GetStockObject(int object);
-    CSTL_DLL_IMPORT HMODULE WINAPI GetModuleHandleW(wchar_t const* );
-    CSTL_DLL_IMPORT ATOM    WINAPI RegisterClassExW(WNDCLASSEXW const* wcx); // u16 == ATOM
-    CSTL_DLL_IMPORT int     WINAPI MessageBoxW(void* wnd, wchar_t const* text, wchar_t const* caption, unsigned int type);
+    CORETEN_DLL_IMPORT LRESULT WINAPI DefWindowProcW(HWND wnd, UINT msg, WPARAM wParam, LPARAM lParam);
+    CORETEN_DLL_IMPORT HGDIOBJ WINAPI GetStockObject(int object);
+    CORETEN_DLL_IMPORT HMODULE WINAPI GetModuleHandleW(wchar_t const* );
+    CORETEN_DLL_IMPORT ATOM    WINAPI RegisterClassExW(WNDCLASSEXW const* wcx); // u16 == ATOM
+    CORETEN_DLL_IMPORT int     WINAPI MessageBoxW(void* wnd, wchar_t const* text, wchar_t const* caption, unsigned int type);
 */
 
     #define DM_BITSPERPEL 0x00040000l
@@ -926,32 +926,32 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     #define ENUM_REGISTRY_SETTINGS cast(DWORD)-2
 
 /*
-    CSTL_DLL_IMPORT LONG    WINAPI ChangeDisplaySettingsW(DEVMODEW* dev_mode, DWORD flags);
-    CSTL_DLL_IMPORT BOOL    WINAPI AdjustWindowRect(RECT* rect, DWORD style, BOOL enu);
-    CSTL_DLL_IMPORT HWND    WINAPI CreateWindowExW(DWORD ex_style, wchar_t const* class_name, wchar_t const* window_name,
+    CORETEN_DLL_IMPORT LONG    WINAPI ChangeDisplaySettingsW(DEVMODEW* dev_mode, DWORD flags);
+    CORETEN_DLL_IMPORT BOOL    WINAPI AdjustWindowRect(RECT* rect, DWORD style, BOOL enu);
+    CORETEN_DLL_IMPORT HWND    WINAPI CreateWindowExW(DWORD ex_style, wchar_t const* class_name, wchar_t const* window_name,
 	                                             DWORD style, int x, int y, int width, int height, HWND wnd_parent,
 	                                             HMENU menu, HINSTANCE instance, void* param);
-    CSTL_DLL_IMPORT HMODULE  WINAPI GetModuleHandleW(wchar_t const* );
-    CSTL_DLL_IMPORT HDC             GetDC(HANDLE);
-    CSTL_DLL_IMPORT BOOL     WINAPI GetWindowPlacement(HWND hWnd, WINDOWPLACEMENT* lpwndpl);
-    CSTL_DLL_IMPORT BOOL            GetMonitorInfoW(HMONITOR hMonitor, MONITORINFO* lpmi);
-    CSTL_DLL_IMPORT HMONITOR        MonitorFromWindow(HWND hwnd, DWORD dwFlags);
-    CSTL_DLL_IMPORT LONG     WINAPI SetWindowLongW(HWND hWnd, int nIndex, LONG dwNewLong);
-    CSTL_DLL_IMPORT BOOL     WINAPI SetWindowPos(HWND hWnd, HWND hWndInsertAfter, int X, int Y, int cx, int cy, UINT uFlags);
-    CSTL_DLL_IMPORT BOOL     WINAPI SetWindowPlacement(HWND hWnd, WINDOWPLACEMENT const* lpwndpl);
-    CSTL_DLL_IMPORT BOOL     WINAPI ShowWindow(HWND hWnd, int nCmdShow);
-    CSTL_DLL_IMPORT LONG_PTR WINAPI GetWindowLongPtrW(HWND wnd, int index);
+    CORETEN_DLL_IMPORT HMODULE  WINAPI GetModuleHandleW(wchar_t const* );
+    CORETEN_DLL_IMPORT HDC             GetDC(HANDLE);
+    CORETEN_DLL_IMPORT BOOL     WINAPI GetWindowPlacement(HWND hWnd, WINDOWPLACEMENT* lpwndpl);
+    CORETEN_DLL_IMPORT BOOL            GetMonitorInfoW(HMONITOR hMonitor, MONITORINFO* lpmi);
+    CORETEN_DLL_IMPORT HMONITOR        MonitorFromWindow(HWND hwnd, DWORD dwFlags);
+    CORETEN_DLL_IMPORT LONG     WINAPI SetWindowLongW(HWND hWnd, int nIndex, LONG dwNewLong);
+    CORETEN_DLL_IMPORT BOOL     WINAPI SetWindowPos(HWND hWnd, HWND hWndInsertAfter, int X, int Y, int cx, int cy, UINT uFlags);
+    CORETEN_DLL_IMPORT BOOL     WINAPI SetWindowPlacement(HWND hWnd, WINDOWPLACEMENT const* lpwndpl);
+    CORETEN_DLL_IMPORT BOOL     WINAPI ShowWindow(HWND hWnd, int nCmdShow);
+    CORETEN_DLL_IMPORT LONG_PTR WINAPI GetWindowLongPtrW(HWND wnd, int index);
 
-    CSTL_DLL_IMPORT BOOL           EnumDisplaySettingsW(wchar_t const* lpszDeviceName, DWORD iModeNum, DEVMODEW* lpDevMode);
-    CSTL_DLL_IMPORT void*   WINAPI GlobalLock(HGLOBAL hMem);
-    CSTL_DLL_IMPORT BOOL    WINAPI GlobalUnlock(HGLOBAL hMem);
-    CSTL_DLL_IMPORT HGLOBAL WINAPI GlobalAlloc(UINT uFlags, Ll dwBytes);
-    CSTL_DLL_IMPORT HANDLE  WINAPI GetClipboardData(UINT uFormat);
-    CSTL_DLL_IMPORT BOOL    WINAPI IsClipboardFormatAvailable(UINT format);
-    CSTL_DLL_IMPORT BOOL    WINAPI OpenClipboard(HWND hWndNewOwner);
-    CSTL_DLL_IMPORT BOOL    WINAPI EmptyClipboard(void);
-    CSTL_DLL_IMPORT BOOL    WINAPI CloseClipboard(void);
-    CSTL_DLL_IMPORT HANDLE  WINAPI SetClipboardData(UINT uFormat, HANDLE hMem);
+    CORETEN_DLL_IMPORT BOOL           EnumDisplaySettingsW(wchar_t const* lpszDeviceName, DWORD iModeNum, DEVMODEW* lpDevMode);
+    CORETEN_DLL_IMPORT void*   WINAPI GlobalLock(HGLOBAL hMem);
+    CORETEN_DLL_IMPORT BOOL    WINAPI GlobalUnlock(HGLOBAL hMem);
+    CORETEN_DLL_IMPORT HGLOBAL WINAPI GlobalAlloc(UINT uFlags, Ll dwBytes);
+    CORETEN_DLL_IMPORT HANDLE  WINAPI GetClipboardData(UINT uFormat);
+    CORETEN_DLL_IMPORT BOOL    WINAPI IsClipboardFormatAvailable(UINT format);
+    CORETEN_DLL_IMPORT BOOL    WINAPI OpenClipboard(HWND hWndNewOwner);
+    CORETEN_DLL_IMPORT BOOL    WINAPI EmptyClipboard(void);
+    CORETEN_DLL_IMPORT BOOL    WINAPI CloseClipboard(void);
+    CORETEN_DLL_IMPORT HANDLE  WINAPI SetClipboardData(UINT uFormat, HANDLE hMem);
 */
 
     #define PFD_TYPE_RGBA             0
@@ -982,37 +982,37 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     #define GWL_STYLE -16
 
 /*
-    CSTL_DLL_IMPORT BOOL  WINAPI SetPixelFormat   (HDC hdc, int pixel_format, PIXELFORMATDESCRIPTOR const* pfd);
-    CSTL_DLL_IMPORT int   WINAPI ChoosePixelFormat(HDC hdc, PIXELFORMATDESCRIPTOR const* pfd);
-    CSTL_DLL_IMPORT HGLRC WINAPI wglCreateContext (HDC hdc);
-    CSTL_DLL_IMPORT BOOL  WINAPI wglMakeCurrent   (HDC hdc, HGLRC hglrc);
-    CSTL_DLL_IMPORT PROC  WINAPI wglGetProcAddress(char const* str);
-    CSTL_DLL_IMPORT BOOL  WINAPI wglDeleteContext (HGLRC hglrc);
+    CORETEN_DLL_IMPORT BOOL  WINAPI SetPixelFormat   (HDC hdc, int pixel_format, PIXELFORMATDESCRIPTOR const* pfd);
+    CORETEN_DLL_IMPORT int   WINAPI ChoosePixelFormat(HDC hdc, PIXELFORMATDESCRIPTOR const* pfd);
+    CORETEN_DLL_IMPORT HGLRC WINAPI wglCreateContext (HDC hdc);
+    CORETEN_DLL_IMPORT BOOL  WINAPI wglMakeCurrent   (HDC hdc, HGLRC hglrc);
+    CORETEN_DLL_IMPORT PROC  WINAPI wglGetProcAddress(char const* str);
+    CORETEN_DLL_IMPORT BOOL  WINAPI wglDeleteContext (HGLRC hglrc);
 
-    CSTL_DLL_IMPORT BOOL     WINAPI SetForegroundWindow(HWND hWnd);
-    CSTL_DLL_IMPORT HWND     WINAPI SetFocus(HWND hWnd);
-    CSTL_DLL_IMPORT LONG_PTR WINAPI SetWindowLongPtrW(HWND hWnd, int nIndex, LONG_PTR dwNewLong);
-    CSTL_DLL_IMPORT BOOL     WINAPI GetClientRect(HWND hWnd, RECT* lpRect);
-    CSTL_DLL_IMPORT BOOL     WINAPI IsIconic(HWND hWnd);
-    CSTL_DLL_IMPORT HWND     WINAPI GetFocus(void);
-    CSTL_DLL_IMPORT int      WINAPI ShowCursor(BOOL bShow);
-    CSTL_DLL_IMPORT SHORT    WINAPI GetAsyncKeyState(int key);
-    CSTL_DLL_IMPORT BOOL     WINAPI GetCursorPos(POINT* lpPoint);
-    CSTL_DLL_IMPORT BOOL     WINAPI SetCursorPos(int x, int y);
-    CSTL_DLL_IMPORT BOOL            ScreenToClient(HWND hWnd, POINT* lpPoint);
-    CSTL_DLL_IMPORT BOOL            ClientToScreen(HWND hWnd, POINT* lpPoint);
-    CSTL_DLL_IMPORT BOOL     WINAPI MoveWindow(HWND hWnd, int X, int Y, int nWidth, int nHeight, BOOL bRepaint);
-    CSTL_DLL_IMPORT BOOL     WINAPI SetWindowTextW(HWND hWnd, wchar_t const* lpString);
-    CSTL_DLL_IMPORT DWORD    WINAPI GetWindowLongW(HWND hWnd, int nIndex);
+    CORETEN_DLL_IMPORT BOOL     WINAPI SetForegroundWindow(HWND hWnd);
+    CORETEN_DLL_IMPORT HWND     WINAPI SetFocus(HWND hWnd);
+    CORETEN_DLL_IMPORT LONG_PTR WINAPI SetWindowLongPtrW(HWND hWnd, int nIndex, LONG_PTR dwNewLong);
+    CORETEN_DLL_IMPORT BOOL     WINAPI GetClientRect(HWND hWnd, RECT* lpRect);
+    CORETEN_DLL_IMPORT BOOL     WINAPI IsIconic(HWND hWnd);
+    CORETEN_DLL_IMPORT HWND     WINAPI GetFocus(void);
+    CORETEN_DLL_IMPORT int      WINAPI ShowCursor(BOOL bShow);
+    CORETEN_DLL_IMPORT SHORT    WINAPI GetAsyncKeyState(int key);
+    CORETEN_DLL_IMPORT BOOL     WINAPI GetCursorPos(POINT* lpPoint);
+    CORETEN_DLL_IMPORT BOOL     WINAPI SetCursorPos(int x, int y);
+    CORETEN_DLL_IMPORT BOOL            ScreenToClient(HWND hWnd, POINT* lpPoint);
+    CORETEN_DLL_IMPORT BOOL            ClientToScreen(HWND hWnd, POINT* lpPoint);
+    CORETEN_DLL_IMPORT BOOL     WINAPI MoveWindow(HWND hWnd, int X, int Y, int nWidth, int nHeight, BOOL bRepaint);
+    CORETEN_DLL_IMPORT BOOL     WINAPI SetWindowTextW(HWND hWnd, wchar_t const* lpString);
+    CORETEN_DLL_IMPORT DWORD    WINAPI GetWindowLongW(HWND hWnd, int nIndex);
 */
 
     #define PM_NOREMOVE 0
     #define PM_REMOVE   1
 
 /*
-    CSTL_DLL_IMPORT BOOL    WINAPI PeekMessageW(MSG* lpMsg, HWND hWnd, UINT wMsgFilterMin, UINT wMsgFilterMax, UINT wRemoveMsg);
-    CSTL_DLL_IMPORT BOOL    WINAPI TranslateMessage(MSG const* lpMsg);
-    CSTL_DLL_IMPORT LRESULT WINAPI DispatchMessageW(MSG const* lpMsg);
+    CORETEN_DLL_IMPORT BOOL    WINAPI PeekMessageW(MSG* lpMsg, HWND hWnd, UINT wMsgFilterMin, UINT wMsgFilterMax, UINT wRemoveMsg);
+    CORETEN_DLL_IMPORT BOOL    WINAPI TranslateMessage(MSG const* lpMsg);
+    CORETEN_DLL_IMPORT LRESULT WINAPI DispatchMessageW(MSG const* lpMsg);
 */
 
 	typedef enum {
@@ -1036,6 +1036,6 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     #define DSTINVERT   (u32)0x00550009
     #define BLACKNESS   (u32)0x00000042
     #define WHITENESS   (u32)0x00FF0062
-#endif // CSTL_COMPILER_MSVC
+#endif // CORETEN_COMPILER_MSVC
 
-#endif // CSTL_WINDOWS_H
+#endif // CORETEN_WINDOWS_H

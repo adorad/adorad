@@ -11,12 +11,12 @@ SPDX-License-Identifier: MIT
 Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 */
 
-#ifndef CSTL_CLOCK_H
-#define CSTL_CLOCK_H
+#ifndef CORETEN_CLOCK_H
+#define CORETEN_CLOCK_H
 
 #include <time.h>
 
 double now();
 double duration(clock_t start, clock_t end);
 
-#endif // CSTL_CLOCK_H
+#endif // CORETEN_CLOCK_H

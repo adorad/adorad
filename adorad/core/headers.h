@@ -11,8 +11,8 @@ SPDX-License-Identifier: MIT
 Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 */
 
-#ifndef CSTL_HEADERS_H
-#define CSTL_HEADERS_H
+#ifndef CORETEN_HEADERS_H
+#define CORETEN_HEADERS_H
 
 #include <adorad/core/os_defs.h>
 
@@ -22,13 +22,13 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     #endif
 #endif
 
-#if defined(CSTL_OS_UNIX)
+#if defined(CORETEN_OS_UNIX)
     #define _GNU_SOURCE
     #define _LARGEFILE64_SOURCE
 #endif
 
 // TODO(jasmcaus): How many of these headers do I really need?
-#if defined(CSTL_OS_WINDOWS)
+#if defined(CORETEN_OS_WINDOWS)
     #ifndef NOMINMAX
         #define NOMINMAX 1
     #endif // NOMINMAX
@@ -74,7 +74,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     // #include <stdlib.h> // NOTE(jasmcaus): malloc on linux
     // #include <sys/mman.h>
 
-    #if !defined(CSTL_OS_OSX) && !defined(__FreeBSD__)
+    #if !defined(CORETEN_OS_OSX) && !defined(__FreeBSD__)
         // #include <sys/sendfile.h>
     #endif
 
@@ -84,12 +84,12 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     // #include <time.h>
     // #include <unistd.h>
 
-    #if defined(CSTL_CPU_X86)
+    #if defined(CORETEN_CPU_X86)
         // #include <xmmintrin.h>
     #endif
 #endif
 
-#if defined(CSTL_OS_OSX)
+#if defined(CORETEN_OS_OSX)
     // #include <mach/mach.h>
     // #include <mach/mach_init.h>
     // #include <mach/mach_time.h>
@@ -100,15 +100,15 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     // #include <mach/clock.h>
 #endif
 
-#if defined(CSTL_OS_EMSCRIPTEN)
+#if defined(CORETEN_OS_EMSCRIPTEN)
     // #include <sys/time.h>
-#endif // CSTL_OS_EMSCRIPTEN
+#endif // CORETEN_OS_EMSCRIPTEN
 
-#if defined(CSTL_OS_MACH)
+#if defined(CORETEN_OS_MACH)
     // #include <mach/mach_time.h>
-#endif // CSTL_OS_MACH
+#endif // CORETEN_OS_MACH
 
-#if defined(CSTL_OS_FREEBSD)
+#if defined(CORETEN_OS_FREEBSD)
     // #include <sys/sysctl.h>
     // #include <pthread_np.h>
     // #include <sys/cpuset.h>
@@ -120,9 +120,9 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     #define sendfile(out, in, offset, count) sendfile(out, in, offset, count, NULL, NULL, 0)
 #endif
 
-#if defined(CSTL_OS_UNIX)
+#if defined(CORETEN_OS_UNIX)
     // #include <semaphore.h>
 #endif
 
 
-#endif // CSTL_HEADERS_H
+#endif // CORETEN_HEADERS_H

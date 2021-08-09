@@ -46,7 +46,7 @@ UInt32 hash_adler32(void const* data, Ll len) {
     return (b << 16) | a;
 }
 
-static UInt32 const CSTL__CRC32_TABLE[256] = {
+static UInt32 const CORETEN__CRC32_TABLE[256] = {
     0x00000000, 0x77073096, 0xee0e612c, 0x990951ba,
     0x076dc419, 0x706af48f, 0xe963a535, 0x9e6495a3,
     0x0edb8832, 0x79dcb8a4, 0xe0d5e91e, 0x97d2d988,
@@ -113,7 +113,7 @@ static UInt32 const CSTL__CRC32_TABLE[256] = {
     0xb40bbe37, 0xc30c8ea1, 0x5a05df1b, 0x2d02ef8d,
 };
 
-static UInt64 const CSTL__CRC64_TABLE[256] = {
+static UInt64 const CORETEN__CRC64_TABLE[256] = {
     0x0000000000000000ull, 0x42f0e1eba9ea3693ull, 0x85e1c3d753d46d26ull, 0xc711223cfa3e5bb5ull,
     0x493366450e42ecdfull, 0x0bc387aea7a8da4cull, 0xccd2a5925d9681f9ull, 0x8e224479f47cb76aull,
     0x9266cc8a1c85d9beull, 0xd0962d61b56fef2dull, 0x17870f5d4f51b498ull, 0x5577eeb6e6bb820bull,
@@ -185,7 +185,7 @@ UInt32 hash_crc32(void const* data, Ll len) {
     UInt32 result = ~(cast(UInt32)0);
     UInt8 const* c = cast(UInt8 const* )data;
     for(remaining = len; remaining--; c++)
-        result = (result >> 8) ^ (CSTL__CRC32_TABLE[(result ^ *c) & 0xff]);
+        result = (result >> 8) ^ (CORETEN__CRC32_TABLE[(result ^ *c) & 0xff]);
     return ~result;
 }
 
@@ -194,7 +194,7 @@ UInt64 hash_crc64(void const* data, Ll len) {
     UInt64 result = ~(cast(UInt64)0);
     UInt8 const* c = cast(UInt8 const* )data;
     for(remaining = len; remaining--; c++)
-        result = (result >> 8) ^ (CSTL__CRC64_TABLE[(result ^ *c) & 0xff]);
+        result = (result >> 8) ^ (CORETEN__CRC64_TABLE[(result ^ *c) & 0xff]);
     return ~result;
 }
 
@@ -274,12 +274,12 @@ UInt32 hash_murmur32_seed(void const* data, Ll len, UInt32 seed) {
     }
 
     // Fallthrough intended
-    CSTL_GCC_SUPPRESS_WARNING_PUSH
-    CSTL_CLANG_SUPPRESS_WARNING_PUSH
-    CSTL_MSVC_SUPPRESS_WARNING_PUSH
-    CSTL_GCC_SUPPRESS_WARNING("-Wimplicit-fallthrough")
-    CSTL_CLANG_SUPPRESS_WARNING("-Wimplicit-fallthrough")
-    CSTL_MSVC_SUPPRESS_WARNING(26819)
+    CORETEN_GCC_SUPPRESS_WARNING_PUSH
+    CORETEN_CLANG_SUPPRESS_WARNING_PUSH
+    CORETEN_MSVC_SUPPRESS_WARNING_PUSH
+    CORETEN_GCC_SUPPRESS_WARNING("-Wimplicit-fallthrough")
+    CORETEN_CLANG_SUPPRESS_WARNING("-Wimplicit-fallthrough")
+    CORETEN_MSVC_SUPPRESS_WARNING(26819)
     switch (len & 3) {
         // fall through
         case 3:
@@ -294,9 +294,9 @@ UInt32 hash_murmur32_seed(void const* data, Ll len, UInt32 seed) {
             k1 *= c2;
             hash ^= k1;
     }
-    CSTL_GCC_SUPPRESS_WARNING_POP
-    CSTL_CLANG_SUPPRESS_WARNING_POP
-    CSTL_MSVC_SUPPRESS_WARNING_POP
+    CORETEN_GCC_SUPPRESS_WARNING_POP
+    CORETEN_CLANG_SUPPRESS_WARNING_POP
+    CORETEN_MSVC_SUPPRESS_WARNING_POP
 
     hash ^= len;
     hash ^= (hash >> 16);
@@ -309,7 +309,7 @@ UInt32 hash_murmur32_seed(void const* data, Ll len, UInt32 seed) {
 }
 
 UInt64 hash_murmur64_seed(void const* data__, Ll len, UInt64 seed) {
-#if defined(CSTL_ARCH_64BIT)
+#if defined(CORETEN_ARCH_64BIT)
     UInt64 const m = 0xc6a4a7935bd1e995ULL;
     Int32 const r = 47;
 
@@ -331,12 +331,12 @@ UInt64 hash_murmur64_seed(void const* data__, Ll len, UInt64 seed) {
     }
 
     // Fallthrough intended
-    CSTL_GCC_SUPPRESS_WARNING_PUSH
-    CSTL_CLANG_SUPPRESS_WARNING_PUSH
-    CSTL_MSVC_SUPPRESS_WARNING_PUSH
-    CSTL_GCC_SUPPRESS_WARNING("-Wimplicit-fallthrough")
-    CSTL_CLANG_SUPPRESS_WARNING("-Wimplicit-fallthrough")
-    CSTL_MSVC_SUPPRESS_WARNING(26819)
+    CORETEN_GCC_SUPPRESS_WARNING_PUSH
+    CORETEN_CLANG_SUPPRESS_WARNING_PUSH
+    CORETEN_MSVC_SUPPRESS_WARNING_PUSH
+    CORETEN_GCC_SUPPRESS_WARNING("-Wimplicit-fallthrough")
+    CORETEN_CLANG_SUPPRESS_WARNING("-Wimplicit-fallthrough")
+    CORETEN_MSVC_SUPPRESS_WARNING(26819)
     switch (len & 7) {
         // fall through
         case 7: h ^= cast(UInt64)(data2[6]) << 48;
@@ -348,9 +348,9 @@ UInt64 hash_murmur64_seed(void const* data__, Ll len, UInt64 seed) {
         case 1: h ^= cast(UInt64)(data2[0]);
             h *= m;
     };
-    CSTL_GCC_SUPPRESS_WARNING_POP
-    CSTL_CLANG_SUPPRESS_WARNING_POP
-    CSTL_MSVC_SUPPRESS_WARNING_POP
+    CORETEN_GCC_SUPPRESS_WARNING_POP
+    CORETEN_CLANG_SUPPRESS_WARNING_POP
+    CORETEN_MSVC_SUPPRESS_WARNING_POP
 
     h ^= h >> r;
     h *= m;
@@ -416,5 +416,5 @@ UInt64 hash_murmur64_seed(void const* data__, Ll len, UInt64 seed) {
     h = (h << 32) | h2;
 
     return h;
-#endif // CSTL_ARCH_64BIT
+#endif // CORETEN_ARCH_64BIT
 }

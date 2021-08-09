@@ -11,8 +11,8 @@ SPDX-License-Identifier: MIT
 Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 */
 
-#ifndef CSTL_BUFFER_H
-#define CSTL_BUFFER_H
+#ifndef CORETEN_BUFFER_H
+#define CORETEN_BUFFER_H
 
 #include <adorad/core/debug.h>
 #include <adorad/core/types.h>
@@ -52,4 +52,4 @@ void buff_free(cstlBuffer* buffer);
 cstlBuffer* buff_toupper(cstlBuffer* buffer);
 cstlBuffer* buff_tolower(cstlBuffer* buffer);
 
-#endif // CSTL_BUFFER_H
+#endif // CORETEN_BUFFER_H

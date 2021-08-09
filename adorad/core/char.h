@@ -11,8 +11,8 @@ SPDX-License-Identifier: MIT
 Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 */
 
-#ifndef CSTL_CHAR_H
-#define CSTL_CHAR_H
+#ifndef CORETEN_CHAR_H
+#define CORETEN_CHAR_H
 
 #include <adorad/core/types.h>
 #include <adorad/core/math.h>
@@ -35,4 +35,4 @@ Int32 hexdigit_to_int(char c);
 char* char_first_occurence(char* str, char ch);
 char* char_last_occurence(char* str, char ch);
 
-#endif // CSTL_CHAR_H
+#endif // CORETEN_CHAR_H

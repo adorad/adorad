@@ -43,7 +43,7 @@ static inline TokenKind parser_expect_token(Parser* parser, TokenKind tokenkind)
     if(parser->curr_tok == tokenkind)
         return parser_chomp(parser);
         
-    cstlColouredPrintf(CSTL_COLOUR_ERROR, "Unexpected token. Expected `%s`; got `%s`", 
+    cstlColouredPrintf(CORETEN_COLOUR_ERROR, "Unexpected token. Expected `%s`; got `%s`", 
                                             token_to_buff(tokenkind)->data,
                                             token_to_buff(parser->curr_tok)->data);
     exit(1);

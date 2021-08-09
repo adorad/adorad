@@ -1,5 +1,5 @@
-#ifndef CSTL_UTF8_PROPERTIES_H
-#define CSTL_UTF8_PROPERTIES_H
+#ifndef CORETEN_UTF8_PROPERTIES_H
+#define CORETEN_UTF8_PROPERTIES_H
 
 /*
     Note that while this file is included as part of the CSTL library, we are not the actual authors.
@@ -6836,4 +6836,4 @@ static const utf8_property_t utf8_properties[] = {
     {UTF8_CATEGORY_LO, 0, UTF8_BIDI_CLASS_L, 0, 7975, UTF8_UINT16_MAX, UTF8_UINT16_MAX, UTF8_UINT16_MAX, UTF8_UINT16_MAX, UTF8_UINT16_MAX, false, false, false, false, 2, 0, UTF8_BOUNDCLASS_OTHER},
 };
 
-#endif // CSTL_UTF8_PROPERTIES_H
+#endif // CORETEN_UTF8_PROPERTIES_H

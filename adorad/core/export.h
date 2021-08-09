@@ -33,43 +33,43 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     Also, if CSTL is built as a static library, we recommend everything dependent on CSTL to be built 
     statically. If CSTL is built as a shared library, everything dependent on it should be built as shared. 
 
-    In the Adorad project, all native libraries shall use the macro CSTL_BUILD_SHARED_LIB to check whether 
+    In the Adorad project, all native libraries shall use the macro CORETEN_BUILD_SHARED_LIB to check whether 
     Adorad is building shared or static libraries.
 */
 
 #if defined(_WIN32)
-	#define CSTL_DLL_EXPORT     CSTL_EXTERN __declspec(dllexport)
-	#define CSTL_DLL_IMPORT     CSTL_EXTERN __declspec(dllimport)
+	#define CORETEN_DLL_EXPORT     CORETEN_EXTERN __declspec(dllexport)
+	#define CORETEN_DLL_IMPORT     CORETEN_EXTERN __declspec(dllimport)
 #else
-	#define CSTL_DLL_EXPORT     CSTL_EXTERN __attribute__((visibility("default")))
-	#define CSTL_DLL_IMPORT     CSTL_EXTERN
+	#define CORETEN_DLL_EXPORT     CORETEN_EXTERN __attribute__((visibility("default")))
+	#define CORETEN_DLL_IMPORT     CORETEN_EXTERN
 #endif
 
 #ifdef _WIN32
-    #define CSTL_HIDDEN
-    #if defined(CSTL_BUILD_SHARED_LIB)
-        #define CSTL_EXPORT      __declspec(dllexport)
-        #define CSTL_IMPORT      __declspec(dllimport)
+    #define CORETEN_HIDDEN
+    #if defined(CORETEN_BUILD_SHARED_LIB)
+        #define CORETEN_EXPORT      __declspec(dllexport)
+        #define CORETEN_IMPORT      __declspec(dllimport)
     #else
-        #define CSTL_EXPORT
-        #define CSTL_IMPORT
+        #define CORETEN_EXPORT
+        #define CORETEN_IMPORT
     #endif
 
 #else
     #ifdef __GNUC__
-        #define CSTL_EXPORT      __attribute__((__visibility__("default")))
-        #define CSTL_HIDDEN      __attribute__((__visibility__("hidden")))
+        #define CORETEN_EXPORT      __attribute__((__visibility__("default")))
+        #define CORETEN_HIDDEN      __attribute__((__visibility__("hidden")))
     #else
-        #define CSTL_EXPORT
-        #define CSTL_HIDDEN
+        #define CORETEN_EXPORT
+        #define CORETEN_HIDDEN
     #endif // __GNUC__
 
-    #define CSTL_IMPORT  CSTL_EXPORT
+    #define CORETEN_IMPORT  CORETEN_EXPORT
 #endif // _WIN32
 
 #ifdef NO_EXPORT
-    #undef CSTL_EXPORT
-    #define CSTL_EXPORT
+    #undef CORETEN_EXPORT
+    #define CORETEN_EXPORT
 #endif
 
 /*
@@ -84,11 +84,11 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     
     And in the source file of your awesome library, use AWESOME_API to annotate public symbols.
 
-    Here, for the CSTL library, we will define the macro CSTL_API for both import and export.
+    Here, for the CSTL library, we will define the macro CORETEN_API for both import and export.
 */
 
-#ifdef CSTL_BUILD_MAIN_LIB
-    #define CSTL_API    CSTL_EXPORT
+#ifdef CORETEN_BUILD_MAIN_LIB
+    #define CORETEN_API    CORETEN_EXPORT
 #else
-    #define CSTL_API    CSTL_IMPORT
+    #define CORETEN_API    CORETEN_IMPORT
 #endif

@@ -56,15 +56,15 @@ set(
 
 message("--------- [INFO] Building the Static Library for CSTLInternalTests ")
 add_library(
-    libCSTLInternalTests STATIC
+    libCoretenTests STATIC
     ${LIBCSTLINTERNALTESTS_SOURCES}
     ${CSTLINTERNALTESTS_HEADERS}
 )
 # Add an alias
-add_library(libCSTLInternalTests::libCSTLInternalTests ALIAS libCSTLInternalTests)
+add_library(libCoretenTests::libCoretenTests ALIAS libCoretenTests)
 
 target_include_directories(
-    libCSTLInternalTests PUBLIC
+    libCoretenTests PUBLIC
     "$<BUILD_INTERFACE:${CSTLINTERNALTESTS_BUILD_INCLUDE_DIRS}>"
 )
 
@@ -98,7 +98,7 @@ add_executable(
 target_link_libraries(
     AdoradInternalTestsWithMain PUBLIC
     libAdoradInternalTests
-    libCSTLInternalTests::libCSTLInternalTests
+    libCoretenTests::libCoretenTests
 )
 
 # Installation
@@ -121,7 +121,7 @@ foreach(source ${ADORAD_INTERNAL_TESTS_SOURCES})
         ${testcase}
         PRIVATE
         libAdoradInternalTests
-        libCSTLInternalTests::libCSTLInternalTests
+        libCoretenTests::libCoretenTests
         Tau::Tau
     )
 

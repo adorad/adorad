@@ -23,36 +23,36 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 // you know for a fact is right.
 // For example, in a switch-case statement when you intend for a fallthrough situation, and the compiler (helpfully)
 // warns you that it could potentially fallthrough.
-#if defined(CSTL_COMPILER_MSVC)
-    #define CSTL_MSVC_SUPPRESS_WARNING_PUSH     __pragma(warning(push))
-    #define CSTL_MSVC_SUPPRESS_WARNING(w)       __pragma(warning(disable : w))
-    #define CSTL_MSVC_SUPPRESS_WARNING_POP      __pragma(warning(pop))
+#if defined(CORETEN_COMPILER_MSVC)
+    #define CORETEN_MSVC_SUPPRESS_WARNING_PUSH     __pragma(warning(push))
+    #define CORETEN_MSVC_SUPPRESS_WARNING(w)       __pragma(warning(disable : w))
+    #define CORETEN_MSVC_SUPPRESS_WARNING_POP      __pragma(warning(pop))
 #else
-    #define CSTL_MSVC_SUPPRESS_WARNING_PUSH
-    #define CSTL_MSVC_SUPPRESS_WARNING(w)
-    #define CSTL_MSVC_SUPPRESS_WARNING_POP
-#endif // CSTL_COMPILER_MSVC
+    #define CORETEN_MSVC_SUPPRESS_WARNING_PUSH
+    #define CORETEN_MSVC_SUPPRESS_WARNING(w)
+    #define CORETEN_MSVC_SUPPRESS_WARNING_POP
+#endif // CORETEN_COMPILER_MSVC
 
-#if defined(CSTL_COMPILER_CLANG)
+#if defined(CORETEN_COMPILER_CLANG)
     #define ___PRAGMA_TO_STR(x)                    _Pragma(#x)
-    #define CSTL_CLANG_SUPPRESS_WARNING_PUSH    _Pragma("clang diagnostic push")
-    #define CSTL_CLANG_SUPPRESS_WARNING_POP     _Pragma("clang diagnostic pop")
-    #define CSTL_CLANG_SUPPRESS_WARNING(w)      ___PRAGMA_TO_STR(clang diagnostic ignored w)
+    #define CORETEN_CLANG_SUPPRESS_WARNING_PUSH    _Pragma("clang diagnostic push")
+    #define CORETEN_CLANG_SUPPRESS_WARNING_POP     _Pragma("clang diagnostic pop")
+    #define CORETEN_CLANG_SUPPRESS_WARNING(w)      ___PRAGMA_TO_STR(clang diagnostic ignored w)
 #else
-    #define CSTL_CLANG_SUPPRESS_WARNING_PUSH
-    #define CSTL_CLANG_SUPPRESS_WARNING(w)
-    #define CSTL_CLANG_SUPPRESS_WARNING_POP
-#endif // CSTL_COMPILER_CLANG
+    #define CORETEN_CLANG_SUPPRESS_WARNING_PUSH
+    #define CORETEN_CLANG_SUPPRESS_WARNING(w)
+    #define CORETEN_CLANG_SUPPRESS_WARNING_POP
+#endif // CORETEN_COMPILER_CLANG
 
-#if defined(CSTL_COMPILER_GCC)
+#if defined(CORETEN_COMPILER_GCC)
     #define ___PRAGMA_TO_STR(x)                    _Pragma(#x)
-    #define CSTL_GCC_SUPPRESS_WARNING_PUSH      _Pragma("GCC diagnostic push")
-    #define CSTL_GCC_SUPPRESS_WARNING_POP       _Pragma("GCC diagnostic pop")
-    #define CSTL_GCC_SUPPRESS_WARNING(w)        ___PRAGMA_TO_STR(GCC diagnostic ignored w)
+    #define CORETEN_GCC_SUPPRESS_WARNING_PUSH      _Pragma("GCC diagnostic push")
+    #define CORETEN_GCC_SUPPRESS_WARNING_POP       _Pragma("GCC diagnostic pop")
+    #define CORETEN_GCC_SUPPRESS_WARNING(w)        ___PRAGMA_TO_STR(GCC diagnostic ignored w)
 #else
-    #define CSTL_GCC_SUPPRESS_WARNING_PUSH
-    #define CSTL_GCC_SUPPRESS_WARNING(w)
-    #define CSTL_GCC_SUPPRESS_WARNING_POP
-#endif // CSTL_COMPILER_GCC
+    #define CORETEN_GCC_SUPPRESS_WARNING_PUSH
+    #define CORETEN_GCC_SUPPRESS_WARNING(w)
+    #define CORETEN_GCC_SUPPRESS_WARNING_POP
+#endif // CORETEN_COMPILER_GCC
 
 #endif // WARNINGS_H

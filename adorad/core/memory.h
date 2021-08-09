@@ -11,8 +11,8 @@ SPDX-License-Identifier: MIT
 Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 */
 
-#ifndef CSTL_MEMORY_H
-#define CSTL_MEMORY_H
+#ifndef CORETEN_MEMORY_H
+#define CORETEN_MEMORY_H
 
 #ifndef KB_TO_BYTES
     #define KB_TO_BYTES(x)               (x) * (Int64)(1024)
@@ -21,8 +21,8 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     #define TB_TO_BYTES(x)    GB_TO_BYTES(x) * (Int64)(1024)
 #endif 
 
-#define CSTL_ONES            cast(Ull)-1/UInt8_MAX
-#define CSTL_HIGHS           CSTL_ONES * (UInt8_MAX/2+1)
-#define CSTL_HAS_ZERO(x)     (x)-CSTL_ONES & ~(x) & CSTL_HIGHS
+#define CORETEN_ONES            cast(Ull)-1/UInt8_MAX
+#define CORETEN_HIGHS           CORETEN_ONES * (UInt8_MAX/2+1)
+#define CORETEN_HAS_ZERO(x)     (x)-CORETEN_ONES & ~(x) & CORETEN_HIGHS
 
-#endif // CSTL_MEMORY_H
+#endif // CORETEN_MEMORY_H

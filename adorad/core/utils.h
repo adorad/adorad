@@ -11,8 +11,8 @@ SPDX-License-Identifier: MIT
 Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 */
 
-#ifndef CSTL_UTILS_H
-#define CSTL_UTILS_H
+#ifndef CORETEN_UTILS_H
+#define CORETEN_UTILS_H
 
 #include <stdlib.h>
 #include <adorad/core/compilers.h>
@@ -23,7 +23,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 
 #define abort()     exit(1)
 
-#ifdef CSTL_COMPILER_MSVC
+#ifdef CORETEN_COMPILER_MSVC
     #define ATTRIBUTE_COLD        __declspec(noinline)
     #define ATTRIBUTE_PRINTF(a,b)
     #define ATTRIBUTE_NORETURN    __declspec(noreturn
@@ -49,5 +49,5 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
         #include <signal.h>
         #define BREAKPOINT        raise(SIGTRAP)
     #endif // __MINGW32__
-#endif // CSTL_COMPILER_MSVC
-#endif // CSTL_UTILS_H
+#endif // CORETEN_COMPILER_MSVC
+#endif // CORETEN_UTILS_H

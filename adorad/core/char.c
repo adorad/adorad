@@ -35,7 +35,7 @@ bool char_is_alphanumeric(char c) {
 }
 
 bool char_is_octal_digit(char c) { 
-    return CSTL_IS_BETWEEN(c, '0', '7'); 
+    return CORETEN_IS_BETWEEN(c, '0', '7'); 
 }
 
 bool char_is_binary_digit(char c) { 
@@ -49,8 +49,8 @@ Int32 digit_to_int(char c) {
 
 bool char_is_hex_digit(char c) {
     return char_is_digit(c)                   ||
-           CSTL_IS_BETWEEN(c, 'a', 'f') ||
-           CSTL_IS_BETWEEN(c, 'A', 'F'); 
+           CORETEN_IS_BETWEEN(c, 'a', 'f') ||
+           CORETEN_IS_BETWEEN(c, 'A', 'F'); 
 }
 
 bool char_is_letter(char c) {
@@ -81,10 +81,10 @@ Int32 hexdigit_to_int(char c) {
     if(char_is_digit(c))
         return digit_to_int(c);
 
-    else if(CSTL_IS_BETWEEN(c, 'a', 'f'))
+    else if(CORETEN_IS_BETWEEN(c, 'a', 'f'))
         return c-'a' + 10; 
 
-    else if(CSTL_IS_BETWEEN(c, 'A', 'F'))
+    else if(CORETEN_IS_BETWEEN(c, 'A', 'F'))
         return c-'A' + 10; 
 
     return -1; 

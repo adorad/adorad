@@ -20,8 +20,8 @@ char* readFile(const char* fname) {
     FILE* file = fopen(fname, "rb"); 
     
     if(!file) {
-        cstlColouredPrintf(CSTL_COLOUR_ERROR, "Could not open file: <%s>\n", fname);
-        cstlColouredPrintf(CSTL_COLOUR_ERROR, "%s\n", !file_exists(fname) ?  
+        cstlColouredPrintf(CORETEN_COLOUR_ERROR, "Could not open file: <%s>\n", fname);
+        cstlColouredPrintf(CORETEN_COLOUR_ERROR, "%s\n", !file_exists(fname) ?  
                             "FileNotFoundError: File does not exist." : "");
         exit(1);
     }

@@ -11,8 +11,8 @@ SPDX-License-Identifier: MIT
 Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 */
 
-#ifndef CSTL_CORE_CSTL_H
-#define CSTL_CORE_CSTL_H
+#ifndef CORETEN_CORE_CORETEN_H
+#define CORETEN_CORE_CORETEN_H
 
 /** 
     Jason Dsouza's (jasmcaus) C Helper Library 
@@ -49,9 +49,9 @@ CREDITS
     Reminder: Be Explicit. 
 */
 
-#ifndef CSTL_USING_CUSTOM_GENERATED_MACROS
+#ifndef CORETEN_USING_CUSTOM_GENERATED_MACROS
     #include <adorad/core/cmake_macros.h>
-#endif // CSTL_USING_CUSTOM_GENERATED_MACROS
+#endif // CORETEN_USING_CUSTOM_GENERATED_MACROS
 
 #include <adorad/core/os_defs.h>
 #include <adorad/core/cpu.h>
@@ -70,12 +70,12 @@ CREDITS
 #include <adorad/core/utf8.h>
 #include <adorad/core/vector.h>
 
-#ifdef CSTL_INCLUDE_HASH_H
+#ifdef CORETEN_INCLUDE_HASH_H
     #include <adorad/core/hash.h>
-#endif // CSTL_INCLUDE_HASH_H
+#endif // CORETEN_INCLUDE_HASH_H
 
-#ifdef CSTL_INCLUDE_WINDOWS_H
+#ifdef CORETEN_INCLUDE_WINDOWS_H
     // #include <adorad/core/windows.h>
-#endif // CSTL_INCLUDE_WINDOWS_H
+#endif // CORETEN_INCLUDE_WINDOWS_H
 
-#endif // CSTL_CORE_CSTL_H
+#endif // CORETEN_CORE_CORETEN_H

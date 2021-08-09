@@ -17,7 +17,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #include <adorad/core/debug.h>
 
 static cstlBuffer* os_get_cwd() {
-#if defined(CSTL_OS_WINDOWS)
+#if defined(CORETEN_OS_WINDOWS)
     // This (or its equivalent) is not defined in any include in Windows as far as I've come across
     #define PATH_MAX 4096
     char result[PATH_MAX];
@@ -28,7 +28,7 @@ static cstlBuffer* os_get_cwd() {
     }
     cstlBuffer* buff = buff_new(result);
     return buff;
-#elif defined(CSTL_OS_POSIX)
+#elif defined(CORETEN_OS_POSIX)
     long n;
     char *buf;
 
@@ -46,7 +46,7 @@ static cstlBuffer* os_get_cwd() {
 #else
     #error "No `os_get_cwd()` implementation supported for your platform."
     return null;
-#endif // CSTL_OS_WINDOWS
+#endif // CORETEN_OS_WINDOWS
 }
 
 static cstlBuffer* __os_dirname_basename(cstlBuffer* path, bool is_basename) {
@@ -63,9 +63,9 @@ static cstlBuffer* __os_dirname_basename(cstlBuffer* path, bool is_basename) {
 
         // The `/` or `\\` is not so important in getting the dirname, but it does interfere with `strchr`, so
         // we skip over it (if present)
-        if(*rev->data == CSTL_OS_SEP_CHAR)
+        if(*rev->data == CORETEN_OS_SEP_CHAR)
             rev->data++;
-        char* rev_dir = strchr(rev->data, CSTL_OS_SEP_CHAR);
+        char* rev_dir = strchr(rev->data, CORETEN_OS_SEP_CHAR);
         buff_set(result, rev_dir);
         result = buff_rev(result);
         buff_free(rev);
@@ -126,31 +126,31 @@ static cstlBuffer* os_path_join(cstlBuffer* path1, cstlBuffer* path2) {
         
     char* end = buff_end(path1);
     if(!os_is_sep(*end))
-        buff_append_char(path1, CSTL_OS_SEP_CHAR);
+        buff_append_char(path1, CORETEN_OS_SEP_CHAR);
     buff_append(path1, path2);
     return path1;
 }
 
 static bool os_is_sep(char ch) {
-#ifdef CSTL_OS_WINDOWS
+#ifdef CORETEN_OS_WINDOWS
     return ch == '\\' || ch == '/';
 #else
     return ch == '/';
-#endif // CSTL_OS_WINDOWS
+#endif // CORETEN_OS_WINDOWS
 }
 
 static bool os_path_is_abs(cstlBuffer* path) {
     bool result = false;
     ENFORCE_NNULL(path, "Cannot do anything useful on a null path :(");
-#ifdef CSTL_OS_WINDOWS
+#ifdef CORETEN_OS_WINDOWS
 	// The 'C:\...`
     result = path->len > 2 &&
              char_is_alpha(path->data[0]) &&
-             (path->data[1] == ':' && path->data[2] == CSTL_OS_SEP_CHAR);
+             (path->data[1] == ':' && path->data[2] == CORETEN_OS_SEP_CHAR);
 #else
 	result = path->len > 2 &&
-			 path->data[0] == CSTL_OS_SEP_CHAR;
-#endif // CSTL_OS_WINDOWS
+			 path->data[0] == CORETEN_OS_SEP_CHAR;
+#endif // CORETEN_OS_WINDOWS
 	return cast(bool)result;
 }
 
@@ -161,10 +161,10 @@ static bool os_path_is_rel(cstlBuffer* path) {
 static bool os_path_is_root(cstlBuffer* path) {
 	bool result = false;
 	ENFORCE_NNULL(path, "Cannot do anything useful on a null path :(");
-#ifdef CSTL_OS_WINDOWS
+#ifdef CORETEN_OS_WINDOWS
     result = os_path_is_abs(path) && path->len == 3;
 #else
     result = os_path_is_abs(path) && path->len == 1;
-#endif // CSTL_OS_WINDOWS
+#endif // CORETEN_OS_WINDOWS
 	return result;
 }

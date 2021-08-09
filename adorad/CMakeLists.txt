@@ -28,7 +28,7 @@ file(GLOB_RECURSE ADORAD_HEADERS
     *.h
 )
 
-# Build the CSTL target
+# Build the Coreten target
 add_subdirectory(core)
 
 # 
@@ -60,7 +60,7 @@ if(ADORAD_BUILD_STATIC_LIB)
     # main.c (or whatever demo file you want to link against)
     add_executable(AdoradStatic ${CMAKE_CURRENT_SOURCE_DIR}/main.c)
     target_link_libraries(AdoradStatic libAdoradStatic)
-    target_link_libraries(AdoradStatic CSTL)
+    target_link_libraries(AdoradStatic Coreten)
 
     target_compile_definitions(AdoradStatic PUBLIC
         _ADORAD_=1
@@ -83,7 +83,7 @@ if(ADORAD_BUILD_SHARED_LIB)
         add_library(libAdoradShared SHARED ${LIBADORAD_SOURCES} ${ADORAD_HEADERS})
         target_compile_options(libAdoradShared PRIVATE "-fvisibility=hidden")
         # If building a Shared library, set dllimport/dllexport properly.
-        target_compile_options(libAdoradShared PRIVATE "-DCSTL_BUILD_MAIN_LIB")
+        target_compile_options(libAdoradShared PRIVATE "-DCORETEN_BUILD_MAIN_LIB")
 
         target_include_directories(
             libAdoradShared PUBLIC 
@@ -103,7 +103,7 @@ if(ADORAD_BUILD_SHARED_LIB)
         # main.c (or whatever demo file you want to link against) =
         add_executable(AdoradShared ${CMAKE_CURRENT_SOURCE_DIR}/main.c)
         target_link_libraries(AdoradShared libAdoradShared)
-        target_link_libraries(AdoradShared CSTL)
+        target_link_libraries(AdoradShared Coreten)
 
         install(TARGETS libAdoradShared DESTINATION lib)
     endif() # MSVC
@@ -127,7 +127,7 @@ install(
     DESTINATION include/adorad/core/macros
 )
 
-# For CSTL_BUILD_SHARED_LIB, see Core/Export.h
-if(MSVC AND CSTL_BUILD_SHARED_LIB)
+# For CORETEN_BUILD_SHARED_LIB, see Core/Export.h
+if(MSVC AND CORETEN_BUILD_SHARED_LIB)
     install(FILES $<TARGET_PDB_FILE:Adorad> DESTINATION lib OPTIONAL)
 endif()

@@ -11,8 +11,8 @@ SPDX-License-Identifier: MIT
 Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 */
 
-#ifndef CSTL_UTF8_DATA_H
-#define CSTL_UTF8_DATA_H
+#ifndef CORETEN_UTF8_DATA_H
+#define CORETEN_UTF8_DATA_H
 
 /*
     Note that while this file is included as part of the CSTL library, we are not the actual authors.
@@ -7579,4 +7579,4 @@ static const UInt16 utf8_combinations[] = {
     1, 53694, 1, 53696,
 };
 
-#endif // CSTL_UTF8_DATA_H
+#endif // CORETEN_UTF8_DATA_H

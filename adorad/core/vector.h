@@ -11,8 +11,8 @@ SPDX-License-Identifier: MIT
 Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 */
 
-#ifndef CSTL_VECTOR_H
-#define CSTL_VECTOR_H
+#ifndef CORETEN_VECTOR_H
+#define CORETEN_VECTOR_H
 
 #include <adorad/core/types.h>
 #include <adorad/core/debug.h>
@@ -51,4 +51,4 @@ bool vec_clear(cstlVector* vec);
 bool vec_push(cstlVector* vec, const void* data);
 bool vec_pop(cstlVector* vec);
 
-#endif // CSTL_VECTOR_H
+#endif // CORETEN_VECTOR_H

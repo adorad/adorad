@@ -14,7 +14,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #include <adorad/core/debug.h>
 #include <adorad/core/headers.h>
 
-int CSTL_ATTRIBUTE_(format (printf, 2, 3))
+int CORETEN_ATTRIBUTE_(format (printf, 2, 3))
 cstlColouredPrintf(int colour, const char* fmt, ...) {
     va_list args;
     char buffer[256];
@@ -25,15 +25,15 @@ cstlColouredPrintf(int colour, const char* fmt, ...) {
     va_end(args);
     buffer[sizeof(buffer)-1] = '\0';
 
-#ifdef CSTL_OS_UNIX
+#ifdef CORETEN_OS_UNIX
     {
         const char* str;
         switch(colour) {
-            case CSTL_COLOUR_ERROR:    str = "\033[1;31m"; break;
-            case CSTL_COLOUR_SUCCESS:  str = "\033[1;32m"; break;
-            case CSTL_COLOUR_WARN:     str = "\033[1;33m"; break;
-            case CSTL_COLOUR_CYAN:     str = "\033[1;36m"; break;
-            case CSTL_COLOUR_BOLD:     str = "\033[1m"; break;
+            case CORETEN_COLOUR_ERROR:    str = "\033[1;31m"; break;
+            case CORETEN_COLOUR_SUCCESS:  str = "\033[1;32m"; break;
+            case CORETEN_COLOUR_WARN:     str = "\033[1;33m"; break;
+            case CORETEN_COLOUR_CYAN:     str = "\033[1;36m"; break;
+            case CORETEN_COLOUR_BOLD:     str = "\033[1m"; break;
             default:                   str = "\033[0m"; break;
         }
         printf("%s", str);
@@ -41,7 +41,7 @@ cstlColouredPrintf(int colour, const char* fmt, ...) {
         printf("\033[0m"); // Reset the colour
         return n;
     }
-#elif defined(CSTL_OS_WINDOWS)
+#elif defined(CORETEN_OS_WINDOWS)
     {
         HANDLE h;
         CONSOLE_SCREEN_BUFFER_INFO info;
@@ -51,11 +51,11 @@ cstlColouredPrintf(int colour, const char* fmt, ...) {
         GetConsoleScreenBufferInfo(h, &info);
 
         switch(colour) {
-            case CSTL_COLOUR_ERROR:      attr = FOREGROUND_RED | FOREGROUND_INTENSITY; break;
-            case CSTL_COLOUR_SUCCESS:    attr = FOREGROUND_GREEN | FOREGROUND_INTENSITY; break;
-            case CSTL_COLOUR_CYAN:       attr = FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY; break;
-            case CSTL_COLOUR_WARN:       attr = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY; break;
-            case CSTL_COLOUR_BOLD:       attr = FOREGROUND_BLUE | FOREGROUND_GREEN |FOREGROUND_RED | 
+            case CORETEN_COLOUR_ERROR:      attr = FOREGROUND_RED | FOREGROUND_INTENSITY; break;
+            case CORETEN_COLOUR_SUCCESS:    attr = FOREGROUND_GREEN | FOREGROUND_INTENSITY; break;
+            case CORETEN_COLOUR_CYAN:       attr = FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY; break;
+            case CORETEN_COLOUR_WARN:       attr = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY; break;
+            case CORETEN_COLOUR_BOLD:       attr = FOREGROUND_BLUE | FOREGROUND_GREEN |FOREGROUND_RED | 
                                          FOREGROUND_INTENSITY; break;
             default:                     attr = 0; break;
         }
@@ -68,7 +68,7 @@ cstlColouredPrintf(int colour, const char* fmt, ...) {
 #else
     n = printf("%s", buffer);
     return n;
-#endif // CSTL_UNIX_
+#endif // CORETEN_UNIX_
 }
 
 void coreten_panic(PanicLevel pl, const char* format, ...) {
@@ -86,7 +86,7 @@ void coreten_panic(PanicLevel pl, const char* format, ...) {
         case PanicLevelUnreachable: str = "CoretenUnreachable: "; break;
         default: str = "Panic: "; break;
     }
-    cstlColouredPrintf(CSTL_COLOUR_ERROR, "%s", str);
+    cstlColouredPrintf(CORETEN_COLOUR_ERROR, "%s", str);
     printf("%s\n", buffer);
     abort();
 }
