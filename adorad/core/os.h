@@ -14,11 +14,9 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #ifndef CSTL_OS_H
 #define CSTL_OS_H
 
-#include <stdlib.h>
 #include <adorad/core/buffer.h>
 #include <adorad/core/os_defs.h>
 #include <adorad/core/types.h>
-#include <adorad/core/debug.h>
 
 #if defined(CSTL_OS_POSIX)
     #define _XOPEN_SOURCE 700

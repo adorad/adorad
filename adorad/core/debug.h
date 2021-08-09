@@ -64,7 +64,7 @@ void coreten_panic(PanicLevel pl, const char* format, ...);
                 cstlColouredPrintf(CSTL_COLOUR_ERROR, __VA_ARGS__);                      \
             printf("\n");                                                                \
             printf("The following assertion failed: \n");                                \
-            cstlColouredPrintf(CSTL_COLOUR_CYAN, "    ENFORCE( %s )\n", #cond);          \
+            cstlColouredPrintf(CSTL_COLOUR_CYAN, "    CORETEN_ENFORCE( %s )\n", #cond);          \
             abort();                                                                     \
         }                                                                                \
     }                                                                                    \
@@ -88,10 +88,10 @@ void coreten_panic(PanicLevel pl, const char* format, ...);
 #define ENFORCE_2_ARGS(cond, ...)         __ENFORCE__(cond, __VA_ARGS__)
 #define ENFORCE_MACRO_CHOOSER(...)        GET_3RD_ARG(__VA_ARGS__, ENFORCE_2_ARGS, ENFORCE_1_ARGS, )
 
-#define ENFORCE(...)      ENFORCE_MACRO_CHOOSER(__VA_ARGS__)(__VA_ARGS__)
+#define CORETEN_ENFORCE(...)      ENFORCE_MACRO_CHOOSER(__VA_ARGS__)(__VA_ARGS__)
 
-#define ENFORCE_NULL(val,...)       ENFORCE((val) == null, __VA_ARGS__)
-#define ENFORCE_NOT_NULL(val,...)   ENFORCE((val) != null, __VA_ARGS__)
+#define ENFORCE_NULL(val,...)       CORETEN_ENFORCE((val) == null, __VA_ARGS__)
+#define ENFORCE_NNULL(val,...)   CORETEN_ENFORCE((val) != null, __VA_ARGS__)
 
 #define WARN(msg)     \
     cstlColouredPrintf(CSTL_COLOUR_WARN, "%s:%u:\nWARNING: %s\n", __FILE__, __LINE__, #msg)

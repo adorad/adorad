@@ -11,7 +11,10 @@ SPDX-License-Identifier: MIT
 Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 */
 
+#include <string.h>
+#include <stdlib.h>
 #include <adorad/core/os.h>
+#include <adorad/core/debug.h>
 
 static cstlBuffer* os_get_cwd() {
 #if defined(CSTL_OS_WINDOWS)
@@ -30,9 +33,9 @@ static cstlBuffer* os_get_cwd() {
     char *buf;
 
     n = pathconf(".", _PC_PATH_MAX);
-    ENFORCE_NE(n, -1);
+    CORETEN_ENFORCE(n != -1);
     buf = cast(char*)calloc(n, sizeof(*buf));
-    ENFORCE_NOT_NULL(buf, "calloc failed. Out of memory");
+    ENFORCE_NNULL(buf, "calloc failed. Out of memory");
     char* result = getcwd(buf, n);
     if(!result) {
         fprintf(stderr, "Unable to `os_get_cwd()`. 'getcwd()' failed");
@@ -138,7 +141,7 @@ static bool os_is_sep(char ch) {
 
 static bool os_path_is_abs(cstlBuffer* path) {
     bool result = false;
-    ENFORCE_NOT_NULL(path, "Cannot do anything useful on a null path :(");
+    ENFORCE_NNULL(path, "Cannot do anything useful on a null path :(");
 #ifdef CSTL_OS_WINDOWS
 	// The 'C:\...`
     result = path->len > 2 &&
@@ -157,7 +160,7 @@ static bool os_path_is_rel(cstlBuffer* path) {
 
 static bool os_path_is_root(cstlBuffer* path) {
 	bool result = false;
-	ENFORCE_NOT_NULL(path, "Cannot do anything useful on a null path :(");
+	ENFORCE_NNULL(path, "Cannot do anything useful on a null path :(");
 #ifdef CSTL_OS_WINDOWS
     result = os_path_is_abs(path) && path->len == 3;
 #else
