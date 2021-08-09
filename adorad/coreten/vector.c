@@ -11,7 +11,7 @@ SPDX-License-Identifier: MIT
 Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 */
 
-#include <adorad/core/vector.h>
+#include <adorad/coreten/vector.h>
 #include <string.h>
 
 // Create a new `cstlVector`

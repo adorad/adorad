@@ -50,32 +50,32 @@ CREDITS
 */
 
 #ifndef CORETEN_USING_CUSTOM_GENERATED_MACROS
-    #include <adorad/core/cmake_macros.h>
+    #include <adorad/coreten/cmake_macros.h>
 #endif // CORETEN_USING_CUSTOM_GENERATED_MACROS
 
-#include <adorad/core/os_defs.h>
-#include <adorad/core/cpu.h>
-#include <adorad/core/compilers.h>
-#include <adorad/core/types.h>
-#include <adorad/core/headers.h>
-#include <adorad/core/clock.h>
-#include <adorad/core/debug.h>
-#include <adorad/core/misc.h>
-#include <adorad/core/io.h>
-#include <adorad/core/memory.h>
-#include <adorad/core/math.h>
-#include <adorad/core/os.h>
-#include <adorad/core/buffer.h>
-#include <adorad/core/char.h>
-#include <adorad/core/utf8.h>
-#include <adorad/core/vector.h>
+#include <adorad/coreten/os_defs.h>
+#include <adorad/coreten/cpu.h>
+#include <adorad/coreten/compilers.h>
+#include <adorad/coreten/types.h>
+#include <adorad/coreten/headers.h>
+#include <adorad/coreten/clock.h>
+#include <adorad/coreten/debug.h>
+#include <adorad/coreten/misc.h>
+#include <adorad/coreten/io.h>
+#include <adorad/coreten/memory.h>
+#include <adorad/coreten/math.h>
+#include <adorad/coreten/os.h>
+#include <adorad/coreten/buffer.h>
+#include <adorad/coreten/char.h>
+#include <adorad/coreten/utf8.h>
+#include <adorad/coreten/vector.h>
 
 #ifdef CORETEN_INCLUDE_HASH_H
-    #include <adorad/core/hash.h>
+    #include <adorad/coreten/hash.h>
 #endif // CORETEN_INCLUDE_HASH_H
 
 #ifdef CORETEN_INCLUDE_WINDOWS_H
-    // #include <adorad/core/windows.h>
+    // #include <adorad/coreten/windows.h>
 #endif // CORETEN_INCLUDE_WINDOWS_H
 
 #endif // CORETEN_CORE_CORETEN_H

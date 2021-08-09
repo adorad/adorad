@@ -11,8 +11,8 @@ SPDX-License-Identifier: MIT
 Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 */
 
-#include <adorad/core/debug.h>
-#include <adorad/core/headers.h>
+#include <adorad/coreten/debug.h>
+#include <adorad/coreten/headers.h>
 
 int CORETEN_ATTRIBUTE_(format (printf, 2, 3))
 cstlColouredPrintf(int colour, const char* fmt, ...) {

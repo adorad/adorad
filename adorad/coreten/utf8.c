@@ -14,7 +14,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
-#include <adorad/core/utf8.h>
+#include <adorad/coreten/utf8.h>
 
 /*
     The following macros define the last codepoint part of a UTF-8 category
@@ -100,8 +100,8 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     #define UTF8_UINT16_MAX     65535U
 #endif // UTF8_UINT16_MAX
 
-#include <adorad/core/utf8_data.h>
-// #include <adorad/core/utf8_properties.h>
+#include <adorad/coreten/utf8_data.h>
+// #include <adorad/coreten/utf8_properties.h>
 
 const Rune codepoint_decoded_length[256] = {
     // Basic Latin

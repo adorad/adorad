@@ -39,14 +39,14 @@ file(GLOB_RECURSE ADORAD_INTERNALTEST_HEADERS
 
 # Main Build File for the main CSTL Library
 file(GLOB LIBCSTLINTERNALTESTS_SOURCES
-    ${CMAKE_CURRENT_SOURCE_DIR}/../AdoradInternalTests/core/*.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../AdoradInternalTests/coreten/*.c
 )
 file(GLOB_RECURSE CSTLINTERNALTESTS_HEADERS 
-    ${CMAKE_CURRENT_SOURCE_DIR}/../AdoradInternalTests/core/*.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../AdoradInternalTests/coreten/*.c
 )
 set(
     CSTLINTERNALTESTS_BUILD_INCLUDE_DIRS
-    # "${ADORAD_ROOT_DIR}/AdoradInternalTests/core" # results in weird <windows.h> errors (conflicts with adorad/core/windows.h)
+    # "${ADORAD_ROOT_DIR}/AdoradInternalTests/core" # results in weird <windows.h> errors (conflicts with adorad/coreten/windows.h)
     "${ADORAD_ROOT_DIR}"
 )
 

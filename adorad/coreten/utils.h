@@ -15,7 +15,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #define CORETEN_UTILS_H
 
 #include <stdlib.h>
-#include <adorad/core/compilers.h>
+#include <adorad/coreten/compilers.h>
 
 #ifdef _WIN32
     #define __func__        __FUNCTION__

@@ -38,5 +38,5 @@ testvalgrind:
 .PHONY: testvalgrind
 
 emitoutput:
-	gcc -E adorad/core/buffer.h -I . -o adoradoutput.txt
+	gcc -E adorad/coreten/buffer.h -I . -o adoradoutput.txt
 .PHONY: emitoutput

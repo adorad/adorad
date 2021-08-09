@@ -14,7 +14,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #ifndef CORETEN_MATH_H
 #define CORETEN_MATH_H
 
-#include <adorad/core/types.h>
+#include <adorad/coreten/types.h>
 
 #ifndef CORETEN_MATH_CONSTANTS
 #define CORETEN_MATH_CONSTANTS

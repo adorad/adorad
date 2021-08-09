@@ -14,9 +14,9 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #ifndef ADORAD_AST_H
 #define ADORAD_AST_H
 
-#include <adorad/core/types.h>
-#include <adorad/core/buffer.h>
-#include <adorad/core/vector.h>
+#include <adorad/coreten/types.h>
+#include <adorad/coreten/buffer.h>
+#include <adorad/coreten/vector.h>
 #include <adorad/compiler/location.h>
 
 typedef struct AstNode__ AstNode__;

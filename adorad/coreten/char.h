@@ -14,9 +14,9 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #ifndef CORETEN_CHAR_H
 #define CORETEN_CHAR_H
 
-#include <adorad/core/types.h>
-#include <adorad/core/math.h>
-#include <adorad/core/debug.h>
+#include <adorad/coreten/types.h>
+#include <adorad/coreten/math.h>
+#include <adorad/coreten/debug.h>
 
 bool char_is_upper(char c);
 bool char_is_lower(char c);

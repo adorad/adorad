@@ -16,9 +16,9 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 
 #include <stdarg.h>
 #include <stdio.h>
-#include <adorad/core/os_defs.h>
-#include <adorad/core/misc.h>
-#include <adorad/core/utils.h>
+#include <adorad/coreten/os_defs.h>
+#include <adorad/coreten/misc.h>
+#include <adorad/coreten/utils.h>
 
 // Enable the use of the non-standard keyword __attribute__ to silence warnings under some compilers
 #if defined(__GNUC__) || defined(CORETEN_COMPILER_CLANG)

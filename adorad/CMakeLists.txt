@@ -13,7 +13,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(ADORAD_BUILD_SHARED_LIB ${BUILD_SHARED_LIBS}) # used in ../cmake/cmake_macros.h.in
 configure_file(
     ${CMAKE_SOURCE_DIR}/cmake/cmake_macros.h.in
-    ${CMAKE_SOURCE_DIR}/adorad/core/cmake_macros.h
+    ${CMAKE_SOURCE_DIR}/adorad/coreten/cmake_macros.h
 )
 
 #
@@ -121,10 +121,10 @@ install(
     FILES_MATCHING PATTERN "*.h"
 )
 
-# adorad/core/CMake_Macros.h --> include/adorad/core/CMake_Macros.h
+# adorad/coreten/CMake_Macros.h --> include/adorad/coreten/CMake_Macros.h
 install(
-    FILES ${CMAKE_BINARY_DIR}/adorad/core/cmake_macros.h
-    DESTINATION include/adorad/core/macros
+    FILES ${CMAKE_BINARY_DIR}/adorad/coreten/cmake_macros.h
+    DESTINATION include/adorad/coreten/macros
 )
 
 # For CORETEN_BUILD_SHARED_LIB, see Core/Export.h

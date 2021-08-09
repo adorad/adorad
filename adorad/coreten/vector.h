@@ -14,8 +14,8 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #ifndef CORETEN_VECTOR_H
 #define CORETEN_VECTOR_H
 
-#include <adorad/core/types.h>
-#include <adorad/core/debug.h>
+#include <adorad/coreten/types.h>
+#include <adorad/coreten/debug.h>
 
 // We require this to be a large number, much more than what you might eventually use for more projects.
 // This is because CSTL is of great use and importance in the Adorad Programming Language (which requires

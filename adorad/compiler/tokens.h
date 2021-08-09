@@ -14,8 +14,8 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #ifndef ADORAD_TOKEN_H
 #define ADORAD_TOKEN_H
 
-#include <adorad/core/misc.h>
-#include <adorad/core/types.h> 
+#include <adorad/coreten/misc.h>
+#include <adorad/coreten/types.h> 
 #include <adorad/compiler/location.h>
 
 /*
