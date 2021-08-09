@@ -55,7 +55,6 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     #define CSTL_UNUSED   __attribute__((unused))
 #endif // CSTL_COMPILER_MSVC
 
-
 #define CSTL_COLOUR_ERROR     1
 #define CSTL_COLOUR_SUCCESS   2
 #define CSTL_COLOUR_WARN      3
@@ -171,6 +170,14 @@ static inline int cstlShouldDecomposeMacro(char const* actual, char const* expec
     #ifndef CSTL_CAN_USE_OVERLOADABLES
         #define CSTL_CAN_USE_OVERLOADABLES
     #endif // CSTL_CAN_USE_OVERLOADABLES
+
+
+#define XSTR(x) STR(x)
+#define STR(x) #x
+
+#pragma message "We are inside here!: "
+#pragma message "The value of CSTL_OVERLOADABLE: " XSTR(CSTL_WEAK) XSTR(CSTL_OVERLOADABLE)
+
 
     CSTL_WEAK CSTL_OVERLOADABLE void CSTL_OVERLOAD_PRINTER(float f);
     CSTL_WEAK CSTL_OVERLOADABLE void CSTL_OVERLOAD_PRINTER(double d);
