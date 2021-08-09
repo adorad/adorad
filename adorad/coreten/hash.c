@@ -365,7 +365,7 @@ UInt64 hash_murmur64_seed(void const* data__, Ll len, UInt64 seed) {
     UInt32 h1 = cast(UInt32)(seed) ^ cast(UInt32)(len);
     UInt32 h2 = cast(UInt32)(seed >> 32);
 
-    UInt32 const* data = cast(UInt32 const* )data;
+    UInt32 const* data = cast(UInt32 const* )data_;
 
     while(len >= 8) {
         UInt32 k1, k2;
