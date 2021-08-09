@@ -55,6 +55,14 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     #define CSTL_UNUSED   __attribute__((unused))
 #endif // CSTL_COMPILER_MSVC
 
+#define XSTR(x) STR(x)
+#define STR(x) #x
+
+#pragma message "The value of CSTL_COMPILER_CLANG: " XSTR(CSTL_COMPILER_CLANG)
+#pragma message "The value of CSTL_OVERLOADABLE: " XSTR(CSTL_OVERLOADABLE)
+#pragma message "The value of CSTL_WEAK: " XSTR(CSTL_WEAK)
+#pragma message "The value of CSTL_UNUSED: " XSTR(CSTL_UNUSED)
+
 
 #define CSTL_COLOUR_ERROR     1
 #define CSTL_COLOUR_SUCCESS   2
