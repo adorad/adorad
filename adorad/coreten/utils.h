@@ -26,7 +26,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #ifdef CORETEN_COMPILER_MSVC
     #define ATTRIBUTE_COLD        __declspec(noinline)
     #define ATTRIBUTE_PRINTF(a,b)
-    #define ATTRIBUTE_NORETURN    __declspec(noreturn
+    #define ATTRIBUTE_NORETURN    __declspec(noreturn)
     #define ATTRIBUTE_WEAK
     #define ATTRIBUTE_UNUSED
     #define BREAKPOINT            __debugbreak())

@@ -29,7 +29,7 @@ file(GLOB_RECURSE ADORAD_HEADERS
 )
 
 # Build the Coreten target
-add_subdirectory(core)
+add_subdirectory(coreten)
 
 # 
 # Build the Shared/Static Library

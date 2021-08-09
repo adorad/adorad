@@ -116,7 +116,7 @@ foreach(source ${ADORAD_INTERNAL_TESTS_SOURCES})
         ${source}   # with file extension
     )
 
-    # Link AdoradInternalTests with libAdoradInternalTests and Tau
+    # Link AdoradInternalTests with libAdorawdInternalTests and Tau
     target_link_libraries(
         ${testcase}
         PRIVATE
