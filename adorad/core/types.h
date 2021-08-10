@@ -20,7 +20,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 // Note that this is not recommended. Use CHECK instead
 // If a condition fails, this raises a compilation error (negative index) --> 0*2 == 0 + (-1) == -1!
 #define CORETEN_DEBUG_CHECK1(cond, line)      typedef char static_assertion_at_line_##line[(!!(cond))*2-1]
-#define CORETEN_DEBUG_CORETEN_ENFORCE(cond)             CORETEN_DEBUG_CHECK1(cond, __LINE__)
+#define CORETEN_STATIC_ASSERT(cond)             CORETEN_DEBUG_CHECK1(cond, __LINE__)
 
 //================================== Built-in types ================================*/
 /*
@@ -83,22 +83,22 @@ typedef Int8  Bool8;
 typedef Int16 Bool16;
 typedef Int32 Bool32; // Prefer this!
 
-CORETEN_DEBUG_CORETEN_ENFORCE(sizeof(UInt8)  == sizeof(Int8));
-CORETEN_DEBUG_CORETEN_ENFORCE(sizeof(UInt16) == sizeof(Int16));
-CORETEN_DEBUG_CORETEN_ENFORCE(sizeof(UInt32) == sizeof(Int32));
-CORETEN_DEBUG_CORETEN_ENFORCE(sizeof(UInt64) == sizeof(Int64));
+CORETEN_STATIC_ASSERT(sizeof(UInt8)  == sizeof(Int8));
+CORETEN_STATIC_ASSERT(sizeof(UInt16) == sizeof(Int16));
+CORETEN_STATIC_ASSERT(sizeof(UInt32) == sizeof(Int32));
+CORETEN_STATIC_ASSERT(sizeof(UInt64) == sizeof(Int64));
 
-CORETEN_DEBUG_CORETEN_ENFORCE(sizeof(UInt8)  == 1);
-CORETEN_DEBUG_CORETEN_ENFORCE(sizeof(UInt16) == 2);
-CORETEN_DEBUG_CORETEN_ENFORCE(sizeof(UInt32) == 4);
-CORETEN_DEBUG_CORETEN_ENFORCE(sizeof(UInt64) == 8);
+CORETEN_STATIC_ASSERT(sizeof(UInt8)  == 1);
+CORETEN_STATIC_ASSERT(sizeof(UInt16) == 2);
+CORETEN_STATIC_ASSERT(sizeof(UInt32) == 4);
+CORETEN_STATIC_ASSERT(sizeof(UInt64) == 8);
 
-CORETEN_DEBUG_CORETEN_ENFORCE(sizeof(Float32) == 4);
-CORETEN_DEBUG_CORETEN_ENFORCE(sizeof(Float64) == 8);
+CORETEN_STATIC_ASSERT(sizeof(Float32) == 4);
+CORETEN_STATIC_ASSERT(sizeof(Float64) == 8);
 
-CORETEN_DEBUG_CORETEN_ENFORCE(sizeof(Bool8)  == 1);
-CORETEN_DEBUG_CORETEN_ENFORCE(sizeof(Bool16) == 2);
-CORETEN_DEBUG_CORETEN_ENFORCE(sizeof(Bool32) == 4);
+CORETEN_STATIC_ASSERT(sizeof(Bool8)  == 1);
+CORETEN_STATIC_ASSERT(sizeof(Bool16) == 2);
+CORETEN_STATIC_ASSERT(sizeof(Bool32) == 4);
 
 // Unicode codepoint
 typedef UInt8  Byte;
@@ -110,8 +110,8 @@ typedef unsigned char* Byteptr;
 #define CORETEN_RUNE_BOM     cast(Rune)(0xfeff)
 #define CORETEN_RUNE_EOF     cast(Rune)(-1)
 
-CORETEN_DEBUG_CORETEN_ENFORCE(sizeof(Byte) == 1);
-CORETEN_DEBUG_CORETEN_ENFORCE(sizeof(Rune) == 4);
+CORETEN_STATIC_ASSERT(sizeof(Byte) == 1);
+CORETEN_STATIC_ASSERT(sizeof(Rune) == 4);
 
 // Max and Min 
 #ifndef UInt8_MIN 
@@ -197,7 +197,7 @@ CORETEN_DEBUG_CORETEN_ENFORCE(sizeof(Rune) == 4);
     typedef  intptr_t    Intptr;
 #endif
 
-CORETEN_DEBUG_CORETEN_ENFORCE(sizeof(UIntptr) == sizeof(Intptr));
+CORETEN_STATIC_ASSERT(sizeof(UIntptr) == sizeof(Intptr));
 
 // More Useful types
 #define nullchar '\0' 
