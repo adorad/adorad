@@ -51,8 +51,12 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #endif
 
 // Architetures
-#if defined(__x86_64__)
-    #define CORETEN_ARCH_X86_64    1
+#if defined(__i386__) || defined(_M_IX86) || defined(_X86_) || defined(__amd64__) || defined(__x86_64__) || \
+defined(_M_X64) || defined(_M_AMD64)
+    #define CORETEN_ARCH_X86           1
+    #if defined(__x86_64__)
+        #define CORETEN_ARCH_X86_64    1
+    #endif // __x86_64__
 #elif defined(__aarch64__)
     #define CORETEN_ARCH_ARM64     1
 #elif defined(__ATM_EABI__)
@@ -63,7 +67,8 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #endif // __x86_64
 
 // Generic 32 vs 64 bit
-#if defined(_WIN64) || defined(__x86_64__) || defined(_M_X64) || defined(__64BIT__) || defined(__powerpc64__) || defined(__ppc64__)
+#if defined(_WIN64) || defined(__x86_64__) || defined(_M_X64) || defined(__64BIT__) || defined(__powerpc64__) || \
+defined(__ppc64__)
     #define CORETEN_ARCH_64BIT     1
 #else 
     #define CORETEN_ARCH_32BIT     1
