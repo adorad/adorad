@@ -20,21 +20,13 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #include <adorad/core/misc.h>
 #include <adorad/core/utils.h>
 
-// Enable the use of the non-standard keyword __attribute__ to silence warnings under some compilers
-#if defined(__GNUC__) || defined(CORETEN_COMPILER_CLANG)
-    #define CORETEN_ATTRIBUTE_(attr)    __attribute__((attr))
-#else
-    #define CORETEN_ATTRIBUTE_(attr)
-#endif // __GNUC__
-
-
 #define CORETEN_COLOUR_ERROR     1
 #define CORETEN_COLOUR_SUCCESS   2
 #define CORETEN_COLOUR_WARN      3
 #define CORETEN_COLOUR_CYAN      4
 #define CORETEN_COLOUR_BOLD      5
 
-int CORETEN_ATTRIBUTE_(format (printf, 2, 3))
+int ATTRIBUTE_PRINTF(2, 3)
 cstlColouredPrintf(int colour, const char* fmt, ...);
 
 typedef enum {
