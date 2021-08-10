@@ -2,9 +2,8 @@
 
 int main(int argc, const char* const argv[]) {
     // The CWD for this executable is in ".../build/bin"
-    Buff* path = ospj(ospd(ospd(os_get_cwd())), "test/LexerDemo.ad");
-    printf("Path = %s\n", path->data);
-	char* buffer = readFile("../../test/LexerDemo.ad");
+    Buff* path = ospj(ospd(ospd(os_get_cwd())), buff_new("test/LexerDemo.ad"));
+	char* buffer = readFile(path->data);
 	Lexer* lexer = lexer_init(buffer, "test/LexerDemo.ad"); 
 
     clock_t st, end;
