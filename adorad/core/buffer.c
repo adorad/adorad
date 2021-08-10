@@ -18,7 +18,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 // Create a new `cstlBuffer`
 cstlBuffer* buff_new(char* buff_data) {
     cstlBuffer* buffer = cast(cstlBuffer*)calloc(1, sizeof(cstlBuffer));
-    ENFORCE_NNULL(buffer, "Could not allocate memory. Memory full.");
+    CORETEN_ENFORCE_NN(buffer, "Could not allocate memory. Memory full.");
 
     buffer->is_utf8 = false;
     buff_set(buffer, buff_data);
@@ -28,8 +28,8 @@ cstlBuffer* buff_new(char* buff_data) {
 
 // Return the n'th character in the buffer data
 char buff_at(cstlBuffer* buffer, UInt64 n) {
-    ENFORCE_NNULL(buffer, "Expected not null");
-    ENFORCE_NNULL(buffer->data, "Expected not null");
+    CORETEN_ENFORCE_NN(buffer, "Expected not null");
+    CORETEN_ENFORCE_NN(buffer->data, "Expected not null");
     
     if(n >= buffer->len)
         return nullchar;
@@ -39,24 +39,24 @@ char buff_at(cstlBuffer* buffer, UInt64 n) {
 
 // Returns a pointer to the beginning of the buffer data
 char* buff_begin(cstlBuffer* buffer) {
-    ENFORCE_NNULL(buffer, "Expected not null");
-    ENFORCE_NNULL(buffer->data, "Expected not null");
+    CORETEN_ENFORCE_NN(buffer, "Expected not null");
+    CORETEN_ENFORCE_NN(buffer->data, "Expected not null");
 
     return cast(char*)buffer->data;
 }
 
 // Returns a pointer to the end of the buffer data
 char* buff_end(cstlBuffer* buffer) {
-    ENFORCE_NNULL(buffer, "Expected not null");
-    ENFORCE_NNULL(buffer->data, "Expected not null");
+    CORETEN_ENFORCE_NN(buffer, "Expected not null");
+    CORETEN_ENFORCE_NN(buffer->data, "Expected not null");
 
     return cast(char*)(buffer->data + ((buffer->len - 1) * sizeof(char)));
 }
 
 // Is the buffer data empty?
 bool buff_is_empty(cstlBuffer* buffer) {
-    ENFORCE_NNULL(buffer, "Expected not null");
-    ENFORCE_NNULL(buffer->data, "Expected not null");
+    CORETEN_ENFORCE_NN(buffer, "Expected not null");
+    CORETEN_ENFORCE_NN(buffer->data, "Expected not null");
 
     return buffer->len == 0;
 }
@@ -152,10 +152,10 @@ UInt32 __internal_strlength(const char* str, bool is_utf8) {
 // Append `buff2` to the buffer data
 // Returns `buffer`
 void buff_append(cstlBuffer* buffer, cstlBuffer* buff2) {
-    ENFORCE_NNULL(buffer, "Expected not null");
-    ENFORCE_NNULL(buffer->data, "Expected not null");
-    ENFORCE_NNULL(buff2, "Expected not null");
-    ENFORCE_NNULL(buff2->data, "Expected not null");
+    CORETEN_ENFORCE_NN(buffer, "Expected not null");
+    CORETEN_ENFORCE_NN(buffer->data, "Expected not null");
+    CORETEN_ENFORCE_NN(buff2, "Expected not null");
+    CORETEN_ENFORCE_NN(buff2->data, "Expected not null");
 
     UInt64 new_len = buffer->len + buff2->len + 1;
     char* newstr = cast(char*)calloc(1, new_len);
@@ -166,8 +166,8 @@ void buff_append(cstlBuffer* buffer, cstlBuffer* buff2) {
 
 // Append a character to the buffer data
 void buff_append_char(cstlBuffer* buffer, char ch) {
-    ENFORCE_NNULL(buffer, "Expected not null");
-    ENFORCE_NNULL(buffer->data, "Expected not null");
+    CORETEN_ENFORCE_NN(buffer, "Expected not null");
+    CORETEN_ENFORCE_NN(buffer->data, "Expected not null");
 
     UInt64 len = buffer->len;
     char* newstr = cast(char*)calloc(1, len + 1);
@@ -180,7 +180,7 @@ void buff_append_char(cstlBuffer* buffer, char ch) {
 
 // Assign `new_buff` to the buffer data
 void buff_set(cstlBuffer* buffer, char* new_buff) {
-    ENFORCE_NNULL(buffer, "Expected not null");
+    CORETEN_ENFORCE_NN(buffer, "Expected not null");
 
     UInt64 len;
     if(!new_buff) {
@@ -265,22 +265,22 @@ bool buff_cmp_nocase(cstlBuffer* buff1, cstlBuffer* buff2) {
 
 // Get a slice of a buffer
 cstlBuffer* buff_slice(cstlBuffer* buffer, int begin, int bytes) {
-    ENFORCE_NNULL(buffer, "`buffer` cannot be null");
+    CORETEN_ENFORCE_NN(buffer, "`buffer` cannot be null");
     CORETEN_ENFORCE(begin >= 0);
     CORETEN_ENFORCE(bytes >  0);
 
     cstlBuffer* slice = buff_new(null);
-    ENFORCE_NNULL(slice, "`slice` cannot be null");
+    CORETEN_ENFORCE_NN(slice, "`slice` cannot be null");
     char* temp = cast(char*)calloc(1, bytes);
     strncpy(temp, &(buffer->data[begin]), bytes);
     buff_set(slice, temp);
-    ENFORCE_NNULL(slice, "`slice source` cannot be null");
+    CORETEN_ENFORCE_NN(slice, "`slice source` cannot be null");
     return slice;
 }
 
 // Clone a buffer
 cstlBuffer* buff_clone(cstlBuffer* buffer) {
-    ENFORCE_NNULL(buffer, "Cannot clone a null buffer :(");
+    CORETEN_ENFORCE_NN(buffer, "Cannot clone a null buffer :(");
     cstlBuffer* clone = buff_new(null);
     char* dest = cast(char*)calloc(1, buff_len(buffer));
     char* source = buffer->data;
@@ -296,7 +296,7 @@ cstlBuffer* buff_clone(cstlBuffer* buffer) {
 
 // Clone a buffer (upto `n` chars)
 cstlBuffer* buff_clone_n(cstlBuffer* buffer, int n) {
-    ENFORCE_NNULL(buffer, "Cannot clone a null buffer :(");
+    CORETEN_ENFORCE_NN(buffer, "Cannot clone a null buffer :(");
     CORETEN_ENFORCE(n > 0);
     CORETEN_ENFORCE(n > buffer->len);
     cstlBuffer* clone = buff_new(null);

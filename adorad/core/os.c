@@ -35,7 +35,7 @@ static cstlBuffer* os_get_cwd() {
     n = pathconf(".", _PC_PATH_MAX);
     CORETEN_ENFORCE(n != -1);
     buf = cast(char*)calloc(n, sizeof(*buf));
-    ENFORCE_NNULL(buf, "calloc failed. Out of memory");
+    CORETEN_ENFORCE_NN(buf, "calloc failed. Out of memory");
     char* result = getcwd(buf, n);
     if(!result) {
         fprintf(stderr, "Unable to `os_get_cwd()`. 'getcwd()' failed");
@@ -141,7 +141,7 @@ static bool os_is_sep(char ch) {
 
 static bool os_path_is_abs(cstlBuffer* path) {
     bool result = false;
-    ENFORCE_NNULL(path, "Cannot do anything useful on a null path :(");
+    CORETEN_ENFORCE_NN(path, "Cannot do anything useful on a null path :(");
 #ifdef CORETEN_OS_WINDOWS
 	// The 'C:\...`
     result = path->len > 2 &&
@@ -160,7 +160,7 @@ static bool os_path_is_rel(cstlBuffer* path) {
 
 static bool os_path_is_root(cstlBuffer* path) {
 	bool result = false;
-	ENFORCE_NNULL(path, "Cannot do anything useful on a null path :(");
+	CORETEN_ENFORCE_NN(path, "Cannot do anything useful on a null path :(");
 #ifdef CORETEN_OS_WINDOWS
     result = os_path_is_abs(path) && path->len == 3;
 #else

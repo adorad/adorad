@@ -191,7 +191,7 @@ static inline char lexer_peekn(Lexer* lexer, UInt32 n) {
 
 static void lexer_maketoken(Lexer* lexer, TokenKind kind, Buff* value, UInt32 offset, UInt32 line, UInt32 col) {  
     Token* token = token_init();
-    ENFORCE_NNULL(token, "Could not allocate memory. Memory full.");
+    CORETEN_ENFORCE_NN(token, "Could not allocate memory. Memory full.");
 
     if(!value->data) {
         value = token_to_buff(kind);
@@ -232,7 +232,7 @@ static inline void lexer_lex_sl_comment(Lexer* lexer) {
         return;
 
     Buff* comment_value = buff_slice(lexer->buffer, prev_offset, comment_length - 1);
-    ENFORCE_NNULL(comment_value, "`comment_value` must not be null");
+    CORETEN_ENFORCE_NN(comment_value, "`comment_value` must not be null");
     lexer_maketoken(lexer, COMMENT, comment_value, prev_offset, line, col);
 
     LEXER_DECREMENT_OFFSET;
@@ -293,7 +293,7 @@ static inline void lexer_lex_macro(Lexer* lexer) {
     UInt32 offset_diff = lexer->offset - prev_offset;
 
     Buff* macro_value = buff_slice(lexer->buffer, prev_offset - 1, offset_diff);
-    ENFORCE_NNULL(macro_value, "`macro_value` must not be null");
+    CORETEN_ENFORCE_NN(macro_value, "`macro_value` must not be null");
     lexer_maketoken(lexer, MACRO, macro_value, prev_offset - 1, line, col - 1);
 
     LEXER_DECREMENT_OFFSET;
@@ -327,7 +327,7 @@ static inline void lexer_lex_string(Lexer* lexer) {
 
     // `offset_diff - 1` so as to ignore the closing quote `"`
     Buff* str_value = buff_slice(lexer->buffer, prev_offset, offset_diff - 1);
-    ENFORCE_NNULL(str_value, "`str_value` must not be null");
+    CORETEN_ENFORCE_NN(str_value, "`str_value` must not be null");
     lexer_maketoken(lexer, STRING, str_value, prev_offset - 1, line, col - 1);
 }
 
@@ -368,7 +368,7 @@ static inline void lexer_lex_identifier(Lexer* lexer) {
 
     UInt32 offset_diff = lexer->offset - prev_offset;
     Buff* ident_value = buff_slice(lexer->buffer, prev_offset - 1, offset_diff);
-    ENFORCE_NNULL(ident_value, "`ident_value` must not be null");
+    CORETEN_ENFORCE_NN(ident_value, "`ident_value` must not be null");
 
     // Determine if a keyword or just a regular identifier
     TokenKind tokenkind = lexer_is_keyword_or_identifier(ident_value->data);
@@ -502,7 +502,7 @@ static inline void lexer_lex_digit(Lexer* lexer) {
     // there are more digits to lex.
     // If digit_length = 0, this means that there's only one digit in the number (eg. 0, 2, 9)
     Buff* digit_value = buff_slice(lexer->buffer, prev_offset, offset_diff - 1);
-    ENFORCE_NNULL(digit_value, "`digit_value` must not be null");
+    CORETEN_ENFORCE_NN(digit_value, "`digit_value` must not be null");
     if(!digit_value)
         printf("digit_value = null\n");
     lexer_maketoken(lexer, tokenkind, digit_value, prev_offset, line, col);

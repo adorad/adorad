@@ -257,14 +257,14 @@ static inline char* utf8_encode(Rune value) {
 
 static cstlUTF8Str* ubuff_new(Rune* data) {
     cstlUTF8Str* ubuff = cast(cstlUTF8Str*)calloc(1, sizeof(ubuff));
-    ENFORCE_NNULL(ubuff, "Could not allocate memory. Memory full.");
+    CORETEN_ENFORCE_NN(ubuff, "Could not allocate memory. Memory full.");
 
     // ubuff_set(ubuff, data);
     return ubuff;
 }
 
 void __grow_ubuff(cstlUTF8Str* ubuff, int grow_by) {
-    ENFORCE_NNULL(ubuff, "Expected not null");
+    CORETEN_ENFORCE_NN(ubuff, "Expected not null");
     CORETEN_ENFORCE(grow_by > 0);
 
     ubuff->data = cast(Byte*)realloc(ubuff->data, grow_by);
@@ -349,8 +349,8 @@ static UInt64 ubuff_nbytes(cstlUTF8Str* ubuff) {
 // Return the byte at the `n`th byte offset
 // If `out` is null, we don't intend on knowing how many bytes the UTF8 character uses.
 static int __byte_offset_at(cstlUTF8Str* ubuff, Int64 n, int* out) {
-    ENFORCE_NNULL(ubuff, "Expected not null");
-    ENFORCE_NNULL(ubuff->data, "Expected not null");
+    CORETEN_ENFORCE_NN(ubuff, "Expected not null");
+    CORETEN_ENFORCE_NN(ubuff->data, "Expected not null");
     // Fail-fast approach. If this changes, comment this, and uncomment the following (commented) snippet
     CORETEN_ENFORCE(n < ubuff->nbytes);
     CORETEN_ENFORCE(n > 0);
@@ -404,8 +404,8 @@ static Byte ubuff_byte_offset_at(cstlUTF8Str* ubuff, Int64 n) {
 
 // Returns the byte at `n`th character offset
 static Byte ubuff_at(cstlUTF8Str* ubuff, Int64 n) {
-    ENFORCE_NNULL(ubuff, "Expected not null");
-    ENFORCE_NNULL(ubuff->data, "Expected not null");
+    CORETEN_ENFORCE_NN(ubuff, "Expected not null");
+    CORETEN_ENFORCE_NN(ubuff->data, "Expected not null");
     CORETEN_ENFORCE(n < ubuff->len);
     CORETEN_ENFORCE(n > 0);
     int a[1];
