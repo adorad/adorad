@@ -27,14 +27,14 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     #include <direct.h>
 #endif // CORETEN_OS_WINDOWS
 
-static cstlBuffer* os_get_cwd();
-static cstlBuffer* os_path_dirname(cstlBuffer* path);
-static cstlBuffer* os_path_extname(cstlBuffer* path);
-static cstlBuffer* os_path_join(cstlBuffer* path1, cstlBuffer* path2);
-static bool os_is_sep(char ch);
-static bool os_path_is_abs(cstlBuffer* path);
-static bool os_path_is_rel(cstlBuffer* path);
-static bool os_path_is_root(cstlBuffer* path);
+cstlBuffer* os_get_cwd();
+cstlBuffer* os_path_dirname(cstlBuffer* path);
+cstlBuffer* os_path_extname(cstlBuffer* path);
+cstlBuffer* os_path_join(cstlBuffer* path1, cstlBuffer* path2);
+bool os_is_sep(char ch);
+bool os_path_is_abs(cstlBuffer* path);
+bool os_path_is_rel(cstlBuffer* path);
+bool os_path_is_root(cstlBuffer* path);
 
 #ifndef CORETEN_OS_FUNC_ALIASES
     #define CORETEN_OS_FUNC_ALIASES
