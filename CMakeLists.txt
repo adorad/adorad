@@ -179,6 +179,9 @@ else()
     string(APPEND CMAKE_C_FLAGS " /wd4777")
     string(APPEND CMAKE_C_FLAGS " /wd5045")
     string(APPEND CMAKE_C_FLAGS " /wd5105")
+    string(APPEND CMAKE_C_FLAGS " /wd4388")
+    string(APPEND CMAKE_C_FLAGS " /wd4244")
+    string(APPEND CMAKE_C_FLAGS " /wd4244")
     # 'x' bytes of padding added after data member
     string(APPEND CMAKE_C_FLAGS " /wd4820")
     # 'x': this function may be unsafe. Consider using `x_s` instead
