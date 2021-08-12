@@ -44,7 +44,7 @@ typedef struct AstNodeForInExpr AstNodeForInExpr;
 typedef struct AstNodeMatchExpr AstNodeMatchExpr;
 typedef struct AstNodeReturnExpr AstNodeReturnExpr;
 typedef struct AstNodeTypeOfExpr AstNodeTypeOfExpr;
-typedef struct AstNodeCompileTimeConstantValue AstNodeCompileTimeConstantValue;
+typedef struct AstNodeCompileTimeValue AstNodeCompileTimeValue;
 typedef struct AstNodeFuncDecl AstNodeFuncDecl;
 typedef struct AstNodeFuncPrototype AstNodeFuncPrototype;
 typedef struct AstNodeFuncCallExpr AstNodeFuncCallExpr;
@@ -315,7 +315,7 @@ struct AstNodeExpression {
 //     | AstNodeBranchStatement
 //     | AstNodeDeferStatement
 //     | AstNodeEmptyStatement
-//     | AstNodeExpressionStatement
+//     | AstNodeExpression
 //     | AstNodeFuncDecl (prototype only)
 //     | AstNodeImportStatement
 //     | AstNodeModuleStatement
@@ -328,7 +328,7 @@ struct AstNodeStatement {
         AstNodeBranchStatement* branch_stmt;
         AstNodeDeferStatement* defer_stmt;
         AstNodeEmptyStatement* empty_stmt;
-        AstNodeExpressionStatement* expr_stmt;
+        AstNodeExpression* expr_stmt;
         AstNodeFuncDecl* func_proto_decl;
         AstNodeImportStatement* import_stmt;
         AstNodeModuleStatement* module_stmt;
@@ -360,7 +360,7 @@ struct AstNodeScopeObject {
 //     | AstNodeIntegerLiteral (8/16/32/64 + unsigned versions) 
 //     | AstNodeCharLiteral
 //     | AstNodeStringLiteral
-struct AstNodeCompileTimeConstantValue {
+struct AstNodeCompileTimeValue {
     union {
         AstNodeEmptyExpression* empty_expr;
         AstNodeBoolLiteral* bool_value;
