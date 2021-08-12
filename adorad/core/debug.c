@@ -74,7 +74,6 @@ cstlColouredPrintf(int colour, const char* fmt, ...) {
 void coreten_panic(PanicLevel pl, const char* format, ...) {
     va_list args;
     char buffer[256];
-    int n;
 
     va_start(args, format);
     vsnprintf(buffer, sizeof(buffer), format, args);
