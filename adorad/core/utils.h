@@ -29,10 +29,6 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     #define __attribute__(X)
     #define __zu               "%Iu"
     #define strdup              _strdup
-    // This function or variable may be unsafe. Consider using <str(n)cpy>_s instead. 
-    // To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details. 
-    // #define strncpy             strncpy_s
-    // #define strcpy              strcpy_s
 #endif // CORETEN_COMPILER_MSVC
 
 // Enable the use of the non-standard keyword __attribute__ to silence warnings under some compilers
