@@ -508,37 +508,37 @@ struct AstNodeTestExpr {
 };
 
 enum BinaryOpKind {
-    BinaryOpKind__AssignmentInvalid,
-    BinaryOpKind__AssignmentPlus,    // =+
-    BinaryOpKind__AssignmentMinus,   // =-
-    BinaryOpKind__AssignmentMult,    // =*
-    BinaryOpKind__AssignmentDiv,     // =/
-    BinaryOpKind__AssignmentMod,     // =%
-    BinaryOpKind__AssignmentBitshiftLeft,  // =<<
-    BinaryOpKind__AssignmentBitshiftRight, // =>>
-    BinaryOpKind__AssignmentBitAnd,  // &
-    BinaryOpKind__AssignmentBitOr,   // |
-    BinaryOpKind__AssignmentBitXor,  // ^
-    BinaryOpKind__BoolAnd,
-    BinaryOpKind__BoolOr,
-    BinaryOpKind__CmpEqual,                 // ==
-    BinaryOpKind__CmpNotEqual,              // !=
-    BinaryOpKind__CmpLessThan,              // <
-    BinaryOpKind__CmpGreaterThan,           // >
-    BinaryOpKind__CmpLessThanorEqualTo,     // <=
-    BinaryOpKind__CmpGreaterThanorEqualTo,  // >=
-    BinaryOpKind__BinaryAnd,
-    BinaryOpKind__BinaryOr,
-    BinaryOpKind__BinaryXor,
-    BinaryOpKind__BitshitLeft,   // <<
-    BinaryOpKind__BitshitRight,  // >>
-    BinaryOpKind__Add,      // +
-    BinaryOpKind__Subtract, // -
-    BinaryOpKind__Mult,     // *
-    BinaryOpKind__Div,      // /
-    BinaryOpKind__Mod,      // %
-    BinaryOpKind__TensorSlice,
-    BinaryOpKind__TensorMult
+    BinaryOpKindAssignmentInvalid,
+    BinaryOpKindAssignmentPlus,    // =+
+    BinaryOpKindAssignmentMinus,   // =-
+    BinaryOpKindAssignmentMult,    // =*
+    BinaryOpKindAssignmentDiv,     // =/
+    BinaryOpKindAssignmentMod,     // =%
+    BinaryOpKindAssignmentBitshiftLeft,  // =<<
+    BinaryOpKindAssignmentBitshiftRight, // =>>
+    BinaryOpKindAssignmentBitAnd,  // &
+    BinaryOpKindAssignmentBitOr,   // |
+    BinaryOpKindAssignmentBitXor,  // ^
+    BinaryOpKindBoolAnd,
+    BinaryOpKindBoolOr,
+    BinaryOpKindCmpEqual,                 // ==
+    BinaryOpKindCmpNotEqual,              // !=
+    BinaryOpKindCmpLessThan,              // <
+    BinaryOpKindCmpGreaterThan,           // >
+    BinaryOpKindCmpLessThanorEqualTo,     // <=
+    BinaryOpKindCmpGreaterThanorEqualTo,  // >=
+    BinaryOpKindBinaryAnd,
+    BinaryOpKindBinaryOr,
+    BinaryOpKindBinaryXor,
+    BinaryOpKindBitshitLeft,   // <<
+    BinaryOpKindBitshitRight,  // >>
+    BinaryOpKindAdd,      // +
+    BinaryOpKindSubtract, // -
+    BinaryOpKindMult,     // *
+    BinaryOpKindDiv,      // /
+    BinaryOpKindMod,      // %
+    BinaryOpKindTensorSlice,
+    BinaryOpKindTensorMult
 };
 
 struct AstNodeBinaryOpExpr {
