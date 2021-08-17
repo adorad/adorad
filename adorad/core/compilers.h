@@ -41,6 +41,22 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     #define CORETEN_COMPILER_GCC 1
 #else 
     #error AdoradError: Unknown Compiler (Adorad currently supports only MSVC, GCC and Clang)
-#endif 
+#endif
+
+// Some compilers don't support short-circuiting apparently, yielding ugly syntax errors when things like
+// `defined(__clang__) && defined (__has_feature) && __has_feature(...)`. 
+// So, we define Clang's `__has_feature` and `__has_extension` macros before referring to them
+#ifndef __CORETEN_HAS_FEATURE_EXTENSION_DEFINED
+    #if !defined(__has_feature)
+        #define __has_feature(feature)   0
+    #endif // __has_feature
+    #if !defined(__has_extension)
+        #define __has_extension(feature)   0
+    #endif // __has_extension
+
+    #define CORETEN_HAS_FEATURE(feature)        __has_feature(feature)
+    #define CORETEN_HAS_EXTENSION(extension)    __has_extension(extension)
+#endif // __CORETEN_HAS_FEATURE_EXTENSION_DEFINED
+
 
 #endif // CORETEN_COMPILERS_H

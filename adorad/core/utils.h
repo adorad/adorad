@@ -17,17 +17,6 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #include <stdlib.h>
 #include <adorad/core/compilers.h>
 
-// Some compilers don't support short-circuiting apparently, yielding ugly syntax errors when things like
-// `defined(__clang__) && defined (__has_feature) && __has_feature(...)`. 
-// So, we define Clang's `__has_feature` and `__has_extension` macros before referring to them
-#ifndef __has_feature
-    #define __has_feature   0
-#endif // __has_feature
-
-#ifndef __has_extension
-    #define __has_extension   0
-#endif // __has_extension
-
 #ifdef _WIN32
     #define __func__        __FUNCTION__
 #endif

@@ -18,7 +18,62 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #include <stdio.h>
 #include <adorad/core/os_defs.h>
 #include <adorad/core/misc.h>
+#include <adorad/core/compilers.h>
 #include <adorad/core/utils.h>
+
+// Static asserts (aka compile-time asserts)
+#ifndef __CORTEN_STATIC_ASSERT_DEFINED
+    #define __CORTEN_STATIC_ASSERT_DEFINED
+    #define coreten_assert(cond, msg)      \
+        __coreten_assert_warning_push      \
+        __coreten_assert_stmt(cond, msg)   \
+        __coreten_assert_warning_pop       
+#endif // __CORTEN_STATIC_ASSERT_DEFINED
+
+#if __STDC_VERSION__ >= 201112L || CORETEN_HAS_FEATURE(c_static_assert)
+    #define __coreten_assert_stmt(cond, msg)    _Static_assert(cond, msg)
+#elif (!defined(__clang__) && !defined(__INTEL_COMPILER)) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 6))
+    // If we're dealing with GCC >= 4.6 in C99 mode, we can still use_Static_assert but we need to suppress warnings
+    #define __coreten_assert_stmt(cond, msg)    _Static_assert(cond, msg)
+    
+    #if __GNUC__ >= 6
+        #define __coreten_assert_warning_push \
+            CORETEN_GCC_SUPPRESS_WARNING_PUSH \
+            CORETEN_GCC_SUPPRESS_WARNING("-Wpedantic")
+    #else
+        #define __coreten_assert_warning_push \
+            CORETEN_GCC_SUPPRESS_WARNING_PUSH \
+            CORETEN_GCC_SUPPRESS_WARNING("-pedantic")
+    #endif // __GNUC__
+
+    #define __coreten_assert_warning_pop \
+        CORETEN_GCC_SUPPRESS_WARNING_POP
+#elif defined(CORETEN_COMPILER_CLANG) && CORETEN_HAS_EXTENSION(c_static_assert)
+    // The same thing for Clang, but we suppress a different warning
+    #define __coreten_assert_stmt(cond, msg)    _Static_assert(cond, msg)
+    
+    #define __coreten_assert_warning_push \
+        CORETEN_CLANG_SUPPRESS_WARNING_PUSH \
+        CORETEN_CLANG_SUPPRESS_WARNING("-Wc11-extensions")
+
+    #define __coreten_assert_warning_pop \
+        CORETEN_CLANG_SUPPRESS_WARNING_POP
+#elif _MSC_VER >= 1600
+    #define __coreten_assert_stmt(cond, msg)    static_assert(cond, msg)
+    #define __coreten_assert_warning_push
+    #define __coreten_assert_warning_pop
+#else
+    // Fallback for compilers that don't support either `_Static_assert` or `static_assert
+    // Not as pretty, but it gets the job done.
+    // This macro is only for simple assertion checks. Because of implementation limitations, the custom user
+    // messages are discarded
+    // If a condition fails, this raises a compilation error (negative index) --> 0*2 == 0 + (-1) == -1!
+    #define __coreten_assert_stmt__1(cond, line)   typedef char static_assertion_at_line_##line[(!!(cond))*2-1]
+    #define __coreten_assert_stmt(cond, msg)            __coreten_assert_stmt__1(cond, __LINE__)
+    #define __coreten_assert_warning_push
+    #define __coreten_assert_warning_pop
+#endif // __STDC_VERSION__
+
 
 #define CORETEN_COLOUR_ERROR     1
 #define CORETEN_COLOUR_SUCCESS   2
