@@ -32,38 +32,38 @@ typedef enum {
 } TimeFormatDate;
 
 typedef enum {
-    TimeFormatDelimiter__dot,
-    TimeFormatDelimiter__hyphen,
-    TimeFormatDelimiter__slash,
-    TimeFormatDelimiter__space,
-    TimeFormatDelimiter__none, // no delimiter
+    TimeFormatDelimiterDot,
+    TimeFormatDelimiterHyphen,
+    TimeFormatDelimiterSlash,
+    TimeFormatDelimiterSpace,
+    TimeFormatDelimiterNone, // no delimiter
 } TimeFormatDelimiter;
 
 typedef enum {
-    BuildMode__default,
-    BuildMode__module,  // build module
+    BuildModeDefault,
+    BuildModeModule,  // build module
 } BuildMode;
 
 typedef enum {
-    ColourOutput__default,
-    ColourOutput__always,
-    ColourOutput__never
+    ColourOutputDefault,
+    ColourOutputAlways,
+    ColourOutputNever
 } ColourOutput;
 
 typedef enum {
-    CompilerType__gcc,
-    CompilerType__tinyc,
-    CompilerType__mingw,
-    CompilerType__msvc,
-    CompilerType__clang,
+    CompilerTypeGcc,
+    CompilerTypeTinyc,
+    CompilerTypeMingw,
+    CompilerTypeMsvc,
+    CompilerTypeClang,
 } CompilerType;
 
 typedef enum {
-    OutputArch__auto,
-    OutputArch__amd64,
-    OutputArch__arm64,
-    OutputArch__arm32,
-    OutputArch__rv64,
-    OutputArch__rv32,
-    OutputArch__i386,
+    OutputArchAuto,
+    OutputArchAmd64,
+    OutputArchArm64,
+    OutputArchArm32,
+    OutputArchRv64,
+    OutputArchRv32,
+    OutputArchI386,
 } OutputArch;
