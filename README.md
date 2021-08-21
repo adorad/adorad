@@ -108,7 +108,7 @@ cd adorad
 cmake -S . -B build
 ```
 
-That's it! Now you have a Adorad executable at `[path/to/Adorad/repo]/build/bin/`. 
+That's it! Now you have a Adorad executable at `[path/to/adorad/repo]/build/bin/`. 
 <!-- `[path to Adorad repo]` can be anywhere. -->
 <!--
 (On Windows `make` means running `make.bat`, so make sure you use `cmd.exe`)
