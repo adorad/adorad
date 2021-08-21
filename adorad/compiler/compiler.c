@@ -11,4 +11,4 @@ SPDX-License-Identifier: MIT
 Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 */
 
-#include <adorad/compiler/core.h>
+#include <adorad/compiler/compiler.h>
