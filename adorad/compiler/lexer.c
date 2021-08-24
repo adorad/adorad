@@ -461,7 +461,7 @@ static inline void lexer_lex_digit(Lexer* lexer) {
             if(ch == '.' || ch == '_') {
                 ch = lexer_advance(lexer);
                 if(ch == '_')
-                    lexer_error(lexer, SyntaxError "Unexpected `_` near `.`");
+                    lexer_error(lexer, SyntaxError, "Unexpected `_` near `.`");
             }
             
             // Exponents (Float)
