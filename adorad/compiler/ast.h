@@ -459,6 +459,37 @@ typedef struct AstNodeTestExpr {
     AstNode* else_node;  // null, block node, or an `if expr` node
 } AstNodeTestExpr;
 
+// TODO(jasmcaus): Work on this
+typedef enum UnaryOpKind {
+    UnaryOpKindNot,
+    UnaryOpKindInvert,
+} UnaryOpKind;
+
+typedef struct AstNodeUnaryOpExpr {
+    AstNode* op1;
+    BinaryOpKind binary_op;
+    AstNode* op2;
+} AstNodeUnaryOpExpr;
+
+typedef enum ComparisonOpKind {
+    ComparisonOpKindEqual,
+    ComparisonOpKindNotEqual,
+    ComparisonOpKindLessThan,
+    ComparisonOpKindLessThanOrEqualTo,
+    ComparisonOpKindGreaterThan,
+    ComparisonOpKindGreaterThanOrEqualTo,
+    ComparisonOpKindIs,
+    ComparisonOpKindIsNot,
+    ComparisonOpKindIn,
+    ComparisonOpKindNotIn,
+} ComparisonOpKind;
+
+typedef struct AstNodeComparisonOpExpr {
+    AstNode* op1;
+    BinaryOpKind binary_op;
+    AstNode* op2;
+} AstNodeComparisonOpExpr;
+
 typedef enum BinaryOpKind {
     BinaryOpKindAssignmentInvalid,
     BinaryOpKindAssignmentPlus,    // =+
@@ -495,9 +526,30 @@ typedef enum BinaryOpKind {
 
 typedef struct AstNodeBinaryOpExpr {
     AstNode* op1;
-    typedef enum BinaryOpKind binary_op;
+    BinaryOpKind binary_op;
     AstNode* op2;
 } AstNodeBinaryOpExpr;
+
+// TODO(jasmcaus): Do we need an `OperatorKind` and `AstNodeOperator`?
+typedef enum OperatorKind {
+    OperatorKindAdd,
+    OperatorKindSub,
+    OperatorKindMult,
+    OperatorKindMatMult,
+    OperatorKindDiv,
+    OperatorKindMod,
+    OperatorKindPow,
+    OperatorKindLShift,
+    OperatorKindRShift,
+    OperatorKindBitOr,
+    OperatorKindBitXor,
+    OperatorKindBitAnd,
+    OperatorKindFloorDiv,
+} OperatorKind;
+
+typedef struct AstNodeOperator {
+    Buff* delete_me;
+} AstNodeOperator;
 
 typedef enum PrefixOpKind {
     PrefixOpKindInvalid,
@@ -508,7 +560,7 @@ typedef enum PrefixOpKind {
 } PrefixOpKind;
 
 typedef struct AstNodePrefixOpExpr {
-    enum PrefixOpKind prefix_op;
+    PrefixOpKind prefix_op;
     AstNode* expr;
 } AstNodePrefixOpExpr;
 
