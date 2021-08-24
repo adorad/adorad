@@ -55,4 +55,13 @@ defined(__i486__) || defined(__i486) || defined(i386) || defined(__ia64__)
     #error Unknown CPU Type
 #endif
 
+// Set MINIZ_HAS_64BIT_REGISTERS to 1 if operations on 64-bit integers are reasonably fast 
+// (and don't involve ompiler-generated calls to helper functions
+#if defined(_M_X64) || defined(_WIN64) || defined(__MINGW64__) || defined(_LP64) || defined(__LP64__) || \
+defined(__ia64__) || defined(__x86_64__)
+    #define CORETEN_64BIT    1
+#else
+    #define CORETEN_64BIT    0
+#endif
+
 #endif // CORETEN_CPU_H
