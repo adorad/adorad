@@ -72,7 +72,7 @@ char char_to_upper(char c) {
 }
 
 bool char_is_whitespace(char c) {
-    if(c == ' '  || c == '\t' || c == '\n' || c == '\r' || c == '\f' || c == '\v')
+    if(c == ' '  || c == '\n' || c == '\t' || c == '\r' || c == '\f' || c == '\v')
         return true; 
     return false;
 }
