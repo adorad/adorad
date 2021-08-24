@@ -377,6 +377,7 @@ static inline void lexer_lex_identifier(Lexer* lexer) {
     LEXER_DECREMENT_OFFSET;
 }
 
+// Numeric lexing! Finally, the feast can start.
 static inline void lexer_lex_digit(Lexer* lexer) {
     // 0x... --> Hexadecimal ("0x"|"0X")[0-9A-Fa-f_]+
     // 0o... --> Octal       ("0o"|"0O")[0-7_]+
@@ -457,8 +458,11 @@ static inline void lexer_lex_digit(Lexer* lexer) {
         // Fractions, or Integer?
         else {
             // Normal Floats
-            if(ch == '.' || ch == '_')
+            if(ch == '.' || ch == '_') {
                 ch = lexer_advance(lexer);
+                if(ch == '_')
+                    lexer_error(lexer, SyntaxError "Unexpected `_` near `.`");
+            }
             
             // Exponents (Float)
             else if(ch == 'e' || ch == 'E') {
