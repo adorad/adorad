@@ -23,55 +23,6 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 typedef struct AstNode AstNode;
 typedef enum AstNodeKind AstNodeKind;
 
-typedef enum VisibilityMode VisibilityMode;
-typedef enum AstAddressingMode AstAddressingMode;
-typedef enum AstLanguage AstLanguage;
-typedef struct AstNodeExpression AstNodeExpression;
-typedef struct AstNodeStatement AstNodeStatement;
-typedef struct AstNodeAliasDecl AstNodeAliasDecl;
-typedef struct AstNodeConstantDecl AstNodeConstantDecl;
-typedef struct AstNodeGlobalDecl AstNodeGlobalDecl;
-typedef struct AstNodeSumTypeDecl AstNodeSumTypeDecl;
-typedef struct AstNodeTypeEnumDecl AstNodeTypeEnumDecl;
-typedef struct AstNodeTypeStructDecl AstNodeTypeStructDecl;
-typedef struct AstNodeTypeDecl AstNodeTypeDecl;
-typedef struct AstNodeDecl AstNodeDecl;
-typedef struct AstNodeAsCast AstNodeAsCast;
-typedef struct AstNodeCastExpr AstNodeCastExpr;
-typedef struct AstNodeIfExpr AstNodeIfExpr;
-typedef struct AstNodeForExpr AstNodeForExpr;
-typedef struct AstNodeForCExpr AstNodeForCExpr;
-typedef struct AstNodeForInExpr AstNodeForInExpr;
-typedef struct AstNodeMatchExpr AstNodeMatchExpr;
-typedef struct AstNodeReturnExpr AstNodeReturnExpr;
-typedef struct AstNodeTypeOfExpr AstNodeTypeOfExpr;
-typedef struct AstNodeCompileTimeValue AstNodeCompileTimeValue;
-typedef struct AstNodeFuncDecl AstNodeFuncDecl;
-typedef struct AstNodeFuncPrototype AstNodeFuncPrototype;
-typedef struct AstNodeFuncCallExpr AstNodeFuncCallExpr;
-typedef struct AstNodeParamDecls AstNodeParamDecls;
-typedef struct AstNodeBranchStatement AstNodeBranchStatement;
-typedef struct AstNodeDeferStatement AstNodeDeferStatement;
-typedef struct AstNodeVarDecl AstNodeVarDecl;
-typedef struct AstNodeIdentifier AstNodeIdentifier;
-typedef struct AstNodeTestDecl AstNodeTestDecl;
-typedef struct AstNodeTestExpr AstNodeTestExpr;
-typedef struct AstNodeBinaryOpExpr AstNodeBinaryOpExpr;
-typedef struct AstNodePrefixOpExpr AstNodePrefixOpExpr;
-typedef struct AstNodeTryExpr AstNodeTryExpr;
-typedef struct AstNodeCatchExpr AstNodeCatchExpr;
-typedef struct AstNodeContainerDecl AstNodeContainerDecl;
-typedef struct AstNodeCompileTime AstNodeCompileTime;
-typedef struct AstNodeIntegerLiteral AstNodeIntegerLiteral;
-typedef struct AstNodeFloatLiteral AstNodeFloatLiteral;
-typedef struct AstNodeStringLiteral AstNodeStringLiteral;
-typedef struct AstNodeCharLiteral AstNodeCharLiteral;
-typedef struct AstNodeRuneLiteral AstNodeRuneLiteral;
-typedef struct AstNodeBoolLiteral AstNodeBoolLiteral;
-typedef struct AstNodeScope AstNodeScope;
-typedef struct AstImport AstImport;
-typedef struct AstFile AstFile;
-
 enum AstNodeKind {
     AstNodeKindIdentifier = 0,
     AstNodeKindBlock,        // `{ ... }
