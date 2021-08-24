@@ -4,6 +4,10 @@ $(VERBOSE)MAKESILENT = -s
 $(VERBOSE).SILENT:
 MAKEFLAGS += --silent
 
+clean:
+	$(MAKE) cmakeclean
+.PHONY: clean
+
 SOURCE_DIR = .
 BUILD_DIR = build
 # GENERATOR = -G "MinGW Makefiles"
@@ -18,6 +22,7 @@ cmake:
 
 cmakeclean:
 	rm -rf build/ && mkdir build
+	rm -rf AdoradInternalTests/ && mkdir AdoradInternalTests
 .PHONY: cmakeclean
 
 test:
