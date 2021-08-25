@@ -26,79 +26,11 @@
 
 - Simplicity: the language can be learned in less than an hour
 - Fast compilation
+- Powerful Build System
 - Easy to develop: Adorad compiles itself in less than a second
-- Performance: as fast as C (Adorad's main backend compiles to human-readable C)
+- Performance: >98% as fast as C (Adorad's main backend compiles to human-readable C)
 - Safety: no undefined behavior, immutability by default
-- C to Adorad translation
 - Easy cross compilation
-- REPL
-
-<!--
-## Interactive Shell
-
-```shell
-$ adorad
-    Adorad Language 0.0.1 (Apr 8 2021 02:39:23)
-    GCC version: 9.3.0 on linux
-    All engines are a go!
-
-adorad> print("Hello World")
-Hello World
-adorad> exit
-    Goodbye! Set the world on fire!
-```
-
-Using a script `hello.ad`:
-
-```ruby
-print("Hello World")
-```
-
-Running on the terminal is as easy as:
-
-```shell
-$ adorad hello.ad
-Hello World
-```
-
-## Compiler
-
-```shell
-$ adorad compile hello.ad -o hello
-Starting the compiler engine...
-Compiling Adorad code into build/hello.c
-Compiling the C code into machine code...
-Cleaning up the temporary files...
-
-Finished compiling.
-
-Binary is ready here: build/hello
-$ build/hello
-hello world
-```
-
-Run `adorad --help` to see more options.
-
-## Uninstall Adorad
-
-You can uninstall the `adorad` binary and its C headers with:
-
-```shell
-make uninstall
-```
-
-## Stability guarantee and future changes
-
-Despite being at an early development stage, the Adorad language is relatively stable and has backwards compatibility 
-guarantee, meaning that the code you write today is guaranteed to work a month, a year, or five years from now.
-
-There still may be minor syntax changes before the 1.0 release, but they will be handled automatically.
-
-The Adorad core APIs (the standard modules) will still have minor changes until they are stabilized in end-2021. Of course the 
-APIs will grow after that, but without breaking existing code.
-
-Our guarantee: Adorad is always going to be lightweight, portable and *extremely* fast. 
--->
 
 ## Installing Adorad from Source
 
@@ -108,74 +40,15 @@ cd adorad
 cmake -S . -B build
 ```
 
-That's it! Now you have a Adorad executable at `[path/to/adorad]/build/bin/`. 
-<!-- `[path to Adorad repo]` can be anywhere. -->
-<!--
-(On Windows `make` means running `make.bat`, so make sure you use `cmd.exe`)
+That's it! Now you have an Adorad executable at `[path/to/adorad]/build/bin/`. 
 
-Now you can try `./adorad run examples/hello_world.ad` (`adorad.exe` on Windows).
 
-Adorad is constantly being updated. To update Adorad, simply run:
-
-```shell
-adorad up
-```
-
-### C compiler
-
-It's recommended to use Clang, GCC, or Visual Studio. If you are in development, you most likely already have one of those 
-installed.
-
-However, if none is found when running `make` on Linux or Windows, TCC is downloaded as the default C backend.
-It's very lightweight (several MB) so this shouldn't take too long.
-
-</details> -->
-
-<!--
-### Testing and running the examples
-
-Make sure Adorad can compile itself:
-
-```shell
-adorad self
-```
-
-```shell
-$ adorad
-    Adorad Language 0.0.1 (Apr 8 2021 02:39:23)
-    GCC version: 9.3.0 on linux
-    All engines are a go!
-
-adorad> print('Hello world')
-Hello world
-```
-
-```bash
-cd examples
-adorad hello_world.ad && ./hello_world   # or simply
-adorad  hello_world.ad                   # this builds the program and runs it right away
-```
-
-## Adorad sync
-Adorad's `sync` module and channel implementation uses libatomic.
-
-It is most likely already installed on your system, but if not, you can install it, by doing the following:
-
-```bash
-MacOS: already installed
-
-Debian/Ubuntu:
-sudo apt install libatomic1
-
-Fedora/CentOS/RH:
-sudo dnf install libatomic-static
-```
--->
 ## Troubleshooting
 Please file an issue in GitHub [here](https://github.com/AdoradLang/adorad/issues)
 <!--
 Please see the [Troubleshooting](https://github.com/AdoradLang/adorad/wiki/Troubleshooting) section on our [wiki page](https://github.com/AdoradLang/adorad/wiki)
 -->
+
 
 ## Supporting This Project
 
