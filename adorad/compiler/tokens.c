@@ -184,7 +184,8 @@ Buff* token_to_buff(TokenKind kind) {
         case PRAGMA: value = "pragma";   break;
         case RAISE: value = "raise"; break;
         case RANGE: value = "range"; break;
-        case RETURN: value = "value ="; break;
+        case RETURN: value = "return"; break;
+        case SUSPEND: value = "suspend"; break;
         case TRY: value = "try"; break;
         case TUPLE: value = "tuple"; break;
         case TYPE: value = "type"; break;
