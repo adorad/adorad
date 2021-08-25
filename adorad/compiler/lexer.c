@@ -115,20 +115,10 @@ static void lexer_free(Lexer* lexer) {
 }
 
 // Report an error and exit
-void lexer_error(Lexer* lexer, Error e, const char* format, ...) {
+void lexer_error(Lexer* lexer, Error err, const char* format, ...) {
     va_list vl;
     va_start(vl, format);
-    switch(e) {
-        case SyntaxError:
-            fprintf(stderr, "%sSyntaxError: ", "\033[1;31m");
-            break;
-        case ParseError:
-            fprintf(stderr, "%sSyntaxError: ", "\033[1;31m");
-            break;
-        default:
-            fprintf(stderr, "%sError: ", "\033[1;31m");
-            break;
-    }
+    fprintf(stderr, "%s%s: ", "\033[1;31m", error_str(err));
     vfprintf(stderr, format, vl);
     fprintf(stderr, " at %s:%d:%d%s\n", lexer->loc->fname->data, lexer->loc->line,lexer->loc->col, "\033[0m");
     va_end(vl);
@@ -408,7 +398,7 @@ static inline void lexer_lex_digit(Lexer* lexer) {
                         ch = lexer_advance(lexer);
                     }
                     if(hexcount == 0)
-                        lexer_error(lexer, SyntaxError, "Expected hexadecimal digits [0-9A-Fa-f] after `0x`");
+                        lexer_error(lexer, ErrorSyntaxError, "Expected hexadecimal digits [0-9A-Fa-f] after `0x`");
                     
                     tokenkind = HEX_INT;
                     digit_length = hexcount + 1; // Account for the '0'
@@ -423,7 +413,7 @@ static inline void lexer_lex_digit(Lexer* lexer) {
                         ch = lexer_advance(lexer);
                     }
                     if(bincount == 0)
-                        lexer_error(lexer, SyntaxError, "Expected binary digit [0-1] after `0b`");
+                        lexer_error(lexer, ErrorSyntaxError, "Expected binary digit [0-1] after `0b`");
                     
                     tokenkind = BIN_INT;
                     digit_length = bincount + 1; // Account for the '0'
@@ -440,18 +430,18 @@ static inline void lexer_lex_digit(Lexer* lexer) {
                         ch = lexer_advance(lexer);
                     }
                     if(octcount == 0)
-                        lexer_error(lexer, SyntaxError, "Expected octal digits [0-7] after `0o`");
+                        lexer_error(lexer, ErrorSyntaxError, "Expected octal digits [0-7] after `0o`");
                     
                     tokenkind = OCT_INT;
                     digit_length = octcount + 1; // Account for the '0'
                     break;
                 case ALPHA_EXCEPT_B_O_X:
                     // Error
-                    lexer_error(lexer, SyntaxError, "Invalid character `%c`. Adorad currently supports [xXbBoO] after `0`", ch);
+                    lexer_error(lexer, ErrorSyntaxError, "Invalid character `%c`. Adorad currently supports [xXbBoO] after `0`", ch);
                     break;
                 default:
                     // An integer?
-                    // lexer_error(lexer, SyntaxError, "Cannot have an integer beginning with `0`");     
+                    // lexer_error(lexer, ErrorSyntaxError, "Cannot have an integer beginning with `0`");     
                     break;               
             } // switch(ch)
         }
@@ -461,7 +451,7 @@ static inline void lexer_lex_digit(Lexer* lexer) {
             if(ch == '.' || ch == '_') {
                 ch = lexer_advance(lexer);
                 if(ch == '_')
-                    lexer_error(lexer, SyntaxError, "Unexpected `_` near `.`");
+                    lexer_error(lexer, ErrorSyntaxError, "Unexpected `_` near `.`");
             }
             
             // Exponents (Float)
@@ -471,7 +461,7 @@ static inline void lexer_lex_digit(Lexer* lexer) {
                 if(ch == '+' || ch == '-') { 
                     ch = lexer_advance(lexer);
                 } else {
-                    lexer_error(lexer, SyntaxError, "Expected [+-] after exponent `e`. Got `%c`", ch);
+                    lexer_error(lexer, ErrorSyntaxError, "Expected [+-] after exponent `e`. Got `%c`", ch);
                 }
                 
                 int exp_digits = 0;
@@ -480,7 +470,7 @@ static inline void lexer_lex_digit(Lexer* lexer) {
                     ++exp_digits;
                 }
                 if(exp_digits == 0)
-                    lexer_error(lexer, SyntaxError, "Invalid character after exponent `e`. Expected a digit, got `%c`", ch);
+                    lexer_error(lexer, ErrorSyntaxError, "Invalid character after exponent `e`. Expected a digit, got `%c`", ch);
                 
                 // (TODO) Verify this is correct
                 digit_length = exp_digits + 1; // Account for the prev digit
@@ -721,7 +711,7 @@ static void lexer_lex(Lexer* lexer) {
             case '?': tokenkind = QUESTION; break;
             case '@': tokenkind = TOK_NULL; lexer_lex_macro(lexer); break;
             default:
-                lexer_error(lexer, SyntaxError, "Invalid character `%c`", curr);
+                lexer_error(lexer, ErrorSyntaxError, "Invalid character `%c`", curr);
                 break;
         } // switch(ch)
 

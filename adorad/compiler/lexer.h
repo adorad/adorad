@@ -22,6 +22,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 
 #include <adorad/compiler/tokens.h>
 #include <adorad/compiler/location.h>
+#include <adorad/compiler/error.h>
 
 /*
     Adorad's Lexer is built in such a way that no (or negligible) memory allocations are necessary during usage. 
@@ -54,11 +55,6 @@ typedef struct Lexer {
     bool is_inside_str; // set to true inside a string
     int nest_level;     // used to infer if we're inside many `{}`s
 } Lexer;
-
-typedef enum Error {
-    SyntaxError,
-    ParseError,
-} Error;
 
 Lexer* lexer_init(char* buffer, const char* fname);
 static void lexer_free(Lexer* lexer);

@@ -10,3 +10,16 @@ Licensed under the MIT License <http://opensource.org/licenses/MIT>
 SPDX-License-Identifier: MIT
 Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 */
+
+#include <adorad/compiler/error.h>
+
+char* error_str(Error err) {
+    switch(err) {
+        case ErrorNone : return "<no error>";
+        case ErrorFileNotFound : return "FileNotFound";
+        case ErrorInvalidCharacter : return "InvalidCharacter";
+        case ErrorSyntaxError : return "SyntaxError";
+        case ErrorParseError : return "ParseError";
+    }
+    return "<invalid error>";
+}

@@ -10,3 +10,20 @@ Licensed under the MIT License <http://opensource.org/licenses/MIT>
 SPDX-License-Identifier: MIT
 Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 */
+
+#ifndef ADORAD_ERROR_H
+#define ADORAD_ERROR_H
+
+typedef enum Error {
+    ErrorNone,
+    ErrorFileNotFound,
+    ErrorInvalidCharacter,
+    
+    // Compiler-specific Errors
+    ErrorSyntaxError,
+    ErrorParseError,
+} Error;
+
+char* error_str(Error err);
+
+#endif // ADORAD_ERROR_H
