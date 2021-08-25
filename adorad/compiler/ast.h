@@ -541,9 +541,9 @@ typedef enum OperatorKind {
     OperatorKindPow,
     OperatorKindLShift,
     OperatorKindRShift,
-    OperatorKindBitOr,
-    OperatorKindBitXor,
-    OperatorKindBitAnd,
+    OperatorKindBitWiseOr,
+    OperatorKindBitWiseXor,
+    OperatorKindBitWiseAnd,
     OperatorKindFloorDiv,
 } OperatorKind;
 
