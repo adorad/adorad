@@ -579,20 +579,6 @@ typedef struct AstNodeCompileTime {
     AstNode* expr;
 } AstNodeCompileTime;
 
-// typedef enum / union
-typedef struct AstNodeContainerDecl {
-    Vec* fields;
-    Vec* decls;
-    typedef enum {
-        ContainerKindEnum,
-        ContainerKindUnion,
-    } kind;
-    typedef enum {
-        ContainerLayoutKindAuto,
-        ContainerLayoutKindPacked
-    } layout;
-} AstNodeContainerDecl;
-
 typedef struct AstNodeIntegerLiteral {
     Buff* value;
     Location* loc;
@@ -671,7 +657,6 @@ struct AstNode {
         AstNodeForExpr* for_expr;
         AstNodeMatchExpr* match_expr;
         AstNodeCompileTime* compile_time_expr;
-        AstNodeContainerDecl* container_decl;
         AstNodeBranchStatement* branch_stmt;
         AstNodeIntegerLiteral* int_literal;
         AstNodeFloatLiteral* float_literal;
