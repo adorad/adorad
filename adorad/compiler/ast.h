@@ -85,11 +85,8 @@ typedef enum AstLanguage {
 } AstLanguage;
 
 typedef struct AstNodeAliasDecl {
-    Buff* name;
-    Buff* parent_type;
-    // AstNodeType* parent_type;
-    Location* loc;
-    Location* parent_type_loc;
+    AstNode* name;
+    AstNode* asname; // can be null
 } AstNodeAliasDecl;
 
 typedef struct AstNodeConstantDecl {
