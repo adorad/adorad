@@ -22,6 +22,9 @@ typedef enum Error {
     // Compiler-specific Errors
     ErrorSyntaxError,
     ErrorParseError,
+
+    // Misc
+    ErrorUnicodePointTooLarge,
 } Error;
 
 char* error_str(Error err);

@@ -20,6 +20,7 @@ char* error_str(Error err) {
         case ErrorInvalidCharacter : return "InvalidCharacter";
         case ErrorSyntaxError : return "SyntaxError";
         case ErrorParseError : return "ParseError";
+        case ErrorUnicodePointTooLarge: return "UnicodePointTooLargeError";
     }
     return "<invalid error>";
 }
