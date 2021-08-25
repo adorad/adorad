@@ -1,7 +1,4 @@
 <div align="center">
-<!-- <p>
-    <img width="80" src="https://raw.githubusercontent.com/AdoradLang/Adorad-logo/master/dist/adorad-logo.svg?sanitize=true">
-</p> -->
 <h1>The Adorad Language</h1>
 
 [Adorad](https://github.com/AdoradLang/Adorad) |
@@ -12,12 +9,6 @@
 </div>
 <div align="center">
 
-<!--
-[![Build Status][WorkflowBadge]][WorkflowUrl]
--->
-<!-- [![Sponsor][SponsorBadge]][SponsorUrl]
-[![Patreon][PatreonBadge]][PatreonUrl]
-[![Discord][DiscordBadge]][DiscordUrl] -->
 [![Twitter][TwitterUrl]][TwitterBadge]
 
 </div>
