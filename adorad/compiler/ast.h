@@ -40,7 +40,8 @@ enum AstNodeKind {
     AstNodeKindNilLiteral,    // `nil`
 
     // Declarations
-    AstNodeKindEnumDecl,      // `enum Fruits { ... }`
+    AstNodeKindEnumDecl,      // `type Fruits enum { ... }`
+    AstNodeKindUnionDecl,     // `type Fruits union { ... }`
     AstNodeKindVarDecl,       // `some_type var_name = ...`
 
     // Expressions
@@ -54,7 +55,7 @@ enum AstNodeKind {
     AstNodeKindBinaryOpExpr,  // a binary expression like `&&` or `||`
 
     // Fields
-    AstNodeKindTypeDecl,     // `type name T { ... }`  where T is one of {enum/struct}
+    AstNodeKindTypeDecl,      // `type name T { ... }`  where T is one of {enum/struct}
 
     AstNodeKindBreak,         // `break`
     AstNodeKindContinue,      // `continue`
