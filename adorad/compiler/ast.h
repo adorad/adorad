@@ -414,7 +414,7 @@ typedef struct AstNodeVarDecl {
     Buff* name;
     AstNode* type;    // can be null
     AstNode* expr;
-    UInt64 tok_index; // token index
+    Location* loc;
 
     bool is_const;
     bool is_export;
@@ -637,7 +637,7 @@ typedef struct AstNodeBoolLiteral {
 
 struct AstNode {
     AstNodeKind kind; // type of AST Node
-    UInt64 tok_index; // token index
+    Location* loc;
 
     union {
         AstNodeFuncDecl* func_def;
