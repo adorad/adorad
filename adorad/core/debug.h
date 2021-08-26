@@ -97,24 +97,24 @@ void coreten_panic(PanicLevel pl, const char* format, ...);
 #define coreten_unreachable()                                                                      \
     coreten_panic(                                                                                 \
         PanicLevelUnreachable,                                                                     \
-        "At %s:%d in %s. This is a bug in Adorad's compiler. %s", __FILE__, __LINE__, __func__,    \
+        "Unreachable: At %s:%d in %s. %s", __FILE__, __LINE__, __func__,    \
         "Please file an issue on Adorad's Github repository"                                       \
     )
 
-#define __ENFORCE__(cond, ...)                                                           \
-    do {                                                                                 \
-        if(!(cond)) {                                                                    \
-            printf("%s:%u: ", __FILE__, __LINE__);                                       \
-            if((sizeof(char[]){__VA_ARGS__}) <= 1)                                       \
+#define __ENFORCE__(cond, ...)                                                              \
+    do {                                                                                    \
+        if(!(cond)) {                                                                       \
+            printf("%s:%u: ", __FILE__, __LINE__);                                          \
+            if((sizeof(char[]){__VA_ARGS__}) <= 1)                                          \
                 cstlColouredPrintf(CORETEN_COLOUR_ERROR, "FAILED");                         \
-            else                                                                         \
+            else                                                                            \
                 cstlColouredPrintf(CORETEN_COLOUR_ERROR, __VA_ARGS__);                      \
-            printf("\n");                                                                \
-            printf("The following assertion failed: \n");                                \
-            cstlColouredPrintf(CORETEN_COLOUR_CYAN, "    CORETEN_ENFORCE( %s )\n", #cond);          \
-            abort();                                                                     \
-        }                                                                                \
-    }                                                                                    \
+            printf("\n");                                                                   \
+            printf("The following assertion failed: \n");                                   \
+            cstlColouredPrintf(CORETEN_COLOUR_CYAN, "    CORETEN_ENFORCE( %s )\n", #cond);  \
+            abort();                                                                        \
+        }                                                                                   \
+    }                                                                                       \
     while(0)
 
 // This is a little hack that allows a form of "polymorphism" to a macro - it allows a user to optionally pass
@@ -129,16 +129,16 @@ void coreten_panic(PanicLevel pl, const char* format, ...);
 // Neat hack from:
 // https://stackoverflow.com/questions/3046889/optional-parameters-with-c-macros
 // and: https://stackoverflow.com/questions/11761703/overloading-macro-on-number-of-arguments
-#define GET_3RD_ARG(arg1, arg2, arg3, ...)   arg3
+#define __GET_3RD_ARG(arg1, arg2, arg3, ...)   arg3
 
-#define ENFORCE_1_ARGS(cond)              __ENFORCE__(cond, "FAILED")
-#define ENFORCE_2_ARGS(cond, ...)         __ENFORCE__(cond, __VA_ARGS__)
-#define ENFORCE_MACRO_CHOOSER(...)        GET_3RD_ARG(__VA_ARGS__, ENFORCE_2_ARGS, ENFORCE_1_ARGS, )
+#define __ENFORCE_1_ARGS__(cond)              __ENFORCE__(cond, "FAILED")
+#define __ENFORCE_2_ARGS__(cond, ...)         __ENFORCE__(cond, __VA_ARGS__)
+#define __ENFORCE_MACRO_CHOOSER(...)          __GET_3RD_ARG(__VA_ARGS__, __ENFORCE_2_ARGS__, __ENFORCE_1_ARGS__, )
 
-#define CORETEN_ENFORCE(...)      ENFORCE_MACRO_CHOOSER(__VA_ARGS__)(__VA_ARGS__)
+#define CORETEN_ENFORCE(...)                  __ENFORCE_MACRO_CHOOSER(__VA_ARGS__)(__VA_ARGS__)
 
-#define ENFORCE_NULL(val,...)     CORETEN_ENFORCE((val) == null, __VA_ARGS__)
-#define CORETEN_ENFORCE_NN(val,...)    CORETEN_ENFORCE((val) != null, __VA_ARGS__)
+#define ENFORCE_NULL(val,...)                 CORETEN_ENFORCE((val) == null, __VA_ARGS__)
+#define CORETEN_ENFORCE_NN(val,...)           CORETEN_ENFORCE((val) != null, __VA_ARGS__)
 
 #define WARN(msg)     \
     cstlColouredPrintf(CORETEN_COLOUR_WARN, "%s:%u:\nWARNING: %s\n", __FILE__, __LINE__, #msg)
