@@ -14,22 +14,18 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #ifndef ADORAD_PARSER_H
 #define ADORAD_PARSER_H
 
-// #include <adorad/compiler/ast.h>
+#include <adorad/compiler/ast.h>
+#include <adorad/compiler/lexer.h>
 #include <adorad/compiler/tokens.h>
 
 typedef struct Parser {
+    Lexer* lexer;
+    Vec* toklist;       // shortcut to `lexer->toklist`
     TokenKind curr_tok;
+    UInt32 tok_count;
 } Parser;
 
-static Parser* parser_init();
-// static AstNode* ast_create_node(AstNodeKind type);
-
-static inline TokenKind parser_peek_token(Parser* parser);
-
-// Consumes a token and moves on to the next token
-static inline TokenKind parser_chomp(Parser* parser);
-
-// Consumes a token and moves on to the next, if the current token matches the expected token.
-static inline TokenKind parser_chomp_if(Parser* parser, TokenKind tokenkind);
+Parser* parser_init(Lexer* lexer);
+AstNode* ast_create_node(AstNodeKind type);
 
 #endif // ADORAD_PARSER_H
