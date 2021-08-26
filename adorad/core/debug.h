@@ -19,7 +19,6 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #include <adorad/core/os_defs.h>
 #include <adorad/core/misc.h>
 #include <adorad/core/compilers.h>
-#include <adorad/core/utils.h>
 
 // Static asserts (aka compile-time asserts)
 #ifndef __CORTEN_STATIC_ASSERT_DEFINED

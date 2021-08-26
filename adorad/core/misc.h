@@ -14,6 +14,8 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #ifndef CORETEN_MISCELLANEOUS_H
 #define CORETEN_MISCELLANEOUS_H
 
+#include <stdlib.h>
+
 // Inline 
 #ifdef __cplusplus
     #if defined(_MSC_VER) && _MSC_VER <= 1800 
