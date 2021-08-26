@@ -65,4 +65,5 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
         #define BREAKPOINT        raise(SIGTRAP)
     #endif // __MINGW32__
 #endif // CORETEN_COMPILER_MSVC
+
 #endif // CORETEN_UTILS_H
