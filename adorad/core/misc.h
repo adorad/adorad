@@ -136,20 +136,20 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     #define CORETEN_TYPEOF(val)                                 \
         printf("%s\n",                                          \
             _Generic((val),                                     \
-                    signed char : "signed char",                \
-                    unsigned char : "unsigned char",            \
-                    signed short : "signed short",              \
-                    unsigned short : "unsigned short",          \
-                    signed int : "signed int",                  \
-                    unsigned int : "unsigned int",              \
-                    signed long long : "signed long long",      \
-                    unsigned long long : "unsigned long long",  \
-                    float : "float",                            \
-                    double : "double",                          \
-                    default: "<unknown type"                    \
+                    Int8 : "Int8",                              \
+                    Int16 : "Int16",                            \
+                    Int32 : "Int32",                            \
+                    Int64 : "Int64",                            \
+                    UInt8 : "UInt8",                            \
+                    UInt16 : "UInt16",                          \
+                    UInt32 : "UInt32",                          \
+                    UInt64 : "UInt64",                          \
+                    Float32 : "Float32",                        \
+                    Float64 : "Float64",                        \
+                    default: "<unknown type>"                   \
                 ))
 #else
-    #define CORETEN_TYPEOF(val)
+    #define CORETEN_TYPEOF(val) printf("[PANIC] CORETEN_TYPEOF not supported by your compiler.\n")
 #endif 
 
 #ifdef _WIN32
