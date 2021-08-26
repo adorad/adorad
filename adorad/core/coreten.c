@@ -23,7 +23,7 @@ CREDITS
 #include <string.h>
 #include <sys/stat.h>
 
-#include <adcore.h>
+#include <adorad/core/adcore.h>
 
 // -------------------------------------------------------------------------
 // buffer.c
@@ -589,6 +589,8 @@ inline UInt64 endian_swap64(UInt64 i) {
 // hash.c
 // -------------------------------------------------------------------------
 
+#if defined(CORETEN_INCLUDE_HASH_H)
+
 UInt32 hash_adler32(void const* data, Ll len) {
     UInt32 const MOD_ALDER = 65521;
     UInt32 a = 1, b = 0;
@@ -817,11 +819,11 @@ UInt64 hash_fnv64a(void const* data, Ll len) {
     return h;
 }
 
-inline UInt32 hash_murmur32(void const* data, Ll len) { 
+UInt32 hash_murmur32(void const* data, Ll len) { 
     return hash_murmur32_seed(data, len, 0x9747b28c); 
 }
 
-inline UInt64 hash_murmur64(void const* data, Ll len) { 
+UInt64 hash_murmur64(void const* data, Ll len) { 
     return hash_murmur64_seed(data, len, 0x9747b28c); 
 }
 
@@ -993,6 +995,8 @@ UInt64 hash_murmur64_seed(void const* data__, Ll len, UInt64 seed) {
     return h;
 #endif // CORETEN_ARCH_64BIT
 }
+
+#endif // CORETEN_INCLUDE_HASH_H
 
 // -------------------------------------------------------------------------
 // io.c
