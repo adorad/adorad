@@ -20,7 +20,25 @@ char* error_str(Error err) {
         case ErrorInvalidCharacter : return "InvalidCharacter";
         case ErrorSyntaxError : return "SyntaxError";
         case ErrorParseError : return "ParseError";
+        case ErrorUnexpectedToken: return "UnexpectedTokenError";
         case ErrorUnicodePointTooLarge: return "UnicodePointTooLargeError";
+        case ErrorUnreachable: return "Unreachable";
+        case ErrorAssertionFailed: return "AssertionFailed";
     }
     return "<invalid error>";
+}
+
+void adorad_panic(Error err, const char* format, ...) {
+    va_list args;
+    char buffer[256];
+
+    va_start(args, format);
+    vsnprintf(buffer, sizeof(buffer), format, args);
+    va_end(args);
+    buffer[sizeof(buffer)-1] = '\0';
+    const char* str;
+
+    cstlColouredPrintf(CORETEN_COLOUR_ERROR, "%s: ", error_str(err));
+    printf("%s\n", buffer);
+    abort();
 }
