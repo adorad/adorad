@@ -21,8 +21,8 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 typedef struct Parser {
     Lexer* lexer;
     Vec* toklist;       // shortcut to `lexer->toklist`
-    TokenKind curr_tok;
-    UInt32 tok_count;
+    Token* curr_tok;
+    UInt64 tok_count;
 } Parser;
 
 Parser* parser_init(Lexer* lexer);
