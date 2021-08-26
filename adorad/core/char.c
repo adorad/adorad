@@ -13,7 +13,6 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 
 #include <adorad/core/char.h>
 
-
 bool char_is_upper(char c) { 
     return c >= 'A' && c <= 'Z'; 
 }
@@ -45,7 +44,6 @@ bool char_is_binary_digit(char c) {
 Int32 digit_to_int(char c) { 
     return char_is_digit(c) ? c - '0' : c - 'W'; 
 }
-
 
 bool char_is_hex_digit(char c) {
     return char_is_digit(c)                   ||
