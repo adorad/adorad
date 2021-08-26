@@ -11,4 +11,4 @@ SPDX-License-Identifier: MIT
 Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 */
 
-// #include <adorad/compiler/ast.h>
+#include <adorad/compiler/ast.h>

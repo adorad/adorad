@@ -259,6 +259,37 @@ typedef struct AstNodeExpression {
     };
 } AstNodeExpression;
 
+typedef struct AstNodeAssignmentStatement {
+    AstNodeKind op;
+    Location* loc;
+    Vec* right;        // Vec<AstNodeExpression*>
+    Vec* left;         // Vec<AstNodeExpression*>
+    Vec* right_types;  // Vec<AstNodeExpression*>
+    Vec* left_types;   // Vec<AstNodeExpression*>
+    bool is_compound;
+} AstNodeAssignmentStatement;
+
+typedef struct AstNodeImportStatement {
+    Buff* module;
+    Buff* alias;           // can be null
+    Location* loc;
+    Location* module_loc;
+    Location* alias_loc;   // can be null
+} AstNodeImportStatement;
+
+typedef struct AstNodeModuleStatement {
+    Buff* name;
+    Buff* short_name;
+    Location* loc;
+    Location* name_loc;
+    bool is_skip;
+} AstNodeModuleStatement;
+
+typedef struct AstNodeReturnStatement {
+    Location* loc;
+    Vec* exprs;    // Vec<AstNodeExpression*>
+} AstNodeReturnStatement;
+
 // This can be one of:
 //     | AstNodeAssignmentStatement
 //     | AstNodeBlock
@@ -288,6 +319,36 @@ typedef struct AstNodeStatement {
     Location* loc;
 } AstNodeStatement;
 
+typedef struct AstNodeConstField {
+    Buff* module;
+    Buff* name;
+    AstNodeExpression* expr;
+    Location* loc;
+    AstNodeCompileTimeValue* comptime_value;
+    bool is_export;
+} AstNodeConstField;
+
+typedef struct AstNodeGlobalField {
+    Buff* name;
+    Location* loc;
+    Location* type_loc;
+    AstNodeExpression* expr;
+
+    bool has_expr;
+} AstNodeGlobalField;
+
+typedef struct AstNodeVariable {
+    Buff* name;
+    AstNodeExpression* expr;
+    bool is_export;
+    bool is_mutable;
+    bool is_argument;
+    bool is_used;
+    bool is_tmp;
+    bool is_heap_obj;
+    Location* loc;
+} AstNodeVariable;
+
 // This can be one of:
 //     | AstNodeConstField
 //     | AstNodeGlobalField
@@ -301,6 +362,10 @@ typedef struct AstNodeScopeObject {
     Buff* name;
     // AstNodeType* type;
 } AstNodeScopeObject;
+
+typedef struct AstNodeEmptyExpression {
+    Location* loc;
+} AstNodeEmptyExpression;
 
 // This can be one of:
 //     | AstNodeEmptyExpression
@@ -319,7 +384,7 @@ typedef struct AstNodeCompileTimeValue {
         AstNodeIntegerLiteral* int_value;
         AstNodeCharLiteral* char_value;
         AstNodeStringLiteral* str_value;
-    }
+    };
 } AstNodeCompileTimeValue;
 
 // // There are only 4 possible versions of a Type info you will use:
@@ -363,7 +428,7 @@ typedef struct AstNodeFuncPrototype {
     AstNode* return_type;
     AstNode* func_def;
 
-    typedef enum FuncInline func_inline;
+    FuncInline func_inline;
     bool is_export;
     bool is_extern;
     bool is_generic;
@@ -381,7 +446,7 @@ typedef enum FuncCallModifier {
 typedef struct AstNodeFuncCallExpr {
     AstNode* func_call_expr;
     Vec* params;
-    typedef enum FuncCallModifier modifier;
+    FuncCallModifier modifier;
 } AstNodeFuncCallExpr;
 
 typedef struct AstNodeParamDecls {
@@ -396,7 +461,7 @@ typedef struct AstNodeBranchStatement {
     Buff* name;
     AstNode* expr;  // can be nullptr (`break`). always nullptr for `continue`
     Location* loc;
-    typedef enum {
+    enum {
         AstNodeBranchStatementBreak,
         AstNodeBranchStatementContinue
     } type;
@@ -409,6 +474,10 @@ typedef struct AstNodeReturnExpr {
 typedef struct AstNodeDeferStatement {
     AstNode* expr;
 } AstNodeDeferStatement;
+
+typedef struct AstNodeEmptyStatement {
+    Buff* fixme;
+} AstNodeEmptyStatement;
 
 typedef struct AstNodeVarDecl {
     Buff* name;
@@ -465,7 +534,7 @@ typedef enum UnaryOpKind {
 
 typedef struct AstNodeUnaryOpExpr {
     AstNode* op1;
-    BinaryOpKind binary_op;
+    UnaryOpKind binary_op;
     AstNode* op2;
 } AstNodeUnaryOpExpr;
 
@@ -580,11 +649,16 @@ typedef struct AstNodeCompileTime {
     AstNode* expr;
 } AstNodeCompileTime;
 
+typedef struct AstNodeByteLiteral {
+    Buff* value;
+    Location* loc;
+} AstNodeByteLiteral;
+
 typedef struct AstNodeIntegerLiteral {
     Buff* value;
     Location* loc;
     // TODO (jasmcaus) - Come up with a workaround for this
-    typedef enum {
+    enum {
         AstNodeIntegerLiteral8,
         AstNodeIntegerLiteral16,
         AstNodeIntegerLiteral32, // default
@@ -602,7 +676,7 @@ typedef struct AstNodeFloatLiteral {
     Buff* value;
     Location* loc;
     // TODO (jasmcaus) - Come up with a workaround for this
-    typedef enum {
+    enum {
         AstNodeFloatLiteral32,    // default
         AstNodeFloatLiteral64,
         // AstNodeFloatLiteral128 // will be supported later
@@ -613,7 +687,7 @@ typedef struct AstNodeStringLiteral {
     Buff* value;
     Location* loc;
     bool is_special;   // format / raw string
-    typedef enum {
+    enum {
         AstNodeStringLiteralNone,   // if `is_special` is false
         AstNodeStringLiteralRaw,    // `r"abc"`
         AstNodeStringLiteralFormat  // `f"name = {name}"`
