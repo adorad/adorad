@@ -69,6 +69,7 @@ CREDITS
 #include <adorad/core/char.h>
 #include <adorad/core/utf8.h>
 #include <adorad/core/vector.h>
+#include <adorad/core/warnings.h>
 
 #ifdef CORETEN_INCLUDE_HASH_H
     #include <adorad/core/hash.h>
