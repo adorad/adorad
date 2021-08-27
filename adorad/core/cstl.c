@@ -87,14 +87,14 @@ UInt32 __internal_strlength(const char* str, bool is_utf8) {
 
         // Handle the first few characters by reading one character at a time.
         // Do this until CHAR_PTR is aligned on a longword boundary.
-        for(char_ptr = str; ((unsigned long int) char_ptr & (sizeof (longword) - 1)) != 0; ++char_ptr) {
+        for(char_ptr = str; (cast(unsigned long int)char_ptr & (sizeof(longword) - 1)) != 0; ++char_ptr) {
             if (*char_ptr == nullchar)
                 return char_ptr - str;
         }
 
         // All these elucidatory comments refer to 4-byte longwords, but the theory applies equally 
         // well to 8-byte longwords
-        longword_ptr = (unsigned long int* ) char_ptr;
+        longword_ptr = cast(unsigned long int*)char_ptr;
 
         // Bits 31, 24, 16, and 8 of this number are zero. Call these bits the "holes".
         // Note that there is a hole just to the left of each byte, with an extra at the end:
@@ -112,7 +112,7 @@ UInt32 __internal_strlength(const char* str, bool is_utf8) {
             lomagic = ((lomagic << 16) << 16) | lomagic;
         }
         if(sizeof(longword) > 8)
-            exit(1);
+            abort();
 
         // Instead of the traditional loop which tests each character, we will test a longword at a time.
         // The tricky part is testing if *any of the four* bytes in the longword in question are zero.
@@ -121,7 +121,7 @@ UInt32 __internal_strlength(const char* str, bool is_utf8) {
 
             if (((longword - lomagic) & ~longword & himagic) != 0) {
                 // Which of the bytes was the zero?  If none of them were, it was a misfire; continue the search.
-                const char* cp = (const char* ) (longword_ptr - 1);
+                const char* cp = cast(const char* )(longword_ptr - 1);
 
                 if (cp[0] == 0)
                     return cp - str;
@@ -132,7 +132,7 @@ UInt32 __internal_strlength(const char* str, bool is_utf8) {
                 if (cp[3] == 0)
                     return cp - str + 3;
 
-                if (sizeof (longword) > 4) {
+                if (sizeof(longword) > 4) {
                     if (cp[4] == 0)
                         return cp - str + 4;
                     if (cp[5] == 0)
