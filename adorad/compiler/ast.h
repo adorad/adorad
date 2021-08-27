@@ -730,12 +730,6 @@ struct AstNode {
     } data;
 };
 
-// The `import` statement
-typedef struct AstImport {
-    Buff* module;  // the module name
-    Buff* alias;   // the `y` in `import x as y`
-} AstImport;
-
 // Each Adorad source file can be represented by one AstFile structure.
 typedef struct AstFile {
     Buff* path;     // full path of the source file - `/path/to/file.ad`

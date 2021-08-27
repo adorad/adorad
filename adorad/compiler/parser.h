@@ -18,7 +18,12 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #include <adorad/compiler/lexer.h>
 #include <adorad/compiler/tokens.h>
 
+// Each Adorad source file can be represented as a `Parser` structure.
+// This means if there are `n` source files, there will be `n` Parser instances (one for each file).
 typedef struct Parser {
+    UInt32 id;
+    Buff* fullpath;    // path/to/file.ad
+    Buff* basename;    // file.ad
     Lexer* lexer;
     Vec* toklist;       // shortcut to `lexer->toklist`
     Token* curr_tok;
