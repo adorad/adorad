@@ -61,3 +61,11 @@ AstNode* ast_create_node(AstNodeKind kind) {
     node->kind = kind;
     return node;
 }
+
+AstNode* ast_clone_node(AstNode* node) {
+    if(!node)
+        adorad_panic(ErrorUnexpectedNull, "Trying to clone a null AstNode?");
+    AstNode* new = ast_create_node(node->kind);
+    // TODO(jasmcaus): Add more struct members
+    return new;
+}
