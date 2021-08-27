@@ -390,9 +390,6 @@ typedef struct AstNodeDecl {
         AstNodeAliasDecl* alias_decl;
         AstNodeTypeDecl* type_decl;
         AstNodeFuncDecl* func_decl;
-        AstNodeDictDecl* dict_decl;
-        AstNodeListDecl* list_decl;
-        AstNodeTupleDecl* tuple_decl;
         AstNodeConstantDecl* const_decl;
         AstNodeGlobalDecl* global_decl;
         AstNodeSumTypeDecl* sumtype_decl;
