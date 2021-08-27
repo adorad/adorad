@@ -27,6 +27,7 @@ typedef struct AstNodeStatement AstNodeStatement;
 typedef struct AstNodeCompileTimeValue AstNodeCompileTimeValue;
 typedef struct AstNodeDecl AstNodeDecl;
 typedef struct AstNodeTypeDecl AstNodeTypeDecl;
+typedef struct AstNodeIdentifier AstNodeIdentifier;
 
 enum AstNodeKind {
     AstNodeKindIdentifier = 0,

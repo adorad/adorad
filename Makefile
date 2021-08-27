@@ -14,7 +14,15 @@ cmake:
 	cmake --build $(BUILD_DIR) --config Debug
 	echo ------------------ Running Target ------------------
 	cd build/bin/ ; ./AdoradInternalTestsWithMain
-.PHONY: cmake 
+.PHONY: cmake
+
+clang:
+	python3 ./tools/tests/before_tests_ci.py
+	cmake -S $(SOURCE_DIR) -B $(BUILD_DIR) -DCMAKE_BUILD_TYPE=Debug  -DCMAKE_C_COMPILER=clang-11 -DADORAD_BUILDTESTS=On
+	cmake --build $(BUILD_DIR) --config Debug
+	echo ------------------ Running Target ------------------
+	cd build/bin/ ; ./AdoradInternalTestsWithMain
+.PHONY: clang
 
 clean:
 	$(MAKE) cmakeclean
