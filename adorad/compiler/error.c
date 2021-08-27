@@ -24,6 +24,7 @@ char* error_str(Error err) {
         case ErrorUnicodePointTooLarge: return "UnicodePointTooLargeError";
         case ErrorUnreachable: return "Unreachable";
         case ErrorAssertionFailed: return "AssertionFailed";
+        case ErrorUnexpectedNull: return "UnexpectedNullError";
     }
     return "<invalid error>";
 }

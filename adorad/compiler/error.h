@@ -30,6 +30,7 @@ typedef enum Error {
     ErrorUnicodePointTooLarge,
     ErrorUnreachable,
     ErrorAssertionFailed,
+    ErrorUnexpectedNull,
 } Error;
 
 char* error_str(Error err);
