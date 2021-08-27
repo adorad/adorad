@@ -55,4 +55,18 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 	#define CORETEN_CUBE(x)	                 ((x)*(x)*(x))
 #endif // CORETEN_MATH_MACROS
 
+Float32 coreten_toRadians(Float32 degrees);
+Float32 coreten_toDegrees(Float32 radians);
+
+Float32 coreten_sin(Float32 x);
+Float32 coreten_cos(Float32 x);
+Float32 coreten_tan(Float32 x);
+Float32 coreten_arctan(Float32 x);
+Float32 coreten_arctan2(Float32 x, Float32 y);
+Float32 coreten_exp(Float32 x);
+Float32 coreten_log(Float32 x);
+Float32 coreten_pow(Float32 x, Float32 y);
+Float32 coreten_square(Float32 x);
+Float32 coreten_log2(Float32 x);
+
 #endif // CORETEN_MATH_H

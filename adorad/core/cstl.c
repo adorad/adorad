@@ -7,15 +7,15 @@
     the C/C++ Standard Library
 
 LICENSE
-	This software is dual-licensed to the public domain and under the following license: you are 
+    This software is dual-licensed to the public domain and under the following license: you are 
     granted a perpetual, irrevocable license to copy, modify, 	publish, and distribute this file 
     as you see fit.
 
 WARNING
-	- This library is **slightly** experimental and features may not work as expected.
-	- This also means that many functions are not documented.
+    - This library is **slightly** experimental and features may not work as expected.
+    - This also means that many functions are not documented.
 CREDITS
-	Written by Jason Dsouza <@jasmcaus>
+    Written by Jason Dsouza <@jasmcaus>
 */
 
 #include <stdlib.h>
@@ -999,7 +999,7 @@ UInt64 hash_murmur64_seed(void const* data__, Ll len, UInt64 seed) {
 #endif // CORETEN_INCLUDE_HASH_H
 
 // -------------------------------------------------------------------------
-// io.c
+// io.h
 // -------------------------------------------------------------------------
 
 char* readFile(const char* fname) {
@@ -1020,7 +1020,7 @@ char* readFile(const char* fname) {
     char* buffer = cast(char*)malloc(sizeof(char) * (buff_length + 1) );
     if(!buffer) {
         fprintf(stderr, "Could not allocate memory for buffer for file at %s\n", fname);
-		exit(1);
+        exit(1);
     }
 
     fread(buffer, 1, buff_length, file); 
@@ -1042,7 +1042,125 @@ bool file_exists(const char* path) {
 }
 
 // -------------------------------------------------------------------------
-// os.c
+// math.h
+// -------------------------------------------------------------------------
+
+Float32 coreten_toRadians(Float32 degrees) { 
+    return degrees * CORETEN_MATH_TAU / 360.0f;
+}
+
+Float32 coreten_toDegrees(Float32 radians) { 
+    return radians * 360.0f / CORETEN_MATH_TAU;
+}
+
+Float32 coreten_sin(Float32 x) {
+    Float32 x0 = +1.91059300966915117e-31f;
+    Float32 x1 = +1.00086760103908896f;
+    Float32 x2 = -1.21276126894734565e-2f;
+    Float32 x3 = -1.38078780785773762e-1f;
+    Float32 x4 = -2.67353392911981221e-2f;
+    Float32 x5 = +2.08026600266304389e-2f;
+    Float32 x6 = -3.03996055049204407e-3f;
+    Float32 x7 = +1.38235642404333740e-4f;
+    return x0 + x*(x1 + x*(x2 + x*(x3 + x*(x4 + x*(x5 + x*(x6 + x*x7))))));
+}
+
+Float32 coreten_cos(Float32 x) {
+    Float32 x0 = +1.00238601909309722f;
+    Float32 x1 = -3.81919947353040024e-2f;
+    Float32 x2 = -3.94382342128062756e-1f;
+    Float32 x3 = -1.18134036025221444e-1f;
+    Float32 x4 = +1.07123798512170878e-1f;
+    Float32 x5 = -1.86637164165180873e-2f;
+    Float32 x6 = +9.90140908664079833e-4f;
+    Float32 x7 = -5.23022132118824778e-14f;
+    return x0 + x*(x1 + x*(x2 + x*(x3 + x*(x4 + x*(x5 + x*(x6 + x*x7))))));
+}
+
+Float32 coreten_tan(Float32 radians) {
+    Float32 rr = radians * radians;
+    Float32 x = 9.5168091e-03f;
+    x *= rr;
+    x += 2.900525e-03f;
+    x *= rr;
+    x += 2.45650893e-02f;
+    x *= rr;
+    x += 5.33740603e-02f;
+    x *= rr;
+    x += 1.333923995e-01f;
+    x *= rr;
+    x += 3.333314036e-01f;
+    x *= rr;
+    x += 1.0f;
+    x *= radians;
+    return x;
+}
+
+Float32 coreten_arctan(Float32 x) {
+    Float32 u  = x*x;
+    Float32 u2 = u*u;
+    Float32 u3 = u2*u;
+    Float32 u4 = u3*u;
+    Float32 f  = 1.0f+0.33288950512027f*u-0.08467922817644f*u2+0.03252232640125f*u3-0.00749305860992f*u4;
+    return x/f;
+}
+
+Float32 coreten_arctan2(Float32 x, Float32 y) {
+    if (CORETEN_ABS(y) > CORETEN_ABS(x)) {
+        Float32 a = coreten_arctan(x/y);
+        if (y > 0.0f)
+            return a;
+        else
+            return x > 0.0f ? a + CORETEN_MATH_TAU_BY_2 : a - CORETEN_MATH_TAU_BY_2;
+    } else {
+        Float32 a = coreten_arctan(y/x);
+        if (y > 0.0f)
+            return x > 0.0f ? CORETEN_MATH_TAU_BY_4 - a : -CORETEN_MATH_TAU_BY_4 - a;
+        else
+            return x > 0.0f ? CORETEN_MATH_TAU_BY_4 + a : -CORETEN_MATH_TAU_BY_4 + a;
+    }
+}
+
+Float32 coreten_exp(Float32 x) {
+    union { Float32 f; int i; } u, v;
+    u.i = (int)(6051102 * x + 1056478197);
+    v.i = (int)(1056478197 - 6051102 * x);
+    return u.f / v.f;
+}
+
+Float32 coreten_log(Float32 x) {
+    union { Float32 f; int i; } u = {x};
+    return (u.i - 1064866805) * 8.262958405176314e-8f; // 1 / 12102203.0;
+}
+
+Float32 coreten_pow(Float32 x, Float32 y) {
+    int flipped = 0, e;
+    Float32 f, r = 1.0f;
+    if (y < 0) {
+        flipped = 1;
+        y = -y;
+    }
+    e = (int)y;
+    f = coreten_exp(y - e);
+    while (e) {
+        if (e & 1) r *= x;
+        x *= x;
+        e >>= 1;
+    }
+    r *= f;
+    return flipped ? 1.0f/r : r;
+}
+
+Float32 coreten_square(Float32 x){
+    return coreten_exp(CORETEN_MATH_LOG_TWO * x);
+}
+
+Float32 coreten_log2(Float32 x){
+    return coreten_log(x) / CORETEN_MATH_LOG_TWO;
+}
+
+// -------------------------------------------------------------------------
+// os.h
 // -------------------------------------------------------------------------
 
 cstlBuffer* os_get_cwd() {
@@ -1172,30 +1290,30 @@ bool os_path_is_abs(cstlBuffer* path) {
     bool result = false;
     CORETEN_ENFORCE_NN(path, "Cannot do anything useful on a null path :(");
 #ifdef CORETEN_OS_WINDOWS
-	// The 'C:\...`
+    // The 'C:\...`
     result = path->len > 2 &&
              char_is_alpha(path->data[0]) &&
              (path->data[1] == ':' && path->data[2] == CORETEN_OS_SEP_CHAR);
 #else
-	result = path->len > 2 &&
-			 path->data[0] == CORETEN_OS_SEP_CHAR;
+    result = path->len > 2 &&
+             path->data[0] == CORETEN_OS_SEP_CHAR;
 #endif // CORETEN_OS_WINDOWS
-	return cast(bool)result;
+    return cast(bool)result;
 }
 
 bool os_path_is_rel(cstlBuffer* path) {
-	return cast(bool) !os_path_is_abs(path);
+    return cast(bool) !os_path_is_abs(path);
 }
 
 bool os_path_is_root(cstlBuffer* path) {
-	bool result = false;
-	CORETEN_ENFORCE_NN(path, "Cannot do anything useful on a null path :(");
+    bool result = false;
+    CORETEN_ENFORCE_NN(path, "Cannot do anything useful on a null path :(");
 #ifdef CORETEN_OS_WINDOWS
     result = os_path_is_abs(path) && path->len == 3;
 #else
     result = os_path_is_abs(path) && path->len == 1;
 #endif // CORETEN_OS_WINDOWS
-	return result;
+    return result;
 }
 
 // -------------------------------------------------------------------------
