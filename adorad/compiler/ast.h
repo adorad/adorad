@@ -467,6 +467,7 @@ typedef struct AstNodeModuleStatement {
     Location* loc;
     Location* name_loc;
     bool is_skip;
+    bool is_export;
 } AstNodeModuleStatement;
 
 typedef struct AstNodeReturnStatement {
@@ -486,7 +487,7 @@ typedef struct AstNodeReturnStatement {
 //     | AstNodeModuleStatement
 //     | AstNodeReturnStatement
 typedef struct AstNodeStatement {
-    union{
+    union {
         AstNodeAssignmentStatement* assign_stmt;
         AstNodeBlock* block_stmt;
         AstNodeBranchStatement* branch_stmt;
