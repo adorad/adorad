@@ -95,6 +95,24 @@ typedef struct AstNodeScope {
     Buff* scope;
 } AstNodeScope;
 
+typedef enum IdentifierKind {
+    IdentifierKindUnresolved,
+    IdentifierKindBlankident, // `_`
+    IdentifierKindVariable,
+    IdentifierKindConst,
+    IdentifierKindFunction,
+    IdentifierKindGlobal,     // if declared within a `global` scope
+} IdentifierKind;
+
+typedef struct AstNodeIdentifier {
+    AstNode* type;
+    UInt64 tok_idx;
+
+    bool is_const;
+    bool is_export;
+    bool is_mutable;  // This is false unless explicitly mentioned by the user
+} AstNodeIdentifier;
+
 typedef struct AstNodeArguments {
     Vec* positional_args;   // Vec<AstNodeArg*>
     Vec* args;              // Vec<AstNodeArg*>
@@ -658,24 +676,6 @@ typedef struct AstNodeVarDecl {
     bool is_export;
     bool is_mutable;  // This is false unless explicitly mentioned by the user
 } AstNodeVarDecl;
-
-typedef enum IdentifierKind {
-    IdentifierKindUnresolved,
-    IdentifierKindBlankident, // `_`
-    IdentifierKindVariable,
-    IdentifierKindConst,
-    IdentifierKindFunction,
-    IdentifierKindGlobal,     // if declared within a `global` scope
-} IdentifierKind;
-
-typedef struct AstNodeIdentifier {
-    AstNode* type;
-    UInt64 tok_idx;
-
-    bool is_const;
-    bool is_export;
-    bool is_mutable;  // This is false unless explicitly mentioned by the user
-} AstNodeIdentifier;
 
 typedef struct AstNodeTestDecl {
     Buff* name;   // can be nullptr if no name
