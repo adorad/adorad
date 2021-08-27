@@ -22,6 +22,12 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 
 typedef struct AstNode AstNode;
 typedef enum AstNodeKind AstNodeKind;
+typedef struct AstNodeExpression AstNodeExpression;
+typedef struct AstNodeStatement AstNodeStatement;
+typedef struct AstNodeCompileTimeValue AstNodeCompileTimeValue;
+typedef struct AstNodeDecl AstNodeDecl;
+typedef struct AstNodeTypeDecl AstNodeTypeDecl;
+typedef struct AstNodeIdentifier AstNodeIdentifier;
 
 enum AstNodeKind {
     AstNodeKindIdentifier = 0,
