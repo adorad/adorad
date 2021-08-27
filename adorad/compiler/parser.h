@@ -22,8 +22,8 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 // This means if there are `n` source files, there will be `n` Parser instances (one for each file).
 typedef struct Parser {
     UInt32 id;
-    Buff* fullpath;    // path/to/file.ad
-    Buff* basename;    // file.ad
+    Buff* fullpath;     // path/to/file.ad
+    Buff* basename;     // file.ad
     Lexer* lexer;
     Vec* toklist;       // shortcut to `lexer->toklist`
     Token* curr_tok;
