@@ -94,6 +94,24 @@ typedef struct AstNodeScope {
     Buff* scope;
 } AstNodeScope;
 
+typedef struct AstNodeArguments {
+    Vec* positional_args;   // Vec<AstNodeArg*>
+    Vec* args;              // Vec<AstNodeArg*>
+    Vec* variadic_args;     // Vec<AstNodeArg*>
+    Vec* kwd_args;          // Vec<AstNodeArg*>
+} AstNodeArguments;
+
+typedef struct AstNodeArgData {
+    AstNodeIdentifier* arg;
+    AstNodeExpression* annotation;
+    Buff* type_comment;
+} AstNodeArgData;
+
+typedef struct AstNodeKwdData {
+    AstNodeIdentifier* ident;
+    AstNodeExpression* value;
+} AstNodeKwdData;
+
 typedef struct AstNodeAsCast {
     AstNodeExpression* expr;
     Location* loc;
@@ -232,6 +250,25 @@ typedef struct AstNodeTypeOfExpr {
     Location* loc;
 } AstNodeTypeOfExpr;
 
+typedef struct AstNodeSetExpr {
+    Vec* exprs;     // Vec<AstNodeExpression*>
+} AstNodeSetExpr;
+
+typedef struct AstNodeLambdaExpr {
+    AstNodeArguments args;
+    AstNodeExpression* expr;
+} AstNodeLambdaExpr;
+
+typedef struct AstNodeAwaitExpr {
+    AstNodeExpression* value;    
+} AstNodeAwaitExpr;
+
+typedef struct AstNodeSliceExpr {
+    AstNodeExpression* lower;
+    AstNodeExpression* upper;
+    AstNodeExpression* step;
+} AstNodeSliceExpr;
+
 // This can be one of:
 //     | AstNodeAsCast
 //     | AstNodeCastExpr
@@ -260,6 +297,10 @@ typedef struct AstNodeExpression {
         AstNodeBinaryOpExpr* binary_op_expr;
         // AstNodeTypeExpr* type_expr;
         AstNodeTypeOfExpr* typeof_expr;
+        AstNodeSetExpr* set_expr;
+        AstNodeLambdaExpr* lambda_expr;
+        AstNodeAwaitExpr* await_expr;
+        AstNodeSliceExpr* slice_expr;
     };
 } AstNodeExpression;
 
@@ -338,6 +379,9 @@ typedef struct AstNodeFuncDecl {
 //     | AstNodeAliasDecl
 //     | AstNodeTypeDecl (enum/struct)
 //     | AstNodeFuncDecl
+//     | AstNodeDictDecl
+//     | AstNodeListDecl
+//     | AstNodeTupleDecl
 //     | AstNodeConstantDecl
 //     | AstNodeGlobalDecl
 //     | AstNodeSumTypeDecl 
@@ -345,10 +389,13 @@ typedef struct AstNodeDecl {
     union {
         AstNodeAliasDecl* alias_decl;
         AstNodeTypeDecl* type_decl;
+        AstNodeFuncDecl* func_decl;
+        AstNodeDictDecl* dict_decl;
+        AstNodeListDecl* list_decl;
+        AstNodeTupleDecl* tuple_decl;
         AstNodeConstantDecl* const_decl;
         AstNodeGlobalDecl* global_decl;
         AstNodeSumTypeDecl* sumtype_decl;
-        AstNodeFuncDecl* func_decl;
     };
     Buff* name;
     bool is_export;
