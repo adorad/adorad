@@ -14,10 +14,6 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #ifndef CORETEN_IO_H
 #define CORETEN_IO_H
 
-#include <adorad/core/types.h>
-#include <adorad/core/debug.h>
-#include <adorad/core/headers.h>
-
 typedef struct File {
     char* full_path;
     char* basename;

@@ -14,13 +14,11 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #ifndef CORETEN_TYPES_H
 #define CORETEN_TYPES_H
 
-#include <adorad/core/compilers.h>
-
 // This macro is only for simple assertion checks (that don't require a message to STDOUT).
 // If a condition fails, this raises a compilation error (negative index) --> 0*2 == 0 + (-1) == -1!
 // Note that this macro is only for this file (<...>/core/types.h)
 #define __CORETEN_STAT_ASSERT1(cond, line)      typedef char static_assertion_at_line_##line[(!!(cond))*2-1]
-#define CORETEN_STATIC_ASSERT(cond)           __CORETEN_STAT_ASSERT1(cond, __LINE__)
+#define CORETEN_STATIC_ASSERT(cond)             __CORETEN_STAT_ASSERT1(cond, __LINE__)
 
 //================================== Built-in types ================================*/
 /*

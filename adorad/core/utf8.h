@@ -44,12 +44,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
         3. https://github.com/JuliaStrings/utf8proc
 */
 
-#include <adorad/core/types.h>
-#include <adorad/core/misc.h>
-#include <adorad/core/math.h>
-#include <adorad/core/debug.h>
-
-#define uBuff	cstlUTF8Str
+#define uBuff  cstlUTF8Str
 typedef struct cstlUTF8Str {
     Byte* data;    // actual UTF8 data
     UInt64 len;    // no. of UTF8 characters

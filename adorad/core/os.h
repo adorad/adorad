@@ -15,8 +15,6 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #define CORETEN_OS_H
 
 #include <adorad/core/buffer.h>
-#include <adorad/core/os_defs.h>
-#include <adorad/core/types.h>
 
 #if defined(CORETEN_OS_POSIX)
     #define _XOPEN_SOURCE 700

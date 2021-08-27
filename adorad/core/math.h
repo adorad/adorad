@@ -48,11 +48,11 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     #define CORETEN_MAX(x, y)                ((x) > (y) ? (x) : (y))
     #define CORETEN_MIN(x, y)                ((x) < (y) ? (x) : (y))
     #define CORETEN_CLAMP(x, low, up)        CORETEN_MIN(CORETEN_MAX((x), (low)), (up))
-	#define CORETEN_CLAMP01(x)		          CORETEN_CLAMP((x), 0, 1)
+	#define CORETEN_CLAMP01(x)		         CORETEN_CLAMP((x), 0, 1)
     #define CORETEN_IS_BETWEEN(x, low, up)   (((low) <= (x)) && ((x) <= (up)))
     #define CORETEN_ABS(x)                   ((x) < 0 ? -(x) : (x))
-	#define CORETEN_SQUARE(x)	              ((x)*(x))
-	#define CORETEN_CUBE(x)	              ((x)*(x)*(x))
+	#define CORETEN_SQUARE(x)	             ((x)*(x))
+	#define CORETEN_CUBE(x)	                 ((x)*(x)*(x))
 #endif // CORETEN_MATH_MACROS
 
 #endif // CORETEN_MATH_H
