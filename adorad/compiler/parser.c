@@ -27,33 +27,33 @@ Parser* parser_init(Lexer* lexer) {
     return parser;
 }
 
-inline TokenKind parser_peek_token(Parser* parser) {
-    return parser->curr_tok->kind;
+inline Token* parser_peek_token(Parser* parser) {
+    return parser->curr_tok;
 }
 
 // Consumes a token and moves on to the next token
-inline TokenKind parser_chomp(Parser* parser) {
-    TokenKind tok = parser_peek_token(parser);
+inline Token* parser_chomp(Parser* parser) {
+    Token* tok = parser_peek_token(parser);
     parser->curr_tok += 1;
     return tok;
 }
 
 // Consumes a token and moves on to the next, if the current token matches the expected token.
-inline TokenKind parser_chomp_if(Parser* parser, TokenKind tokenkind) {
+inline Token* parser_chomp_if(Parser* parser, TokenKind tokenkind) {
     if(parser->curr_tok->kind == tokenkind)
         return parser_chomp(parser);
 
-    return -1;
+    return null;
 }
 
-inline TokenKind parser_expect_token(Parser* parser, TokenKind tokenkind) {
+inline Token* parser_expect_token(Parser* parser, TokenKind tokenkind) {
     if(parser->curr_tok->kind == tokenkind)
         return parser_chomp(parser);
         
     adorad_panic(ErrorUnexpectedToken, "Expected `%s`; got `%s`", 
                                         token_to_buff(tokenkind)->data,
                                         token_to_buff(parser->curr_tok->kind)->data);
-    exit(1);
+    abort();
 }
 
 AstNode* ast_create_node(AstNodeKind kind) {
