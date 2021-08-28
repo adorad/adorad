@@ -104,9 +104,22 @@ typedef enum IdentifierKind {
     IdentifierKindGlobal,     // if declared within a `global` scope
 } IdentifierKind;
 
+typedef enum AttributeKind {
+    AttributeKindPlain,      // [name]
+    AttributeKindString,     // ['name']
+    AttributeKindNumber,     // [123]
+    AttributeKindCompileTime // [compiletime]
+} AttributeKind;
+
+// The `[]` before a function/variable
+// Eg: [inline], [compiletime]
+typedef struct AstNodeAttribute {
+    Buff* name;   // [inline]
+} AstNodeAttribute;
+
 typedef struct AstNodeIdentifier {
     AstNode* type;
-    UInt64 tok_idx;
+    Location* loc;
 
     bool is_const;
     bool is_export;
