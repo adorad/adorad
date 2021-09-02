@@ -145,3 +145,51 @@ static AstNode* ast_parse_var_decl(Parser* parser) {
     out->data.stmt->var_decl->expr = expr;
     return out;
 }
+
+// Statements
+static AstNode* ast_parse_statement(Parser* parser) {
+    AstNode* var_decl = ast_parse_var_decl(parser);
+    if(var_decl != null) {
+        CORETEN_CHECK(var_decl->kind == AstNodeKindVarDecl);
+        return var_decl;
+    }
+
+    // Defer
+    Token* defer_stmt = parser_chomp_if(parser, DEFER);
+    if(defer_stmt != null) {
+        AstNode* statement = ast_parse_block_expr_statement(parser);
+        AstNode* out = ast_create_node(AstNodeKindDefer);
+        
+        out->data.stmt->defer_stmt->expr = statement;
+        return out;
+    }
+
+    // If statement
+    AstNode* if_statement = ast_parse_if_statement(parser);
+    if(if_statement != null)
+        return if_statement;
+    
+    // Labeled Statements
+    AstNode* labeled_statement = ast_parser_labeled_statements(parser);
+    if(labeled_statement != null)
+        return labeled_statement;
+
+    // Match statements
+    AstNode* match_expr = ast_parse_match_expr(parser);
+    if(match_expr != null)
+        return match_expr;
+
+    // Assignment statements
+    AstNode* assignment_expr = ast_parse_assignment_expr(parser);
+    if(assignment_expr != null)
+        return assignment_expr;
+
+    free(var_decl);
+    free(defer_stmt);
+    free(if_statement);
+    free(labeled_statement);
+    free(match_expr);
+    free(assignment_expr);
+
+    return null;
+}

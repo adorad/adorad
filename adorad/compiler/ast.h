@@ -67,7 +67,8 @@ enum AstNodeKind {
     AstNodeKindContinue,      // `continue`
 
     // Misc
-    AstNodeKindParamDecl
+    AstNodeKindParamDecl,
+    AstNodeKindDefer,
 };
 
 typedef enum VisibilityMode {
@@ -500,7 +501,16 @@ typedef struct AstNodeReturnStatement {
     Vec* exprs;    // Vec<AstNodeExpression*>
 } AstNodeReturnStatement;
 
+typedef struct AstNodeVarDecl {
+    Buff* name;
+    AstNode* type;    // can be null
+    AstNode* expr;
+    Location* loc;
 
+    bool is_const;
+    bool is_export;
+    bool is_mutable;  // This is false unless explicitly mentioned by the user
+} AstNodeVarDecl;
 
 // This can be one of:
 //     | AstNodeAssignmentStatement
@@ -513,6 +523,7 @@ typedef struct AstNodeReturnStatement {
 //     | AstNodeImportStatement
 //     | AstNodeModuleStatement
 //     | AstNodeReturnStatement
+//     | AstNodeVarDecl
 typedef struct AstNodeStatement {
     union {
         AstNodeAssignmentStatement* assign_stmt;
