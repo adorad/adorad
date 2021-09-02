@@ -29,6 +29,26 @@ typedef struct Parser {
     Token* curr_tok;
     UInt64 num_tokens;
     UInt64 num_lines;
+
+    // These are little hacks used during Parsing. This is expected to be removed in the future
+    bool is_builtin_module;
+    Buff* mod_name;   // null if `is_builtin_module` is false
+    bool is_inside_test;
+    bool is_inside_if;
+    bool is_inside_ifexpr;
+    bool is_inside_orexpr;
+    bool is_inside_for;
+    bool is_inside_func;
+    bool is_inside_strfmt;
+    bool is_reference;
+    bool is_return;
+    bool is_inside_match;
+    bool is_inside_matchcase;
+    bool is_inside_matchbody;
+    bool is_stmt_identifier;
+    bool is_generic_params;
+    bool is_inside_defer;
+    Vec* defer_vars;
 } Parser;
 
 Parser* parser_init(Lexer* lexer);
