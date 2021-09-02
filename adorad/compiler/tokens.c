@@ -157,7 +157,7 @@ Buff* token_to_buff(TokenKind kind) {
         case CONTINUE: value = "continue"; break;
         case DO: value = "do"; break;
         case DECL: value = "decl"; break;
-        case DEFAULT: value = "default"; break;
+        case DEFER: value = "defer"; break;
         case ENUM: value = "enum"; break;
         case ELSE: value = "else"; break;
         case ELSEIF: value = "elseif"; break;
