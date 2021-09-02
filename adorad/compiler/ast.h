@@ -119,8 +119,6 @@ typedef struct AstNodeAttribute {
 
 typedef struct AstNodeIdentifier {
     AstNode* type;
-    Location* loc;
-
     bool is_const;
     bool is_export;
     bool is_mutable;  // This is false unless explicitly mentioned by the user
@@ -134,27 +132,25 @@ typedef struct AstNodeArguments {
 } AstNodeArguments;
 
 typedef struct AstNodeArgData {
-    AstNodeIdentifier* arg;
-    AstNodeExpression* annotation;
+    AstNode* arg;
+    AstNode* annotation;
     Buff* type_comment;
 } AstNodeArgData;
 
 typedef struct AstNodeKwdData {
-    AstNodeIdentifier* ident;
-    AstNodeExpression* value;
+    AstNode* ident;
+    AstNode* value;
 } AstNodeKwdData;
 
 typedef struct AstNodeAsCast {
-    AstNodeExpression* expr;
-    Location* loc;
+    AstNode* expr;
 } AstNodeAsCast;
 
 typedef struct AstNodeCastExpr {
-    AstNodeExpression* arg;
-    AstNodeExpression* expr;
+    AstNode* arg;
+    AstNode* expr;
     Buff* type;
     bool has_arg;
-    Location* loc;
 } AstNodeCastExpr;
 
 typedef struct AstNodeIfExpr {
@@ -162,16 +158,14 @@ typedef struct AstNodeIfExpr {
     bool is_expr;
     bool has_else;
     TokenKind tokenkind;
-    AstNodeExpression* left;
+    AstNode* left;
     Vec* branches;
-    Location* loc;
 } AstNodeIfExpr;
 
 typedef struct AstNodeForExpr {
     Buff* label;
-    AstNodeExpression* cond;
+    AstNode* cond;
     Vec* statements;
-    Location* loc;
     AstNodeScope* scope;
 } AstNodeForExpr;
 
@@ -179,12 +173,11 @@ typedef struct AstNodeForCExpr {
     Buff* label;
     AstNodeStatement* init;
     bool has_init;
-    AstNodeExpression* cond;
+    AstNode* cond;
     bool has_cond;
     AstNodeStatement* updation;  // increment/decrement
     bool has_updation;
     Vec* statements;
-    Location* loc;
     AstNodeScope* scope;
 } AstNodeForCExpr;
 
@@ -193,11 +186,10 @@ typedef struct AstNodeForInExpr {
     Buff* key_var;
     Buff* val_var;
     bool is_val_var_mutable;
-    AstNodeExpression* cond;
+    AstNode* cond;
     bool is_range;
     Vec* statements;
     TokenKind tokenkind;
-    Location* loc;
     AstNodeScope* scope;
 } AstNodeForInExpr;
 
@@ -217,9 +209,8 @@ typedef struct AstNodeFuncCallExpr {
 
 typedef struct AstNodeMatchExpr {
     TokenKind tokenkind;
-    AstNodeExpression* cond;
+    AstNode* cond;
     Vec* branches;
-    Location* loc;
     bool is_sumtype;
 } AstNodeMatchExpr;
 
@@ -278,27 +269,26 @@ typedef struct AstNodeBinaryOpExpr {
 } AstNodeBinaryOpExpr;
 
 typedef struct AstNodeTypeOfExpr {
-    AstNodeExpression* expr;
-    Location* loc;
+    AstNode* expr;
 } AstNodeTypeOfExpr;
 
 typedef struct AstNodeSetExpr {
-    Vec* exprs;     // Vec<AstNodeExpression*>
+    Vec* exprs;     // Vec<AstNode*>
 } AstNodeSetExpr;
 
 typedef struct AstNodeLambdaExpr {
     AstNodeArguments args;
-    AstNodeExpression* expr;
+    AstNode* expr;
 } AstNodeLambdaExpr;
 
 typedef struct AstNodeAwaitExpr {
-    AstNodeExpression* value;    
+    AstNode* value;    
 } AstNodeAwaitExpr;
 
 typedef struct AstNodeSliceExpr {
-    AstNodeExpression* lower;
-    AstNodeExpression* upper;
-    AstNodeExpression* step;
+    AstNode* lower;
+    AstNode* upper;
+    AstNode* step;
 } AstNodeSliceExpr;
 
 // This can be one of:
