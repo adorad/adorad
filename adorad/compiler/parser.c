@@ -193,3 +193,52 @@ static AstNode* ast_parse_statement(Parser* parser) {
 
     return null;
 }
+
+static AstNode* ast_parse_if_prefix(Parser* parser) {
+    Token* if_kwd = parser_chomp_if(parser, IF);
+    if(if_kwd == null) {
+        free(if_kwd);
+        return null;
+    }
+    Token* lparen = parser_expect_token(parser, LPAREN);
+    AstNode* condition = ast_parse_expr(parser);
+    Token* rparen = parser_expect_token(parser, RPAREN);
+    free(lparen);
+    free(rparen);
+
+    AstNode* out = ast_clone_node(AstNodeKindIfExpr);
+    out->data.expr->if_expr->condition = condition;
+
+    return out;
+}
+
+static AstNode* ast_parse_if_statement(Parser* parser) {
+    AstNode* out = ast_parse_if_prefix(parser);
+    if(out == null) {
+        free(out);
+        return null;
+    }
+    
+    AstNode* body = ast_parse_block_expr(parser);
+    if(body == null)
+        body = ast_parse_assignment_expr(parser);
+    
+    if(body == null) {
+        Token* token = parser_chomp(parser);
+        ast_error(
+            "expected `if` body; found `%s`",
+            token_to_buff(token->kind)->data
+        );
+    }
+
+    AstNode* else_body = null;
+    AstNode* else_kwd = parser_chomp_if(parser, ELSE);
+    if(else_kwd != null)
+        else_body = ast_parse_statement(parser);
+    free(else_kwd);
+
+    out->data.expr->if_expr->then_block = body;
+    out->data.expr->if_expr->has_else = else_body != null;
+    out->data.expr->if_expr->else_node = else_body;
+    return out;
+}
