@@ -660,12 +660,12 @@ typedef struct AstNodeScopeObject {
 //     };
 // };
 
-typedef struct AstNodeParamDecls {
+typedef struct AstNodeParamDecl {
     Buff* name;
     AstNode* type;
     bool is_alias;
     bool is_var_args;
-} AstNodeParamDecls;
+} AstNodeParamDecl;
 
 typedef struct AstNodeReturnExpr {
     AstNode* expr;
@@ -778,6 +778,7 @@ struct AstNode {
         AstNodeTestDecl* test_decl;
         AstNodeTestExpr* test_expr;
         AstNodePrefixOpExpr* prefix_op_expr;
+        AstNodeParamDecl* param_decl;
     } data;
 };
 

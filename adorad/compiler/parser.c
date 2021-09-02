@@ -13,9 +13,11 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 
 #include <stdlib.h>
 #include <adorad/compiler/parser.h>
+#include <adorad/core/debug.h>
 
 // Shortcut to `parser->toklist`
 #define pt  parser->toklist
+#define ast_error(...)  adorad_panic(ErrorParseError, __VA_ARGS__)
 
 // Initialize a new Parser
 Parser* parser_init(Lexer* lexer) {
@@ -71,4 +73,47 @@ AstNode* ast_clone_node(AstNode* node) {
     AstNode* new = ast_create_node(node->kind);
     // TODO(jasmcaus): Add more struct members
     return new;
+}
+
+// General format:
+//      KEYWORD(func) IDENT LPAREN ParamDeclList RPAREN LARROW RETURNTYPE
+static AstNode* ast_parse_func_prototype(Parser* parser) {
+    Token* func = parser_chomp_if(parser, FUNC);
+    if(func == null)
+        return null;
+    
+    Token* identifier = parser_chomp_if(parser, IDENTIFIER);
+    parser_expect_token(parser, LPAREN);
+    Vec* params = ast_parse_list(params, COMMA);
+    parser_expect_token(params, RPAREN);
+
+    AstNode* return_type = ast_parse_type_expr(parser);
+    if(return_type == null) {
+        Token* next = parser_peek_token(parser);
+        ast_error(
+            "expected return type; found`%s`",
+            token_to_buff(next->kind)->data
+        );
+    }
+
+    AstNode* out = ast_create_node(AstNodeKindFuncPrototype);
+    out->data.stmt->func_proto_decl;
+    out->data.stmt->func_proto_decl->name = identifier->value;
+    out->data.stmt->func_proto_decl->params = params;
+    out->data.stmt->func_proto_decl->return_type = return_type;
+
+    for(UInt64 i = 0; i < vec_size(params); i++) {
+        AstNode* param_decl = vec_at(params, i);
+        CORETEN_CHECK(param_decl->kind == AstNodeKindParamDecl);
+        if(param_decl->data.param_decl->is_var_args)
+            out->data.stmt->func_proto_decl->is_var_args = true;
+        
+        // Check for multiple variadic arguments in prototype
+        // Adorad supports only 1
+        if(i != vec_size(params) - 1 && out->data.stmt->func_proto_decl->is_var_args)
+            ast_error(
+                "Cannot have multiple variadic arguments in function prototype"
+            );
+    }
+    return out;
 }
