@@ -53,9 +53,9 @@ enum AstNodeKind {
     // Expressions
     AstNodeKindFuncCallExpr,  // `sayHello('Hello!')`
     AstNodeKindIfExpr,        // `if cond { ...}`
-    AstNodeKindForExpr,       // `for {}`
-    AstNodeKindForCExpr,      // `for i=0; i<10; i++ {}`
-    AstNodeKindForInExpr,     // `for i in 0..10 {}`
+    AstNodeKindLoopExpr,       // `loop {}`
+    AstNodeKindLoopCExpr,      // `loop i=0; i<10; i++ {}`
+    AstNodeKindLoopInExpr,     // `loop i in 0..10 {}`
     AstNodeKindMatchExpr,     // `match expr { ... }`
     AstNodeKindCatchExpr,     // `catch Error`
     AstNodeKindBinaryOpExpr,  // a binary expression like `&&` or `||`
@@ -166,14 +166,13 @@ typedef struct AstNodeIfExpr {
     bool has_else;
 } AstNodeIfExpr;
 
-typedef struct AstNodeForExpr {
-    Buff* label;
+typedef struct AstNodeWhileLoopExpr {
     AstNode* cond;
     Vec* statements;
     AstNodeScope* scope;
-} AstNodeForExpr;
+} AstNodeWhileLoopExpr;
 
-typedef struct AstNodeForCExpr {
+typedef struct AstNodeLoopCExpr {
     Buff* label;
     AstNode* init;
     bool has_init;
@@ -183,9 +182,9 @@ typedef struct AstNodeForCExpr {
     bool has_updation;
     Vec* statements;
     AstNodeScope* scope;
-} AstNodeForCExpr;
+} AstNodeLoopCExpr;
 
-typedef struct AstNodeForInExpr {
+typedef struct AstNodeLoopInExpr {
     Buff* label;
     Buff* key_var;
     Buff* val_var;
@@ -195,7 +194,16 @@ typedef struct AstNodeForInExpr {
     Vec* statements;
     TokenKind tokenkind;
     AstNodeScope* scope;
-} AstNodeForInExpr;
+} AstNodeLoopInExpr;
+
+typedef struct AstNodeLoopExpr {
+    Buff* label;
+    union {
+        AstNodeWhileLoopExpr* loop_while_expr;
+        AstNodeLoopCExpr* loop_c_expr;
+        AstNodeLoopInExpr* loop_in_expr;;
+    };
+} AstNodeLoopExpr;
 
 typedef enum FuncCallModifier {
     FuncCallModifierNone,
@@ -299,9 +307,7 @@ typedef struct AstNodeSliceExpr {
 //     | AstNodeAsCast
 //     | AstNodeCastExpr
 //     | AstNodeIfExpr   
-//     | AstNodeForExpr
-//     | AstNodeForCExpr   
-//     | AstNodeForInExpr
+//     | AstNodeLoopExpr
 //     | AstNodeFuncCallExpr
 //     | AstNodeMatchExpr
 //     | AstNodeCatchExpr
@@ -313,9 +319,7 @@ typedef struct AstNodeExpression {
         AstNodeAsCast*  as_cast;
         AstNodeCastExpr* cast_expr;
         AstNodeIfExpr* if_expr;
-        AstNodeForExpr* for_expr;
-        AstNodeForCExpr* for_c_expr;
-        AstNodeForInExpr* for_in_expr;
+        AstNodeLoopExpr* loop_expr;
         AstNodeFuncCallExpr* func_call_expr;
         AstNodeMatchExpr* match_expr;
         AstNodeCatchExpr* catch_expr;
@@ -437,7 +441,7 @@ typedef struct AstNodeAssignmentStatement {
 
 // `{ ... }`
 typedef struct AstNodeBlock {
-    Buff* name;
+    Buff* name; // for labeled block statements
     Vec* statements;
 } AstNodeBlock;
 
