@@ -153,6 +153,7 @@ static AstNode* ast_parse_statement(Parser* parser) {
         CORETEN_CHECK(var_decl->kind == AstNodeKindVarDecl);
         return var_decl;
     }
+    free(var_decl);
 
     // Defer
     Token* defer_stmt = parser_chomp_if(parser, DEFER);
@@ -163,32 +164,30 @@ static AstNode* ast_parse_statement(Parser* parser) {
         out->data.stmt->defer_stmt->expr = statement;
         return out;
     }
+    free(defer_stmt);
 
     // If statement
     AstNode* if_statement = ast_parse_if_statement(parser);
     if(if_statement != null)
         return if_statement;
+    free(if_statement);
     
     // Labeled Statements
-    AstNode* labeled_statement = ast_parser_labeled_statements(parser);
+    AstNode* labeled_statement = ast_parse_labeled_statements(parser);
     if(labeled_statement != null)
         return labeled_statement;
+    free(labeled_statement);
 
     // Match statements
     AstNode* match_expr = ast_parse_match_expr(parser);
     if(match_expr != null)
         return match_expr;
+    free(match_expr);
 
     // Assignment statements
     AstNode* assignment_expr = ast_parse_assignment_expr(parser);
     if(assignment_expr != null)
         return assignment_expr;
-
-    free(var_decl);
-    free(defer_stmt);
-    free(if_statement);
-    free(labeled_statement);
-    free(match_expr);
     free(assignment_expr);
 
     return null;
@@ -241,4 +240,31 @@ static AstNode* ast_parse_if_statement(Parser* parser) {
     out->data.expr->if_expr->has_else = else_body != null;
     out->data.expr->if_expr->else_node = else_body;
     return out;
+}
+
+// Labeled Statements
+static AstNode* ast_parse_labeled_statements(Parser* parser) {
+    Token* label = ast_parse_block_label(parser);
+    AstNode* block = ast_parse_block(parser);
+    if(block != null) {
+        CORETEN_CHECK(block->kind == AstNodeKindBlock);
+        block->data.stmt->block_stmt->name = label->value;
+        return block;
+    }
+    free(block);
+
+    AstNode* loop = ast_parse_loop_statement(parser);
+    if(loop != null) {
+        loop->data.expr->loop_expr->label = label->value;
+        return loop;
+    }
+
+    if(label != null)
+        adorad_panic(
+            ErrorUnexpectedToken,
+            "invalid token: `%s`",
+            parser_peek_token(parser)->value
+        );
+        
+    return null;
 }
