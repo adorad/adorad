@@ -117,3 +117,31 @@ static AstNode* ast_parse_func_prototype(Parser* parser) {
     }
     return out;
 }
+
+// General format:
+// `?` represents optional
+//      KEYWORD(export)? KEYWORD(mutable/const)? TypeExpr? IDENTIFIER EQUAL? Expr?
+static AstNode* ast_parse_var_decl(Parser* parser) {
+    Token* export_kwd = parser_chomp_if(parser, EXPORT);
+    Token* mutable_kwd = parser_chomp_if(parser, MUTABLE);
+    Token* const_kwd = parser_chomp_if(parser, CONST);
+    if(mutable_kwd && const_kwd)
+        ast_error("Cannot decorate a variable as both `mutable` and `const`");
+
+    AstNode* type_expr = ast_parse_type_expr(parser);
+    Token* identifier = parser_expect_token(parser, IDENTIFIER);
+    Token* equals = parser_chomp_if(parser, EQUALS);
+    AstNode* expr;
+    if(equals != null)
+        expr = ast_parse_expr(parser);
+    
+    parser_expect_token(parser, SEMICOLON); // TODO: Remove this need
+
+    AstNode* out = ast_create_node(AstNodeKindVarDecl);
+    out->data.stmt->var_decl->name = identifier->value;
+    out->data.stmt->var_decl->is_export = export_kwd != null;
+    out->data.stmt->var_decl->is_mutable = mutable_kwd != null;
+    out->data.stmt->var_decl->is_const = const_kwd != null;
+    out->data.stmt->var_decl->expr = expr;
+    return out;
+}

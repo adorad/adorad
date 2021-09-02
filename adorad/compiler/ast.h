@@ -174,11 +174,11 @@ typedef struct AstNodeForExpr {
 
 typedef struct AstNodeForCExpr {
     Buff* label;
-    AstNodeStatement* init;
+    AstNode* init;
     bool has_init;
     AstNode* cond;
     bool has_cond;
-    AstNodeStatement* updation;  // increment/decrement
+    AstNode* updation;  // increment/decrement
     bool has_updation;
     Vec* statements;
     AstNodeScope* scope;
@@ -500,6 +500,8 @@ typedef struct AstNodeReturnStatement {
     Vec* exprs;    // Vec<AstNodeExpression*>
 } AstNodeReturnStatement;
 
+
+
 // This can be one of:
 //     | AstNodeAssignmentStatement
 //     | AstNodeBlock
@@ -523,6 +525,7 @@ typedef struct AstNodeStatement {
         AstNodeImportStatement* import_stmt;
         AstNodeModuleStatement* module_stmt;
         AstNodeReturnStatement* return_stmt;
+        AstNodeVarDecl* var_decl;
     };
 } AstNodeStatement;
 
@@ -670,17 +673,6 @@ typedef struct AstNodeParamDecl {
 typedef struct AstNodeReturnExpr {
     AstNode* expr;
 } AstNodeReturnExpr;
-
-typedef struct AstNodeVarDecl {
-    Buff* name;
-    AstNode* type;    // can be null
-    AstNode* expr;
-    Location* loc;
-
-    bool is_const;
-    bool is_export;
-    bool is_mutable;  // This is false unless explicitly mentioned by the user
-} AstNodeVarDecl;
 
 typedef struct AstNodeTestDecl {
     Buff* name;   // can be nullptr if no name
