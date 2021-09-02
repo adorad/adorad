@@ -65,6 +65,9 @@ enum AstNodeKind {
 
     AstNodeKindBreak,         // `break`
     AstNodeKindContinue,      // `continue`
+
+    // Misc
+    AstNodeKindParamDecl
 };
 
 typedef enum VisibilityMode {
@@ -521,11 +524,10 @@ typedef struct AstNodeStatement {
         AstNodeModuleStatement* module_stmt;
         AstNodeReturnStatement* return_stmt;
     };
-    Location* loc;
 } AstNodeStatement;
 
 typedef struct AstNodeEmptyExpression {
-    Location* loc;
+    int type; // TODO(remove)
 } AstNodeEmptyExpression;
 
 typedef struct AstNodeBoolLiteral {
