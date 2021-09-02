@@ -23,7 +23,10 @@ Parser* parser_init(Lexer* lexer) {
     parser->lexer = lexer;
     parser->toklist = lexer->toklist;
     parser->curr_tok = cast(Token*)vec_at(parser->toklist, 0);
-    parser->tok_count = vec_size(parser->toklist);
+    parser->num_tokens = vec_size(parser->toklist);
+    parser->num_lines = 0;
+    parser->mod_name = null;
+    parser->defer_vars = null;
     return parser;
 }
 
