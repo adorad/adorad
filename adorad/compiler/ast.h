@@ -51,20 +51,20 @@ enum AstNodeKind {
     AstNodeKindVarDecl,       // `some_type var_name = ...`
 
     // Expressions
-    AstNodeKindFuncCallExpr,  // `sayHello('Hello!')`
-    AstNodeKindIfExpr,        // `if cond { ...}`
-    AstNodeKindLoopExpr,       // `loop {}`
+    AstNodeKindFuncCallExpr,   // `sayHello('Hello!')`
+    AstNodeKindIfExpr,         // `if cond { ...}`
+    AstNodeKindLoopWhileExpr,  // `loop {}`
     AstNodeKindLoopCExpr,      // `loop i=0; i<10; i++ {}`
     AstNodeKindLoopInExpr,     // `loop i in 0..10 {}`
-    AstNodeKindMatchExpr,     // `match expr { ... }`
-    AstNodeKindCatchExpr,     // `catch Error`
-    AstNodeKindBinaryOpExpr,  // a binary expression like `&&` or `||`
+    AstNodeKindMatchExpr,      // `match expr { ... }`
+    AstNodeKindCatchExpr,      // `catch Error`
+    AstNodeKindBinaryOpExpr,   // a binary expression like `&&` or `||`
 
     // Fields
-    AstNodeKindTypeDecl,      // `type name T { ... }`  where T is one of {enum/struct}
+    AstNodeKindTypeDecl,       // `type name T { ... }`  where T is one of {enum/struct}
 
-    AstNodeKindBreak,         // `break`
-    AstNodeKindContinue,      // `continue`
+    AstNodeKindBreak,          // `break`
+    AstNodeKindContinue,       // `continue`
 
     // Misc
     AstNodeKindParamDecl,
