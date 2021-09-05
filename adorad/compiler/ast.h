@@ -166,11 +166,12 @@ typedef struct AstNodeIfExpr {
     bool has_else;
 } AstNodeIfExpr;
 
-typedef struct AstNodeWhileLoopExpr {
+typedef struct AstNodeLoopWhileExpr {
     AstNode* cond;
     Vec* statements;
     AstNodeScope* scope;
-} AstNodeWhileLoopExpr;
+    bool is_inline;
+} AstNodeLoopWhileExpr;
 
 typedef struct AstNodeLoopCExpr {
     Buff* label;
@@ -182,6 +183,7 @@ typedef struct AstNodeLoopCExpr {
     bool has_updation;
     Vec* statements;
     AstNodeScope* scope;
+    bool is_inline;
 } AstNodeLoopCExpr;
 
 typedef struct AstNodeLoopInExpr {
@@ -194,12 +196,13 @@ typedef struct AstNodeLoopInExpr {
     Vec* statements;
     TokenKind tokenkind;
     AstNodeScope* scope;
+    bool is_inline;
 } AstNodeLoopInExpr;
 
 typedef struct AstNodeLoopExpr {
     Buff* label;
     union {
-        AstNodeWhileLoopExpr* loop_while_expr;
+        AstNodeLoopWhileExpr* loop_while_expr;
         AstNodeLoopCExpr* loop_c_expr;
         AstNodeLoopInExpr* loop_in_expr;;
     };
