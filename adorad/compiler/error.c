@@ -21,6 +21,7 @@ char* error_str(Error err) {
         case ErrorSyntaxError : return "SyntaxError";
         case ErrorParseError : return "ParseError";
         case ErrorUnexpectedToken: return "UnexpectedTokenError";
+        case ErrorExtraToken: return "ExtraTokenError";
         case ErrorUnicodePointTooLarge: return "UnicodePointTooLargeError";
         case ErrorUnreachable: return "Unreachable";
         case ErrorAssertionFailed: return "AssertionFailed";

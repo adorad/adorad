@@ -25,6 +25,7 @@ typedef enum Error {
     ErrorSyntaxError,
     ErrorParseError,
     ErrorUnexpectedToken,
+    ErrorExtraToken,
 
     // Misc
     ErrorUnicodePointTooLarge,
