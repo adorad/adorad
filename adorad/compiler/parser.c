@@ -268,3 +268,40 @@ static AstNode* ast_parse_labeled_statements(Parser* parser) {
         
     return null;
 }
+
+// Loops
+//      (KEYWORD(inline))? loop ... {  }
+static AstNode* ast_parse_loop_statement(Parser* parser) {
+    Token* inline_token = parser_chomp_if(parser, INLINE);
+
+    AstNode* loop_c_statement = ast_parse_loop_c_statement(parser);
+    if(loop_c_statement != null) {
+        CORETEN_CHECK(loop_c_statement->kind == AstNodeKindLoopCExpr);
+        loop_c_statement->data.expr->loop_expr->loop_c_expr->is_inline = inline_token != null;
+        free(inline_token);
+        return loop_c_statement;
+    }
+
+    AstNode* loop_while_statement = ast_parse_loop_while_statement(parser);
+    if(loop_while_statement != null) {
+        CORETEN_CHECK(loop_while_statement->kind == AstNodeKindLoopWhileExpr);
+        loop_while_statement->data.expr->loop_expr->loop_while_expr->is_inline = inline_token != null;
+        free(inline_token);
+        return loop_while_statement;
+    }
+
+    AstNode* loop_in_statement = ast_parse_loop_in_statement(parser);
+    if(loop_in_statement != null) {
+        CORETEN_CHECK(loop_in_statement->kind == AstNodeKindLoopWhileExpr);
+        loop_in_statement->data.expr->loop_expr->loop_in_expr->is_inline = inline_token != null;
+        free(inline_token);
+        return loop_in_statement;
+    }
+
+    if(inline_token != null)
+        adorad_panic(
+            ErrorUnexpectedToken,
+            "invalid token: `%s`",
+            parser_peek_token(parser)->value
+        );
+}
