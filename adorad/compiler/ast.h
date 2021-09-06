@@ -474,7 +474,7 @@ typedef enum FuncInline {
 
 typedef struct AstNodeFuncPrototype {
     Buff* name;
-    Vec* params;  // vector of `AstNode*`s -> similar to Vec<AstNode*> if C had generics
+    Vec* params;  // Vec<AstNode*>
     AstNode* return_type;
     AstNode* func_def;
 
@@ -488,30 +488,23 @@ typedef struct AstNodeFuncPrototype {
 typedef struct AstNodeImportStatement {
     Buff* module;
     Buff* alias;           // can be null
-    Location* loc;
-    Location* module_loc;
-    Location* alias_loc;   // can be null
 } AstNodeImportStatement;
 
 typedef struct AstNodeModuleStatement {
     Buff* name;
     Buff* short_name;
-    Location* loc;
-    Location* name_loc;
     bool is_skip;
     bool is_export;
 } AstNodeModuleStatement;
 
 typedef struct AstNodeReturnStatement {
-    Location* loc;
-    Vec* exprs;    // Vec<AstNodeExpression*>
+    AstNode* expr;
 } AstNodeReturnStatement;
 
 typedef struct AstNodeVarDecl {
     Buff* name;
     AstNode* type;    // can be null
     AstNode* expr;
-    Location* loc;
 
     bool is_const;
     bool is_export;
