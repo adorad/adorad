@@ -339,3 +339,34 @@ static AstNode* ast_parse_block_expr(Parser* parser) {
 }
 
 // Assignment Expr
+// FIXME!
+static AstNode* ast_parse_assignment_expr(Parser* parser) {
+    return ast_parse_binary_op_expr(parser);
+}
+
+// Primary Expression can be one of:
+//      | IfExpr
+//      | KEYWORD(break) BreakLabel? Expr?
+//      | KEYWORD(continue) BreakLabel?
+//      | KEYWORD(return) Expr?
+//      | BlockLabel? LoopExpr
+//      | Block
+//      | CurlySuffixExpr
+static AstNode* ast_parse_primary_expr(Parser* parser) {
+    AstNode* if_expr = ast_parse_if_expr(parser);
+    if(if_expr != null)
+        return if_expr;
+
+    Token* break_token = parser_chomp_if(parser, BREAK);
+    if(break_token != null) {
+        free(break_token);
+        Token* label = ast_parse_break_label(parser);
+        AstNode* expr = ast_parse_expr(parser);
+        
+        AstNode* out = ast_create_node(BREAK);
+        out->data.stmt->branch_stmt->name = label->value;
+        out->data.stmt->branch_stmt->type = AstNodeBranchStatementBreak;
+        out->data.stmt->branch_stmt->expr = expr;
+        return out;
+    }
+}
