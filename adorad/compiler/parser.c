@@ -14,6 +14,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #include <stdlib.h>
 #include <adorad/compiler/parser.h>
 #include <adorad/core/debug.h>
+#include <adorad/core/vector.h>
 
 // Shortcut to `parser->toklist`
 #define pt  parser->toklist
@@ -369,4 +370,50 @@ static AstNode* ast_parse_primary_expr(Parser* parser) {
         out->data.stmt->branch_stmt->expr = expr;
         return out;
     }
+    
+    Token* continue_token = parser_chomp_if(parser, CONTINUE);
+    if(continue_token != null) {
+        Token* label = ast_parse_break_label(parser);
+        AstNode* out = ast_create_node(CONTINUE);
+        out->data.stmt->branch_stmt->name = label == null ? label->value : null;
+        out->data.stmt->branch_stmt->type = AstNodeBranchStatementContinue;
+    }
+
+    Token* return_token = parser_chomp_if(parser, RETURN);
+    if(return_token != null) {
+        free(return_token);
+        AstNode* expr = ast_parse_expr(parser);
+        AstNode* out = ast_create_node(RETURN);
+        out->data.stmt->return_stmt->expr = expr;
+        return out;
+    }
+
+    AstNode* block = ast_parse_block(parser);
+    if(block != null)
+        return block;
+    
+    AstNode* curly_suffix = ast_parse_curly_suffix_expr(parser);
+    if(curly_suffix != null)
+        return curly_suffix;
+    
+    return null;
+}
+
+static AstNode* ast_parse_block(Parser* parser) {
+    Token* lbrace = parser_chomp_if(parser, LBRACE);
+    if(lbrace == null)
+        return null;
+
+    Vec* statements = vec_new(AstNode, 1);
+    AstNode* statement = null;
+    while((statement = ast_parse_statement(parser)) != null)
+        vec_push(statements, statement);
+
+    Token* rbrace = parser_expect_token(parser, RBRACE);
+    free(lbrace);
+    free(rbrace);
+
+    AstNode* out = ast_create_node(AstNodeKindBlock);
+    out->data.stmt->block_stmt->statements = statements;
+    return out;
 }
