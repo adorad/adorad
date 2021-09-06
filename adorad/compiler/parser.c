@@ -305,3 +305,37 @@ static AstNode* ast_parse_loop_statement(Parser* parser) {
             parser_peek_token(parser)->value
         );
 }
+
+// Block Statement
+//     BlockExpr       // { ... }
+//     AssignmentExpr 
+static AstNode* ast_parse_block_expr_statement(Parser* parser) {
+    AstNode* block = ast_parse_block_expr(parser);
+    if(block != null)
+        return block;
+    
+    AstNode* assignment_expr = ast_parse_assignment_expr(parser);
+    if(assignment_expr != null) {
+        Token* semi = parser_expect_token(parser, SEMICOLON);
+        free(semi);
+        return assignment_expr;
+    }
+    
+    return null;
+}
+
+// Block Expression
+//      (BlockLabel)? block
+static AstNode* ast_parse_block_expr(Parser* parser) {
+    Token* block_label = ast_parse_block_label(parser);
+    if(block_label != null) {
+        AstNode* out = ast_parse_block(parser);
+        CORETEN_CHECK(out->kind == AstNodeKindBlock);
+        out->data.stmt->block_stmt->name = block_label->value;
+        return out;
+    }
+
+    return ast_parse_block(parser);
+}
+
+// Assignment Expr
