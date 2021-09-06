@@ -18,7 +18,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 
 // Shortcut to `parser->toklist`
 #define pt  parser->toklist
-#define ast_error(...)  adorad_panic(ErrorParseError, __VA_ARGS__)
+#define ast_error(...)  panic(ErrorParseError, __VA_ARGS__)
 
 // Initialize a new Parser
 Parser* parser_init(Lexer* lexer) {
@@ -56,7 +56,7 @@ inline Token* parser_expect_token(Parser* parser, TokenKind tokenkind) {
     if(parser->curr_tok->kind == tokenkind)
         return parser_chomp(parser);
         
-    adorad_panic(ErrorUnexpectedToken, "Expected `%s`; got `%s`", 
+    panic(ErrorUnexpectedToken, "Expected `%s`; got `%s`", 
                                         token_to_buff(tokenkind)->data,
                                         token_to_buff(parser->curr_tok->kind)->data);
     abort();
@@ -70,7 +70,7 @@ AstNode* ast_create_node(AstNodeKind kind) {
 
 AstNode* ast_clone_node(AstNode* node) {
     if(!node)
-        adorad_panic(ErrorUnexpectedNull, "Trying to clone a null AstNode?");
+        panic(ErrorUnexpectedNull, "Trying to clone a null AstNode?");
     AstNode* new = ast_create_node(node->kind);
     // TODO(jasmcaus): Add more struct members
     return new;
@@ -261,7 +261,7 @@ static AstNode* ast_parse_labeled_statements(Parser* parser) {
     }
 
     if(label != null)
-        adorad_panic(
+        panic(
             ErrorUnexpectedToken,
             "invalid token: `%s`",
             parser_peek_token(parser)->value
@@ -300,7 +300,7 @@ static AstNode* ast_parse_loop_statement(Parser* parser) {
     }
 
     if(inline_token != null)
-        adorad_panic(
+        panic(
             ErrorUnexpectedToken,
             "invalid token: `%s`",
             parser_peek_token(parser)->value
@@ -352,7 +352,6 @@ static AstNode* ast_parse_assignment_expr(Parser* parser) {
 //      | KEYWORD(return) Expr?
 //      | BlockLabel? LoopExpr
 //      | Block
-//      | CurlySuffixExpr
 static AstNode* ast_parse_primary_expr(Parser* parser) {
     AstNode* if_expr = ast_parse_if_expr(parser);
     if(if_expr != null)
@@ -391,10 +390,6 @@ static AstNode* ast_parse_primary_expr(Parser* parser) {
     AstNode* block = ast_parse_block(parser);
     if(block != null)
         return block;
-    
-    AstNode* curly_suffix = ast_parse_curly_suffix_expr(parser);
-    if(curly_suffix != null)
-        return curly_suffix;
     
     return null;
 }

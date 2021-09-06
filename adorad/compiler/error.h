@@ -39,10 +39,10 @@ char* error_str(Error err);
 ATTRIBUTE_COLD
 ATTRIBUTE_NORETURN
 ATTRIBUTE_PRINTF(2, 3)
-void adorad_panic(Error err, const char* format, ...);
+void panic(Error err, const char* format, ...);
 
 #define adorad_unreachable()                                                                           \
-    adorad_panic(                                                                                      \
+    panic(                                                                                      \
         ErrorUnreachable,                                                                              \
         "Unreachable: At %s:%d in %s. %s", __FILE__, __LINE__, __func__,                               \
         "This is a bug in Adorad's compiler. Please file an issue on Adorad's Github repository"       \
