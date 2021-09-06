@@ -41,7 +41,7 @@ ATTRIBUTE_NORETURN
 ATTRIBUTE_PRINTF(2, 3)
 void panic(Error err, const char* format, ...);
 
-#define adorad_unreachable()                                                                           \
+#define unreachable()                                                                           \
     panic(                                                                                      \
         ErrorUnreachable,                                                                              \
         "Unreachable: At %s:%d in %s. %s", __FILE__, __LINE__, __func__,                               \
