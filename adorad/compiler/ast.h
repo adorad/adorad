@@ -69,6 +69,7 @@ enum AstNodeKind {
     // Misc
     AstNodeKindParamDecl,
     AstNodeKindDefer,
+    AstNodeKindReturn,
 };
 
 typedef enum VisibilityMode {
@@ -278,9 +279,9 @@ typedef enum BinaryOpKind {
 } BinaryOpKind;
 
 typedef struct AstNodeBinaryOpExpr {
-    AstNode* op1;
+    AstNode* lhs;
     BinaryOpKind binary_op;
-    AstNode* op2;
+    AstNode* rhs;
 } AstNodeBinaryOpExpr;
 
 typedef struct AstNodeTypeOfExpr {
@@ -499,6 +500,10 @@ typedef struct AstNodeModuleStatement {
 
 typedef struct AstNodeReturnStatement {
     AstNode* expr;
+    enum {
+        ReturnKindOk,
+        ReturnKindError,
+    } kind;
 } AstNodeReturnStatement;
 
 typedef struct AstNodeVarDecl {

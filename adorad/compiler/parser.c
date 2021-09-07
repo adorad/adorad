@@ -76,6 +76,14 @@ AstNode* ast_clone_node(AstNode* node) {
     return new;
 }
 
+/*
+    A large part of the Parser from this point onwards has been selfishly stolen from Zig's Compiler.
+
+    Before, we release the first stable version of Adorad, this parser implementation will be reworked and improved.
+
+    Related source code: https://github.com/ziglang/zig/blob/master/src/stage1/parser.cpp
+*/
+
 // General format:
 //      KEYWORD(func) IDENT LPAREN ParamDeclList RPAREN LARROW RETURNTYPE
 static AstNode* ast_parse_func_prototype(Parser* parser) {
@@ -345,6 +353,181 @@ static AstNode* ast_parse_assignment_expr(Parser* parser) {
     return ast_parse_binary_op_expr(parser);
 }
 
+static AstNode* ast_parse_block(Parser* parser) {
+    Token* lbrace = parser_chomp_if(parser, LBRACE);
+    if(lbrace == null)
+        return null;
+
+    Vec* statements = vec_new(AstNode, 1);
+    AstNode* statement = null;
+    while((statement = ast_parse_statement(parser)) != null)
+        vec_push(statements, statement);
+
+    Token* rbrace = parser_expect_token(parser, RBRACE);
+    free(lbrace);
+    free(rbrace);
+
+    AstNode* out = ast_create_node(AstNodeKindBlock);
+    out->data.stmt->block_stmt->statements = statements;
+    return out;
+}
+
+
+// This has been selfishly ported from Zig's Compiler
+// Source for this: https://github.com/ziglang/zig/blob/master/src/stage1/parser.cpp
+typedef enum BinaryOpChain {
+    BinaryOpChainOnce,
+    BinaryOpChainInfinity
+} BinaryOpChain;
+
+// Child (Op Child)(*/?)
+static AstNode* ast_parse_binary_op_expr(
+    Parser* parser,
+    BinaryOpChain chain,
+    AstNode* (*op_parser)(Parser*),
+    AstNode* (*child_parser)(Parser*)
+) {
+    AstNode* out = child_parser(parser);
+    AstNode* ou;
+    if(out == null)
+        return null;
+
+    do {
+        AstNode* op = op_parser(parser);
+        if(op == null)
+            break;
+
+        AstNode* left = out;
+        AstNode* right = child_parser(parser);
+        out = op;
+
+        if(op->kind == AstNodeKindBinaryOpExpr) {
+            op->data.expr->binary_op_expr->lhs = left;
+            op->data.expr->binary_op_expr->rhs = right;
+        } else {
+            unreachable();
+        }
+    } while(chain == BinaryOpChainInfinity);
+
+    return out;
+}
+
+// AssignmentExpr
+//      Expr  (AssignmentOp Expr)?
+static AstNode* ast_parse_assignment_expr(Parser* parser) {
+    return ast_parse_binary_op_expr(
+        parser,
+        BinaryOpChainOnce,
+        ast_parse_assignment_op,
+        ast_parse_expr
+    );
+}
+
+// Expression
+//      KEYWORD(try) BoolOrExpr
+static AstNode* ast_parse_expr(Parser* parser) {
+    return ast_parse_prefix_op_expr(
+        parser,
+        [](Parser* parser) {
+            Token* try = parser_chomp_if(parser, TRY);
+            if(try != null) {
+                AstNode* out = ast_create_node(AstNodeKindReturnExpr);
+                out->data.stmt->return_stmt->kind = ReturnKindError;
+                return out;
+            }
+            return cast(AstNode*)null;
+        },
+        ast_parse_bool_or_expr
+    );
+}
+
+// BoolOrExpr
+//      BoolAndExpr (KEYWORD(or) BoolAndExpr)*
+static AstNode* ast_parse_bool_or_expr(
+    return ast_parse_binary_op_expr(
+        parser, 
+        BinaryOpChainInfinity,
+        ast_parse_binary_op_bool_or,
+        ast_parse_bool_and_expr
+    );
+)
+
+// BoolAndExpr
+//      CompareExpr (KEYWORD(and) CompareExpr)
+static AstNode* ast_parse_bool_and_expr(Parser* parser) {
+    return ast_parse_binary_op_expr(
+        parser, 
+        BinaryOpChainInfinity,
+        ast_parse_binary_op_bool_and,
+        ast_parse_compare_expr
+    );
+}
+
+// CompareExpr
+//     BitwiseExpr (CompareOp BitWiseExpr)?
+static AstNode* ast_parse_compare_expr(Parser* pc) {
+    return ast_parse_bin_op_expr(
+        parser, 
+        BinOpChainOnce, 
+        ast_parse_compare_op, 
+        ast_parse_bitwise_expr
+    );
+}
+
+// BitwiseExpr
+//      BitShiftExpr (BitwiseOp BitShiftExpr)*
+static AstNode* ast_parse_bitwise_expr(Parser* pc) {
+    return ast_parse_bin_op_expr(
+        parser, 
+        BinOpChainInf, 
+        ast_parse_bitwise_op, 
+        ast_parse_bit_shift_expr
+    );
+}
+
+// BitShiftExpr <- AdditionExpr (BitShiftOp AdditionExpr)*
+static AstNode* ast_parse_bit_shift_expr(Parser* parser) {
+    return ast_parse_bin_op_expr(
+        parser, 
+        BinOpChainInf, 
+        ast_parse_bit_shift_op, 
+        ast_parse_addition_expr
+    );
+}
+
+// AdditionExpr
+//      MultiplyExpr (AdditionOp MultiplyExpr)*
+static AstNode* ast_parse_addition_expr(Parser* parser) {
+    return ast_parse_bin_op_expr(
+        parser, 
+        BinOpChainInf, 
+        ast_parse_addition_op, a
+        st_parse_multiply_expr
+    );
+}
+
+// MultiplyExpr
+//      PrefixExpr (MultiplyOp PrefixExpr)*
+static AstNode* ast_parse_multiply_expr(Parser* parser) {
+    return ast_parse_bin_op_expr(
+        parser, 
+        BinOpChainInf, 
+        ast_parse_multiply_op, 
+        ast_parse_prefix_expr
+    );
+}
+
+// PrefixExpr
+//      PrefixOp* PrimaryExpr
+static AstNode* ast_parse_prefix_expr(Parser* parser) {
+    return ast_parse_prefix_op_expr(
+        parser,
+        ast_parse_prefix_op,
+        ast_parse_primary_expr
+    );
+}
+
+
 // Primary Expression can be one of:
 //      | IfExpr
 //      | KEYWORD(break) BreakLabel? Expr?
@@ -363,7 +546,7 @@ static AstNode* ast_parse_primary_expr(Parser* parser) {
         Token* label = ast_parse_break_label(parser);
         AstNode* expr = ast_parse_expr(parser);
         
-        AstNode* out = ast_create_node(BREAK);
+        AstNode* out = ast_create_node(AstNodeKindBreak);
         out->data.stmt->branch_stmt->name = label->value;
         out->data.stmt->branch_stmt->type = AstNodeBranchStatementBreak;
         out->data.stmt->branch_stmt->expr = expr;
@@ -373,7 +556,7 @@ static AstNode* ast_parse_primary_expr(Parser* parser) {
     Token* continue_token = parser_chomp_if(parser, CONTINUE);
     if(continue_token != null) {
         Token* label = ast_parse_break_label(parser);
-        AstNode* out = ast_create_node(CONTINUE);
+        AstNode* out = ast_create_node(AstNodeKindContinue);
         out->data.stmt->branch_stmt->name = label == null ? label->value : null;
         out->data.stmt->branch_stmt->type = AstNodeBranchStatementContinue;
     }
@@ -382,7 +565,7 @@ static AstNode* ast_parse_primary_expr(Parser* parser) {
     if(return_token != null) {
         free(return_token);
         AstNode* expr = ast_parse_expr(parser);
-        AstNode* out = ast_create_node(RETURN);
+        AstNode* out = ast_create_node(AstNodeKindReturn);
         out->data.stmt->return_stmt->expr = expr;
         return out;
     }
@@ -394,60 +577,126 @@ static AstNode* ast_parse_primary_expr(Parser* parser) {
     return null;
 }
 
+// IfPrefix
+//      IfPrefix Expr (KEYWORD(else) Expr)
+
+// IfExpr <- IfPrefix Expr (KEYWORD_else Payload? Expr)?
+static AstNode* ast_parse_if_expr(Parser* parser) {
+    return ast_parse_if_expr_helper(parser, ast_parse_expr);
+}
+
+// Block <- LBRACE Statement* RBRACE
 static AstNode* ast_parse_block(Parser* parser) {
-    Token* lbrace = parser_chomp_if(parser, LBRACE);
-    if(lbrace == null)
+    TokenIndex lbrace = eat_token_if(parser, TokenIdLBrace);
+    if(lbrace == 0)
         return null;
 
-    Vec* statements = vec_new(AstNode, 1);
-    AstNode* statement = null;
+    ZigList<AstNode* > statements = {};
+    AstNode* statement;
     while((statement = ast_parse_statement(parser)) != null)
-        vec_push(statements, statement);
+        statements.append(statement);
 
-    Token* rbrace = parser_expect_token(parser, RBRACE);
-    free(lbrace);
-    free(rbrace);
+    expect_token(parser, RBRACE);
 
-    AstNode* out = ast_create_node(AstNodeKindBlock);
-    out->data.stmt->block_stmt->statements = statements;
+    AstNode* out = ast_create_node(parser, AstNodeKindBlock, lbrace);
+    out->data.block.statements = statements;
     return out;
+}
 
+// LoopExpr <- KEYWORD_inline? (ForExpr / WhileExpr)
+static AstNode* ast_parse_loop_expr(Parser* parser) {
+    return ast_parse_loop_expr_helper(
+        pc,
+        ast_parse_for_expr,
+        ast_parse_while_expr
+    );
+}
 
-// This has been selfishly ported from Zig's Compiler
-// Source for this: https://github.com/ziglang/zig/blob/master/src/stage1/parser.cpp
-typedef enum BinaryOpChain {
-    BinaryOpChainOnce,
-    BinaryOpChainInfin,
-} BinaryOpChain;
+// ForExpr <- ForPrefix Expr (KEYWORD_else Expr)?
+static AstNode* ast_parse_for_expr(Parser* parser) {
+    return ast_parse_for_expr_helper(
+        parser, 
+        ast_parse_expr
+    );
+}
 
-// Child (Op Child)(*/?)
-static AstNode* ast_parse_bin_op_expr(
-    Parser* parser,
-    BinaryOpChain chain,
-    AstNode* (*op_parser)(Parser*),
-    AstNode* (*child_parser)(Parser*)
-) {
-    AstNode* out = child_parser(pc);
-    AstNode* ou;
-    if(out == null)
+// WhileExpr <- WhilePrefix Expr (KEYWORD_else Payload? Expr)?
+static AstNode* ast_parse_while_expr(Parser* parser) {
+    return ast_parse_while_expr_helper(
+        parser, 
+        ast_parse_expr
+    );
+}
+
+// CurlySuffixExpr <- TypeExpr InitList?
+static AstNode* ast_parse_curly_suffix_expr(Parser* parser) {
+    AstNode* type_expr = ast_parse_type_expr(parser);
+    if(type_expr == null)
         return null;
 
-    do {
-        AstNode* op = op_parser(parser);
-        if (op == null)
-            break;
+    AstNode* out = ast_parse_init_list(parser);
+    if(out == null)
+        return type_expr;
 
-        AstNode* left = out;
-        AstNode* right = child_parser(parser);
-        out = op;
-
-        if(op->kind == AstNodeKindBinaryOpExpr) {
-            op->data.bin_op_expr.op1 = left;
-            op->data.bin_op_expr.op2 = right;
-        } else {
-            unreachable();
-        }
-    } while(chain == BinaryOpChainInfin);
-
+    assert(out->type == AstNodeKindContainerInitExpr);
+    out->data.container_init_expr.type = type_expr;
     return out;
+}
+
+// InitList
+//      | LBRACE FieldInit (COMMA FieldInit)* COMMA? RBRACE
+//      | LBRACE Expr (COMMA Expr)* COMMA? RBRACE
+//      | LBRACE RBRACE
+static AstNode* ast_parse_init_list(Parser* parser) {
+    TokenIndex lbrace = eat_token_if(parser, TokenIdLBrace);
+    if(lbrace == 0)
+        return null;
+
+    AstNode* first = ast_parse_field_init(parser);
+    if(first != null) {
+        AstNode* out = ast_create_node(parser, AstNodeKindContainerInitExpr, lbrace);
+        out->data.container_init_expr.kind = ContainerInitKindStruct;
+        out->data.container_init_expr.entries.append(first);
+
+        while(eat_token_if(parser, COMMA) != 0) {
+            AstNode* field_init = ast_parse_field_init(parser);
+            if(field_init == null)
+                break;
+            out->data.container_init_expr.entries.append(field_init);
+        }
+
+        expect_token(parser, RBRACE);
+        return out;
+    }
+
+    AstNode* out = ast_create_node(parser, AstNodeKindContainerInitExpr, lbrace);
+    out->data.container_init_expr.kind = ContainerInitKindArray;
+
+    first = ast_parse_expr(parser);
+    if(first != null) {
+        out->data.container_init_expr.entries.append(first);
+
+        while(eat_token_if(parser, COMMA) != 0) {
+            AstNode* expr = ast_parse_expr(parser);
+            if(expr == null)
+                break;
+                
+            out->data.container_init_expr.entries.append(expr);
+        }
+
+        expect_token(parser, RBRACE);
+        return out;
+    }
+
+    expect_token(parser, RBRACE);
+    return out;
+}
+
+// TypeExpr <- PrefixTypeOp* ErrorUnionExpr
+static AstNode* ast_parse_type_expr(Parser* parser) {
+    return ast_parse_prefix_op_expr(
+        parser,
+        ast_parse_prefix_type_op,
+        ast_parse_error_union_expr
+    );
 }
