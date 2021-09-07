@@ -42,6 +42,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
         1. https://github.com/ZHaskell/utf8rewind
         2. https://github.com/osa1/utf8
         3. https://github.com/JuliaStrings/utf8proc
+        4. https://github.com/lemire/fastvalidate-utf-8
 */
 
 #define uBuff  cstlUTF8Str
