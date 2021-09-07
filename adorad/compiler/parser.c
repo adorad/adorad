@@ -587,7 +587,7 @@ static AstNode* ast_parse_if_expr(Parser* parser) {
 
 // Block <- LBRACE Statement* RBRACE
 static AstNode* ast_parse_block(Parser* parser) {
-    TokenIndex lbrace = eat_token_if(parser, TokenIdLBrace);
+    Token* lbrace = parser_chomp_if(parser, TokenIdLBrace);
     if(lbrace == 0)
         return null;
 
@@ -648,7 +648,7 @@ static AstNode* ast_parse_curly_suffix_expr(Parser* parser) {
 //      | LBRACE Expr (COMMA Expr)* COMMA? RBRACE
 //      | LBRACE RBRACE
 static AstNode* ast_parse_init_list(Parser* parser) {
-    TokenIndex lbrace = eat_token_if(parser, TokenIdLBrace);
+    Token* lbrace = parser_chomp_if(parser, TokenIdLBrace);
     if(lbrace == 0)
         return null;
 
@@ -658,7 +658,7 @@ static AstNode* ast_parse_init_list(Parser* parser) {
         out->data.container_init_expr.kind = ContainerInitKindStruct;
         out->data.container_init_expr.entries.append(first);
 
-        while(eat_token_if(parser, COMMA) != 0) {
+        while(parser_chomp_if(parser, COMMA) != 0) {
             AstNode* field_init = ast_parse_field_init(parser);
             if(field_init == null)
                 break;
@@ -676,7 +676,7 @@ static AstNode* ast_parse_init_list(Parser* parser) {
     if(first != null) {
         out->data.container_init_expr.entries.append(first);
 
-        while(eat_token_if(parser, COMMA) != 0) {
+        while(parser_chomp_if(parser, COMMA) != 0) {
             AstNode* expr = ast_parse_expr(parser);
             if(expr == null)
                 break;
@@ -699,4 +699,366 @@ static AstNode* ast_parse_type_expr(Parser* parser) {
         ast_parse_prefix_type_op,
         ast_parse_error_union_expr
     );
+}
+
+// ErrorUnionExpr <- SuffixExpr (EXCLAMATIONMARK TypeExpr)?
+static AstNode* ast_parse_error_union_expr(Parser* parser) {
+    AstNode* out = ast_parse_suffix_expr(pc);
+    if(out == null)
+        return null;
+
+    AstNode* op = ast_parse_bin_op_hash_errorunion(parser)
+    if(op == null)
+        return out;
+
+    AstNode* right = ast_parse_type_expr(parser);
+    assert(op->type == AstNodeKindBinaryOpExpr);
+    op->data.bin_op_expr.lhs = out;
+    op->data.bin_op_expr.rhs = right;
+    return op;
+}
+
+// SuffixExpr
+//      | PrimaryTypeExpr (SuffixOp / FuncCallArguments)*
+static AstNode* ast_parse_suffix_expr(Parser* parser) {
+    AstNode* out = ast_parse_primary_type_expr(pc);
+    if(out == null)
+        return null;
+
+    while(true) {
+        AstNode* suffix = ast_parse_suffix_op(pc);
+        if(suffix != null) {
+            switch (suffix->type) {
+                case AstNodeKindSliceExpr:
+                    suffix->data.slice_expr.array_ref_expr = out;
+                    break;
+                case AstNodeKindArrayAccessExpr:
+                    suffix->data.array_access_expr.array_ref_expr = out;
+                    break;
+                case AstNodeKindFieldAccessExpr:
+                    suffix->data.field_access_expr.struct_expr = out;
+                    break;
+                case AstNodeKindUnwrapOptional:
+                    suffix->data.unwrap_optional.expr = out;
+                    break;
+                case AstNodeKindPtrDeref:
+                    suffix->data.ptr_deref_expr.target = out;
+                    break;
+                default:
+                    unreachable();
+            }
+            out = suffix;
+            continue;
+        }
+
+        AstNode* call = ast_parse_fn_call_arguments(pc);
+        if(call != null) {
+            assert(call->type == AstNodeKindFnCallExpr);
+            call->data.fn_call_expr.fn_ref_expr = out;
+            out = call;
+            continue;
+        }
+        break;
+    }
+
+    return out;
+
+}
+
+// PrimaryTypeExpr
+//     <- BUILTINIDENTIFIER FuncCallArguments
+//      / CHAR_LITERAL
+//      / ContainerDecl
+//      / DOT IDENTIFIER
+//      / ErrorSetDecl
+//      / FLOAT
+//      / FnProto
+//      / GroupedExpr
+//      / LabeledTypeExpr
+//      / IDENTIFIER
+//      / IfTypeExpr
+//      / INTEGER
+//      / KEYWORD_comptime TypeExpr
+//      / KEYWORD_error DOT IDENTIFIER
+//      / KEYWORD_false
+//      / KEYWORD_null
+//      / KEYWORD_promise
+//      / KEYWORD_true
+//      / KEYWORD_undefined
+//      / KEYWORD_unreachable
+//      / STRINGLITERAL
+//      / SwitchExpr
+static AstNode* ast_parse_primary_type_expr(Parser* parser) {
+    Token* builtin_tok = parser_chomp_if(pc, TokenIdBuiltin);
+    if(builtin_tok != 0) {
+        AstNode* out = ast_parse_fn_call_arguments(parser);
+        AstNode* name_sym = ast_create_node(pc, AstNodeKindIdentifier, builtin_tok);
+
+        assert(out->type == AstNodeKindFnCallExpr);
+        out->main_token = builtin_tok;
+        out->data.fn_call_expr.fn_ref_expr = name_sym;
+        out->data.fn_call_expr.modifier = CallModifierBuiltin;
+        return out;
+    }
+
+    Token* char_lit = parser_chomp_if(pc, TokenIdCharLiteral);
+    if(char_lit != 0) {
+        return ast_create_node(pc, AstNodeKindCharLiteral, char_lit);
+    }
+
+    AstNode* container_decl = ast_parse_container_decl(pc);
+    if(container_decl != null)
+        return container_decl;
+
+    AstNode* anon_lit = ast_parse_anon_lit(pc);
+    if(anon_lit != null)
+        return anon_lit;
+
+    AstNode* error_set_decl = ast_parse_error_set_decl(pc);
+    if(error_set_decl != null)
+        return error_set_decl;
+
+    Token* float_lit = parser_chomp_if(pc, TokenIdFloatLiteral);
+    if(float_lit != 0) {
+        return ast_create_node(pc, AstNodeKindFloatLiteral, float_lit);
+    }
+
+    AstNode* fn_proto = ast_parse_fn_proto(pc);
+    if(fn_proto != null)
+        return fn_proto;
+
+    AstNode* grouped_expr = ast_parse_grouped_expr(pc);
+    if(grouped_expr != null)
+        return grouped_expr;
+
+    AstNode* labeled_type_expr = ast_parse_labeled_type_expr(pc);
+    if(labeled_type_expr != null)
+        return labeled_type_expr;
+
+    Token* identifier = parser_chomp_if(pc, TokenIdIdentifier);
+    if(identifier != 0)
+        return token_identifier(pc, identifier);
+
+    AstNode* if_type_expr = ast_parse_if_type_expr(pc);
+    if(if_type_expr != null)
+        return if_type_expr;
+
+    Token* int_lit = parser_chomp_if(pc, TokenIdIntLiteral);
+    if(int_lit != 0) {
+        return ast_create_node(pc, AstNodeKindIntLiteral, int_lit);
+    }
+
+    Token* comptime = parser_chomp_if(pc, TokenIdKeywordCompTime);
+    if(comptime != 0) {
+        AstNode* expr = ast_parse_type_expr(parser);
+        AstNode* out = ast_create_node(pc, AstNodeKindCompTime, comptime);
+        out->data.comptime_expr.expr = expr;
+        return out;
+    }
+
+    Token* error = parser_chomp_if(pc, TokenIdKeywordError);
+    if(error != 0) {
+        Token* dot = expect_token(pc, TokenIdDot);
+        Token* name = expect_token(pc, TokenIdIdentifier);
+        AstNode* left = ast_create_node(pc, AstNodeKindErrorType, error);
+        AstNode* out = ast_create_node(pc, AstNodeKindFieldAccessExpr, dot);
+        out->data.field_access_expr.struct_expr = left;
+        out->data.field_access_expr.field_name = token_buf(pc, name);
+        return out;
+    }
+
+    Token* false_token = parser_chomp_if(pc, TokenIdKeywordFalse);
+    if(false_token != 0) {
+        AstNode* out = ast_create_node(pc, AstNodeKindBoolLiteral, false_token);
+        out->data.bool_literal.value = false;
+        return out;
+    }
+
+    Token* null_kwd = parser_chomp_if(pc, TokenIdKeywordNull);
+    if(null_kwd != 0)
+        return ast_create_node(pc, AstNodeKindNullLiteral, null);
+
+    Token* anyframe = parser_chomp_if(pc, TokenIdKeywordAnyFrame);
+    if(anyframe != 0)
+        return ast_create_node(pc, AstNodeKindAnyFrameType, anyframe);
+
+    Token* true_token = parser_chomp_if(pc, TokenIdKeywordTrue);
+    if(true_token != 0) {
+        AstNode* out = ast_create_node(pc, AstNodeKindBoolLiteral, true_token);
+        out->data.bool_literal.value = true;
+        return out;
+    }
+
+    Token* undefined = parser_chomp_if(pc, TokenIdKeywordUndefined);
+    if(undefined != 0)
+        return ast_create_node(pc, AstNodeKindUndefinedLiteral, undefined);
+
+    Token* unreachable = parser_chomp_if(pc, TokenIdKeywordUnreachable);
+    if(unreachable != 0)
+        return ast_create_node(pc, AstNodeKindUnreachable, unreachable);
+
+
+    Token* string_lit = parser_chomp_if(pc, TokenIdStringLiteral);
+    if(string_lit != 0) {
+        return ast_create_node(pc, AstNodeKindStringLiteral, string_lit);
+    }
+
+    Token* multiline_str_lit = ast_parse_multi_tok(pc, TokenIdMultilineStringLiteralLine);
+    if(multiline_str_lit != 0) {
+        return ast_create_node(pc, AstNodeKindStringLiteral, multiline_str_lit);
+    }
+
+    AstNode* switch_expr = ast_parse_switch_expr(pc);
+    if(switch_expr != null)
+        return switch_expr;
+
+    return null;
+}
+
+// ContainerDecl <- (KEYWORD_extern / KEYWORD_packed)? ContainerDeclAuto
+static AstNode* ast_parse_container_decl(Parser* parser) {
+    Token* layout_token = parser_chomp_if(pc, TokenIdKeywordExtern);
+    if(layout_token == 0)
+        layout_token = parser_chomp_if(pc, TokenIdKeywordPacked);
+
+    AstNode* out = ast_parse_container_decl_auto(pc);
+    if(res == null) {
+        if(layout_token != 0)
+            put_back_token(pc);
+        return null;
+    }
+
+    assert(res->type == AstNodeKindContainerDecl);
+    if(layout_token != 0) {
+        res->main_token = layout_token;
+        res->data.container_decl.layout = pc->token_ids[layout_token] == TokenIdKeywordExtern
+            ? ContainerLayoutExtern
+            : ContainerLayoutPacked;
+    }
+    return res;
+}
+
+// ErrorSetDecl <- KEYWORD_error LBRACE IdentifierList RBRACE
+static AstNode* ast_parse_error_set_decl(Parser* parser) {
+    Token* first = parser_chomp_if(pc, TokenIdKeywordError);
+    if(first == 0)
+        return null;
+    if(parser_chomp_if(pc, TokenIdLBrace) == 0) {
+        put_back_token(pc);
+        return null;
+    }
+
+    ZigList<AstNode* > decls = ast_parse_list<AstNode>(pc, TokenIdComma, [](ParseContext *context) {
+        Token* doc_token = ast_parse_doc_comments(context);
+        Token* ident = parser_chomp_if(context, TokenIdIdentifier);
+        if(ident == 0)
+            return (AstNode*)null;
+
+        AstNode* symbol_node = token_identifier(context, ident);
+        if(doc_token == 0)
+            return symbol_node;
+
+        AstNode* field_node = ast_create_node(context, AstNodeKindErrorSetField, doc_token);
+        field_node->data.err_set_field.field_name = symbol_node;
+        field_node->data.err_set_field.doc_comments = doc_token;
+        return field_node;
+    });
+    expect_token(pc, TokenIdRBrace);
+
+    AstNode* out = ast_create_node(pc, AstNodeKindErrorSetDecl, first);
+    res->data.err_set_decl.decls = decls;
+    return res;
+}
+
+// GroupedExpr <- LPAREN Expr RPAREN
+static AstNode* ast_parse_grouped_expr(Parser* parser) {
+    Token* lparen = parser_chomp_if(pc, TokenIdLParen);
+    if(lparen == 0)
+        return null;
+
+    AstNode* expr = ast_parse_expr(parser);
+    expect_token(pc, TokenIdRParen);
+
+    AstNode* out = ast_create_node(pc, AstNodeKindGroupedExpr, lparen);
+    res->data.grouped_expr = expr;
+    return res;
+}
+
+// IfTypeExpr <- IfPrefix TypeExpr (KEYWORD_else Payload? TypeExpr)?
+static AstNode* ast_parse_if_type_expr(Parser* parser) {
+    return ast_parse_if_expr_helper(pc, ast_parse_type_expr);
+}
+
+// LabeledTypeExpr
+//     <- BlockLabel Block
+//      / BlockLabel? LoopTypeExpr
+static AstNode* ast_parse_labeled_type_expr(Parser* parser) {
+    Token* label = ast_parse_block_label(pc);
+    if(label != 0) {
+        AstNode* block = ast_parse_block(pc);
+        if(block != null) {
+            assert(block->type == AstNodeKindBlock);
+            block->data.block.name = token_buf(pc, label);
+            return block;
+        }
+    }
+
+    AstNode* loop = ast_parse_loop_type_expr(pc);
+    if(loop != null) {
+        switch (loop->type) {
+            case AstNodeKindForExpr:
+                loop->data.for_expr.name = token_buf(pc, label);
+                break;
+            case AstNodeKindWhileExpr:
+                loop->data.while_expr.name = token_buf(pc, label);
+                break;
+            default:
+                unreachable();
+        }
+        return loop;
+    }
+
+    if(label != 0) {
+        put_back_token(pc);
+        put_back_token(pc);
+    }
+    return null;
+}
+
+// LoopTypeExpr <- KEYWORD_inline? (ForTypeExpr / WhileTypeExpr)
+static AstNode* ast_parse_loop_type_expr(Parser* parser) {
+    return ast_parse_loop_expr_helper(
+        pc,
+        ast_parse_for_type_expr,
+        ast_parse_while_type_expr
+    );
+}
+
+// ForTypeExpr <- ForPrefix TypeExpr (KEYWORD_else TypeExpr)?
+static AstNode* ast_parse_for_type_expr(Parser* parser) {
+    return ast_parse_for_expr_helper(pc, ast_parse_type_expr);
+}
+
+// WhileTypeExpr <- WhilePrefix TypeExpr (KEYWORD_else Payload? TypeExpr)?
+static AstNode* ast_parse_while_type_expr(Parser* parser) {
+    return ast_parse_while_expr_helper(pc, ast_parse_type_expr);
+}
+
+// SwitchExpr <- KEYWORD_switch LPAREN Expr RPAREN LBRACE SwitchProngList RBRACE
+static AstNode* ast_parse_switch_expr(Parser* parser) {
+    Token* switch_token = parser_chomp_if(pc, TokenIdKeywordSwitch);
+    if(switch_token == 0)
+        return null;
+
+    expect_token(pc, TokenIdLParen);
+    AstNode* expr = ast_parse_expr(parser);
+    expect_token(pc, TokenIdRParen);
+    expect_token(pc, TokenIdLBrace);
+    ZigList<AstNode* > prongs = ast_parse_list(pc, TokenIdComma, ast_parse_switch_prong);
+    expect_token(pc, TokenIdRBrace);
+
+    AstNode* out = ast_create_node(pc, AstNodeKindSwitchExpr, switch_token);
+    res->data.switch_expr.expr = expr;
+    res->data.switch_expr.prongs = prongs;
+    return res;
 }
