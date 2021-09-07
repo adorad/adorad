@@ -411,4 +411,43 @@ static AstNode* ast_parse_block(Parser* parser) {
     AstNode* out = ast_create_node(AstNodeKindBlock);
     out->data.stmt->block_stmt->statements = statements;
     return out;
+
+
+// This has been selfishly ported from Zig's Compiler
+// Source for this: https://github.com/ziglang/zig/blob/master/src/stage1/parser.cpp
+typedef enum BinaryOpChain {
+    BinaryOpChainOnce,
+    BinaryOpChainInfin,
+} BinaryOpChain;
+
+// Child (Op Child)(*/?)
+static AstNode* ast_parse_bin_op_expr(
+    Parser* parser,
+    BinaryOpChain chain,
+    AstNode* (*op_parser)(Parser*),
+    AstNode* (*child_parser)(Parser*)
+) {
+    AstNode* out = child_parser(pc);
+    AstNode* ou;
+    if(out == null)
+        return null;
+
+    do {
+        AstNode* op = op_parser(parser);
+        if (op == null)
+            break;
+
+        AstNode* left = out;
+        AstNode* right = child_parser(parser);
+        out = op;
+
+        if(op->kind == AstNodeKindBinaryOpExpr) {
+            op->data.bin_op_expr.op1 = left;
+            op->data.bin_op_expr.op2 = right;
+        } else {
+            unreachable();
+        }
+    } while(chain == BinaryOpChainInfin);
+
+    return out;
 }
