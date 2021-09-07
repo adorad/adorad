@@ -57,8 +57,8 @@ inline Token* parser_expect_token(Parser* parser, TokenKind tokenkind) {
         return parser_chomp(parser);
         
     panic(ErrorUnexpectedToken, "Expected `%s`; got `%s`", 
-                                        token_to_buff(tokenkind)->data,
-                                        token_to_buff(parser->curr_tok->kind)->data);
+                                token_to_buff(tokenkind)->data,
+                                token_to_buff(parser->curr_tok->kind)->data);
     abort();
 }
 
@@ -75,14 +75,6 @@ AstNode* ast_clone_node(AstNode* node) {
     // TODO(jasmcaus): Add more struct members
     return new;
 }
-
-/*
-    A large part of the Parser from this point onwards has been selfishly stolen from Zig's Compiler.
-
-    Before, we release the first stable version of Adorad, this parser implementation will be reworked and improved.
-
-    Related source code: https://github.com/ziglang/zig/blob/master/src/stage1/parser.cpp
-*/
 
 // General format:
 //      KEYWORD(func) IDENT LPAREN ParamDeclList RPAREN LARROW RETURNTYPE
