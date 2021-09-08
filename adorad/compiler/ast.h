@@ -708,9 +708,9 @@ typedef enum UnaryOpKind {
 } UnaryOpKind;
 
 typedef struct AstNodeUnaryOpExpr {
-    AstNode* op1;
-    UnaryOpKind binary_op;
-    AstNode* op2;
+    AstNode* lhs;
+    UnaryOpKind op;
+    AstNode* rhs;
 } AstNodeUnaryOpExpr;
 
 typedef enum ComparisonOpKind {
@@ -728,7 +728,7 @@ typedef enum ComparisonOpKind {
 
 typedef struct AstNodeComparisonOpExpr {
     AstNode* op1;
-    BinaryOpKind binary_op;
+    BinaryOpKind op;
     AstNode* op2;
 } AstNodeComparisonOpExpr;
 
