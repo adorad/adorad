@@ -57,8 +57,8 @@ inline Token* parser_expect_token(Parser* parser, TokenKind tokenkind) {
         return parser_chomp(parser);
         
     panic(ErrorUnexpectedToken, "Expected `%s`; got `%s`", 
-                                token_to_buff(tokenkind)->data,
-                                token_to_buff(parser->curr_tok->kind)->data);
+                                        token_to_buff(tokenkind)->data,
+                                        token_to_buff(parser->curr_tok->kind)->data);
     abort();
 }
 
@@ -75,6 +75,14 @@ AstNode* ast_clone_node(AstNode* node) {
     // TODO(jasmcaus): Add more struct members
     return new;
 }
+
+/*
+    A large part of the Parser from this point onwards has been selfishly stolen from Zig's Compiler.
+
+    Before, we release the first stable version of Adorad, this parser implementation will be reworked and improved.
+
+    Related source code: https://github.com/ziglang/zig/blob/master/src/stage1/parser.cpp
+*/
 
 // General format:
 //      KEYWORD(func) IDENT LPAREN ParamDeclList RPAREN LARROW RETURNTYPE
@@ -361,5 +369,46 @@ static AstNode* ast_parse_block(Parser* parser) {
 
     AstNode* out = ast_create_node(AstNodeKindBlock);
     out->data.stmt->block_stmt->statements = statements;
+    return out;
+}
+
+// This has been selfishly ported from Zig's Compiler
+// Source for this: https://github.com/ziglang/zig/blob/master/src/stage1/parser.cpp
+typedef enum BinaryOpChain {
+    BinaryOpChainOnce,
+    BinaryOpChainInfinity
+} BinaryOpChain;
+
+// A `generic`-like function that parses binary expressions.
+// These (expressions) utilize similar functionality, so this function is here to avoid code duplication.
+// Here, `op_parser` parses the operand (e.g. `+=`, `or`...)
+static AstNode* ast_parse_binary_op_expr(
+    Parser* parser,
+    BinaryOpChain chain,
+    AstNode* (*op_parser)(Parser*),
+    AstNode* (*child_parser)(Parser*)
+) {
+    AstNode* out = child_parser(parser);
+    AstNode* ou;
+    if(out == null)
+        return null;
+
+    do {
+        AstNode* op = op_parser(parser);
+        if(op == null)
+            break;
+
+        AstNode* left = out;
+        AstNode* right = child_parser(parser);
+        out = op;
+
+        if(op->kind == AstNodeKindBinaryOpExpr) {
+            op->data.expr->binary_op_expr->lhs = left;
+            op->data.expr->binary_op_expr->rhs = right;
+        } else {
+            unreachable();
+        }
+    } while(chain == BinaryOpChainInfinity);
+
     return out;
 }
