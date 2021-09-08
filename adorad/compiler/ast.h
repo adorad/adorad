@@ -280,7 +280,7 @@ typedef enum BinaryOpKind {
 
 typedef struct AstNodeBinaryOpExpr {
     AstNode* lhs;
-    BinaryOpKind binary_op;
+    BinaryOpKind op;
     AstNode* rhs;
 } AstNodeBinaryOpExpr;
 
