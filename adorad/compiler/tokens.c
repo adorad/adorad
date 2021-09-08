@@ -148,6 +148,7 @@ Buff* token_to_buff(TokenKind kind) {
         // Keywords
         case ANY: value = "any"; break;
         case AS: value = "as"; break;
+        case ASYNC: value = "async"; break;
         case ATOMIC: value = "atomic"; break;
         case BREAK: value = "break"; break;
         case CASE: value = "case"; break;
@@ -195,6 +196,7 @@ Buff* token_to_buff(TokenKind kind) {
         case WHILE: value = "while"; break;
         case UNION: value = "union"; break;
         case USE: value = "use"; break;
+        case VOLATILE: value = "volatile"; break;
         // We should _never_ reach here
         default: value = "ILLEGAL"; break;
     }

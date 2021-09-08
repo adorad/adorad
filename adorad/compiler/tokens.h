@@ -156,6 +156,7 @@ TOKENKIND(TOK___KEYWORDS_BEGIN, ""),  \
     TOKENKIND(KEYWORD,   ""), /* Token Classification*/ \
     TOKENKIND(ANY,       "any"),      \
     TOKENKIND(AS,        "as"),       \
+    TOKENKIND(ASYNC,     "async"),    \
     TOKENKIND(ATOMIC,    "atomic"),   \
     TOKENKIND(BREAK,     "break"),    \
     TOKENKIND(CASE,      "case"),     \
@@ -204,6 +205,7 @@ TOKENKIND(TOK___KEYWORDS_BEGIN, ""),  \
     TOKENKIND(WHILE,     "while"),    \
     TOKENKIND(UNION,     "union"),    \
     TOKENKIND(USE,       "use"), /* aliasing purposes */ \
+    TOKENKIND(VOLATILE,  "volatile"), \
 TOKENKIND(TOK___KEYWORDS_END, ""),    \
 \
     TOKENKIND(TOK_COUNT, "")
