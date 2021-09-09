@@ -167,6 +167,15 @@ typedef struct AstNodeIfExpr {
     bool has_else;
 } AstNodeIfExpr;
 
+typedef struct AstNodeInitExpr {
+    AstNode* type;
+    Vec* entries;
+    enum {
+        InitExprKindStruct,
+        InitExprKindArray,
+    } kind;
+} AstNodeInitExpr;
+
 typedef struct AstNodeLoopWhileExpr {
     AstNode* cond;
     Vec* statements;
@@ -330,6 +339,7 @@ typedef struct AstNodeExpression {
         AstNodeAsCast*  as_cast;
         AstNodeCastExpr* cast_expr;
         AstNodeIfExpr* if_expr;
+        AstNodeInitExpr* init_expr;
         AstNodeLoopExpr* loop_expr;
         AstNodeFuncCallExpr* func_call_expr;
         AstNodeMatchExpr* match_expr;
