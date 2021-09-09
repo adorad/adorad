@@ -681,3 +681,50 @@ static AstNode* ast_parse_init_list(Parser* parser) {
     free(rbrace);
     return out;
 }
+
+// TypeExpr
+//      PrefixTypeOp* SuffixExpr
+static AstNode* ast_parse_type_expr(Parser* parser) {
+    return ast_parse_prefix_op_expr(
+        parser,
+        ast_parse_prefix_type_op,
+        ast_parse_suffix_expr
+    );
+}
+
+// SuffixExpr
+//      | PrimaryTypeExpr SuffixOp* FuncCallArgs
+//      | PrimaryTypeExpr (SuffixOp / FuncCallArguments)*
+static AstNode* ast_parse_suffix_expr(Parser* parser) {
+    AstNode* out = ast_parse_primary_type_expr(parser);
+    if(out == null)
+        return null;
+    
+    while(true) {
+        AstNode* suffix = ast_parse_suffix_op(parser);
+        if(suffix != null) { 
+            switch(suffix->kind) {
+                case AstNodeKindSliceExpr:
+                    suffix->data.expr->slice_expr->array_ref_expr = out;
+                    break;
+                // case AstNodeKindArrayAccessExpr:
+                //     suffix->data.array_access_expr->array_ref_expr = out;
+                //     break;
+                default:
+                    unreachable();
+            }
+            out = suffix;
+            continue;
+        }
+
+        AstNode* call = ast_parse_func_call_args(parser);
+        if(call != null) {
+            CORETEN_CHECK(call->kind == AstNodeKindFuncCallExpr);
+            call->data.expr->func_call_expr->func_call_expr = out;
+            out = call;
+            continue;
+        }
+    } // while(true)
+
+    return out;
+}

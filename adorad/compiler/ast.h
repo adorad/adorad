@@ -60,6 +60,8 @@ enum AstNodeKind {
     AstNodeKindCatchExpr,      // `catch Error`
     AstNodeKindBinaryOpExpr,   // a binary expression like `&&` or `||`
     AstNodeKindInitExpr,
+    AstNodeKindSliceExpr,
+    AstNodeKindArrayAccessExpr,
 
     // Fields
     AstNodeKindTypeDecl,       // `type name T { ... }`  where T is one of {enum/struct}
@@ -319,9 +321,11 @@ typedef struct AstNodeAwaitExpr {
 } AstNodeAwaitExpr;
 
 typedef struct AstNodeSliceExpr {
+    AstNode* array_ref_expr;
     AstNode* lower;
     AstNode* upper;
     AstNode* step;
+    AstNode* sentinel;  // can be null
 } AstNodeSliceExpr;
 
 // This can be one of:
