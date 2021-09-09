@@ -73,6 +73,8 @@ enum AstNodeKind {
     AstNodeKindParamDecl,
     AstNodeKindDefer,
     AstNodeKindReturn,
+    AstNodeKindUnreachable,
+    AstNodeKindMatchBranch,
 };
 
 typedef enum VisibilityMode {
@@ -236,11 +238,14 @@ typedef struct AstNodeFuncCallExpr {
 } AstNodeFuncCallExpr;
 
 typedef struct AstNodeMatchExpr {
-    TokenKind tokenkind;
-    AstNode* cond;
+    AstNode* expr;
     Vec* branches;
-    bool is_sumtype;
 } AstNodeMatchExpr;
+
+typedef struct AstNodeMatchBranch {
+    AstNode* expr;
+    Vec* branches;
+} AstNodeMatchBranch;
 
 typedef struct AstNodeCatchExpr {
     AstNode* op1;
@@ -348,6 +353,7 @@ typedef struct AstNodeExpression {
         AstNodeLoopExpr* loop_expr;
         AstNodeFuncCallExpr* func_call_expr;
         AstNodeMatchExpr* match_expr;
+        AstNodeMatchBranch* match_branch;
         AstNodeCatchExpr* catch_expr;
         AstNodeTryExpr* try_expr;
         AstNodeBinaryOpExpr* binary_op_expr;
