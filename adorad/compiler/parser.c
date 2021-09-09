@@ -914,4 +914,13 @@ static AstNode* ast_parse_match_case_kwd(Parser* parser) {
 
         return out;
     }
+
+    Token* else_kwd = parser_chomp_if(parser, ELSE);
+    if(else_kwd != null) {
+        free(else_kwd);
+        AstNode* out = ast_create_node(AstNodeKindMatchBranch);
+        return out;
+    }
+
+    return null;
 }
