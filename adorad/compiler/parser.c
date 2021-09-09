@@ -724,6 +724,7 @@ static AstNode* ast_parse_suffix_expr(Parser* parser) {
             out = call;
             continue;
         }
+        break;
     } // while(true)
 
     return out;
