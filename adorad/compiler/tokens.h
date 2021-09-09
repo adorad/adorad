@@ -158,6 +158,7 @@ TOKENKIND(TOK___KEYWORDS_BEGIN, ""),  \
     TOKENKIND(AS,        "as"),       \
     TOKENKIND(ASYNC,     "async"),    \
     TOKENKIND(ATOMIC,    "atomic"),   \
+    TOKENKIND(ATTRIBUTE, "attribute"),\
     TOKENKIND(BREAK,     "break"),    \
     TOKENKIND(CASE,      "case"),     \
     TOKENKIND(CAST,      "cast"),     \

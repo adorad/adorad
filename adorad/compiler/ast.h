@@ -59,6 +59,7 @@ enum AstNodeKind {
     AstNodeKindMatchExpr,      // `match expr { ... }`
     AstNodeKindCatchExpr,      // `catch Error`
     AstNodeKindBinaryOpExpr,   // a binary expression like `&&` or `||`
+    AstNodeKindInitExpr,
 
     // Fields
     AstNodeKindTypeDecl,       // `type name T { ... }`  where T is one of {enum/struct}

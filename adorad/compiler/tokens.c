@@ -150,6 +150,7 @@ Buff* token_to_buff(TokenKind kind) {
         case AS: value = "as"; break;
         case ASYNC: value = "async"; break;
         case ATOMIC: value = "atomic"; break;
+        case ATTRIBUTE: value = "attribute"; break;
         case BREAK: value = "break"; break;
         case CASE: value = "case"; break;
         case CAST: value = "cast"; break;

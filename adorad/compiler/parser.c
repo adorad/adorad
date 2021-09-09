@@ -475,10 +475,138 @@ static AstNode* ast_parse_bool_or_expr(Parser* parser) {
         parser,
         BinaryOpChainInfinity,
         ast_parse_boolean_or_op,
-        
+        ast_parse_comparison_expr
     );
 }
 
+// ComparisonExpr
+//      BitwiseExpr (ComparisonOp BitwiseExpr)*
+static AstNode* ast_parse_comparison_expr(Parser* parser) {
+    return ast_parse_binary_op_expr(
+        parser,
+        BinaryOpChainOnce,
+        ast_parse_comparison_op,
+        ast_parse_bitwise_expr
+    ); 
+}
+
+// BitwiseExpr
+//      BitShiftExpr (BitwiseOp BitShiftExpr)*
+static AstNode* ast_parse_bitwise_expr(Parser* parser) {
+    return ast_parse_binary_op_expr(
+        parser,
+        BinaryOpChainInfinity,
+        ast_parse_bitwise_op,
+        ast_parse_bitshift_expr
+    ); 
+}
+
+// BitShiftExpr
+//      AdditionExpr (BitshiftOp AdditionExpr)*
+static AstNode* ast_parse_bitshift_expr(Parser* parser) {
+    return ast_parse_binary_op_expr(
+        parser,
+        BinaryOpChainInfinity,
+        ast_parse_bitshift_op,
+        ast_parse_addition_expr
+    ); 
+}
+
+// AdditionExpr
+//      MultiplyExpr (AdditionOp MultiplyExpr)*
+static AstNode* ast_parse_addition_expr(Parser* parser) {
+    return ast_parse_binary_op_expr(
+        parser,
+        BinaryOpChainInfinity,
+        ast_parse_addition_op,
+        ast_parse_multiplication_expr
+    ); 
+}
+
+// MultiplyExpr
+//      AdditionExpr (MultiplicationOp AdditionExpr)*
+static AstNode* ast_parse_multiplication_expr(Parser* parser) {
+    return ast_parse_binary_op_expr(
+        parser,
+        BinaryOpChainInfinity,
+        ast_parse_multiplication_op,
+        ast_parse_bitwise_expr
+    ); 
+}
+
+// PrefixExpr
+//      PrefixOp? PrimaryExpr
+// PrefixOp can be one of:
+//      | EXCLAMATION   (!)
+//      | MINUS         (-)
+//      | TILDA         (~)
+//      | AND           (&)
+//      | KEYWORD(try) 
+static AstNode* ast_parse_prefix_expr(Parser* parser) {
+    return ast_parse_prefix_op_expr(
+        parser,
+        ast_parse_prefix_op,
+        ast_parse_primary_expr
+    );
+}
+
+// PrimaryExpr
+//      | IfExpr
+//      | KEYWORD(break) BreakLabel? Expr?
+//      | KEYWORD(continue) BreakLabel?
+//      | ATTRIBUTE Expr
+//      | KEYWORD(return) Expr?
+//      | BlockLabel? LoopExpr
+//      | Block
+static AstNode* ast_parse_primary_expr(Parser* parser) {
+    AstNode* if_expr = ast_parse_if_expr(pc);
+    if (if_expr != null)
+        return if_expr;
+
+    Token* break_token = parser_chomp_if(parser, BREAK);
+    if(break_token != null) {
+        free(break_token);
+        Token* label = ast_parse_break_label(parser);
+        AstNode* expr = ast_parse_expr(parser);
+        
+        AstNode* out = ast_create_node(AstNodeKindBreak);
+        out->data.stmt->branch_stmt->name = label->value;
+        out->data.stmt->branch_stmt->type = AstNodeBranchStatementBreak;
+        out->data.stmt->branch_stmt->expr = expr;
+        return out;
+    }
+    
+    Token* continue_token = parser_chomp_if(parser, CONTINUE);
+    if(continue_token != null) {
+        Token* label = ast_parse_break_label(parser);
+        AstNode* out = ast_create_node(AstNodeKindContinue);
+        out->data.stmt->branch_stmt->name = label == null ? label->value : null;
+        out->data.stmt->branch_stmt->type = AstNodeBranchStatementContinue;
+    }
+
+    // Token* attribute = parser_chomp_if(parser, ATTRIBUTE);
+    // if (attribute != 0) {
+    //     AstNode* expr = ast_parse_expr();
+    //     AstNode* out = ast_create_node(AstNodeKindAttribute);
+    //     out->data.attribute_expr.expr = expr;
+    //     return out;
+    // }
+
+    Token* return_token = parser_chomp_if(parser, RETURN);
+    if(return_token != null) {
+        free(return_token);
+        AstNode* expr = ast_parse_expr(parser);
+        AstNode* out = ast_create_node(AstNodeKindReturn);
+        out->data.stmt->return_stmt->expr = expr;
+        return out;
+    }
+
+    AstNode* block = ast_parse_block(parser);
+    if(block != null)
+        return block;
+    
+    return null;
+}
 
 static AstNode* ast_parse_boolean_and_op(Parser* parser) {
     Token* op_token = parser_chomp_if(parser, AND);
@@ -497,5 +625,59 @@ static AstNode* ast_parse_boolean_or_op(Parser* parser) {
     
     AstNode* out = ast_create_node(AstNodeKindBinaryOpExpr);
     out->data.expr->binary_op_expr->op = BinaryOpKindBoolOr;
+    return out;
+}
+
+// IfPrefix
+//      IfPrefix Expr (KEYWORD(else) Expr)
+static AstNode* ast_parse_if_expr(Parser* parser) {
+    return ast_parse_if_expr_helper(
+        parser, 
+        ast_parse_expr
+    );
+}
+
+// TODO
+// LoopExpr
+// static AstNode* ast_parse_loop_expr(Parser* parser) {
+//     return ast_parse_loop_expr_helper(
+//         parser,
+//         ast_parse_for_expr,
+//         ast_parse_while_expr
+//     );
+// }
+
+// InitList
+//      | LBRACE Expr (COMMA Expr)* COMMA? RBRACE
+//      | LBRACE RBRACE
+static AstNode* ast_parse_init_list(Parser* parser) {
+    Token* lbrace = parser_chomp_if(parser, LBRACE);
+    if(lbrace == null)
+        return null;
+    free(lbrace);
+
+    AstNode* out = ast_create_node(AstNodeKindInitExpr);
+    out->data.expr->init_expr->kind = InitExprKindArray;
+    out->data.expr->init_expr->entries = vec_new(AstNode, 1);
+
+    AstNode* first = ast_parse_expr(parser);
+    if(first != null) {
+        vec_push(out->data.expr->init_expr->entries, first);
+
+        Token* comma;
+        while((comma = parser_chomp_if(parser, COMMA)) != null) {
+            free(comma);
+            AstNode* expr = ast_parse_expr(parser);
+            if(expr == null)
+                break;
+            vec_push(out->data.expr->init_expr->entries, expr);
+        }
+
+        Token* rbrace = parser_expect_token(parser, RBRACE);
+        free(rbrace);
+        return out;
+    }
+    Token* rbrace = parser_expect_token(parser, RBRACE);
+    free(rbrace);
     return out;
 }
