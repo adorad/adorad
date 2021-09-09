@@ -246,36 +246,43 @@ typedef struct AstNodeTryExpr {
 
 typedef enum BinaryOpKind {
     BinaryOpKindAssignmentInvalid,
-    BinaryOpKindAssignmentPlus,    // =+
-    BinaryOpKindAssignmentMinus,   // =-
-    BinaryOpKindAssignmentMult,    // =*
-    BinaryOpKindAssignmentDiv,     // =/
-    BinaryOpKindAssignmentMod,     // =%
-    BinaryOpKindAssignmentBitshiftLeft,  // =<<
-    BinaryOpKindAssignmentBitshiftRight, // =>>
-    BinaryOpKindAssignmentBitAnd,  // &
-    BinaryOpKindAssignmentBitOr,   // |
-    BinaryOpKindAssignmentBitXor,  // ^
-    BinaryOpKindBoolAnd,
-    BinaryOpKindBoolOr,
+    BinaryOpKindAssignmentPlus,    // +=
+    BinaryOpKindAssignmentMinus,   // -=
+    BinaryOpKindAssignmentMult,    // *=
+    BinaryOpKindAssignmentDiv,     // /=
+    BinaryOpKindAssignmentMod,     // %=
+    BinaryOpKindAssignmentBitshiftLeft,  // <<=
+    BinaryOpKindAssignmentBitshiftRight, // >>=
+    BinaryOpKindAssignmentBitAnd, // &=
+    BinaryOpKindAssignmentBitOr,  // |=
+    BinaryOpKindAssignmentBitXor, // ^=
+    BinaryOpKindAssignmentEquals, // =
+
     BinaryOpKindCmpEqual,                 // ==
     BinaryOpKindCmpNotEqual,              // !=
     BinaryOpKindCmpLessThan,              // <
     BinaryOpKindCmpGreaterThan,           // >
     BinaryOpKindCmpLessThanorEqualTo,     // <=
     BinaryOpKindCmpGreaterThanorEqualTo,  // >=
-    BinaryOpKindBinaryAnd,
-    BinaryOpKindBinaryOr,
-    BinaryOpKindBinaryXor,
+
+    BinaryOpKindBoolAnd,                  // `and`
+    BinaryOpKindBoolOr,                   // `or`
+    BinaryOpKindBoolNot,                  // `not`
+
+    BinaryOpKindBitAnd,  // &
+    BinaryOpKindBitOr,   // |
+    BinaryOpKindBitXor,  // ^
+    BinaryOpKindBitOrOr, // ||
+    BinaryOpKindBitNegation, // !
+
     BinaryOpKindBitshitLeft,   // <<
     BinaryOpKindBitshitRight,  // >>
+
     BinaryOpKindAdd,      // +
     BinaryOpKindSubtract, // -
     BinaryOpKindMult,     // *
     BinaryOpKindDiv,      // /
     BinaryOpKindMod,      // %
-    BinaryOpKindTensorSlice,
-    BinaryOpKindTensorMult
 } BinaryOpKind;
 
 typedef struct AstNodeBinaryOpExpr {

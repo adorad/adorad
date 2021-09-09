@@ -347,8 +347,22 @@ static AstNode* ast_parse_block_expr(Parser* parser) {
     return ast_parse_block(parser);
 }
 
-// Assignment Expr
-// FIXME!
+// AssignmentExpr
+//      Expr (AssignmentOp Expr)?
+// AssignmentOp can be one of:
+//      | MULT_EQUALS       (*=)
+//      | SLASH_EQUALS      (/=)
+//      | MOD_EQUALS        (%=)
+//      | PLUS_EQUALS       (+=)
+//      | MINUS_EQUALS      (-=)
+//      | LBITSHIFT_EQUALS  (<<=)
+//      | RBITSHIFT_EQUALS  (>>=)
+//      | AND_EQUALS        (&=)
+//      | XOR_EQUALS        (^=)
+//      | OR_EQUALS         (|=)
+//      | TILDA             (~)
+//      | TILDA_EQUALS      (~=)
+//      | EQUALS            (=)
 static AstNode* ast_parse_assignment_expr(Parser* parser) {
     return ast_parse_binary_op_expr(parser);
 }
@@ -372,6 +386,39 @@ static AstNode* ast_parse_block(Parser* parser) {
     return out;
 }
 
+typedef struct ast_prec_table {
+    TokenKind tok_kind;
+    UInt8 prec_value;
+    BinaryOpKind bin_kind;
+} ast_prec_table;
+
+// A table of binary operator precedence. Higher precedence numbers are stickier.
+static const ast_prec_table precedence_table[] = {
+    // { MULT_MULT, 60, BinaryOpKindMultMult  },
+    { MULT, 60, BinaryOpKindMult  },
+    { MOD, 60, BinaryOpKindMod  },
+    { SLASH, 60, BinaryOpKindDiv  },
+
+    { PLUS, 50, BinaryOpKindAdd  },
+    { MINUS, 50, BinaryOpKindSubtract  },
+    { PLUS_EQUALS, 50, BinaryOpKindAssignmentPlus  },
+    { MINUS_EQUALS, 50, BinaryOpKindAssignmentMinus  },
+
+    { LBITSHIFT, 40, BinaryOpKindBitshitLeft  },
+    { RBITSHIFT, 40, BinaryOpKindBitshitRight  },
+    
+    { EQUALS_EQUALS, 30, BinaryOpKindCmpEqual  },
+    { EXCLAMATION_EQUALS, 30, BinaryOpKindCmpNotEqual  },
+    { GREATER_THAN, 30, BinaryOpKindCmpGreaterThan  },
+    { LESS_THAN, 30, BinaryOpKindCmpLessThan  },
+    { GREATER_THAN_OR_EQUAL_TO, 30, BinaryOpKindCmpGreaterThanorEqualTo  },
+    { LESS_THAN_OR_EQUAL_TO, 30, BinaryOpKindCmpLessThanorEqualTo  },
+
+    { AND, 20, BinaryOpKindBoolAnd  },
+
+    { OR, 10, BinaryOpKindBoolOr  },
+};
+
 // This has been selfishly ported from Zig's Compiler
 // Source for this: https://github.com/ziglang/zig/blob/master/src/stage1/parser.cpp
 typedef enum BinaryOpChain {
@@ -389,7 +436,6 @@ static AstNode* ast_parse_binary_op_expr(
     AstNode* (*child_parser)(Parser*)
 ) {
     AstNode* out = child_parser(parser);
-    AstNode* ou;
     if(out == null)
         return null;
 
@@ -410,5 +456,46 @@ static AstNode* ast_parse_binary_op_expr(
         }
     } while(chain == BinaryOpChainInfinity);
 
+    return out;
+}
+
+// BooleanAndExpr
+static AstNode* ast_parse_bool_and_expr(Parser* parser) {
+    return ast_parse_binary_op_expr(
+        parser,
+        BinaryOpChainInfinity,
+        ast_parse_boolean_and_op,
+        ast_parse_bool_or_expr
+    );
+}
+
+// BooleanOrExpr
+static AstNode* ast_parse_bool_or_expr(Parser* parser) {
+    return ast_parse_binary_op_expr(
+        parser,
+        BinaryOpChainInfinity,
+        ast_parse_boolean_or_op,
+        
+    );
+}
+
+
+static AstNode* ast_parse_boolean_and_op(Parser* parser) {
+    Token* op_token = parser_chomp_if(parser, AND);
+    if(op_token == null)
+        return null;
+    
+    AstNode* out = ast_create_node(AstNodeKindBinaryOpExpr);
+    out->data.expr->binary_op_expr->op = BinaryOpKindBoolAnd;
+    return out;
+}
+
+static AstNode* ast_parse_boolean_or_op(Parser* parser) {
+    Token* op_token = parser_chomp_if(parser, OR);
+    if(op_token == null)
+        return null;
+    
+    AstNode* out = ast_create_node(AstNodeKindBinaryOpExpr);
+    out->data.expr->binary_op_expr->op = BinaryOpKindBoolOr;
     return out;
 }
