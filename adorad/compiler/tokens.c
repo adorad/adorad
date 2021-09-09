@@ -45,7 +45,8 @@ Buff* token_to_buff(TokenKind kind) {
         case TOK_ILLEGAL: value = "ILLEGAL"; break;
         case COMMENT: value = "COMMENT"; break;
         case DOCS_COMMENT: value = "DOCS_COMMENT"; break;
-
+        case ATTRIBUTE: value = "attribute"; break;
+        case UNREACHABLE: value = "unreachable"; break;
         // Literals
         case IDENTIFIER: value = "IDENTIFIER"; break;
         case INTEGER: value = "INTEGER"; break;
@@ -61,12 +62,13 @@ Buff* token_to_buff(TokenKind kind) {
         case UINT16_LIT: value = "UINT16_LIT"; break;
         case UINT32_LIT: value = "UINT32_LIT"; break;
         case UINT64_LIT: value = "UINT64_LIT"; break;
-        case TOK_FLOAT: value = "FLOAT"; break;
+        case FLOAT_LIT: value = "FLOAT"; break;
         case FLOAT32_LIT: value = "FLOAT32_LIT"; break;
         case FLOAT64_LIT: value = "FLOAT64_LIT"; break;
         case FLOAT128_LIT: value = "FLOAT128_LIT"; break;
         case IMAG: value = "IMAG_LIT"; break;
         case RUNE: value = "RUNE_LIT"; break;
+        case CHAR: value = "CHAR_LIT"; break;
         case STRING: value = "STRING_LIT"; break;
         case RAW_STRING: value = "RAW_STRING_LIT"; break;
         case TRIPLE_STRING: value = "TRIPLE_STRING_LIT";  break;
@@ -150,7 +152,6 @@ Buff* token_to_buff(TokenKind kind) {
         case AS: value = "as"; break;
         case ASYNC: value = "async"; break;
         case ATOMIC: value = "atomic"; break;
-        case ATTRIBUTE: value = "attribute"; break;
         case BREAK: value = "break"; break;
         case CASE: value = "case"; break;
         case CAST: value = "cast"; break;

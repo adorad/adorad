@@ -33,6 +33,8 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     TOKENKIND(TOK_EOF, "TOK_EOF"),  /* End of Input */ \
     TOKENKIND(COMMENT, "COMMENT"),          \
     TOKENKIND(DOCS_COMMENT, "DOCS_COMMENT"), \
+    TOKENKIND(ATTRIBUTE, "attribute"),\
+    TOKENKIND(UNREACHABLE, "unreachable"),\
 \
     /* Literals */ \
 TOKENKIND(TOK___LITERALS_BEGIN, ""), \
@@ -51,12 +53,13 @@ TOKENKIND(TOK___LITERALS_BEGIN, ""), \
     TOKENKIND(UINT32_LIT,   "UINT32_LIT"),    \
     TOKENKIND(UINT64_LIT,   "UINT64_LIT"),    \
     /* FLOAT conflicts with a typedef in <windows.h> */ \
-    TOKENKIND(TOK_FLOAT,     "FLOAT"),        \
-    TOKENKIND(FLOAT32_LIT,  "FLOAT32_LIT"),   \
-    TOKENKIND(FLOAT64_LIT,  "FLOAT64_LIT"),   \
-    TOKENKIND(FLOAT128_LIT, "FLOAT128_LIT"),  \
+    TOKENKIND(FLOAT_LIT,     "FLOAT"),        \
+    TOKENKIND(FLOAT32_LIT,   "FLOAT32_LIT"),   \
+    TOKENKIND(FLOAT64_LIT,   "FLOAT64_LIT"),   \
+    TOKENKIND(FLOAT128_LIT,  "FLOAT128_LIT"),  \
     TOKENKIND(IMAG,          "IMAG"),         \
     TOKENKIND(RUNE,          "RUNE"),         \
+    TOKENKIND(CHAR,          "CHAR"),         \
     TOKENKIND(STRING,        "STRING"),       \
     TOKENKIND(RAW_STRING,    "RAW_STRING"),   \
     TOKENKIND(TRIPLE_STRING, "TRIPLE_STRING"), \
@@ -158,7 +161,6 @@ TOKENKIND(TOK___KEYWORDS_BEGIN, ""),  \
     TOKENKIND(AS,        "as"),       \
     TOKENKIND(ASYNC,     "async"),    \
     TOKENKIND(ATOMIC,    "atomic"),   \
-    TOKENKIND(ATTRIBUTE, "attribute"),\
     TOKENKIND(BREAK,     "break"),    \
     TOKENKIND(CASE,      "case"),     \
     TOKENKIND(CAST,      "cast"),     \
