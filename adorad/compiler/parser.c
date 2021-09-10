@@ -419,6 +419,53 @@ static const ast_prec_table precedence_table[] = {
     { OR, 10, BinaryOpKindBoolOr  },
 };
 
+// Returns the `BinaryOpKind` representation of a `TokenKind`
+static tokenkind_to_binaryopkind(TokenKind kind) {
+    BinaryOpKind value;
+    switch(kind) {
+        // AdditionOp
+        case PLUS: value = BinaryOpKindAdd; break;
+        case MINUS: value = BinaryOpKindSubtract; break;
+        case MULT: value = BinaryOpKindMult; break;
+        case SLASH: value = BinaryOpKindDiv; break;
+        case MOD: value = BinaryOpKindMod; break;
+
+        // ComparisonOp
+        case GREATER_THAN: value = BinaryOpKindCmpGreaterThan; break;
+        case LESS_THAN: value = BinaryOpKindCmpLessThan; break;
+        case GREATER_THAN_OR_EQUAL_TO: value = BinaryOpKindCmpGreaterThanorEqualTo; break;
+        case LESS_THAN_OR_EQUAL_TO: value = BinaryOpKindCmpLessThanorEqualTo; break;
+        case EQUALS_EQUALS: value = BinaryOpKindCmpEqual; break;
+        case EXCLAMATION_EQUALS: value = BinaryOpKindCmpNotEqual; break;
+
+        // AssignmentOp
+        case PLUS_EQUALS: value = BinaryOpKindAssignmentPlus; break;
+        case MINUS_EQUALS: value = BinaryOpKindAssignmentMinus; break;
+        case MULT_EQUALS: value = BinaryOpKindAssignmentMult; break;
+        case SLASH_EQUALS: value = BinaryOpKindAssignmentDiv; break;
+        case MOD_EQUALS: value = BinaryOpKindAssignmentMod; break;
+        case AND_EQUALS: value = BinaryOpKindAssignmentBitAnd; break;
+        case OR_EQUALS : value = BinaryOpKindAssignmentBitOr; break;
+        case XOR_EQUALS: value = BinaryOpKindAssignmentBitXor; break;
+        case LBITSHIFT_EQUALS : value = BinaryOpKindAssignmentBitshiftLeft; break;
+        case RBITSHIFT_EQUALS : value = BinaryOpKindAssignmentBitshiftRight; break;
+
+        // BitshiftOp
+        case LBITSHIFT: value = BinaryOpKindBitshitLeft; break;
+        case RBITSHIFT: value = BinaryOpKindBitshitRight; break;
+
+        // BitwiseOp
+        case AND: value = BinaryOpKindBitAnd; break;
+        case OR: value = BinaryOpKindBitOr; break;
+        case XOR: value = BinaryOpKindBitXor; break;
+
+        // We should _never_ reach here
+        default: value = BinaryOpKindInvalid; break;
+    }
+
+    return value;
+}
+
 // This has been selfishly ported from Zig's Compiler
 // Source for this: https://github.com/ziglang/zig/blob/master/src/stage1/parser.cpp
 typedef enum BinaryOpChain {
@@ -888,7 +935,7 @@ static AstNode* ast_parse_match_branch(Parser* parser) {
     free(equals_arrow);
 
     AstNode* expr = ast_parse_assignment_expr(parser);
-    out->data.expr->match_branch->expr = expr;
+    out->data.expr->match_branch_expr->expr = expr;
 
     return out;
 }
@@ -900,7 +947,7 @@ static AstNode* ast_parse_match_case_kwd(Parser* parser) {
     AstNode* match_item = ast_parse_match_item(parser);
     if(match_item != null) {
         AstNode* out = ast_create_node(AstNodeKindMatchBranch);
-        vec_push(out->data.expr->match_branch->branches, match_item);
+        vec_push(out->data.expr->match_branch_expr->branches, match_item);
 
         Token* comma;
         while((comma = parser_chomp_if(parser, COMMA)) != null) {
@@ -909,7 +956,8 @@ static AstNode* ast_parse_match_case_kwd(Parser* parser) {
             if(item == null)
                 break;
             
-            vec_push(out->data.expr->match_branch->branches, item);
+            vec_push(out->data.expr->match_branch_expr->branches, item);
+            out->data.expr->match_branch_expr->any_branches_are_ranges = cast(bool)(item->kind == AstNodeKindMatchRange);
         }
 
         return out;
@@ -923,4 +971,23 @@ static AstNode* ast_parse_match_case_kwd(Parser* parser) {
     }
 
     return null;
+}
+
+// MatchItem
+//      Expr (ELLIPSIS Expr)?
+static AstNode* ast_parse_match_item(Parser* parser) {
+    AstNode* expr = ast_parse_expr(parser);
+    if(expr == null)
+        return null;
+    
+    Token* ellipsis = parser_chomp_if(parser, ELLIPSIS);
+    if(ellipsis != null) {
+        AstNode* expr2 = ast_parse_expr(parser);
+        AstNode* out = ast_create_node(AstNodeKindMatchRange);
+        out->data.expr->match_range_expr->begin = expr;
+        out->data.expr->match_range_expr->end = expr2;
+        return out;
+    }
+
+    return expr;
 }
