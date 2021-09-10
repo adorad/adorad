@@ -34,7 +34,7 @@ cmakeclean:
 .PHONY: cmakeclean
 
 test:
-	gcc test.c -o test.exe -g -I .
+	gcc test.c -o test.exe -std=c11 -Wall -g -I .
 	./test.exe
 .PHONY: test
 
