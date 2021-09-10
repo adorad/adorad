@@ -511,18 +511,38 @@ static AstNode* ast_parse_binary_op_expr(
     return out;
 }
 
+static AstNode* ast_parse_try_expr(Parser* parser) {
+    Token* try_kwd = parser_chomp_if(parser, TRY);
+    if(try_kwd != null) {
+        AstNode* out = ast_create_node(AstNodeKindReturn);
+        out->data.stmt->return_stmt->kind = ReturnKindError;
+        return out;
+    }
+    return cast(AstNode*)null;
+}
+
+// Expr
+//      KEYWORD(try)* BoolAndExpr
+static AstNode* ast_parse_expr(Parser* parser) {
+    return ast_parse_prefix_op_expr(
+        parser,
+        ast_parse_try_expr,
+        ast_parse_boolean_and_expr
+    );
+}
+
 // BooleanAndExpr
-static AstNode* ast_parse_bool_and_expr(Parser* parser) {
+static AstNode* ast_parse_boolean_and_expr(Parser* parser) {
     return ast_parse_binary_op_expr(
         parser,
         BinaryOpChainInfinity,
         ast_parse_boolean_and_op,
-        ast_parse_bool_or_expr
+        ast_parse_boolean_or_expr
     );
 }
 
 // BooleanOrExpr
-static AstNode* ast_parse_bool_or_expr(Parser* parser) {
+static AstNode* ast_parse_boolean_or_expr(Parser* parser) {
     return ast_parse_binary_op_expr(
         parser,
         BinaryOpChainInfinity,
@@ -868,8 +888,8 @@ static AstNode* ast_parse_primary_type_expr(Parser* parser) {
 }
 
 // MatchExpr
-//      KEYWORD(match) LPAREN? Expr RPAREN? LBRACE MatchProngList RBRACE
-static AstNode* ast_parse_match_expr(Parser* parser {
+//      KEYWORD(match) LPAREN? Expr RPAREN? LBRACE MatchBranchList RBRACE
+static AstNode* ast_parse_match_expr(Parser* parser) {
     Token* match_token = parser_chomp_if(parser, MATCH);
     if(match_token == null)
         return null;
