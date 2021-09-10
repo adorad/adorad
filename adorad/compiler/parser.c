@@ -93,7 +93,7 @@ static AstNode* ast_parse_func_prototype(Parser* parser) {
     
     Token* identifier = parser_chomp_if(parser, IDENTIFIER);
     parser_expect_token(parser, LPAREN);
-    Vec* params = ast_parse_list(params, COMM, ast_parse_match_prong;
+    Vec* params = ast_parse_list(params, COMMA, ast_parse_match_branch);
     parser_expect_token(params, RPAREN);
 
     AstNode* return_type = ast_parse_type_expr(parser);
@@ -364,7 +364,12 @@ static AstNode* ast_parse_block_expr(Parser* parser) {
 //      | TILDA_EQUALS      (~=)
 //      | EQUALS            (=)
 static AstNode* ast_parse_assignment_expr(Parser* parser) {
-    return ast_parse_binary_op_expr(parser);
+    return ast_parse_binary_op_expr(
+        parser,
+        BinaryOpChainOnce,
+        ast_parse_assignment_op,
+        ast_parse_expr
+    );
 }
 
 static AstNode* ast_parse_block(Parser* parser) {
@@ -606,7 +611,7 @@ static AstNode* ast_parse_prefix_expr(Parser* parser) {
 //      | BlockLabel? LoopExpr
 //      | Block
 static AstNode* ast_parse_primary_expr(Parser* parser) {
-    AstNode* if_expr = ast_parse_if_expr(pc);
+    AstNode* if_expr = ast_parse_if_expr(parser);
     if (if_expr != null)
         return if_expr;
 
@@ -1086,4 +1091,42 @@ static AstNode* ast_parse_prefix_op(Parser* parser) {
     }
 
     return null;
+}
+
+// PrefixTypeOp
+//      | QUESTION
+//      | ArrayTypeStart (KEYWORD(const) / KEYWORD(volatile))*
+static AstNode* ast_parse_prefix_type_op(Parser* parser) {
+    Token* question_mark = parser_chomp_if(parser, QUESTION);
+    if(question_mark != null) {
+        free(question_mark);
+        AstNode* out = ast_create_node(AstNodeKindPrefixOpExpr);
+        out->data.prefix_op_expr->op = PrefixOpKindOptional;
+        return out;
+    }
+
+    Token* arr_init_lbrace = parser_chomp_if(parser, LBRACE);
+    Buff* underscore_value = buff_new("_");
+    if(arr_init_lbrace != null) {
+        free(arr_init_lbrace);
+        Token* underscore = parser_chomp_if(parser, IDENTIFIER);
+        if(underscore == null) {
+            parser_put_back(parser);
+        } else if(!buff_cmp(underscore->value, underscore_value)) {
+            parser_put_back(parser);
+            parser_put_back(parser);
+        } else {
+            AstNode* sentinel = null;
+            Token* colon = parser_chomp_if(parser, COLON);
+            if(colon != null)
+                sentinel = ast_parse_expr(parser);
+            
+            Token* rbrace = parser_expect_token(parser, RBRACE);
+            free(rbrace);
+            AstNode* out = ast_create_node(AstNodeKindArrayType);
+            out->data.inferred_array_type->sentinel = sentinel;
+            return out;
+        }
+    }
+    free(underscore_value);
 }

@@ -60,10 +60,11 @@ enum AstNodeKind {
     AstNodeKindCatchExpr,      // `catch Error`
     AstNodeKindBinaryOpExpr,   // a binary expression like `&&` or `||
     AstNodeKindPrefixOpExpr,
-    `
+    
     AstNodeKindInitExpr,
     AstNodeKindSliceExpr,
     AstNodeKindArrayAccessExpr,
+    AstNodeKindArrayType,
 
     // Fields
     AstNodeKindTypeDecl,       // `type name T { ... }`  where T is one of {enum/struct}
@@ -797,6 +798,7 @@ typedef enum PrefixOpKind {
     PrefixOpKindNegation,  // !var
     PrefixOpKindAddrOf,    // &var
     PrefixOpKindTry,       // KEYWORD(try)
+    PrefixOpKindOptional,  // ?
 } PrefixOpKind;
 
 typedef struct AstNodePrefixOpExpr {
@@ -807,6 +809,21 @@ typedef struct AstNodePrefixOpExpr {
 typedef struct AstNodeCompileTime {
     AstNode* expr;
 } AstNodeCompileTime;
+
+typedef struct AstNodeInferredArrayType {
+    AstNode* sentinel; // can be null
+    AstNode* child_type;
+} AstNodeInferredArrayType;
+
+typedef struct AstNodeArrayType {
+    AstNode* size;
+    AstNode* sentinel;
+    AstNode* child_type;
+    AstNode* align_expr;
+    Token* allow_zero_token;
+    bool is_const;
+    bool is_volatile;
+} AstNodeArrayType;
 
 struct AstNode {
     AstNodeKind kind; // type of AST Node
@@ -824,6 +841,8 @@ struct AstNode {
         AstNodeTestExpr* test_expr;
         AstNodePrefixOpExpr* prefix_op_expr;
         AstNodeParamDecl* param_decl;
+        AstNodeInferredArrayType* inferred_array_type;
+        AstNodeArrayType* array_type;
     } data;
 };
 
