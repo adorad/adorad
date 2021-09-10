@@ -588,18 +588,15 @@ typedef struct AstNodeEmptyExpression {
 } AstNodeEmptyExpression;
 
 typedef struct AstNodeBoolLiteral {
-    Buff* value;
-    Location* loc;
+    bool value;
 } AstNodeBoolLiteral;
 
 typedef struct AstNodeByteLiteral {
     Buff* value;
-    Location* loc;
 } AstNodeByteLiteral;
 
 typedef struct AstNodeFloatLiteral {
     Buff* value;
-    Location* loc;
     // TODO (jasmcaus) - Come up with a workaround for this
     enum {
         AstNodeFloatLiteral32,    // default
@@ -610,7 +607,6 @@ typedef struct AstNodeFloatLiteral {
 
 typedef struct AstNodeIntegerLiteral {
     Buff* value;
-    Location* loc;
     // TODO (jasmcaus) - Come up with a workaround for this
     enum {
         AstNodeIntegerLiteral8,
@@ -633,7 +629,6 @@ typedef struct AstNodeCharLiteral {
 
 typedef struct AstNodeStringLiteral {
     Buff* value;
-    Location* loc;
     bool is_special;   // format / raw string
     enum {
         AstNodeStringLiteralNone,   // if `is_special` is false
@@ -666,7 +661,6 @@ typedef struct AstNodeConstField {
     Buff* module;
     Buff* name;
     AstNodeExpression* expr;
-    Location* loc;
     AstNodeCompileTimeValue* comptime_value;
     bool is_export;
 } AstNodeConstField;
