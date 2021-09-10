@@ -991,3 +991,99 @@ static AstNode* ast_parse_match_item(Parser* parser) {
 
     return expr;
 }
+
+static AstNode* ast_parse_op(Parser* parser) {
+    BinaryOpKind op = tokenkind_to_binaryopkind( parser->curr_tok->kind);
+
+    if(op != BinaryOpKindInvalid) {
+        Token* op_token = parser_chomp(parser);
+        free(op_token);
+        AstNode* out = ast_create_node(AstNodeKindBinaryOpExpr);
+        out->data.expr->binary_op_expr->op = op;
+        return out;
+    }
+
+    return null;
+}
+
+// AssignmentOp can be one of:
+//      | PLUS_EQUALS
+//      | MINUS_EQUALS
+//      | MULT_EQUALS
+//      | SLASH_EQUALS
+//      | MOD_EQUALS
+//      | AND_EQUALS
+//      | OR_EQUALS 
+//      | XOR_EQUALS
+//      | LBITSHIFT_EQUALS
+//      | RBITSHIFT_EQUALS
+static AstNode* ast_parse_assignment_op(Parser* parser) {
+    return ast_parse_op(parser);
+}
+
+// ComparisonOp can be one of:
+//      | GREATER_THAN
+//      | LESS_THAN
+//      | GREATER_THAN_OR_EQUAL_TO
+//      | LESS_THAN_OR_EQUAL_TO
+//      | EQUALS_EQUALS
+//      | EXCLAMATION_EQUALS
+static AstNode* ast_parse_comparison_op(Parser* parser) {
+    return ast_parse_op(parser);
+}
+
+// BitwiseOp can be one of:
+//      | AND
+//      | OR
+//      | XOR
+static AstNode* ast_parse_bitwise_op(Parser* parser) {
+    return ast_parse_op(parser);
+}
+
+// BitshiftOp can be one of:
+//      | LBITSHIFT
+//      | RBITSHIFT
+static AstNode* ast_parse_bitshift_op(Parser* parser) {
+    return ast_parse_op(parser);
+}
+
+// AdditionOp can be one of:
+//      | PLUS
+//      | MINUS
+static AstNode* ast_parse_addition_op(Parser* parser) {
+    return ast_parse_op(parser);
+}
+
+// MultiplicationOp can be one of:
+//      | MULT
+//      | SLASH
+//      | MOD
+static AstNode* ast_parse_multiplication_op(Parser* parser) {
+    return ast_parse_op(parser);
+}
+
+// PrefixOp can be one of:
+//      | EXCLAMATION   (!)
+//      | TILDA         (~)
+//      | AND           (&)
+//      | KEYWORD(try) 
+static AstNode* ast_parse_prefix_op(Parser* parser) {
+    PrefixOpKind op;
+    switch(parser->curr_tok->kind) {
+        case NOT: op = PrefixOpKindBoolNot; break;
+        case EXCLAMATION: op = PrefixOpKindNegation; break;
+        case AND: op = PrefixOpKindAddrOf; break;
+        case TRY: op = PrefixOpKindTry; break;
+        default: op = PrefixOpKindInvalid; break;
+    }
+
+    if(op != PrefixOpKindInvalid) {
+        Token* op_token = parser_chomp(parser);
+        free(op_token);
+        AstNode* out = ast_create_node(AstNodeKindPrefixOpExpr);
+        out->data.prefix_op_expr->op = op;
+        return out;
+    }
+
+    return null;
+}

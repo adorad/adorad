@@ -58,7 +58,9 @@ enum AstNodeKind {
     AstNodeKindLoopInExpr,     // `loop i in 0..10 {}`
     AstNodeKindMatchExpr,      // `match expr { ... }`
     AstNodeKindCatchExpr,      // `catch Error`
-    AstNodeKindBinaryOpExpr,   // a binary expression like `&&` or `||`
+    AstNodeKindBinaryOpExpr,   // a binary expression like `&&` or `||
+    AstNodeKindPrefixOpExpr,
+    `
     AstNodeKindInitExpr,
     AstNodeKindSliceExpr,
     AstNodeKindArrayAccessExpr,
@@ -791,14 +793,14 @@ typedef struct AstNodeOperator {
 
 typedef enum PrefixOpKind {
     PrefixOpKindInvalid,
-    PrefixOpKindBoolNot,
-    PrefixOpKindBinaryNot, 
+    PrefixOpKindBoolNot,   // KEYWORD(not)
     PrefixOpKindNegation,  // !var
-    PrefixOpKindAddrOf     // &var
+    PrefixOpKindAddrOf,    // &var
+    PrefixOpKindTry,       // KEYWORD(try)
 } PrefixOpKind;
 
 typedef struct AstNodePrefixOpExpr {
-    PrefixOpKind prefix_op;
+    PrefixOpKind op;
     AstNode* expr;
 } AstNodePrefixOpExpr;
 
