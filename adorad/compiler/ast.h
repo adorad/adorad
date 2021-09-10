@@ -75,6 +75,7 @@ enum AstNodeKind {
     AstNodeKindReturn,
     AstNodeKindUnreachable,
     AstNodeKindMatchBranch,
+    AstNodeKindMatchRange,
 };
 
 typedef enum VisibilityMode {
@@ -242,10 +243,16 @@ typedef struct AstNodeMatchExpr {
     Vec* branches;
 } AstNodeMatchExpr;
 
-typedef struct AstNodeMatchBranch {
+typedef struct AstNodeMatchBranchExpr {
     AstNode* expr;
     Vec* branches;
-} AstNodeMatchBranch;
+    bool any_branches_are_ranges; // if any branch is a range-based match
+} AstNodeMatchBranchExpr;
+
+typedef struct AstNodeMatchRangeExpr {
+    AstNode* begin;
+    AstNode* end;
+} AstNodeMatchRangeExpr;
 
 typedef struct AstNodeCatchExpr {
     AstNode* op1;
@@ -262,7 +269,7 @@ typedef struct AstNodeTryExpr {
 } AstNodeTryExpr;
 
 typedef enum BinaryOpKind {
-    BinaryOpKindAssignmentInvalid,
+    BinaryOpKindInvalid,
     BinaryOpKindAssignmentPlus,    // +=
     BinaryOpKindAssignmentMinus,   // -=
     BinaryOpKindAssignmentMult,    // *=
@@ -353,7 +360,8 @@ typedef struct AstNodeExpression {
         AstNodeLoopExpr* loop_expr;
         AstNodeFuncCallExpr* func_call_expr;
         AstNodeMatchExpr* match_expr;
-        AstNodeMatchBranch* match_branch;
+        AstNodeMatchBranchExpr* match_branch_expr;
+        AstNodeMatchRangeExpr* match_range_expr;
         AstNodeCatchExpr* catch_expr;
         AstNodeTryExpr* try_expr;
         AstNodeBinaryOpExpr* binary_op_expr;
