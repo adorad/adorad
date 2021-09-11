@@ -225,7 +225,7 @@ typedef struct AstNodeLoopExpr {
     union {
         AstNodeLoopWhileExpr* loop_while_expr;
         AstNodeLoopCExpr* loop_c_expr;
-        AstNodeLoopInExpr* loop_in_expr;;
+        AstNodeLoopInExpr* loop_in_expr;
     };
 } AstNodeLoopExpr;
 
