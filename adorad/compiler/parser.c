@@ -1232,6 +1232,55 @@ static AstNode* ast_parse_prefix_type_op(Parser* parser) {
     return null;
 }
 
+// SuffixOp
+//      | LBRACKET Expr (DOT2 (Expr (COLON Expr)?)?)? RBRACKET
+//      | DOT IDENTIFIER
+static AstNode* ast_parse_suffix_op(Parser* parser) {
+    Token* lbrace = parser_chomp_if(parser, LBRACE);
+    if(lbrace != null) {
+        free(lbrace);
+        AstNode* lower = ast_parse_expr(parser);
+        AstNode* upper = null;
+        Token* ellipsis = parser_chomp_if(parser, ELLIPSIS);
+        if(ellipsis != null) {
+            free(ellipsis);
+            AstNode* sentinel = null;
+            upper = ast_parse_expr(parser);
+            Token* colon = parser_chomp_if(parser, COLON);
+            if(colon != null) {
+                free(colon);
+                sentinel = ast_parse_expr(parser);
+            }
+            Token* rbrace = parser_expect_token(parser, RBRACE);
+            free(rbrace);
+
+            AstNode* out = ast_create_node(AstNodeKindSliceExpr);
+            out->data.expr->slice_expr->lower = lower;
+            out->data.expr->slice_expr->upper = upper;
+            out->data.expr->slice_expr->sentinel = sentinel;
+            return out;
+        }
+
+        Token* rbrace = parser_expect_token(parser, RBRACE);
+        free(rbrace);
+
+        AstNode* out = ast_create_node(AstNodeKindArrayAccessExpr);
+        out->data.array_access_expr->subscript = lower;
+        return out;
+    }
+
+    Token* dot = parser_chomp_if(parser, DOT);
+    if(dot != null) {
+        free(dot);
+        Token* identifier = parser_expect_token(parser, IDENTIFIER);
+        AstNode* out = ast_create_node(AstNodeKindFieldAccessExpr);
+        out->data.field_access_expr->field_name = identifier->value;
+        return out;
+    }
+
+    return null;
+}
+
 static AstNode* ast_parse_suffix_op_expr(
     Parser* parser,
     AstNode* (*op_parser)(Parser*),
