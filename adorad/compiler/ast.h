@@ -60,6 +60,7 @@ enum AstNodeKind {
     AstNodeKindCatchExpr,      // `catch Error`
     AstNodeKindBinaryOpExpr,   // a binary expression like `&&` or `||
     AstNodeKindPrefixOpExpr,
+    AstNodeKindFieldAccessExpr,
     
     AstNodeKindInitExpr,
     AstNodeKindSliceExpr,
@@ -805,6 +806,11 @@ typedef struct AstNodeCompileTime {
     AstNode* expr;
 } AstNodeCompileTime;
 
+typedef struct AstNodeArrayAccessExpr {
+    AstNode* array_ref_expr;
+    AstNode* subscript;
+} AstNodeArrayAccessExpr;
+
 typedef struct AstNodeInferredArrayType {
     AstNode* sentinel; // can be null
     AstNode* child_type;
@@ -819,6 +825,11 @@ typedef struct AstNodeArrayType {
     bool is_const;
     bool is_volatile;
 } AstNodeArrayType;
+
+typedef struct AstNodeFieldAccessExpr {
+    AstNode* struct_expr;
+    Buff* field_name;
+} AstNodeFieldAccessExpr;
 
 struct AstNode {
     AstNodeKind kind; // type of AST Node
@@ -836,8 +847,10 @@ struct AstNode {
         AstNodeTestExpr* test_expr;
         AstNodePrefixOpExpr* prefix_op_expr;
         AstNodeParamDecl* param_decl;
+        AstNodeArrayAccessExpr* array_access_expr;
         AstNodeInferredArrayType* inferred_array_type;
         AstNodeArrayType* array_type;
+        AstNodeFieldAccessExpr* field_access_expr;
     } data;
 };
 
