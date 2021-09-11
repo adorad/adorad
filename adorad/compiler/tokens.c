@@ -68,7 +68,7 @@ Buff* token_to_buff(TokenKind kind) {
         case FLOAT128_LIT: value = "FLOAT128_LIT"; break;
         case IMAG: value = "IMAG_LIT"; break;
         case RUNE: value = "RUNE_LIT"; break;
-        case CHAR: value = "CHAR_LIT"; break;
+        case CHAR_LIT: value = "CHAR_LIT"; break;
         case STRING: value = "STRING_LIT"; break;
         case RAW_STRING: value = "RAW_STRING_LIT"; break;
         case TRIPLE_STRING: value = "TRIPLE_STRING_LIT";  break;

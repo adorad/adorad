@@ -59,7 +59,7 @@ TOKENKIND(TOK___LITERALS_BEGIN, ""), \
     TOKENKIND(FLOAT128_LIT,  "FLOAT128_LIT"),  \
     TOKENKIND(IMAG,          "IMAG"),         \
     TOKENKIND(RUNE,          "RUNE"),         \
-    TOKENKIND(CHAR,          "CHAR"),         \
+    TOKENKIND(CHAR_LIT,       "CHAR"),         \
     TOKENKIND(STRING,        "STRING"),       \
     TOKENKIND(RAW_STRING,    "RAW_STRING"),   \
     TOKENKIND(TRIPLE_STRING, "TRIPLE_STRING"), \
