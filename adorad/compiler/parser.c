@@ -884,7 +884,7 @@ static AstNode* ast_parse_suffix_expr(Parser* parser) {
 //      | STRING (Literal)
 //      | MatchExpr
 static AstNode* ast_parse_primary_type_expr(Parser* parser) {
-    Token* char_lit = parser_chomp_if(parser, CHAR);
+    Token* char_lit = parser_chomp_if(parser, CHAR_LIT);
     if(char_lit != null) {
         free(char_lit);
         return ast_create_node(AstNodeKindCharLiteral);
