@@ -18,7 +18,9 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 
 // Shortcut to `parser->toklist`
 #define pt  parser->toklist
-#define ast_error(...)  panic(ErrorParseError, __VA_ARGS__)
+#define ast_error(...)              panic(ErrorParseError, __VA_ARGS__)
+#define parser_chomp_if(kind)       chomp_if(parser, kind)
+#define parser_expect_token(kind)   expect_token(parser, kind)
 
 // Initialize a new Parser
 Parser* parser_init(Lexer* lexer) {
@@ -45,7 +47,7 @@ inline Token* parser_chomp(Parser* parser) {
 }
 
 // Consumes a token and moves on to the next, if the current token matches the expected token.
-inline Token* parser_chomp_if(Parser* parser, TokenKind tokenkind) {
+inline Token* chomp_if(Parser* parser, TokenKind tokenkind) {
     if(parser->curr_tok->kind == tokenkind)
         return parser_chomp(parser);
 
@@ -56,7 +58,7 @@ inline void parser_put_back(Parser* parser) {
     parser->curr_tok -= 1;
 }
 
-inline Token* parser_expect_token(Parser* parser, TokenKind tokenkind) {
+inline Token* expect_token(Parser* parser, TokenKind tokenkind) {
     if(parser->curr_tok->kind == tokenkind)
         return parser_chomp(parser);
         
@@ -154,7 +156,7 @@ static Vec* ast_parse_param_list(Parser* parser, AstNode* (*param_parser)(Parser
             break;
         vec_push(out, curr);
 
-        Token* sep = parser_chomp_if(parser, COMMA);
+        Token* sep = parser_chomp_if(COMMA);
         if(sep == null)
             break;
         free(sep);
@@ -165,14 +167,16 @@ static Vec* ast_parse_param_list(Parser* parser, AstNode* (*param_parser)(Parser
 // General format:
 //      KEYWORD(func) IDENT LPAREN ParamDeclList RPAREN LARROW RETURNTYPE
 static AstNode* ast_parse_func_prototype(Parser* parser) {
-    Token* func = parser_chomp_if(parser, FUNC);
+    Token* func = parser_chomp_if(FUNC);
     if(func == null)
         return null;
     
-    Token* identifier = parser_chomp_if(parser, IDENTIFIER);
-    parser_expect_token(parser, LPAREN);
+    Token* identifier = parser_chomp_if(IDENTIFIER);
+    Token* lparen = parser_expect_token(LPAREN);
     Vec* params = ast_parse_param_list(parser, ast_parse_match_branch);
-    parser_expect_token(parser, RPAREN);
+    Token* rparen = parser_expect_token(RPAREN);
+    free(lparen);
+    free(rparen);
 
     AstNode* return_type = ast_parse_type_expr(parser);
     if(return_type == null) {
@@ -208,20 +212,20 @@ static AstNode* ast_parse_func_prototype(Parser* parser) {
 // `?` represents optional
 //      KEYWORD(export)? KEYWORD(mutable/const)? TypeExpr? IDENTIFIER EQUAL? Expr?
 static AstNode* ast_parse_var_decl(Parser* parser) {
-    Token* export_kwd = parser_chomp_if(parser, EXPORT);
-    Token* mutable_kwd = parser_chomp_if(parser, MUTABLE);
-    Token* const_kwd = parser_chomp_if(parser, CONST);
+    Token* export_kwd = parser_chomp_if(EXPORT);
+    Token* mutable_kwd = parser_chomp_if(MUTABLE);
+    Token* const_kwd = parser_chomp_if(CONST);
     if(mutable_kwd && const_kwd)
         ast_error("Cannot decorate a variable as both `mutable` and `const`");
 
     AstNode* type_expr = ast_parse_type_expr(parser);
-    Token* identifier = parser_expect_token(parser, IDENTIFIER);
-    Token* equals = parser_chomp_if(parser, EQUALS);
+    Token* identifier = parser_expect_token(IDENTIFIER);
+    Token* equals = parser_chomp_if(EQUALS);
     AstNode* expr;
     if(equals != null)
         expr = ast_parse_expr(parser);
     
-    parser_expect_token(parser, SEMICOLON); // TODO: Remove this need
+    parser_expect_token(SEMICOLON); // TODO: Remove this need
 
     AstNode* out = ast_create_node(AstNodeKindVarDecl);
     out->data.stmt->var_decl->name = identifier->value;
@@ -242,7 +246,7 @@ static AstNode* ast_parse_statement(Parser* parser) {
     free(var_decl);
 
     // Defer
-    Token* defer_stmt = parser_chomp_if(parser, DEFER);
+    Token* defer_stmt = parser_chomp_if(DEFER);
     if(defer_stmt != null) {
         AstNode* statement = ast_parse_block_expr_statement(parser);
         AstNode* out = ast_create_node(AstNodeKindDefer);
@@ -280,14 +284,14 @@ static AstNode* ast_parse_statement(Parser* parser) {
 }
 
 static AstNode* ast_parse_if_prefix(Parser* parser) {
-    Token* if_kwd = parser_chomp_if(parser, IF);
+    Token* if_kwd = parser_chomp_if(IF);
     if(if_kwd == null) {
         free(if_kwd);
         return null;
     }
-    Token* lparen = parser_expect_token(parser, LPAREN);
+    Token* lparen = parser_expect_token(LPAREN);
     AstNode* condition = ast_parse_expr(parser);
-    Token* rparen = parser_expect_token(parser, RPAREN);
+    Token* rparen = parser_expect_token(RPAREN);
     free(lparen);
     free(rparen);
 
@@ -317,7 +321,7 @@ static AstNode* ast_parse_if_expr(Parser* parser) {
     }
 
     AstNode* else_body = null;
-    Token* else_kwd = parser_chomp_if(parser, ELSE);
+    Token* else_kwd = parser_chomp_if(ELSE);
     if(else_kwd != null)
         else_body = ast_parse_statement(parser);
     free(else_kwd);
@@ -358,7 +362,7 @@ static AstNode* ast_parse_labeled_statements(Parser* parser) {
 // Loops
 //      (KEYWORD(inline))? loop ... {  }
 static AstNode* ast_parse_loop_statement(Parser* parser) {
-    Token* inline_token = parser_chomp_if(parser, INLINE);
+    Token* inline_token = parser_chomp_if(INLINE);
 
     CORETEN_ENFORCE(false);
     // TODO
@@ -407,7 +411,7 @@ static AstNode* ast_parse_block_expr_statement(Parser* parser) {
     
     AstNode* assignment_expr = ast_parse_assignment_expr(parser);
     if(assignment_expr != null) {
-        Token* semi = parser_expect_token(parser, SEMICOLON);
+        Token* semi = parser_expect_token(SEMICOLON);
         free(semi);
         return assignment_expr;
     }
@@ -455,7 +459,7 @@ static AstNode* ast_parse_assignment_expr(Parser* parser) {
 }
 
 static AstNode* ast_parse_block(Parser* parser) {
-    Token* lbrace = parser_chomp_if(parser, LBRACE);
+    Token* lbrace = parser_chomp_if(LBRACE);
     if(lbrace == null)
         return null;
 
@@ -464,7 +468,7 @@ static AstNode* ast_parse_block(Parser* parser) {
     while((statement = ast_parse_statement(parser)) != null)
         vec_push(statements, statement);
 
-    Token* rbrace = parser_expect_token(parser, RBRACE);
+    Token* rbrace = parser_expect_token(RBRACE);
     free(lbrace);
     free(rbrace);
 
@@ -587,7 +591,7 @@ static AstNode* ast_parse_binary_op_expr(
 }
 
 static AstNode* ast_parse_try_expr(Parser* parser) {
-    Token* try_kwd = parser_chomp_if(parser, TRY);
+    Token* try_kwd = parser_chomp_if(TRY);
     if(try_kwd != null) {
         AstNode* out = ast_create_node(AstNodeKindReturn);
         out->data.stmt->return_stmt->kind = ReturnKindError;
@@ -710,7 +714,7 @@ static AstNode* ast_parse_primary_expr(Parser* parser) {
     if (if_expr != null)
         return if_expr;
 
-    Token* break_token = parser_chomp_if(parser, BREAK);
+    Token* break_token = parser_chomp_if(BREAK);
     if(break_token != null) {
         free(break_token);
         Token* label = ast_parse_break_label(parser);
@@ -723,7 +727,7 @@ static AstNode* ast_parse_primary_expr(Parser* parser) {
         return out;
     }
     
-    Token* continue_token = parser_chomp_if(parser, CONTINUE);
+    Token* continue_token = parser_chomp_if(CONTINUE);
     if(continue_token != null) {
         Token* label = ast_parse_break_label(parser);
         AstNode* out = ast_create_node(AstNodeKindContinue);
@@ -731,7 +735,7 @@ static AstNode* ast_parse_primary_expr(Parser* parser) {
         out->data.stmt->branch_stmt->type = AstNodeBranchStatementContinue;
     }
 
-    // Token* attribute = parser_chomp_if(parser, ATTRIBUTE);
+    // Token* attribute = parser_chomp_if(ATTRIBUTE);
     // if (attribute != 0) {
     //     AstNode* expr = ast_parse_expr();
     //     AstNode* out = ast_create_node(AstNodeKindAttribute);
@@ -739,7 +743,7 @@ static AstNode* ast_parse_primary_expr(Parser* parser) {
     //     return out;
     // }
 
-    Token* return_token = parser_chomp_if(parser, RETURN);
+    Token* return_token = parser_chomp_if(RETURN);
     if(return_token != null) {
         free(return_token);
         AstNode* expr = ast_parse_expr(parser);
@@ -756,7 +760,7 @@ static AstNode* ast_parse_primary_expr(Parser* parser) {
 }
 
 static AstNode* ast_parse_boolean_and_op(Parser* parser) {
-    Token* op_token = parser_chomp_if(parser, AND);
+    Token* op_token = parser_chomp_if(AND);
     if(op_token == null)
         return null;
     
@@ -766,7 +770,7 @@ static AstNode* ast_parse_boolean_and_op(Parser* parser) {
 }
 
 static AstNode* ast_parse_boolean_or_op(Parser* parser) {
-    Token* op_token = parser_chomp_if(parser, OR);
+    Token* op_token = parser_chomp_if(OR);
     if(op_token == null)
         return null;
     
@@ -789,7 +793,7 @@ static AstNode* ast_parse_boolean_or_op(Parser* parser) {
 //      | LBRACE Expr (COMMA Expr)* COMMA? RBRACE
 //      | LBRACE RBRACE
 static AstNode* ast_parse_init_list(Parser* parser) {
-    Token* lbrace = parser_chomp_if(parser, LBRACE);
+    Token* lbrace = parser_chomp_if(LBRACE);
     if(lbrace == null)
         return null;
     free(lbrace);
@@ -803,7 +807,7 @@ static AstNode* ast_parse_init_list(Parser* parser) {
         vec_push(out->data.expr->init_expr->entries, first);
 
         Token* comma;
-        while((comma = parser_chomp_if(parser, COMMA)) != null) {
+        while((comma = parser_chomp_if(COMMA)) != null) {
             free(comma);
             AstNode* expr = ast_parse_expr(parser);
             if(expr == null)
@@ -811,11 +815,11 @@ static AstNode* ast_parse_init_list(Parser* parser) {
             vec_push(out->data.expr->init_expr->entries, expr);
         }
 
-        Token* rbrace = parser_expect_token(parser, RBRACE);
+        Token* rbrace = parser_expect_token(RBRACE);
         free(rbrace);
         return out;
     }
-    Token* rbrace = parser_expect_token(parser, RBRACE);
+    Token* rbrace = parser_expect_token(RBRACE);
     free(rbrace);
     return out;
 }
@@ -884,13 +888,13 @@ static AstNode* ast_parse_suffix_expr(Parser* parser) {
 //      | STRING (Literal)
 //      | MatchExpr
 static AstNode* ast_parse_primary_type_expr(Parser* parser) {
-    Token* char_lit = parser_chomp_if(parser, CHAR_LIT);
+    Token* char_lit = parser_chomp_if(CHAR_LIT);
     if(char_lit != null) {
         free(char_lit);
         return ast_create_node(AstNodeKindCharLiteral);
     }
 
-    Token* float_lit = parser_chomp_if(parser, FLOAT_LIT);
+    Token* float_lit = parser_chomp_if(FLOAT_LIT);
     if(float_lit != null) {
         free(float_lit);
         return ast_create_node(AstNodeKindFloatLiteral);
@@ -901,7 +905,7 @@ static AstNode* ast_parse_primary_type_expr(Parser* parser) {
         return func_prototype;
     free(func_prototype);
 
-    Token* identifier = parser_chomp_if(parser, IDENTIFIER);
+    Token* identifier = parser_chomp_if(IDENTIFIER);
     if(identifier != null) {
         free(identifier);
         return ast_create_node(AstNodeKindIdentifier);
@@ -912,13 +916,13 @@ static AstNode* ast_parse_primary_type_expr(Parser* parser) {
     //     return if_type_expr;
     // free(if_type_expr);
 
-    Token* int_lit = parser_chomp_if(parser, INTEGER);
+    Token* int_lit = parser_chomp_if(INTEGER);
     if(int_lit != null) {
         free(int_lit);
         return ast_create_node(AstNodeKindIntLiteral);
     }
     
-    Token* true_token = parser_chomp_if(parser, TOK_TRUE);
+    Token* true_token = parser_chomp_if(TOK_TRUE);
     if(true_token != null) {
         free(true_token);
         AstNode* out = ast_create_node(AstNodeKindBoolLiteral);
@@ -926,7 +930,7 @@ static AstNode* ast_parse_primary_type_expr(Parser* parser) {
         return out;
     }
 
-    Token* false_token = parser_chomp_if(parser, TOK_TRUE);
+    Token* false_token = parser_chomp_if(TOK_TRUE);
     if(false_token != null) {
         free(false_token);
         AstNode* out = ast_create_node(AstNodeKindBoolLiteral);
@@ -934,13 +938,13 @@ static AstNode* ast_parse_primary_type_expr(Parser* parser) {
         return out;
     }
 
-    Token* unreachable_token = parser_chomp_if(parser, UNREACHABLE);
+    Token* unreachable_token = parser_chomp_if(UNREACHABLE);
     if(unreachable_token != null) {
         free(unreachable_token);
         return ast_create_node(AstNodeKindUnreachable);
     }
 
-    Token* string_lit = parser_chomp_if(parser, STRING);
+    Token* string_lit = parser_chomp_if(STRING);
     if(string_lit != null) {
         free(string_lit);
         return ast_create_node(AstNodeKindStringLiteral);
@@ -961,7 +965,7 @@ static Vec* ast_parse_branch_list(Parser* parser, AstNode* (*list_parser)(Parser
             break;
         
         vec_push(out, curr);
-        Token* sep = parser_chomp_if(parser, COMMA);
+        Token* sep = parser_chomp_if(COMMA);
         if(sep == null)
             break;
         free(sep);
@@ -972,22 +976,22 @@ static Vec* ast_parse_branch_list(Parser* parser, AstNode* (*list_parser)(Parser
 // MatchExpr
 //      KEYWORD(match) LPAREN? Expr RPAREN? LBRACE MatchBranchList RBRACE
 static AstNode* ast_parse_match_expr(Parser* parser) {
-    Token* match_token = parser_chomp_if(parser, MATCH);
+    Token* match_token = parser_chomp_if(MATCH);
     if(match_token == null)
         return null;
     free(match_token);
 
     // Left and Right Parenthesis' here are optional
-    Token* lparen = parser_chomp_if(parser, LPAREN);
+    Token* lparen = parser_chomp_if(LPAREN);
     AstNode* expr = ast_parse_expr(parser);
-    Token* rparen = parser_chomp_if(parser, RPAREN);
+    Token* rparen = parser_chomp_if(RPAREN);
     free(lparen);
     free(rparen);
 
     // These *aren't* optional
-    Token* lbrace = parser_expect_token(parser, LBRACE);
+    Token* lbrace = parser_expect_token(LBRACE);
     Vec* branches = ast_parse_branch_list(parser,ast_parse_match_branch);
-    Token* rbrace = parser_expect_token(parser, RBRACE);
+    Token* rbrace = parser_expect_token(RBRACE);
 
     AstNode* out = ast_create_node(AstNodeKindMatchExpr);
     out->data.expr->match_expr->expr = expr;
@@ -998,23 +1002,23 @@ static AstNode* ast_parse_match_expr(Parser* parser) {
 // BreakLabel
 //      COLON IDENTIFIER
 static Token* ast_parse_break_label(Parser* parser) {
-    Token* colon = parser_chomp_if(parser, COLON);
+    Token* colon = parser_chomp_if(COLON);
     if(colon == null) {
         return null;
     }
     free(colon);
-    Token* ident = parser_expect_token(parser, IDENTIFIER);
+    Token* ident = parser_expect_token(IDENTIFIER);
     return ident;
 }
 
 // BlockLabel
 //      IDENTIFIER COLON
 static Token* ast_parse_block_label(Parser* parser) {
-    Token* ident = parser_chomp_if(parser, IDENTIFIER);
+    Token* ident = parser_chomp_if(IDENTIFIER);
     if(ident == null)
         return null;
     
-    Token* colon = parser_chomp_if(parser, COLON);
+    Token* colon = parser_chomp_if(COLON);
     if(colon == null) {
         free(ident);
         return colon;
@@ -1032,8 +1036,8 @@ static AstNode* ast_parse_match_branch(Parser* parser) {
     if(out == null)
         return null;
     
-    Token* colon = parser_chomp_if(parser, COLON); // `:`
-    Token* equals_arrow = parser_chomp_if(parser, EQUALS_ARROW); // `=>`
+    Token* colon = parser_chomp_if(COLON); // `:`
+    Token* equals_arrow = parser_chomp_if(EQUALS_ARROW); // `=>`
     if(colon == null && equals_arrow == null)
         ast_error(
             "Missing token after `case`. Either `:` or `=>`"
@@ -1057,7 +1061,7 @@ static AstNode* ast_parse_match_case_kwd(Parser* parser) {
         vec_push(out->data.expr->match_branch_expr->branches, match_item);
 
         Token* comma;
-        while((comma = parser_chomp_if(parser, COMMA)) != null) {
+        while((comma = parser_chomp_if(COMMA)) != null) {
             free(comma);
             AstNode* item = ast_parse_match_item(parser);
             if(item == null)
@@ -1070,7 +1074,7 @@ static AstNode* ast_parse_match_case_kwd(Parser* parser) {
         return out;
     }
 
-    Token* else_kwd = parser_chomp_if(parser, ELSE);
+    Token* else_kwd = parser_chomp_if(ELSE);
     if(else_kwd != null) {
         free(else_kwd);
         AstNode* out = ast_create_node(AstNodeKindMatchBranch);
@@ -1087,7 +1091,7 @@ static AstNode* ast_parse_match_item(Parser* parser) {
     if(expr == null)
         return null;
     
-    Token* ellipsis = parser_chomp_if(parser, ELLIPSIS);
+    Token* ellipsis = parser_chomp_if(ELLIPSIS);
     if(ellipsis != null) {
         AstNode* expr2 = ast_parse_expr(parser);
         AstNode* out = ast_create_node(AstNodeKindMatchRange);
@@ -1199,7 +1203,7 @@ static AstNode* ast_parse_prefix_op(Parser* parser) {
 //      | QUESTION
 //      | ArrayTypeStart (KEYWORD(const) / KEYWORD(volatile))*
 static AstNode* ast_parse_prefix_type_op(Parser* parser) {
-    Token* question_mark = parser_chomp_if(parser, QUESTION);
+    Token* question_mark = parser_chomp_if(QUESTION);
     if(question_mark != null) {
         free(question_mark);
         AstNode* out = ast_create_node(AstNodeKindPrefixOpExpr);
@@ -1207,11 +1211,11 @@ static AstNode* ast_parse_prefix_type_op(Parser* parser) {
         return out;
     }
 
-    Token* arr_init_lbrace = parser_chomp_if(parser, LBRACE);
+    Token* arr_init_lbrace = parser_chomp_if(LBRACE);
     Buff* underscore_value = buff_new("_");
     if(arr_init_lbrace != null) {
         free(arr_init_lbrace);
-        Token* underscore = parser_chomp_if(parser, IDENTIFIER);
+        Token* underscore = parser_chomp_if(IDENTIFIER);
         if(underscore == null) {
             parser_put_back(parser);
         } else if(!buff_cmp(underscore->value, underscore_value)) {
@@ -1219,11 +1223,11 @@ static AstNode* ast_parse_prefix_type_op(Parser* parser) {
             parser_put_back(parser);
         } else {
             AstNode* sentinel = null;
-            Token* colon = parser_chomp_if(parser, COLON);
+            Token* colon = parser_chomp_if(COLON);
             if(colon != null)
                 sentinel = ast_parse_expr(parser);
             
-            Token* rbrace = parser_expect_token(parser, RBRACE);
+            Token* rbrace = parser_expect_token(RBRACE);
             free(rbrace);
             AstNode* out = ast_create_node(AstNodeKindArrayType);
             out->data.inferred_array_type->sentinel = sentinel;
@@ -1239,22 +1243,22 @@ static AstNode* ast_parse_prefix_type_op(Parser* parser) {
 //      | LBRACKET Expr (DOT2 (Expr (COLON Expr)?)?)? RBRACKET
 //      | DOT IDENTIFIER
 static AstNode* ast_parse_suffix_op(Parser* parser) {
-    Token* lbrace = parser_chomp_if(parser, LBRACE);
+    Token* lbrace = parser_chomp_if(LBRACE);
     if(lbrace != null) {
         free(lbrace);
         AstNode* lower = ast_parse_expr(parser);
         AstNode* upper = null;
-        Token* ellipsis = parser_chomp_if(parser, ELLIPSIS);
+        Token* ellipsis = parser_chomp_if(ELLIPSIS);
         if(ellipsis != null) {
             free(ellipsis);
             AstNode* sentinel = null;
             upper = ast_parse_expr(parser);
-            Token* colon = parser_chomp_if(parser, COLON);
+            Token* colon = parser_chomp_if(COLON);
             if(colon != null) {
                 free(colon);
                 sentinel = ast_parse_expr(parser);
             }
-            Token* rbrace = parser_expect_token(parser, RBRACE);
+            Token* rbrace = parser_expect_token(RBRACE);
             free(rbrace);
 
             AstNode* out = ast_create_node(AstNodeKindSliceExpr);
@@ -1264,7 +1268,7 @@ static AstNode* ast_parse_suffix_op(Parser* parser) {
             return out;
         }
 
-        Token* rbrace = parser_expect_token(parser, RBRACE);
+        Token* rbrace = parser_expect_token(RBRACE);
         free(rbrace);
 
         AstNode* out = ast_create_node(AstNodeKindArrayAccessExpr);
@@ -1272,10 +1276,10 @@ static AstNode* ast_parse_suffix_op(Parser* parser) {
         return out;
     }
 
-    Token* dot = parser_chomp_if(parser, DOT);
+    Token* dot = parser_chomp_if(DOT);
     if(dot != null) {
         free(dot);
-        Token* identifier = parser_expect_token(parser, IDENTIFIER);
+        Token* identifier = parser_expect_token(IDENTIFIER);
         AstNode* out = ast_create_node(AstNodeKindFieldAccessExpr);
         out->data.field_access_expr->field_name = identifier->value;
         return out;
@@ -1331,12 +1335,12 @@ static AstNode* ast_parse_prefix_op_expr(
 
 // FuncCallArguments
 static AstNode* ast_parse_func_call_args(Parser* parser) {
-    Token* lparen = parser_chomp_if(parser, LPAREN);
+    Token* lparen = parser_chomp_if(LPAREN);
     if(lparen == null)
         return null;
     
     Vec* params = ast_parse_param_list(parser, ast_parse_expr);
-    Token* rparen = parser_expect_token(parser, RPAREN);
+    Token* rparen = parser_expect_token(RPAREN);
     free(rparen);
 
     AstNode* out = ast_create_node(AstNodeKindFuncCallExpr);
