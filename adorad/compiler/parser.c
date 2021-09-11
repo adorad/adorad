@@ -1284,7 +1284,7 @@ static AstNode* ast_parse_suffix_op(Parser* parser) {
     return null;
 }
 
-static AstNode* ast_parse_prefix_op_expr(
+static AstNode* ast_parse_prefix_op_expr( 
     Parser* parser,
     AstNode* (*op_parser)(Parser*),
     AstNode* (*child_parser)(Parser*)
