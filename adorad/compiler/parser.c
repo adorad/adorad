@@ -91,7 +91,9 @@ typedef enum BinaryOpChain {
     BinaryOpChainOnce,
     BinaryOpChainInfinity
 } BinaryOpChain;
-
+static AstNode* ast_parse_suffix_op_expr(Parser* parser,
+                                         AstNode* (*op_parser)(Parser*),
+                                         AstNode* (*child_parser)(Parser*));
 static AstNode* ast_parse_prefix_type_op(Parser* parser);
 static AstNode* ast_parse_prefix_op(Parser* parser);
 static AstNode* ast_parse_multiplication_op(Parser* parser);
@@ -141,6 +143,21 @@ static AstNode* ast_parse_statement(Parser* parser);
 static AstNode* ast_parse_var_decl(Parser* parser);
 static AstNode* ast_parse_func_prototype(Parser* parser);
 
+static Vec* ast_parse_param_list(Parser* parser, AstNode* (*param_parser)(Parser* parser)) {
+    Vec* out = vec_new(AstNode, 1);
+    while(true) {
+        AstNode* curr = param_parser(parser);
+        if(curr == null)
+            break;
+        vec_push(out, curr);
+
+        Token* sep = parser_chomp_if(parser, COMMA);
+        if(sep == null)
+            break;
+        free(sep);
+    }
+    return out;
+}
 
 // General format:
 //      KEYWORD(func) IDENT LPAREN ParamDeclList RPAREN LARROW RETURNTYPE
@@ -151,7 +168,7 @@ static AstNode* ast_parse_func_prototype(Parser* parser) {
     
     Token* identifier = parser_chomp_if(parser, IDENTIFIER);
     parser_expect_token(parser, LPAREN);
-    Vec* params = ast_parse_list(params, COMMA, ast_parse_match_branch);
+    Vec* params = ast_parse_param_list(params, ast_parse_match_branch);
     parser_expect_token(parser, RPAREN);
 
     AstNode* return_type = ast_parse_type_expr(parser);
@@ -933,6 +950,22 @@ static AstNode* ast_parse_primary_type_expr(Parser* parser) {
     return null;
 }
 
+static Vec* ast_parse_branch_list(Parser* parser, AstNode* (*list_parser)(Parser* parser)) {
+    Vec* out = vec_new(AstNode, 1);
+    while(true) {
+        AstNode* curr = list_parser(parser);
+        if(curr == null)
+            break;
+        
+        vec_push(out, curr);
+        Token* sep = parser_chomp_if(parser, COMMA);
+        if(sep == null)
+            break;
+        free(sep);
+    }
+    return out;
+}
+
 // MatchExpr
 //      KEYWORD(match) LPAREN? Expr RPAREN? LBRACE MatchBranchList RBRACE
 static AstNode* ast_parse_match_expr(Parser* parser) {
@@ -950,7 +983,7 @@ static AstNode* ast_parse_match_expr(Parser* parser) {
 
     // These *aren't* optional
     Token* lbrace = parser_expect_token(parser, LBRACE);
-    Vec* branches = ast_parse_list(parser, COMMA, ast_parse_match_branch);
+    Vec* branches = ast_parse_branch_list(parser,ast_parse_match_branch);
     Token* rbrace = parser_expect_token(parser, RBRACE);
 
     AstNode* out = ast_create_node(AstNodeKindMatchExpr);
@@ -1197,4 +1230,49 @@ static AstNode* ast_parse_prefix_type_op(Parser* parser) {
     free(underscore_value);
 
     return null;
+}
+
+static AstNode* ast_parse_suffix_op_expr(
+    Parser* parser,
+    AstNode* (*op_parser)(Parser*),
+    AstNode* (*child_parser)(Parser*)
+) {
+    AstNode* out = null;
+    AstNode** right = &out;
+    while(true) {
+        AstNode* prefix = op_parser(parser);
+        if(prefix == null)
+            break;
+        
+        *right = prefix;
+        switch(prefix->kind) {
+            case AstNodeKindPrefixOpExpr:
+                right = &prefix->data.prefix_op_expr->expr;
+                break;
+            case AstNodeKindReturn:
+                right = &prefix->data.stmt->return_stmt->expr;
+                break;
+            case AstNodeKindArrayType:
+                right = &prefix->data.array_type->child_type;
+                break;
+            case AstNodeKindInferredArrayType:
+                right = &prefix->data.inferred_array_type->child_type;
+                break;
+            default:
+                unreachable();
+        }
+    }
+
+    // If we've alredy chomped a token, and determned that this node is a prefix op, then we expect that the node
+    // has a child
+    if(out != null) {
+        *right = child_parser(parser);
+    } else {
+        // Otherwise, if we didn't chomp a token, then we return null if the child expr did.
+        *right = child_parser(parser);
+        if(*right == null)
+            return null;
+    }
+
+    return out;
 }
