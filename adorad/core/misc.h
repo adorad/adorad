@@ -63,6 +63,18 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #endif 
 
 
+// Likely and unlikely macros
+#ifndef __CORETEN_LIKELY_UNLIKELY_MACROS
+    #define __CORETEN_LIKELY_UNLIKELY_MACROS
+    #if defined(__GNUC__) || defined(__INTEL_COMPILER) || defined(__clang__)
+        #define CORETEN_LIKELY(x)    __builtin_expect(x, 1)
+        #define CORETEN_UNLIKELY(x)  __builtin_expect(x, 0)
+    #else
+        #define CORETEN_LIKELY(x) (x)
+        #define CORETEN_UNLIKELY(x) (x)
+    #endif
+#endif // __CORETEN_LIKELY_UNLIKELY_MACROS
+
 // Casts
 #define cast(type)  (type)
 #ifdef __cplusplus
