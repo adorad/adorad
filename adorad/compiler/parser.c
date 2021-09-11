@@ -31,7 +31,6 @@ Parser* parser_init(Lexer* lexer) {
     parser->num_tokens = vec_size(parser->toklist);
     parser->num_lines = 0;
     parser->mod_name = null;
-    parser->defer_vars = null;
     return parser;
 }
 
@@ -1346,4 +1345,10 @@ static AstNode* ast_parse_func_call_args(Parser* parser) {
     AstNode* out = ast_create_node(AstNodeKindFuncCallExpr);
     out->data.expr->func_call_expr->params = params;
     return out;
+}
+
+// Main entry point of the Parser.
+// It will return the whole AST tree of the entire source code (for each file) when parsed. 
+static AstNode* ast_parse(Parser* parser) { 
+    return null;
 }
