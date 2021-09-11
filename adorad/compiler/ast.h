@@ -65,6 +65,7 @@ enum AstNodeKind {
     AstNodeKindSliceExpr,
     AstNodeKindArrayAccessExpr,
     AstNodeKindArrayType,
+    AstNodeKindInferredArrayType,
 
     // Fields
     AstNodeKindTypeDecl,       // `type name T { ... }`  where T is one of {enum/struct}
