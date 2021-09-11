@@ -94,7 +94,7 @@ typedef enum BinaryOpChain {
 
 static AstNode* ast_parse_func_call_args(Parser* parser);
 static AstNode* ast_parse_suffix_op(Parser* parser);
-static AstNode* ast_parse_suffix_op_expr(Parser* parser,
+static AstNode* ast_parse_prefix_op_expr(Parser* parser,
                                          AstNode* (*op_parser)(Parser*),
                                          AstNode* (*child_parser)(Parser*));
 static AstNode* ast_parse_prefix_type_op(Parser* parser);
@@ -171,7 +171,7 @@ static AstNode* ast_parse_func_prototype(Parser* parser) {
     
     Token* identifier = parser_chomp_if(parser, IDENTIFIER);
     parser_expect_token(parser, LPAREN);
-    Vec* params = ast_parse_param_list(params, ast_parse_match_branch);
+    Vec* params = ast_parse_param_list(parser, ast_parse_match_branch);
     parser_expect_token(parser, RPAREN);
 
     AstNode* return_type = ast_parse_type_expr(parser);
@@ -1284,7 +1284,7 @@ static AstNode* ast_parse_suffix_op(Parser* parser) {
     return null;
 }
 
-static AstNode* ast_parse_suffix_op_expr(
+static AstNode* ast_parse_prefix_op_expr(
     Parser* parser,
     AstNode* (*op_parser)(Parser*),
     AstNode* (*child_parser)(Parser*)
