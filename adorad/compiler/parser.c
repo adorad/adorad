@@ -91,6 +91,9 @@ typedef enum BinaryOpChain {
     BinaryOpChainOnce,
     BinaryOpChainInfinity
 } BinaryOpChain;
+
+static AstNode* ast_parse_func_call_args(Parser* parser);
+static AstNode* ast_parse_suffix_op(Parser* parser);
 static AstNode* ast_parse_suffix_op_expr(Parser* parser,
                                          AstNode* (*op_parser)(Parser*),
                                          AstNode* (*child_parser)(Parser*));
@@ -1323,5 +1326,20 @@ static AstNode* ast_parse_suffix_op_expr(
             return null;
     }
 
+    return out;
+}
+
+// FuncCallArguments
+static AstNode* ast_parse_func_call_args(Parser* parser) {
+    Token* lparen = parser_chomp_if(parser, LPAREN);
+    if(lparen == null)
+        return null;
+    
+    Vec* params = ast_parse_param_list(parser, ast_parse_expr);
+    Token* rparen = parser_expect_token(parser, RPAREN);
+    free(rparen);
+
+    AstNode* out = ast_create_node(AstNodeKindFuncCallExpr);
+    out->data.expr->func_call_expr->params = params;
     return out;
 }
