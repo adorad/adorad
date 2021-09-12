@@ -137,7 +137,7 @@ typedef struct AstNodeIdentifier {
     AstNode* type;
     bool is_const;
     bool is_export;
-    bool is_mutable;  // This is false unless explicitly mentioned by the user
+    VisibilityMode visibility;
 } AstNodeIdentifier;
 
 typedef struct AstNodeArguments {
@@ -554,7 +554,7 @@ typedef struct AstNodeVarDecl {
 
     bool is_const;
     bool is_export;
-    bool is_mutable;  // This is false unless explicitly mentioned by the user
+    VisibilityMode visibility;
 } AstNodeVarDecl;
 
 // This can be one of:
@@ -680,7 +680,7 @@ typedef struct AstNodeVariable {
     Buff* name;
     AstNodeExpression* expr;
     bool is_export;
-    bool is_mutable;
+    VisibilityMode visibility;
     bool is_argument;
     bool is_used;
     bool is_tmp;
