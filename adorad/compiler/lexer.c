@@ -125,9 +125,12 @@ void lexer_error(Lexer* lexer, Error err, const char* format, ...) {
     exit(1);
 }
 
+
+#define lexer_advance()      advance(lexer)
+#define lexer_advancen(n)    advancen(lexer, (n))
 // Returns the curent character in the Lexical Buffer and advances to the next element
 // It does this by incrementing the buffer offset.
-static inline char lexer_advance(Lexer* lexer) {
+static inline char advance(Lexer* lexer) {
     if(lexer->offset >= buff_len(lexer->buffer))
         return nullchar;
     
@@ -137,7 +140,7 @@ static inline char lexer_advance(Lexer* lexer) {
 }
 
 // Advance `n` characters in the Lexical Buffer
-static inline char lexer_advancen(Lexer* lexer, UInt32 n) {
+static inline char advancen(Lexer* lexer, UInt32 n) {
     // The '>=' is here because offset and buffer_capacity are off by 1 (0-index vs 1-index respectively)
     if(lexer->offset + n >= buff_len(lexer->buffer))
         return nullchar;
@@ -201,17 +204,16 @@ static void lexer_maketoken(Lexer* lexer, TokenKind kind, Buff* value, UInt32 of
 }
 
 // Scan a comment (single line)
-// We store comments in the lexing phase. The Parser will decide which comments are actually useful and which
-// aren't
+// We store comments in the lexing phase. The Parser will decide which comments are actually useful and which aren't
 static inline void lexer_lex_sl_comment(Lexer* lexer) {
-    char ch = lexer_advance(lexer);
+    char ch = lexer_advance();
     int comment_length = 0;
     UInt32 prev_offset = lexer->offset - 1;
     UInt32 line = lexer->loc->line;
     UInt32 col = lexer->loc->col;
 
     while(ch && ch != '\n') {
-        ch = lexer_advance(lexer);
+        ch = lexer_advance();
         ++comment_length;
     }
 
@@ -231,24 +233,24 @@ static inline void lexer_lex_sl_comment(Lexer* lexer) {
 // Scan a comment (multi-line)
 // We have no reason, at the moment, to store a multi-line comment as a Token
 static inline void lexer_lex_ml_comment(Lexer* lexer) {
-    char ch = lexer_advance(lexer);
+    char ch = lexer_advance();
     bool asterisk_found = false; 
     while(ch && !(ch == '/' && asterisk_found)) {
         asterisk_found = false; 
         while(ch && ch!= '*')
-            ch = lexer_advance(lexer);
+            ch = lexer_advance();
         
         if(ch == '*')
             asterisk_found = true;
 
-        ch = lexer_advance(lexer);
+        ch = lexer_advance();
     }
-    ch = lexer_advance(lexer);
+    ch = lexer_advance();
 }
 
 // Scan a character
 static inline void lexer_lex_char(Lexer* lexer) {
-    char ch = lexer_advance(lexer);
+    char ch = lexer_advance();
     if(ch) {
         LEXER_INCREMENT_OFFSET;
         if(ch == '\n') {
@@ -264,7 +266,7 @@ static inline void lexer_lex_esc_char(Lexer* lexer) {
 
 // Scan a macro (begins with `@`)
 static inline void lexer_lex_macro(Lexer* lexer) {
-    char ch = lexer_advance(lexer);
+    char ch = lexer_advance();
     int macro_length = 0;
 
     // Don't include the `@` in the macro symbol name
@@ -273,7 +275,7 @@ static inline void lexer_lex_macro(Lexer* lexer) {
     UInt32 col = lexer->loc->col;
 
     while(char_is_letter(ch) || char_is_digit(ch)) {
-        ch = lexer_advance(lexer);
+        ch = lexer_advance();
         ++macro_length;
     }
 
@@ -294,7 +296,7 @@ static inline void lexer_lex_string(Lexer* lexer) {
     // We already know that the curr char is _not_ a quote (`"`) since an empty string token (`""`) is
     // handled by `lexer_lex()`
     CORETEN_ENFORCE(LEXER_CURR_CHAR != '"');
-    char ch = lexer_advance(lexer);
+    char ch = lexer_advance();
     int str_length = 0;
     UInt32 prev_offset = lexer->offset - 1;
     UInt32 line = lexer->loc->line;
@@ -304,9 +306,9 @@ static inline void lexer_lex_string(Lexer* lexer) {
     while(ch != '"') {
         if(ch == '\\') {
             // lexer_lex_esc_char(lexer);
-            ch = lexer_advance(lexer);
+            ch = lexer_advance();
         } else {
-            ch = lexer_advance(lexer);
+            ch = lexer_advance();
         }
         ++str_length;
     }
@@ -346,10 +348,10 @@ static inline void lexer_lex_identifier(Lexer* lexer) {
     UInt32 line = lexer->loc->line;
     UInt32 col = lexer->loc->col;
     int ident_length = 0;
-    char ch = lexer_advance(lexer);
+    char ch = lexer_advance();
 
     while(char_is_letter(ch) || char_is_digit(ch)) {
-        ch = lexer_advance(lexer);
+        ch = lexer_advance();
         ++ident_length;
     }
 
@@ -365,6 +367,21 @@ static inline void lexer_lex_identifier(Lexer* lexer) {
     lexer_maketoken(lexer, tokenkind, ident_value, prev_offset - 1, line, col - 1);
 
     LEXER_DECREMENT_OFFSET;
+}
+
+// Attributes
+// Eg. [inline] or [comptime]
+static inline void lexer_lex_attribute(Lexer* lexer) {
+    UInt32 prev_offset = lexer->offset;
+    UInt32 line = lexer->loc->line;
+    UInt32 col = lexer->loc->col;
+    int attr_length = 0;
+
+    // Skip whitespace
+    while(LEXER_CURR_CHAR != ' ') {
+        lexer_advance();
+    }
+
 }
 
 // Numeric lexing! Finally, the feast can start.
@@ -386,16 +403,16 @@ static inline void lexer_lex_digit(Lexer* lexer) {
     while(char_is_digit(ch)) {
         // Hex, Octal, or Binary?
         if(ch == '0') {
-            ch = lexer_advance(lexer);
+            ch = lexer_advance();
             switch(ch) {
                 // Hex
                 case 'x': case 'X':;
                     // Skip [xX]
-                    ch = lexer_advance(lexer);
+                    ch = lexer_advance();
                     int hexcount = 0;
                     while(char_is_hex_digit(ch)) {
                         ++hexcount; 
-                        ch = lexer_advance(lexer);
+                        ch = lexer_advance();
                     }
                     if(hexcount == 0)
                         lexer_error(lexer, ErrorSyntaxError, "Expected hexadecimal digits [0-9A-Fa-f] after `0x`");
@@ -406,11 +423,11 @@ static inline void lexer_lex_digit(Lexer* lexer) {
                 // Binary
                 case 'b': case 'B':
                     // Skip [bB]
-                    ch = lexer_advance(lexer);
+                    ch = lexer_advance();
                     int bincount = 0;
                     while(char_is_binary_digit(ch)) {
                         ++bincount; 
-                        ch = lexer_advance(lexer);
+                        ch = lexer_advance();
                     }
                     if(bincount == 0)
                         lexer_error(lexer, ErrorSyntaxError, "Expected binary digit [0-1] after `0b`");
@@ -423,11 +440,11 @@ static inline void lexer_lex_digit(Lexer* lexer) {
                 // Instead, we support the `0o` or `0O` prefix, like 0o123
                 case 'o': case 'O':
                     // Skip [oO]
-                    ch = lexer_advance(lexer);
+                    ch = lexer_advance();
                     int octcount = 0;
                     while(char_is_octal_digit(ch)) {
                         ++octcount; 
-                        ch = lexer_advance(lexer);
+                        ch = lexer_advance();
                     }
                     if(octcount == 0)
                         lexer_error(lexer, ErrorSyntaxError, "Expected octal digits [0-7] after `0o`");
@@ -449,7 +466,7 @@ static inline void lexer_lex_digit(Lexer* lexer) {
         else {
             // Normal Floats
             if(ch == '.' || ch == '_') {
-                ch = lexer_advance(lexer);
+                ch = lexer_advance();
                 if(ch == '_')
                     lexer_error(lexer, ErrorSyntaxError, "Unexpected `_` near `.`");
             }
@@ -457,16 +474,16 @@ static inline void lexer_lex_digit(Lexer* lexer) {
             // Exponents (Float)
             else if(ch == 'e' || ch == 'E') {
                 // Skip over [eE]
-                ch = lexer_advance(lexer);
+                ch = lexer_advance();
                 if(ch == '+' || ch == '-') { 
-                    ch = lexer_advance(lexer);
+                    ch = lexer_advance();
                 } else {
                     lexer_error(lexer, ErrorSyntaxError, "Expected [+-] after exponent `e`. Got `%c`", ch);
                 }
                 
                 int exp_digits = 0;
                 while(char_is_digit(ch)) {
-                    ch = lexer_advance(lexer);
+                    ch = lexer_advance();
                     ++exp_digits;
                 }
                 if(exp_digits == 0)
@@ -480,7 +497,7 @@ static inline void lexer_lex_digit(Lexer* lexer) {
                 // digit_length = imag_count;
             }
         }
-        // ch = lexer_advance(lexer);
+        // ch = lexer_advance();
     }
 
     // CORETEN_ENFORCE(tokenkind != TOK_ILLEGAL);
@@ -522,7 +539,7 @@ static void lexer_lex(Lexer* lexer) {
         // For example, if we start from buff[0], 
         //      curr = buff[0]
         //      next = buff[1]
-        curr = lexer_advance(lexer);
+        curr = lexer_advance();
         next = lexer_peek(lexer);
         tokenkind = TOK_ILLEGAL;
 
@@ -551,7 +568,16 @@ static void lexer_lex(Lexer* lexer) {
             case ';':  tokenkind = SEMICOLON; break;
             case ',':  tokenkind = COMMA; break;
             case '\\': tokenkind = BACKSLASH; break;
-            case '[':  tokenkind = LSQUAREBRACK; break;
+            case '[':  
+                // We check for func/var attributes enclosed in `[` and `]`. 
+                // Eg. [inline] or [comptime]
+                // TODO(jasmcaus) Whitespace between `[` and an identifier token needs to be handled appropriately
+                // (whitespace needs to be skipped)
+                switch(next) {
+                    case ALPHA: tokenkind = TOK_NULL; lexer_lex_attribute(lexer); break;
+                    default: tokenkind = LSQUAREBRACK; break;
+                }
+                break;
             case ']':  tokenkind = RSQUAREBRACK; break;
             case '{':  lexer->nest_level++; tokenkind = LBRACE; break;
             case '}':  lexer->nest_level--; tokenkind = RBRACE; break;
@@ -606,7 +632,7 @@ static void lexer_lex(Lexer* lexer) {
                     tokenkind = TOK_NULL;
                     // Skip till end of line
                     while(LEXER_CURR_CHAR && (LEXER_CURR_CHAR != '\n' || LEXER_CURR_CHAR != nullchar))
-                        curr = lexer_advance(lexer);
+                        curr = lexer_advance();
                 }
                 // Comment
                 else {
