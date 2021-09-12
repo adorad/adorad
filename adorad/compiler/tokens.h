@@ -28,13 +28,13 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 */
 #define ALLTOKENS \
     /* Special (internal usage only) */ \
-    TOKENKIND(TOK_NULL = 0,  ""),        \
+    TOKENKIND(TOK_NULL = 0, ""),        \
     TOKENKIND(TOK_ILLEGAL,  ""),        \
-    TOKENKIND(TOK_EOF, "TOK_EOF"),  /* End of Input */ \
-    TOKENKIND(COMMENT, "COMMENT"),          \
+    TOKENKIND(TOK_EOF,      "TOK_EOF"),  /* End of Input */ \
+    TOKENKIND(COMMENT,      "COMMENT"),          \
     TOKENKIND(DOCS_COMMENT, "DOCS_COMMENT"), \
-    TOKENKIND(ATTRIBUTE, "attribute"),\
-    TOKENKIND(UNREACHABLE, "unreachable"),\
+    TOKENKIND(ATTRIBUTE,    "attribute"),\
+    TOKENKIND(UNREACHABLE,  "unreachable"),\
 \
     /* Literals */ \
 TOKENKIND(TOK___LITERALS_BEGIN, ""), \
