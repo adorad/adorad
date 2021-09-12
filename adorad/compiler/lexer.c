@@ -378,10 +378,30 @@ static inline void lexer_lex_attribute(Lexer* lexer) {
     int attr_length = 0;
 
     // Skip whitespace
-    while(LEXER_CURR_CHAR != ' ') {
+    while(LEXER_CURR_CHAR == ' ')
         lexer_advance();
-    }
+    
+    switch(LEXER_CURR_CHAR) {
+        // Possible attribute text
+        case ALPHA:
+            char ch = lexer_advance();
+            while(char_is_letter(ch) || char_is_digit(ch)) {
+                ch = lexer_advance();
+                ++attr_length;
+            }
 
+            UInt32 offset_diff = lexer->offset - prev_offset;
+            Buff* attr_value = buff_slice(lexer->buffer, prev_offset - 1, offset_diff);
+            CORETEN_ENFORCE_NN(attr_value, "`attr_value` must not be null");
+
+            // Determine if a keyword or just a regular identifier
+            lexer_maketoken(lexer, ATTRIBUTE, attr_value, prev_offset - 1, line, col - 1);
+
+            LEXER_DECREMENT_OFFSET;
+            break;
+        default:
+            lexer_error(lexer, ErrorSyntaxError, "Expected an attribute"); break;
+    }
 }
 
 // Numeric lexing! Finally, the feast can start.
@@ -527,7 +547,7 @@ static void lexer_lex(Lexer* lexer) {
     // are useless bytes. Generally, it is not recommended to add BOM markers to UTF8 texts, but it's not 
     // uncommon (especially on Windows).
     if(lexer->buffer->data[0] == (char)0xef && lexer->buffer->data[1] == (char)0xbb && lexer->buffer->data[2] == (char)0xbf)
-        lexer_advancen(lexer, 3);
+        lexer_advancen(3);
 
     char next = nullchar;
     char curr = nullchar;
@@ -545,7 +565,6 @@ static void lexer_lex(Lexer* lexer) {
 
         switch(curr) {
             case nullchar: goto lex_eof;
-            // The `-1` is there to prevent an ILLEGAL token kind from being appended to `lexer->toklist`
             // NB: Whitespace as a token is useless for our case (will this change later?)
             case WHITESPACE_NO_NEWLINE: tokenkind = TOK_NULL; break;
             case '\n':
