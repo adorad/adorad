@@ -381,10 +381,11 @@ static inline void lexer_lex_attribute(Lexer* lexer) {
     while(LEXER_CURR_CHAR == ' ')
         lexer_advance();
     
+    char ch;
     switch(LEXER_CURR_CHAR) {
         // Possible attribute text
         case ALPHA:
-            char ch = lexer_advance();
+            ch = lexer_advance();
             while(char_is_letter(ch) || char_is_digit(ch)) {
                 ch = lexer_advance();
                 ++attr_length;
