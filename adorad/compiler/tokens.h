@@ -156,59 +156,60 @@ TOKENKIND(TOK___SEPARATORS_END, ""), \
 \
     /* Keywords */ \
 TOKENKIND(TOK___KEYWORDS_BEGIN, ""),  \
-    TOKENKIND(KEYWORD,   ""), /* Token Classification*/ \
-    TOKENKIND(ANY,       "any"),      \
-    TOKENKIND(AS,        "as"),       \
-    TOKENKIND(ASYNC,     "async"),    \
-    TOKENKIND(ATOMIC,    "atomic"),   \
-    TOKENKIND(BREAK,     "break"),    \
-    TOKENKIND(CASE,      "case"),     \
-    TOKENKIND(CAST,      "cast"),     \
-    TOKENKIND(CATCH,     "catch"),    \
-    TOKENKIND(CONST,     "const"),    \
-    TOKENKIND(CONTINUE,  "continue"), \
-    TOKENKIND(DO,        "do"),       \
-    TOKENKIND(DECL,      "decl"),     \
-    TOKENKIND(DEFER,     "defer"),    \
-    TOKENKIND(ENUM,      "enum"),     \
-    TOKENKIND(ELSE,      "else"),     \
-    TOKENKIND(ELSEIF,    "elseif"),   \
-    TOKENKIND(EXCEPT,    "except"),   \
-    TOKENKIND(EXPORT,    "export"),   \
-    TOKENKIND(EXTERN,    "extern"),   \
-    TOKENKIND(FINALLY,   "finally"),  \
-    TOKENKIND(FOR,       "for"),      \
-    TOKENKIND(FROM,      "from"),     \
-    TOKENKIND(FUNC,      "func"),     \
-    TOKENKIND(GLOBAL,    "global"),   \
-    TOKENKIND(IF,        "if"),       \
-    TOKENKIND(IMPORT,    "import"),   \
-    TOKENKIND(IN,        "in"),       \
-    TOKENKIND(INCLUDE,   "include"),  \
-    TOKENKIND(INLINE,    "inline"),   \
-    TOKENKIND(ISA,       "isa"),      \
-    TOKENKIND(MACRO,     "macro"),    \
-    TOKENKIND(MAP,       "map"),      \
-    TOKENKIND(MATCH,     "match"), /* similar to 'switch' in C++ & Java */ \
-    TOKENKIND(MODULE,    "module"),   \
-    TOKENKIND(MUTABLE,   "mutable"),  \
-    TOKENKIND(NOT,       "not"),      \
-    TOKENKIND(NOT_IN,    "notin"),    \
-    TOKENKIND(PRAGMA,    "pragma"),   \
-    TOKENKIND(RAISE,     "raise"),    \
-    TOKENKIND(RANGE,     "range"),    \
-    TOKENKIND(RETURN,    "return"),   \
-    TOKENKIND(SUSPEND,   "suspend"),  \
-    TOKENKIND(TRY,       "try"),      \
-    TOKENKIND(TUPLE,     "tuple"),    \
-    TOKENKIND(TYPE,      "type"),     \
-    TOKENKIND(TYPEOF,    "typeof"),   \
-    TOKENKIND(WHEN,      "when"),     \
-    TOKENKIND(WHERE,     "where"),    \
-    TOKENKIND(WHILE,     "while"),    \
-    TOKENKIND(UNION,     "union"),    \
-    TOKENKIND(USE,       "use"), /* aliasing purposes */ \
-    TOKENKIND(VOLATILE,  "volatile"), \
+    TOKENKIND(KEYWORD,       ""), /* Token Classification*/ \
+    TOKENKIND(ANY,           "any"),      \
+    TOKENKIND(AS,            "as"),       \
+    TOKENKIND(ASYNC,         "async"),    \
+    TOKENKIND(ATOMIC,        "atomic"),   \
+    TOKENKIND(BREAK,         "break"),    \
+    TOKENKIND(CASE,          "case"),     \
+    TOKENKIND(CAST,          "cast"),     \
+    TOKENKIND(CATCH,         "catch"),    \
+    TOKENKIND(CONST,         "const"),    \
+    TOKENKIND(CONTINUE,      "continue"), \
+    TOKENKIND(DO,            "do"),       \
+    TOKENKIND(DECL,          "decl"),     \
+    TOKENKIND(DEFER,         "defer"),    \
+    TOKENKIND(ENUM,          "enum"),     \
+    TOKENKIND(ELSE,          "else"),     \
+    TOKENKIND(ELSEIF,        "elseif"),   \
+    TOKENKIND(EXCEPT,        "except"),   \
+    TOKENKIND(EXPORT,        "export"),   \
+    TOKENKIND(EXTERN,        "extern"),   \
+    TOKENKIND(FINALLY,       "finally"),  \
+    TOKENKIND(FALLTHROUGH,   "fallthrough"),  \
+    TOKENKIND(FOR,           "for"),      \
+    TOKENKIND(FROM,          "from"),     \
+    TOKENKIND(FUNC,          "func"),     \
+    TOKENKIND(GLOBAL,        "global"),   \
+    TOKENKIND(IF,            "if"),       \
+    TOKENKIND(IMPORT,        "import"),   \
+    TOKENKIND(IN,            "in"),       \
+    TOKENKIND(INCLUDE,       "include"),  \
+    TOKENKIND(INLINE,        "inline"),   \
+    TOKENKIND(ISA,           "isa"),      \
+    TOKENKIND(MACRO,         "macro"),    \
+    TOKENKIND(MAP,           "map"),      \
+    TOKENKIND(MATCH,         "match"), /* similar to 'switch' in C++ & Java */ \
+    TOKENKIND(MODULE,        "module"),   \
+    TOKENKIND(MUTABLE,       "mutable"),  \
+    TOKENKIND(NOT,           "not"),      \
+    TOKENKIND(NOT_IN,        "notin"),    \
+    TOKENKIND(PRAGMA,        "pragma"),   \
+    TOKENKIND(RAISE,         "raise"),    \
+    TOKENKIND(RANGE,         "range"),    \
+    TOKENKIND(RETURN,        "return"),   \
+    TOKENKIND(SUSPEND,       "suspend"),  \
+    TOKENKIND(TRY,           "try"),      \
+    TOKENKIND(TUPLE,         "tuple"),    \
+    TOKENKIND(TYPE,          "type"),     \
+    TOKENKIND(TYPEOF,        "typeof"),   \
+    TOKENKIND(WHEN,          "when"),     \
+    TOKENKIND(WHERE,         "where"),    \
+    TOKENKIND(WHILE,         "while"),    \
+    TOKENKIND(UNION,         "union"),    \
+    TOKENKIND(USE,           "use"), /* aliasing purposes */ \
+    TOKENKIND(VOLATILE,      "volatile"), \
 TOKENKIND(TOK___KEYWORDS_END, ""),    \
 \
     TOKENKIND(TOK_COUNT, "")

@@ -167,6 +167,7 @@ Buff* token_to_buff(TokenKind kind) {
         case EXCEPT: value = "except"; break;
         case EXPORT: value = "export"; break;
         case EXTERN: value = "inline"; break;
+        case FALLTHROUGH: value = "fallthrough"; break;
         case FINALLY: value = "finally"; break;
         case FOR: value = "for"; break;
         case FROM: value = "from"; break;
