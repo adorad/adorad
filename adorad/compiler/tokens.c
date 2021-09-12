@@ -184,7 +184,7 @@ Buff* token_to_buff(TokenKind kind) {
         case MODULE: value = "module"; break;
         case MUTABLE: value = "mutable"; break;
         case NOT: value = "not"; break;
-        case NOT_IN: value = "notin"; break;
+        case ORELSE: value = "orelse"; break;
         case PRAGMA: value = "pragma";   break;
         case RAISE: value = "raise"; break;
         case RANGE: value = "range"; break;

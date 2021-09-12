@@ -194,7 +194,7 @@ TOKENKIND(TOK___KEYWORDS_BEGIN, ""),  \
     TOKENKIND(MODULE,        "module"),   \
     TOKENKIND(MUTABLE,       "mutable"),  \
     TOKENKIND(NOT,           "not"),      \
-    TOKENKIND(NOT_IN,        "notin"),    \
+    TOKENKIND(ORELSE,        "orelse"),   \
     TOKENKIND(PRAGMA,        "pragma"),   \
     TOKENKIND(RAISE,         "raise"),    \
     TOKENKIND(RANGE,         "range"),    \
