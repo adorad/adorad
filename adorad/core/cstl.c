@@ -1622,7 +1622,7 @@ void ubuff_push_char(cstlUTF8Str* ubuff, Rune ch) {
     }
     else {
         // TODO (jasmcaus): `panic()` here
-        fprintf(stderr, "Invalid UTF-8 character: %hx", ch);
+        fprintf(stderr, "Invalid UTF-8 character: %x", ch);
         exit(1);
     }
 }
