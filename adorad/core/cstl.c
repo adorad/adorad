@@ -1479,7 +1479,7 @@ const Byte utf8class[256] = {
     4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0 
 };
 
-static inline bool utf8_is_codepoint_valid(Rune uc) {
+bool utf8_is_codepoint_valid(Rune uc) {
     // if(uc < 0 || uc >= 0x110000 || ((uc & 0xFFFF) >= 0xFFFE) || (uc >= 0xD800 && uc < 0xE000) || 
     //   (uc >= 0xFDD0 && uc < 0xFDF0))
     //     return false;
@@ -1490,7 +1490,7 @@ static inline bool utf8_is_codepoint_valid(Rune uc) {
 // Determine the number of bytes needed to store the UTF-8 character
 // This can be one in <1, 2, 3, 4>
 // Theoretically, this number can extend to 6, and even 7, bytes, but this is rare
-static inline Ll utf8_encode_nbytes(Rune value) {
+Ll utf8_encode_nbytes(Rune value) {
     Ll nbytes = 0;
     CORETEN_ENFORCE(value > 0, "Cannot encode a negative value :(");
 
@@ -1506,7 +1506,7 @@ static inline Ll utf8_encode_nbytes(Rune value) {
 // Determine the number of bytes used by the UTF-8 character
 // This can be one in <1, 2, 3, 4>
 // Theoretically, this number can extend to 6, and even 7, bytes, but this is rare
-static inline Ll utf8_decode_nbytes(Rune byte) {
+Ll utf8_decode_nbytes(Rune byte) {
     CORETEN_ENFORCE(byte > 0, "Cannot decode  a negative value :(");
     Ll nbytes;
 
@@ -1522,7 +1522,7 @@ static inline Ll utf8_decode_nbytes(Rune byte) {
     return nbytes;
 }
 
-static inline char* utf8_encode(Rune value) {
+char* utf8_encode(Rune value) {
     Byte mask = 0x3f; // 63
     char* dst = cast(char*)calloc(4, sizeof(char));
 
@@ -1560,7 +1560,7 @@ static inline char* utf8_encode(Rune value) {
     WIP
 */
 
-static cstlUTF8Str* ubuff_new(Rune* data) {
+cstlUTF8Str* ubuff_new(Rune* data) {
     cstlUTF8Str* ubuff = cast(cstlUTF8Str*)calloc(1, sizeof(ubuff));
     CORETEN_ENFORCE_NN(ubuff, "Could not allocate memory. Memory full.");
 
@@ -1640,12 +1640,12 @@ void __push_ascii_char(cstlUTF8Str* ubuff, Byte byte) {
 }
 
 // Returns the number of UTF8 characters in the buffer
-static UInt64 ubuff_len(cstlUTF8Str* ubuff) {
+UInt64 ubuff_len(cstlUTF8Str* ubuff) {
     return ubuff->len;
 }
 
 // Returns the number of bytes used by the UTF8 buffer.
-static UInt64 ubuff_nbytes(cstlUTF8Str* ubuff) {
+UInt64 ubuff_nbytes(cstlUTF8Str* ubuff) {
     return ubuff->nbytes;
 }
 
@@ -1702,13 +1702,13 @@ static int __byte_offset_at(cstlUTF8Str* ubuff, Int64 n, int* out) {
 }
 
 // Return the byte at the `n`th byte offset
-static Byte ubuff_byte_offset_at(cstlUTF8Str* ubuff, Int64 n) {
+Byte ubuff_byte_offset_at(cstlUTF8Str* ubuff, Int64 n) {
     return __byte_offset_at(ubuff, n, null);
 }
 
 
 // Returns the byte at `n`th character offset
-static Byte ubuff_at(cstlUTF8Str* ubuff, Int64 n) {
+Byte ubuff_at(cstlUTF8Str* ubuff, Int64 n) {
     CORETEN_ENFORCE_NN(ubuff, "Expected not null");
     CORETEN_ENFORCE_NN(ubuff->data, "Expected not null");
     CORETEN_ENFORCE(n < ubuff->len);

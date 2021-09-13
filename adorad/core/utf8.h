@@ -53,24 +53,24 @@ typedef struct cstlUTF8Str {
 } cstlUTF8Str;
 
 // Is UTF-8 codepoint valid?
-static inline bool utf8_is_codepoint_valid(Rune uc);
-static inline char* utf8_encode(Rune value);
-static inline Ll utf8_encode_nbytes(Rune value);
-static inline Ll utf8_decode_nbytes(Rune byte);
+bool utf8_is_codepoint_valid(Rune uc);
+char* utf8_encode(Rune value);
+Ll utf8_encode_nbytes(Rune value);
+Ll utf8_decode_nbytes(Rune byte);
 
 /*
     WIP
 */
-static cstlUTF8Str* ubuff_new(Rune* data);
-static cstlUTF8Str* ubuff_set(cstlUTF8Str* ubuff, Rune* data);
+cstlUTF8Str* ubuff_new(Rune* data);
+cstlUTF8Str* ubuff_set(cstlUTF8Str* ubuff, Rune* data);
 void __grow_ubuff(cstlUTF8Str* ubuff, int grow_by);
 void __push_byte(cstlUTF8Str* ubuff, Byte byte);
 void __push_ascii_char(cstlUTF8Str* ubuff, Byte byte);
 void ubuff_push_char(cstlUTF8Str* ubuff, Rune ch);
-static UInt64 ubuff_len(cstlUTF8Str* ubuff);
-static UInt64 ubuff_nbytes(cstlUTF8Str* ubuff);
-static Byte ubuff_byte_offset_at(cstlUTF8Str* ubuff, Int64 n);
-static Byte ubuff_at(cstlUTF8Str* ubuff, Int64 n);
+UInt64 ubuff_len(cstlUTF8Str* ubuff);
+UInt64 ubuff_nbytes(cstlUTF8Str* ubuff);
+Byte ubuff_byte_offset_at(cstlUTF8Str* ubuff, Int64 n);
+Byte ubuff_at(cstlUTF8Str* ubuff, Int64 n);
 
 // Unicode categories
 typedef enum {
