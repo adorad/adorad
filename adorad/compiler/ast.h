@@ -136,7 +136,7 @@ typedef struct AstNodeAttribute {
 typedef struct AstNodeIdentifier {
     AstNode* type;
     bool is_const;
-    bool is_export;
+    VisibilityMode visibility;
     bool is_mutable;
 } AstNodeIdentifier;
 
@@ -386,7 +386,7 @@ typedef struct AstNodeAliasDecl {
 
 typedef struct AstNodeTypeEnumDecl {
     Buff* name;
-    bool is_export;
+    VisibilityMode visibility;
     Location* loc;
     Vec* fields;     // typedef enum value fields
     Vec* attributes; // typedef enum attributes 
@@ -412,7 +412,7 @@ typedef struct AstNodeTypeDecl {
 } AstNodeTypeDecl;
 
 typedef struct AstNodeConstantDecl {
-    bool is_export;
+    VisibilityMode visibility;
     bool is_block;  // `const ( ... )`
     Location* loc;
     Vec* fields;    // various constant declarations
@@ -427,7 +427,7 @@ typedef struct AstNodeGlobalDecl {
 
 typedef struct AstNodeSumTypeDecl {
     Buff* name;
-    bool is_export;
+    VisibilityMode visibility;
     Vec* variant_types; // Vec<AstNodeType*>
     Location* loc;
 } AstNodeSumTypeDecl;
@@ -439,7 +439,7 @@ typedef struct AstNodeFuncDecl {
     Buff* parent_type; // the `type` of which the function belongs to (nullptr, if not a method)
     Buff* return_type;
     bool is_variadic;  // variadic arguments
-    bool is_export;    // true for `export func abc()`
+    VisibilityMode visibility;    // true for `export func abc()`
     bool is_noreturn;  // true for `[noreturn] func 
     bool is_main;      // true for `func main()`
     bool is_test;      // true for `func test_yyy()`
@@ -470,7 +470,7 @@ typedef struct AstNodeDecl {
         AstNodeSumTypeDecl* sumtype_decl;
     };
     Buff* name;
-    bool is_export;
+    VisibilityMode visibility;
     Location* loc;
 } AstNodeDecl;
 
@@ -521,7 +521,7 @@ typedef struct AstNodeFuncPrototype {
     AstNode* func_def;
 
     FuncInline func_inline;
-    bool is_export;
+    VisibilityMode visibility;
     bool is_extern;
     bool is_generic;
     bool is_var_args;  // variable arguments used?
@@ -536,7 +536,7 @@ typedef struct AstNodeModuleStatement {
     Buff* name;
     Buff* short_name;
     bool is_skip;
-    bool is_export;
+    VisibilityMode visibility;
 } AstNodeModuleStatement;
 
 typedef struct AstNodeReturnStatement {
@@ -553,7 +553,7 @@ typedef struct AstNodeVarDecl {
     AstNode* expr;
 
     bool is_const;
-    bool is_export;
+    VisibilityMode visibility;
     bool is_mutable;
 } AstNodeVarDecl;
 
@@ -664,7 +664,7 @@ typedef struct AstNodeConstField {
     Buff* name;
     AstNodeExpression* expr;
     AstNodeCompileTimeValue* comptime_value;
-    bool is_export;
+    VisibilityMode visibility;
 } AstNodeConstField;
 
 typedef struct AstNodeGlobalField {
@@ -679,7 +679,7 @@ typedef struct AstNodeGlobalField {
 typedef struct AstNodeVariable {
     Buff* name;
     AstNodeExpression* expr;
-    bool is_export;
+    VisibilityMode visibility;
     bool is_mutable;
     bool is_argument;
     bool is_used;
