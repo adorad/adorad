@@ -18,9 +18,11 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 
 // Shortcut to `parser->toklist`
 #define pt  parser->toklist
+#define pc  parser->curr_tok
 #define ast_error(...)              panic(ErrorParseError, __VA_ARGS__)
 #define parser_chomp_if(kind)       chomp_if(parser, kind)
 #define parser_expect_token(kind)   expect_token(parser, kind)
+#define CURR_TOK_KIND               parser->curr_tok->kind
 
 // Initialize a new Parser
 Parser* parser_init(Lexer* lexer) {
@@ -73,16 +75,8 @@ AstNode* ast_create_node(AstNodeKind kind) {
     return node;
 }
 
-AstNode* ast_clone_node(AstNode* node) {
-    if(!node)
-        panic(ErrorUnexpectedNull, "Trying to clone a null AstNode?");
-    AstNode* new = ast_create_node(node->kind);
-    // TODO(jasmcaus): Add more struct members
-    return new;
-}
-
 /*
-    A large part of the Parser from this point onwards has been selfishly stolen from Zig's Compiler.
+    A large part of the Parser from this point onwards has been selfishly inspired by Zig's Compiler.
 
     Before, we release the first stable version of Adorad, this parser implementation will be reworked and improved.
 
