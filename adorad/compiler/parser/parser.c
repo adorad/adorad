@@ -228,7 +228,7 @@ static AstNode* ast_parse_var_decl(Parser* parser) {
 
     AstNode* out = ast_create_node(AstNodeKindVarDecl);
     out->data.stmt->var_decl->name = identifier->value;
-    out->data.stmt->var_decl->is_export = export_kwd != null;
+    out->data.stmt->var_decl->visibility = export_kwd != null ? VisibilityModePublic : VisibilityModePrivate;;
     out->data.stmt->var_decl->is_mutable = mutable_kwd != null;
     out->data.stmt->var_decl->is_const = const_kwd != null;
     out->data.stmt->var_decl->expr = expr;

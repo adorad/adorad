@@ -553,8 +553,8 @@ typedef struct AstNodeVarDecl {
     AstNode* expr;
 
     bool is_const;
-    VisibilityMode visibility;
     bool is_mutable;
+    VisibilityMode visibility;
 } AstNodeVarDecl;
 
 // This can be one of:
