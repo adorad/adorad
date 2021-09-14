@@ -171,9 +171,9 @@ typedef struct AstNodeCastExpr {
 
 typedef struct AstNodeIfExpr {
     AstNode* condition;
-    AstNode* then_block;
+    AstNode* if_body;
     AstNode* else_node;
-    bool is_compiletime;
+    bool is_comptime;
     bool is_expr;
     bool has_else;
 } AstNodeIfExpr;
