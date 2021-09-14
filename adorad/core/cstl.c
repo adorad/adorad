@@ -1741,7 +1741,7 @@ cstlVector* _vec_new(UInt64 objsize, UInt64 capacity) {
     CORETEN_ENFORCE_NN(vec, "Could not allocate memory. Memory full.");
 
     vec->internal.data = cast(void*)calloc(objsize, capacity);
-    if(!vec->internal.data) {
+    if(vec->internal.data == null) {
         free(vec);
         CORETEN_ENFORCE_NN(vec->internal.data, "Could not allocate memory. Memory full.");
     }
