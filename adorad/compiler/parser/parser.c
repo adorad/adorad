@@ -20,6 +20,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #define pt  parser->toklist
 #define pc  parser->curr_tok
 #define ast_error(...)              panic(ErrorParseError, __VA_ARGS__)
+#define parser_chomp()              chomp(parser)
 #define parser_chomp_if(kind)       chomp_if(parser, kind)
 #define parser_expect_token(kind)   expect_token(parser, kind)
 #define CURR_TOK_KIND               parser->curr_tok->kind
@@ -49,7 +50,7 @@ inline Token* parser_peek_next(Parser* parser) {
 }
 
 // Consumes a token and moves on to the next token
-inline Token* parser_chomp(Parser* parser) {
+inline Token* chomp(Parser* parser) {
     if(parser->offset >= parser->num_tokens)
         return null;
 
