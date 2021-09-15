@@ -61,6 +61,7 @@ enum AstNodeKind {
     AstNodeKindBinaryOpExpr,   // a binary expression like `&&` or `||
     AstNodeKindPrefixOpExpr,
     AstNodeKindFieldAccessExpr,
+    AstNodeKindAttributeExpr,
     
     AstNodeKindInitExpr,
     AstNodeKindSliceExpr,
