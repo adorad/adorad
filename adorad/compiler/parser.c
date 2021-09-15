@@ -1,6 +1,5 @@
 #include <adorad/compiler/ast.h>
 #include <adorad/compiler/parser.h>
-// #include <adorad/compiler/parser.c>
 
 #define pt  parser->toklist
 #define pc  parser->curr_tok
@@ -37,7 +36,9 @@ static AstNode* ast_parse_container_members(pars) {
                     case LBRACE:
                         AstNode* block = ast_parse_block(parser);
                         if(block != null) {
-                            
+                            AstNode* out = ast_create_node(AstNodeKindAttributeExpr);
+                            out->data.expr->attr_expr->kind = AttributeKindCompileTime;
+                            out->data.expr->attr_expr->expr = block;
                         }
                         break;
                     default:
