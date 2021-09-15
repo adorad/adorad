@@ -2,11 +2,45 @@
 #include <adorad/compiler/parser.h>
 #include <adorad/compiler/parser/parser.c>
 
-#define ast_expected(...) (ast_error("Expected %s", __VA_ARGS__))
+#define pars      Parser* parser
+#define ast_expected(...)   (ast_error("Expected %s", __VA_ARGS__))
 #define ast_unexpected(...) (panic(ErrorUnexpectedToken, __VA_ARGS__))
 
+// ContainerMembers
+//      ContainerDeclarations (ContainerField COMMA)* (ContainerField / ConstainerDeclarations)
+// ContainerDeclarations
+//      | TestDecl ContainerDeclarations
+//      | TopLevelComptime ContainerDeclarations
+//      | KEYWORD(export)? TopLevelDecl ContainerDeclarations
+// TopLevelComptime
+//      ATTRIBUTE(comptime) BlockExpr
+static AstNode* ast_parse_container_members(pars) {
+    while(true) {
+        switch(CURR_TOK_KIND) {
+            case ATTR_COMPTIME:
+                Token* comptime_attr = parser_chomp();
+                switch(CURR_TOK_KIND) {
+                    // // Currently, a top-level comptime decl is as follows:
+                    // //      `[comptime] { ... }`
+                    // // TODO: Support single statements as well, like
+                    // //      `[comptime] UInt32 i = 2` 
+                    // case IDENTIFIER:
+                    //     pc += 1;
+                    case LBRACE:
+                        AstNode* block = ast_parse_block(parser);
+                        if(block != null) {
+                            
+                        }
+                        break;
+                    default:
+                        ast_error("Expected a `[comptime]` block");
+                }
+        }
+    }
+}
+
 // KEYWORD(if) LPAREN? Expr RPAREN? LBRACE Body RBRACE (KEYWORD(else) Body)?
-static AstNode* ast_parse_if_expr(Parser* parser, AstNode* (*body_parser)(Parser*)) {
+static AstNode* ast_parse_if_expr(pars, AstNode* (*body_parser)(Parser*)) {
     Token* if_token = parser_chomp_if(IF);
     if(if_token == null) {
         unreachable();
