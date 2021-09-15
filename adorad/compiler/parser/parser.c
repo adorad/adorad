@@ -64,8 +64,8 @@ inline Token* expect_token(Parser* parser, TokenKind tokenkind) {
         return parser_chomp(parser);
         
     panic(ErrorUnexpectedToken, "Expected `%s`; got `%s`", 
-                                        token_to_buff(tokenkind)->data,
-                                        token_to_buff(parser->curr_tok->kind)->data);
+                                        tokenHash[tokenkind],
+                                        tokenHash[parser->curr_tok->kind]);
     abort();
 }
 
@@ -173,7 +173,7 @@ static AstNode* ast_parse_func_prototype(Parser* parser) {
         Token* next = parser_peek_token(parser);
         ast_error(
             "expected return type; found`%s`",
-            token_to_buff(next->kind)->data
+            tokenHash[next->kind]
         );
     }
 
@@ -296,7 +296,7 @@ static AstNode* ast_parse_if_expr(Parser* parser) {
         Token* token = parser_chomp(parser);
         ast_error(
             "expected `if` body; found `%s`",
-            token_to_buff(token->kind)->data
+            tokenHash[token->kind]
         );
     }
 
@@ -305,7 +305,7 @@ static AstNode* ast_parse_if_expr(Parser* parser) {
     if(else_kwd != null)
         else_body = ast_parse_statement(parser);
 
-    out->data.expr->if_expr->then_block = body;
+    out->data.expr->if_expr->if_body = body;
     out->data.expr->if_expr->has_else = else_body != null;
     out->data.expr->if_expr->else_node = else_body;
     return out;
