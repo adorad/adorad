@@ -24,6 +24,7 @@ typedef struct Parser {
     UInt32 id;
     Buff* fullpath;     // path/to/file.ad
     Buff* basename;     // file.ad
+    Vec* nodelist;      // List of `AstNode*`s
     Lexer* lexer;
     Vec* toklist;       // shortcut to `lexer->toklist`
     Token* curr_tok;

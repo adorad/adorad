@@ -13,6 +13,70 @@
 #define ast_expected(...)   (ast_error("Expected %s", __VA_ARGS__))
 #define ast_unexpected(...) (panic(ErrorUnexpectedToken, __VA_ARGS__))
 
+// Initialize a new Parser
+Parser* parser_init(Lexer* lexer) {
+    Parser* parser = cast(Parser*)calloc(1, sizeof(Parser));
+    parser->fullpath = lexer->loc->fname;
+    // Generally, the ratio of lexer tokens to parser nodes is about 4:1
+    // So, preallocate roughly 25% of the number of lexer tokens
+    parser->nodelist = vec_new(AstNode, cast(UInt64)(vec_size(lexer->toklist) * .25));
+    parser->lexer = lexer;
+    parser->toklist = lexer->toklist;
+    parser->curr_tok = cast(Token*)vec_at(parser->toklist, 0);
+    parser->offset = 0;
+    parser->num_tokens = vec_size(parser->toklist);
+    parser->num_lines = 0;
+    parser->mod_name = null;
+    return parser;
+}
+
+static inline Token* parser_peek_token(Parser* parser) {
+    return parser->curr_tok;
+}
+
+static inline Token* parser_peek_next(Parser* parser) {
+    if(parser->offset + 1 >= parser->num_tokens)
+        return null;
+
+    return cast(Token*)parser->toklist + parser->offset + 1;
+}
+
+// Consumes a token and moves on to the next token
+static inline Token* chomp(Parser* parser) {
+    if(parser->offset >= parser->num_tokens)
+        return null;
+
+    return cast(Token*)parser->toklist + parser->offset++;
+}
+
+// Consumes a token and moves on to the next, if the current token matches the expected token.
+static inline Token* chomp_if(Parser* parser, TokenKind tokenkind) {
+    if(parser->curr_tok->kind == tokenkind)
+        return parser_chomp();
+
+    return null;
+}
+
+static inline void parser_put_back(Parser* parser) {
+    if(parser->offset == 0)
+        unreachable();
+    parser->curr_tok -= 1;
+    parser->offset -= 1;
+}
+
+static inline Token* expect_token(Parser* parser, TokenKind tokenkind) {
+    if(parser->curr_tok->kind == tokenkind)
+        return parser_chomp();
+        
+    ast_expected("`%s`; got `%s`", tokenHash[tokenkind], tokenHash[parser->curr_tok->kind]);
+}
+
+AstNode* ast_create_node(AstNodeKind kind) {
+    AstNode* node = cast(AstNode*)calloc(1, sizeof(AstNode));
+    node->kind = kind;
+    return node;
+}
+
 // ContainerMembers
 //      ContainerDeclarations (ContainerField COMMA)* (ContainerField / ConstainerDeclarations)
 // ContainerDeclarations
