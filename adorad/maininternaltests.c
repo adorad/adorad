@@ -17,7 +17,7 @@ int main(int argc, const char* const argv[]) {
     printf("\033[1;32m\nTokens Vector: \033[0m\n");
     for(UInt64 i=0; i < vec_size(lexer->toklist); i++) {
         Token* tok = vec_at(lexer->toklist, i);
-        printf("TOKEN(%s, \"%s\")\n", token_to_buff(tok->kind)->data, tok->value->data);
+        printf("TOKEN(%s, \"%s\")\n", tokenHash[tok->kind], tok->value->data);
     } 
     printf("\nTotal time = %lfs\n", total);
 
