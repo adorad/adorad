@@ -163,6 +163,16 @@ typedef struct AstNodeAsCast {
     AstNode* expr;
 } AstNodeAsCast;
 
+typedef enum AttributeKind {
+    AttributeKindComptime,
+    AttributeKindInline
+} AttributeKind;
+
+typedef struct AstNodeAttributeExpr { 
+    AstNode* expr;
+    AttributeKind kind;
+} AstNodeAttributeExpr;
+
 typedef struct AstNodeCastExpr {
     AstNode* arg;
     AstNode* expr;
@@ -359,7 +369,8 @@ typedef struct AstNodeSliceExpr {
 //     | AstNodeTypeOfExpr
 typedef struct AstNodeExpression {
     union {
-        AstNodeAsCast*  as_cast;
+        AstNodeAsCast* as_cast;
+        AstNodeAttributeExpr* attr_expr;
         AstNodeCastExpr* cast_expr;
         AstNodeIfExpr* if_expr;
         AstNodeInitExpr* init_expr;
