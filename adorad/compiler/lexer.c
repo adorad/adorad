@@ -55,16 +55,6 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     lexer->offset = 0;          \
     loc_reset(lexer->loc)
 
-// String representation of a TokenKind
-// To access the string representation of a TokenKind object, simply use `tokenHash[tokenkind]`
-// NB: This is here as opposed to in `tokens.[hc]` because it isn't used there and simply leads to more headaches
-// (multiple redefinition errors yada yada)
-static const char* tokenHash[] = {
-    #define TOKENKIND(kind, str)    str
-        ALLTOKENS
-    #undef TOKENKIND
-};
-
 // These macros are used in the switch() statements below during the Lexing of Adorad source files.
 #define WHITESPACE_NO_NEWLINE \
     ' ': case '\r': case '\t': case '\v': case '\f'
