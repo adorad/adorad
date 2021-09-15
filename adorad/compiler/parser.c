@@ -1,8 +1,16 @@
 #include <adorad/compiler/ast.h>
 #include <adorad/compiler/parser.h>
-#include <adorad/compiler/parser/parser.c>
+// #include <adorad/compiler/parser.c>
 
-#define pars      Parser* parser
+#define pt  parser->toklist
+#define pc  parser->curr_tok
+#define ast_error(...)              panic(ErrorParseError, __VA_ARGS__)
+#define parser_chomp()              chomp(parser)
+#define parser_chomp_if(kind)       chomp_if(parser, kind)
+#define parser_expect_token(kind)   expect_token(parser, kind)
+#define CURR_TOK_KIND               parser->curr_tok->kind
+
+#define pars                Parser* parser
 #define ast_expected(...)   (ast_error("Expected %s", __VA_ARGS__))
 #define ast_unexpected(...) (panic(ErrorUnexpectedToken, __VA_ARGS__))
 
