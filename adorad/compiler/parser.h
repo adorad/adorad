@@ -27,6 +27,7 @@ typedef struct Parser {
     Lexer* lexer;
     Vec* toklist;       // shortcut to `lexer->toklist`
     Token* curr_tok;
+    UInt32 offset;      // offset of `curr_tok` in `toklist`
     UInt64 num_tokens;
     UInt64 num_lines;
 

@@ -30,6 +30,7 @@ Parser* parser_init(Lexer* lexer) {
     parser->lexer = lexer;
     parser->toklist = lexer->toklist;
     parser->curr_tok = cast(Token*)vec_at(parser->toklist, 0);
+    parser->offset = 0;
     parser->num_tokens = vec_size(parser->toklist);
     parser->num_lines = 0;
     parser->mod_name = null;
@@ -40,11 +41,19 @@ inline Token* parser_peek_token(Parser* parser) {
     return parser->curr_tok;
 }
 
+inline Token* parser_peek_next(Parser* parser) {
+    if(parser->offset + 1 >= parser->num_tokens)
+        return null;
+
+    return cast(Token*)parser->toklist + parser->offset + 1;
+}
+
 // Consumes a token and moves on to the next token
 inline Token* parser_chomp(Parser* parser) {
-    Token* tok = parser_peek_token(parser);
-    parser->curr_tok += 1;
-    return tok;
+    if(parser->offset >= parser->num_tokens)
+        return null;
+
+    return cast(Token*)parser->toklist + parser->offset++;
 }
 
 // Consumes a token and moves on to the next, if the current token matches the expected token.
@@ -56,7 +65,10 @@ inline Token* chomp_if(Parser* parser, TokenKind tokenkind) {
 }
 
 inline void parser_put_back(Parser* parser) {
+    if(parser->offset == 0)
+        unreachable();
     parser->curr_tok -= 1;
+    parser->offset -= 1;
 }
 
 inline Token* expect_token(Parser* parser, TokenKind tokenkind) {
