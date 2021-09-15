@@ -45,6 +45,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 
 typedef struct Lexer {
     Buff* buffer;       // the Lexical buffer
+    UInt64 buff_cap;    // buffer capacity
     UInt32 offset;      // current buffer offset (in Bytes) 
                         // offset of the curr char (no. of chars b/w the beginning of the Lexical Buffer
                         // and the curr char)

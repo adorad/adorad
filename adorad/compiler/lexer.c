@@ -95,6 +95,7 @@ Lexer* lexer_init(char* buffer, const char* fname) {
 
     lexer->offset = 0;
     lexer->buffer = buff_new(buffer);
+    lexer->buff_cap = buff_len(lexer->buffer);
     lexer->toklist = vec_new(Token, TOKENLIST_ALLOC_CAPACITY);
     lexer->loc = loc_new(fname);
 
@@ -132,7 +133,7 @@ void __lexer_error(Lexer* lexer, Error err, const char* fmt, ...) {
 // Returns the curent character in the Lexical Buffer and advances to the next element
 // It does this by incrementing the buffer offset.
 static inline char advance(Lexer* lexer) {
-    if(lexer->offset >= buff_len(lexer->buffer))
+    if(lexer->offset >= lexer->buff_cap)
         return nullchar;
     
     LEXER_INCREMENT_COLNO;
@@ -143,7 +144,7 @@ static inline char advance(Lexer* lexer) {
 // Advance `n` characters in the Lexical Buffer
 static inline char advancen(Lexer* lexer, UInt32 n) {
     // The '>=' is here because offset and buffer_capacity are off by 1 (0-index vs 1-index respectively)
-    if(lexer->offset + n >= buff_len(lexer->buffer))
+    if(lexer->offset + n >= lexer->buff_cap)
         return nullchar;
     
     lexer->loc->col += n;
@@ -177,7 +178,7 @@ static inline char lexer_peek(Lexer* lexer) {
 // "Look ahead" `n` characters in the Lexical buffer.
 // It _does not_ increment the buffer offset.
 static inline char lexer_peekn(Lexer* lexer, UInt32 n) {
-    if(lexer->offset + n >= buff_len(lexer->buffer))
+    if(lexer->offset + n >= lexer->buff_cap)
         return nullchar;
     
     return (char)lexer->buffer->data[lexer->offset + n];
