@@ -60,7 +60,7 @@ inline Token* chomp(Parser* parser) {
 // Consumes a token and moves on to the next, if the current token matches the expected token.
 inline Token* chomp_if(Parser* parser, TokenKind tokenkind) {
     if(parser->curr_tok->kind == tokenkind)
-        return parser_chomp(parser);
+        return parser_chomp();
 
     return null;
 }
@@ -74,7 +74,7 @@ inline void parser_put_back(Parser* parser) {
 
 inline Token* expect_token(Parser* parser, TokenKind tokenkind) {
     if(parser->curr_tok->kind == tokenkind)
-        return parser_chomp(parser);
+        return parser_chomp();
         
     panic(ErrorUnexpectedToken, "Expected `%s`; got `%s`", 
                                         tokenHash[tokenkind],
@@ -306,7 +306,7 @@ static AstNode* ast_parse_if_expr(Parser* parser) {
         body = ast_parse_assignment_expr(parser);
     
     if(body == null) {
-        Token* token = parser_chomp(parser);
+        Token* token = parser_chomp();
         ast_error(
             "expected `if` body; found `%s`",
             tokenHash[token->kind]
@@ -1065,7 +1065,7 @@ static AstNode* ast_parse_op(Parser* parser) {
     BinaryOpKind op = tokenkind_to_binaryopkind( parser->curr_tok->kind);
 
     if(op != BinaryOpKindInvalid) {
-        Token* op_token = parser_chomp(parser);
+        Token* op_token = parser_chomp();
         AstNode* out = ast_create_node(AstNodeKindBinaryOpExpr);
         out->data.expr->binary_op_expr->op = op;
         return out;
@@ -1146,7 +1146,7 @@ static AstNode* ast_parse_prefix_op(Parser* parser) {
     }
 
     if(op != PrefixOpKindInvalid) {
-        Token* op_token = parser_chomp(parser);
+        Token* op_token = parser_chomp();
         AstNode* out = ast_create_node(AstNodeKindPrefixOpExpr);
         out->data.prefix_op_expr->op = op;
         return out;
