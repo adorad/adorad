@@ -154,6 +154,12 @@ TOKENKIND(TOK___SEPARATORS_BEGIN, ""), \
     TOKENKIND(BACKSLASH,   "\\"),  \
 TOKENKIND(TOK___SEPARATORS_END, ""), \
 \
+    /* Attributes */ \
+TOKENKIND(TOK___ATTRIBUTES_BEGIN, ""),      \
+    TOKENKIND(ATTR_COMPTIME, "[comptime]"),   \
+    TOKENKIND(ATTR_INLINE,   "[inline]"),     \
+TOKENKIND(TOK___ATTRIBUTES_END, ""),    \
+\
     /* Keywords */ \
 TOKENKIND(TOK___KEYWORDS_BEGIN, ""),  \
     TOKENKIND(KEYWORD,       ""), /* Token Classification*/ \
@@ -220,20 +226,19 @@ typedef enum TokenKind {
     #undef TOKENKIND
 } TokenKind;
 
+extern const char* tokenHash[TOK_COUNT];
+
 // Main Token Struct 
 typedef struct Token {
     TokenKind kind;     // Token Kind
     UInt32 offset;      // Offset of the first character of the Token
     Buff* value;        // Token value
-    UInt32 start;       // Starting offset of the token (used in substring-ing tokens of length >1)
-    Location* loc;      // location of the token in the source code
+    Location* loc;      // Location of the token in the source code
 } Token;
 
 // Create a basic (ILLEGAL) token
 Token* token_init();
 // Reset a Token instance
 void token_reset_token(Token* token);
-// Convert a Token to its respective String representation
-Buff* token_to_buff(TokenKind kind);
 
 #endif // ADORAD_TOKEN_H
