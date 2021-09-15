@@ -14,6 +14,12 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #include <stdlib.h>
 #include <adorad/compiler/tokens.h>
 
+static const char* tokenHash[TOK_COUNT] = {
+    #define TOKENKIND(kind, str)    str
+        ALLTOKENS
+    #undef TOKENKIND
+};
+
 // Token constructor
 Token* token_init() {
     Token* token = cast(Token*)calloc(1, sizeof(Token));
@@ -34,6 +40,8 @@ void token_reset_token(Token* token) {
 }
 
 // Convert a Token to its respective String representation
+// Use `tokenHash[kind]` instead
+/*
 Buff* token_to_buff(TokenKind kind) {
     Buff* buf = buff_new(null);
     char* value;
@@ -207,3 +215,4 @@ Buff* token_to_buff(TokenKind kind) {
     buff_set(buf, value);
     return buf;
 }
+*/
