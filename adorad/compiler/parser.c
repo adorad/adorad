@@ -1,17 +1,20 @@
 #include <adorad/compiler/ast.h>
 #include <adorad/compiler/parser.h>
 
-#define pt  parser->toklist
-#define pc  parser->curr_tok
-#define ast_error(...)              panic(ErrorParseError, __VA_ARGS__)
+#define pt      parser->toklist
+#define pc      parser->curr_tok
+#define pars    Parser* parser
+
+#define nodepush(node)              vec_push(parser->nodelist, node)
+
 #define parser_chomp()              chomp(parser)
 #define parser_chomp_if(kind)       chomp_if(parser, kind)
 #define parser_expect_token(kind)   expect_token(parser, kind)
 #define CURR_TOK_KIND               parser->curr_tok->kind
 
-#define pars                Parser* parser
-#define ast_expected(...)   (ast_error("Expected %s", __VA_ARGS__))
-#define ast_unexpected(...) (panic(ErrorUnexpectedToken, __VA_ARGS__))
+#define ast_error(...)              panic(ErrorParseError, __VA_ARGS__)
+#define ast_expected(...)           (ast_error("Expected %s", __VA_ARGS__))
+#define ast_unexpected(...)         (panic(ErrorUnexpectedToken, __VA_ARGS__))
 
 // Initialize a new Parser
 Parser* parser_init(Lexer* lexer) {
@@ -87,10 +90,10 @@ AstNode* ast_create_node(AstNodeKind kind) {
 //      ATTRIBUTE(comptime) BlockExpr
 static AstNode* ast_parse_container_members(pars) {
     while(true) {
-        switch(CURR_TOK_KIND) {
+        switch(pc->kind) {
             case ATTR_COMPTIME:
                 Token* comptime_attr = parser_chomp();
-                switch(CURR_TOK_KIND) {
+                switch(pc->kind) {
                     // // Currently, a top-level comptime decl is as follows:
                     // //      `[comptime] { ... }`
                     // // TODO: Support single statements as well, like
@@ -103,13 +106,19 @@ static AstNode* ast_parse_container_members(pars) {
                             AstNode* out = ast_create_node(AstNodeKindAttributeExpr);
                             out->data.expr->attr_expr->kind = AttributeKindCompileTime;
                             out->data.expr->attr_expr->expr = block;
+                            nodepush(out);
                         }
                         break;
                     default:
                         ast_error("Expected a `[comptime]` block");
                 }
-        }
-    }
+                break;
+            
+            // TODO: Handle more toplevel decls
+            default:
+                unreachable();
+        } // switch(pc->kind)
+    } // while(true)
 }
 
 // KEYWORD(if) LPAREN? Expr RPAREN? LBRACE Body RBRACE (KEYWORD(else) Body)?
