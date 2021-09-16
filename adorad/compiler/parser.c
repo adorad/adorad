@@ -83,7 +83,7 @@ AstNode* ast_create_node(AstNodeKind kind) {
 // TopLevelDecl
 //      | KEYWORD(module) Expr
 //      | KEYWORD(import) Expr
-//      | KEYWORD(alias) AliasExpr
+//      | KEYWORD(alias) Expr
 //      | ATTRIBUTE(comptime) (Expr / BlockExpr)
 //      | VariableDecl
 //      | FuncDecl
@@ -136,6 +136,8 @@ static AstNode* ast_parse_module_expr(Parser* parser) {
     if(module_name == null)
         ast_expected("module name");
     
+    Token* semicolon = parser_chomp_if(SEMICOLON); // this is optional
+
     AstNode* out = ast_create_node(AstNodeKindModuleExpr);
     out->data.expr->module_expr->name = module_name->value;
     return out;
