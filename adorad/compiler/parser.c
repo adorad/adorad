@@ -13,7 +13,7 @@
 #define CURR_TOK_KIND               parser->curr_tok->kind
 
 #define ast_error(...)              panic(ErrorParseError, __VA_ARGS__)
-#define ast_expected(...)           (ast_error("Expected %s", __VA_ARGS__))
+#define ast_expected(...)           (ast_error("Expected %s; got `%s`", __VA_ARGS__, tokenHash[pc->kind]))
 #define ast_unexpected(...)         (panic(ErrorUnexpectedToken, __VA_ARGS__))
 
 // Initialize a new Parser
@@ -71,13 +71,74 @@ static inline Token* expect_token(Parser* parser, TokenKind tokenkind) {
     if(parser->curr_tok->kind == tokenkind)
         return parser_chomp();
         
-    ast_expected("`%s`; got `%s`", tokenHash[tokenkind], tokenHash[parser->curr_tok->kind]);
+    ast_expected("`%s`", tokenHash[tokenkind]);
 }
 
 AstNode* ast_create_node(AstNodeKind kind) {
     AstNode* node = cast(AstNode*)calloc(1, sizeof(AstNode));
     node->kind = kind;
     return node;
+}
+
+// TopLevelDecl
+//      | KEYWORD(module) Expr
+//      | KEYWORD(import) Expr
+//      | KEYWORD(alias) AliasExpr
+//      | ATTRIBUTE(comptime) (Expr / BlockExpr)
+//      | VariableDecl
+//      | FuncDecl
+//      | StructDecl
+//      | EnumDecl
+static AstNode* ast_parse_toplevel_decl(Parser* parser) {
+    AstNode* module = ast_parse_module_expr(parser);
+    if(module != null)
+        return module;
+    
+    AstNode* import = ast_parse_import_expr(parser);
+    if(import != null)
+        return null;
+    
+    AstNode* alias = ast_parse_alias_decl(parser);
+    if(alias != null)
+        return alias;
+    
+    AstNode* comptime = ast_parse_attribute_expr(parser, ATTR_COMPTIME);
+    if(comptime != null)
+        return comptime;
+
+    AstNode* variable = ast_parse_variable_decl(parser);
+    if(variable != null)
+        return variable;
+    
+    AstNode* func_decl = ast_parse_func_decl(parser);
+    if(func_decl != null)
+        return func_decl;
+    
+    AstNode* struct_decl = ast_parse_struct_decl(parser);
+    if(struct_decl != null)
+        return struct_decl;
+    
+    AstNode* enum_decl = ast_parse_enum_decl(parser);
+    if(enum_decl != null)
+        return enum_decl;
+    
+    return null;
+}
+
+// ModuleExpr
+//      KEYWORD(module) Expr SEMICOLON?
+static AstNode* ast_parse_module_expr(Parser* parser) {
+    Token* module_kwd = parser_chomp_if(MODULE);
+    if(module_kwd == null)
+        ast_expected("`module` keyword");
+    
+    Token* module_name = parser_chomp_if(IDENTIFIER);
+    if(module_name == null)
+        ast_expected("module name");
+    
+    AstNode* out = ast_create_node(AstNodeKindModuleExpr);
+    out->data.expr->module_expr->name = module_name->value;
+    return out;
 }
 
 // ContainerMembers
@@ -120,6 +181,9 @@ static AstNode* ast_parse_container_members(pars) {
         } // switch(pc->kind)
     } // while(true)
 }
+
+
+
 
 // KEYWORD(if) LPAREN? Expr RPAREN? LBRACE Body RBRACE (KEYWORD(else) Body)?
 static AstNode* ast_parse_if_expr(pars, AstNode* (*body_parser)(Parser*)) {
