@@ -51,6 +51,7 @@ enum AstNodeKind {
     AstNodeKindVarDecl,       // `some_type var_name = ...`
 
     // Expressions
+    AstNodeKindModuleExpr,     // `module foo`
     AstNodeKindFuncCallExpr,   // `sayHello('Hello!')`
     AstNodeKindIfExpr,         // `if cond { ...}`
     AstNodeKindLoopWhileExpr,  // `loop {}`
@@ -270,6 +271,10 @@ typedef struct AstNodeMatchRangeExpr {
     AstNode* end;
 } AstNodeMatchRangeExpr;
 
+typedef struct AstNodeModuleExpr {
+    Buff* name;
+} AstNodeModuleExpr;
+
 typedef struct AstNodeCatchExpr {
     AstNode* op1;
     AstNode* symbol; // can be nullptr
@@ -363,6 +368,9 @@ typedef struct AstNodeSliceExpr {
 //     | AstNodeLoopExpr
 //     | AstNodeFuncCallExpr
 //     | AstNodeMatchExpr
+//     | AstNodeMatchBranchExpr
+//     | AstNodeMatchRangeExpr
+//     | AstNodeModuleExpr
 //     | AstNodeCatchExpr
 //     | AstNodeBinaryOpExpr
 //     | AstNodeTypeExpr
@@ -379,6 +387,7 @@ typedef struct AstNodeExpression {
         AstNodeMatchExpr* match_expr;
         AstNodeMatchBranchExpr* match_branch_expr;
         AstNodeMatchRangeExpr* match_range_expr;
+        AstNodeModuleExpr* module_expr;
         AstNodeCatchExpr* catch_expr;
         AstNodeTryExpr* try_expr;
         AstNodeBinaryOpExpr* binary_op_expr;
