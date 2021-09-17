@@ -2,9 +2,9 @@
 <h1>The Adorad Language</h1>
 
 [Adorad](https://github.com/AdoradLang/Adorad) |
-[Documentation](https://github.com/AdoradLang/adorad/blob/master/doc/docs.md) |
-[Contributing](https://github.com/AdoradLang/adorad/blob/master/CONTRIBUTING.md) |
-[Compiler design](https://github.com/AdoradLang/adorad/blob/master/COMPILER.md)
+[Documentation](https://github.com/adorad/adorad/blob/master/doc/docs.md) |
+[Contributing](https://github.com/adorad/adorad/blob/master/CONTRIBUTING.md) |
+[Compiler design](https://github.com/adorad/adorad/blob/master/COMPILER.md)
 
 </div>
 <div align="center">
@@ -35,9 +35,9 @@ That's it! Now you have an Adorad executable at `[path/to/adorad]/build/bin/`.
 
 
 ## Troubleshooting
-Please file an issue in GitHub [here](https://github.com/AdoradLang/adorad/issues)
+Please file an issue in GitHub [here](https://github.com/adorad/adorad/issues)
 <!--
-Please see the [Troubleshooting](https://github.com/AdoradLang/adorad/wiki/Troubleshooting) section on our [wiki page](https://github.com/AdoradLang/adorad/wiki)
+Please see the [Troubleshooting](https://github.com/adorad/adorad/wiki/Troubleshooting) section on our [wiki page](https://github.com/adorad/adorad/wiki)
 -->
 
 
