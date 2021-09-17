@@ -44,3 +44,8 @@ Buff* token_to_buff(TokenKind kind) {
     Buff* buf = buff_new(tokenHash[kind]);
     return buf;
 }
+
+// Is `kind` an attribute?
+bool token_is_attribute(TokenKind kind) {
+    return kind > TOK___ATTRIBUTES_BEGIN && kind < TOK___ATTRIBUTES_END;
+}

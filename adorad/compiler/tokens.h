@@ -244,5 +244,7 @@ Token* token_init();
 void token_reset_token(Token* token);
 // Convert a Token to its respective String representation
 Buff* token_to_buff(TokenKind kind);
+// Is an attribute?
+bool token_is_attribute(TokenKind kind);
 
 #endif // ADORAD_TOKEN_H
