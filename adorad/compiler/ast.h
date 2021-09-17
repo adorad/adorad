@@ -449,9 +449,12 @@ typedef struct AstNodeSumTypeDecl {
 typedef struct AstNodeFuncDecl {
     Buff* name;
     Buff* module;      // name of the module
-    Buff* parent_type; // the `type` of which the function belongs to (nullptr, if not a method)
-    Buff* return_type;
+    Vec* params;
+    AstNode* body;      // can be nullptr for no-body functions (just declarations)
+    AstNode* return_type;
+    Buff* parent_type; // the `type` of which the function belongs to (null, if not a method)
     bool is_variadic;  // variadic arguments
+    bool is_generic;
 
     bool is_main;      // true for `func main()`
     bool is_test;      // true for `func test_yyy()`
@@ -463,9 +466,6 @@ typedef struct AstNodeFuncDecl {
     bool is_inline;
     bool is_noinline;
  
-    AstNode* prototype;
-    AstNode* body;      // can be nullptr for no-body functions (just declarations)
-
     VisibilityMode visibility;
 } AstNodeFuncDecl;
 
@@ -531,19 +531,6 @@ typedef enum FuncInline {
     FuncInlineNoinline
 } FuncInline;
 
-typedef struct AstNodeFuncPrototype {
-    Buff* name;
-    Vec* params;  // Vec<AstNode*>
-    AstNode* return_type;
-    AstNode* func_def;
-
-    FuncInline func_inline;
-    VisibilityMode visibility;
-    bool is_extern;
-    bool is_generic;
-    bool is_var_args;  // variable arguments used?
-} AstNodeFuncPrototype;
-
 typedef struct AstNodeImportStatement {
     Buff* name;
     Buff* alias; // can be null
@@ -594,7 +581,6 @@ typedef struct AstNodeStatement {
         AstNodeDeferStatement* defer_stmt;
         AstNodeEmptyStatement* empty_stmt;
         AstNodeExpression* expr_stmt;
-        AstNodeFuncPrototype* func_proto_decl;
         AstNodeImportStatement* import_stmt;
         AstNodeModuleStatement* module_stmt;
         AstNodeReturnStatement* return_stmt;
