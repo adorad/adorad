@@ -81,12 +81,12 @@ AstNode* ast_create_node(AstNodeKind kind) {
 }
 
 // TopLevelDecl
-//      | KEYWORD(module) Statement
-//      | KEYWORD(import) Statement
+//      | ModuleStatement
+//      | ImportStatement
 //      | KEYWORD(alias) Expr
 //      | ATTRIBUTE(comptime) (Expr / BlockExpr)
-//      | VariableDecl
-//      | FuncDecl
+//      | KEYWORD(export)? VariableDecl
+//      | (ATTRIBUTE(INLINE) / ATTRIBUTE(NOINLINE) / ATTRIBUTE(NORETURN))? FuncDecl
 //      | StructDecl
 //      | EnumDecl
 static AstNode* ast_parse_toplevel_decl(Parser* parser) {
@@ -110,17 +110,54 @@ static AstNode* ast_parse_toplevel_decl(Parser* parser) {
     if(variable != null)
         return variable;
     
-    AstNode* func_decl = ast_parse_func_decl(parser);
-    if(func_decl != null)
-        return func_decl;
+    // Attributes?
+    if(!token_is_attribute(pc->kind))
+        goto func_no_attrs;
+
+    bool is_noreturn = false;
+    bool is_comptime = false;
+    bool is_inline = false;
+    bool is_noinline = false;
+    // Parse attributes
+    switch(pc->kind) {
+        case ATTR_NORETURN: is_noreturn = true; break;
+        case ATTR_COMPTIME: is_comptime = true; break;
+        case ATTR_INLINE: is_inline = true; break;
+        case ATTR_NOINLINE: is_noinline = true; break;
+        default: unreachable();
+    }
+    Token* attr = parser_chomp();
+    if(token_is_attribute(pc->kind))
+        ast_error("Can only have one attribute decorating a function");
+
+func_no_attrs:
+    AstNode* func_proto = ast_parse_func_proto(parser);
+    if(func_proto != null) {
+        switch(pc->kind) {
+            case SEMICOLON:
+                Token* semicolon = parser_chomp();
+                return func_proto;
+            case LBRACE:
+                AstNode* body = ast_parse_block(parser);
+                if(body == null)
+                    ast_expected("Expected a body");
+
+                AstNode* out = func_proto;
+                out->data.decl->func_decl->body = body;
+                out->data.decl->func_decl->prototype = func_proto;
+                out->data.decl->func_decl->is_comptime = is_comptime;
+                out->data.decl->func_decl->is_noreturn = is_noreturn;
+                out->data.decl->func_decl->is_inline = is_inline;
+                out->data.decl->func_decl->is_noinline = is_noinline;
+                return out;
+            default:
+                ast_expected("Semicolon or Function Body");
+        } // switch
+    }
     
-    AstNode* struct_decl = ast_parse_struct_decl(parser);
-    if(struct_decl != null)
-        return struct_decl;
-    
-    AstNode* enum_decl = ast_parse_enum_decl(parser);
-    if(enum_decl != null)
-        return enum_decl;
+    AstNode* container_decl = ast_parse_container_decl(parser);
+    if(container_decl != null)
+        return container_decl;
     
     return null;
 }
@@ -162,7 +199,7 @@ static AstNode* ast_parse_import_statement(Parser* parser) {
 }
 
 // AliasDecl
-//      KEYWORD(alias) IDENTIFER KEYWORD(as) IDENTIFIER
+//      KEYWORD(alias) IDENTIFER KEYWORD(as) IDENTIFIER SEMICOLON?
 static AstNode* ast_parse_alias_decl(Parser* parser) {
     Token* alias_kwd = parser_chomp_if(ALIAS);
     if(alias_kwd == null)
