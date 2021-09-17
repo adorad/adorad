@@ -399,15 +399,31 @@ static AstNode* ast_parse_if_expr(Parser* parser) {
     if(lparen == null && rparen != null)
         ast_error("Extra `)` token not expected at this point");
     
-    AstNode* if_body = ast_parse_block_expr(parser);
-    if(if_body == null)
-        ast_expected("`if_body`");
+    AstNode* if_body = null;
+    AstNode* assignment_expr = null;
+    AstNode* block_expr = ast_parse_block_expr(parser);
+    if(block_expr == null) {
+        assignment_expr = ast_parse_assignment_expr(parser);
+        if(assignment_expr == null)
+            ast_expected("block / assignment expression");
+    }
+
+    if(block_expr != null)
+        if_body = block_expr;
+    if(assignment_expr != null)
+        if_body = assignment_expr;
+
+    // If a semicolon is here, chomp it
+    Token* semicolon = parser_chomp_if(SEMICOLON);
     
     AstNode* else_body = null;
     Token* else_kwd = parser_chomp_if(ELSE);
     if(else_kwd != null)
         else_body = body_parser(parser);
     
+    if(else_body == null && semicolon == null)  
+        ast_expected("Semicolon or `else` block");
+        
     AstNode* out = ast_create_node(AstNodeKindIfExpr);
     out->data.expr->if_expr->condition = condition;
     out->data.expr->if_expr->if_body = if_body;
