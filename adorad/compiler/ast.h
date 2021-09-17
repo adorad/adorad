@@ -35,7 +35,7 @@ enum AstNodeKind {
 
     // Functions
     AstNodeKindFuncPrototype,
-    AstNodeKindFuncDef,      // `func hello()`
+    AstNodeKindFuncDecl,      // `func hello()`
 
     // Literals
     AstNodeKindIntLiteral,    // `2`
@@ -574,7 +574,7 @@ typedef struct AstNodeVarDecl {
 //     | AstNodeDeferStatement
 //     | AstNodeEmptyStatement
 //     | AstNodeExpression
-//     | AstNodeFuncDecl (prototype only)
+//     | AstNodeFuncDecl
 //     | AstNodeImportStatement
 //     | AstNodeModuleStatement
 //     | AstNodeReturnStatement
