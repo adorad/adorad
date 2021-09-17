@@ -109,51 +109,10 @@ static AstNode* ast_parse_toplevel_decl(Parser* parser) {
     AstNode* variable = ast_parse_variable_decl(parser);
     if(variable != null)
         return variable;
-    
-    // Attributes?
-    if(!token_is_attribute(pc->kind))
-        goto func_no_attrs;
 
-    bool is_noreturn = false;
-    bool is_comptime = false;
-    bool is_inline = false;
-    bool is_noinline = false;
-    // Parse attributes
-    switch(pc->kind) {
-        case ATTR_NORETURN: is_noreturn = true; break;
-        case ATTR_COMPTIME: is_comptime = true; break;
-        case ATTR_INLINE: is_inline = true; break;
-        case ATTR_NOINLINE: is_noinline = true; break;
-        default: unreachable();
-    }
-    Token* attr = parser_chomp();
-    if(token_is_attribute(pc->kind))
-        ast_error("Can only have one attribute decorating a function");
-
-func_no_attrs:
-    AstNode* func_proto = ast_parse_func_proto(parser);
-    if(func_proto != null) {
-        switch(pc->kind) {
-            case SEMICOLON:
-                Token* semicolon = parser_chomp();
-                return func_proto;
-            case LBRACE:
-                AstNode* body = ast_parse_block(parser);
-                if(body == null)
-                    ast_expected("Expected a body");
-
-                AstNode* out = func_proto;
-                out->data.decl->func_decl->body = body;
-                out->data.decl->func_decl->prototype = func_proto;
-                out->data.decl->func_decl->is_comptime = is_comptime;
-                out->data.decl->func_decl->is_noreturn = is_noreturn;
-                out->data.decl->func_decl->is_inline = is_inline;
-                out->data.decl->func_decl->is_noinline = is_noinline;
-                return out;
-            default:
-                ast_expected("Semicolon or Function Body");
-        } // switch
-    }
+    AstNode* func_decl = ast_parse_func_decl(parser);
+    if(func_decl != null)
+        return func_decl;
     
     AstNode* container_decl = ast_parse_container_decl(parser);
     if(container_decl != null)
@@ -224,6 +183,84 @@ static AstNode* ast_parse_alias_decl(Parser* parser) {
     out->data.decl->alias_decl->alias = aliased->value;
     return out;
 }
+
+// FuncDecl
+//      | <Attributes> KEYWORD(export) KEYWORD(func) IDENTIFIER? LPAREN ParamList RPAREN LARROW TypeExpr (SEMICOLON / BLOCK)
+// where <Attributes> can be one of:
+//      | ATTR_NORETURN
+//      | ATTR_COMPTIME
+//      | ATTR_INLINE
+//      | ATTR_NOINLINE
+static AstNode* ast_parse_func_decl(Parser* parser) {
+    // Attributes?
+    if(!token_is_attribute(pc->kind))
+        goto func_no_attrs;
+
+    bool is_noreturn = false;
+    bool is_comptime = false;
+    bool is_inline = false;
+    bool is_noinline = false;
+    // Parse attributes
+    switch(pc->kind) {
+        case ATTR_NORETURN: is_noreturn = true; break;
+        case ATTR_COMPTIME: is_comptime = true; break;
+        case ATTR_INLINE: is_inline = true; break;
+        case ATTR_NOINLINE: is_noinline = true; break;
+        default: unreachable();
+    }
+    Token* attr = parser_chomp();
+    if(token_is_attribute(pc->kind))
+        ast_error("Can only have one attribute decorating a function");
+
+func_no_attrs:
+    Token* export_kwd = parser_chomp_if(EXPORT);
+    Token* func_kwd = parser_chomp_if(FUNC);
+    if(func_kwd == null)
+        ast_expected("`func` keyword");
+    
+    bool is_variadic = false;
+    Token* identifier = parser_chomp_if(IDENTIFIER);
+    Vec* params = ast_parse_param_list(parser, &is_variadic);
+    Token* larrow = parser_chomp_if(LARROW);
+    AstNode* return_type_expr = ast_parse_type_expr(parser);
+    if(return_type_expr == null)
+        ast_expected("Return type expression. Use `void` if your function doesn't return anything");
+    if(larrow == null && return_type_expr != null)
+        ast_expected("trailing `->` after function prototype");
+    
+    bool no_body = false;
+    AstNode* body = null;
+    AstNode* out = ast_create_node(AstNodeKindFuncDecl);
+    switch(pc->kind) {
+        case SEMICOLON:
+            Token* semicolon = parser_chomp();
+            no_body = true;
+        case LBRACE:
+            body = ast_parse_block(parser);
+            if(body == null)
+                ast_expected("Expected a body");
+            break;
+        default:
+            ast_expected("Semicolon or Function Body");
+    } // switch
+
+    out->data.decl->func_decl->name = identifier->value;
+    out->data.decl->func_decl->params = params;
+    out->data.decl->func_decl->return_type = return_type_expr;
+    out->data.decl->func_decl->body = body;
+    out->data.decl->func_decl->params = params;
+    out->data.decl->func_decl->visibility = export_kwd != null ? VisibilityModePublic : VisibilityModePrivate;
+
+    // Attributes
+    out->data.decl->func_decl->is_variadic = is_variadic;
+    out->data.decl->func_decl->is_comptime = is_comptime;
+    out->data.decl->func_decl->is_noreturn = is_noreturn;
+    out->data.decl->func_decl->is_inline = is_inline;
+    out->data.decl->func_decl->is_noinline = is_noinline;
+
+    return out;
+}
+
 
 // ContainerMembers
 //      ContainerDeclarations (ContainerField COMMA)* (ContainerField / ConstainerDeclarations)
