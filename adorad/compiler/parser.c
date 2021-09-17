@@ -377,7 +377,7 @@ static AstNode* ast_parse_container_members(pars) {
 //      | IfPrefix BlockExpr (KEYWORD(else) Statement)?
 //      | IfPrefix AssignmentExpr (SEMICOLON / KEYWORD(else) Statement)?
 // where IfPrefix is:
-//      KEYWORD(if) LPAREN? Expr RPAREN? LBRACE
+//      KEYWORD(if) LPAREN? Expr RPAREN?
 static AstNode* ast_parse_if_expr(Parser* parser) {
     Token* if_token = parser_chomp_if(IF);
     if(if_token == null)
