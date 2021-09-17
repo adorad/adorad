@@ -184,8 +184,44 @@ static AstNode* ast_parse_alias_decl(Parser* parser) {
     return out;
 }
 
+// VariableDecl
+//      KEYWORD(export)? KEYWORD(mutable)? (TypeExpr / KEYWORD(any)) IDENTIFIER (EQUALS EXPR)? SEMICOLON?
+static AstNode* ast_parse_variable_decl(Parser* parser) {
+    Token* export_kwd = parser_chomp_if(EXPORT);
+    Token* mutable_kwd = parser_chomp_if(MUTABLE);
+
+    AstNode* type_expr = ast_parse_type_expr(parser);
+    Token* any = null;
+    if(type_expr == null) {
+        any = parser_chomp_if(ANY);
+        if(any == null)
+            ast_expected("a type. Use `any` to let the compiler infer the type");
+    }
+
+    Token* identifier = parser_chomp_if(parser);
+    if(identifier == null)
+        ast_expected("an identifier");
+    
+    Token* equals = parser_chomp_if(EQUALS);
+    AstNode* init_expr = null;
+    if(equals != null) {
+        // Expect an expression
+        init_expr = ast_parse_expr(parser);
+    }
+
+    Token* semicolon = parser_chomp_if(SEMICOLON);
+
+    AstNode* out = ast_create_node(AstNodeKindVariableDecl);
+    out->data.scope_obj->var->name = identifier->value;
+    out->data.scope_obj->var->init_expr = init_expr;
+    out->data.scope_obj->var->is_local = !parser->is_in_global_context;
+    out->data.scope_obj->var->is_mutable = mutable_kwd != null ? true : false;
+    out->data.scope_obj->var->visibility = export_kwd != null ? VisibilityModePublic : VisibilityModePrivate;
+    return out;
+}
+
 // FuncDecl
-//      | <Attributes> KEYWORD(export) KEYWORD(func) IDENTIFIER? LPAREN ParamList RPAREN LARROW TypeExpr (SEMICOLON / BLOCK)
+//      <Attributes> KEYWORD(export) KEYWORD(func) IDENTIFIER? LPAREN ParamList RPAREN LARROW TypeExpr (SEMICOLON / BLOCK)
 // where <Attributes> can be one of:
 //      | ATTR_NORETURN
 //      | ATTR_COMPTIME
