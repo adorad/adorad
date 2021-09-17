@@ -194,7 +194,6 @@ typedef struct AstNodeLoopWhileExpr {
     AstNode* cond;
     Vec* statements;
     AstNodeScope* scope;
-    bool is_inline;
 } AstNodeLoopWhileExpr;
 
 typedef struct AstNodeLoopCExpr {
@@ -207,7 +206,6 @@ typedef struct AstNodeLoopCExpr {
     bool has_updation;
     Vec* statements;
     AstNodeScope* scope;
-    bool is_inline;
 } AstNodeLoopCExpr;
 
 typedef struct AstNodeLoopInExpr {
@@ -220,11 +218,11 @@ typedef struct AstNodeLoopInExpr {
     Vec* statements;
     TokenKind tokenkind;
     AstNodeScope* scope;
-    bool is_inline;
 } AstNodeLoopInExpr;
 
 typedef struct AstNodeLoopExpr {
     Buff* label;
+    bool is_inline;
     union {
         AstNodeLoopWhileExpr* loop_while_expr;
         AstNodeLoopCExpr* loop_c_expr;
