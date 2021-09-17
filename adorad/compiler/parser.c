@@ -185,8 +185,9 @@ static AstNode* ast_parse_alias_decl(Parser* parser) {
 }
 
 // VariableDecl
-//      KEYWORD(export)? KEYWORD(mutable)? (TypeExpr / KEYWORD(any)) IDENTIFIER (EQUALS EXPR)? SEMICOLON?
+//      ATTRIBUTE(comptime)? KEYWORD(export)? KEYWORD(mutable)? (TypeExpr / KEYWORD(any)) IDENTIFIER (EQUALS EXPR)? SEMICOLON?
 static AstNode* ast_parse_variable_decl(Parser* parser) {
+    Token* comptime_attr = parser_chomp_if(ATTR_COMPTIME);
     Token* export_kwd = parser_chomp_if(EXPORT);
     Token* mutable_kwd = parser_chomp_if(MUTABLE);
 
@@ -215,7 +216,8 @@ static AstNode* ast_parse_variable_decl(Parser* parser) {
     out->data.scope_obj->var->name = identifier->value;
     out->data.scope_obj->var->init_expr = init_expr;
     out->data.scope_obj->var->is_local = !parser->is_in_global_context;
-    out->data.scope_obj->var->is_mutable = mutable_kwd != null ? true : false;
+    out->data.scope_obj->var->is_comptime = cast(bool)(comptime_attr != null);
+    out->data.scope_obj->var->is_mutable = cast(bool)(mutable_kwd != null);
     out->data.scope_obj->var->visibility = export_kwd != null ? VisibilityModePublic : VisibilityModePrivate;
     return out;
 }
@@ -297,6 +299,38 @@ func_no_attrs:
     return out;
 }
 
+// Statement
+//      | VariableDecl
+//      | BlockExpr
+//      | IfExpr
+//      | LabeledStatement
+//      | MatchExpr
+//      | AssignmentExpr SEMICOLON?
+static AstNode* ast_parse_statement(Parser* parser) {
+    AstNode* var_decl = ast_parse_variable_decl(parser);
+    if(var_decl != null)
+        return var_decl;
+    
+    AstNode* block_expr = ast_parse_block_expr(parser);
+    if(block_expr != null)
+        return block_expr;
+    
+    AstNode* if_expr = ast_parse_if_expr(parser);
+    if(if_expr != null)
+        return if_expr;
+    
+    AstNode* match_expr = ast_parse_match_expr(parser);
+    if(match_expr != null)
+        return match_expr;
+    
+    AstNode* assignment_expr = ast_parse_assignment_expr(parser);
+    if(assignment_expr != null)
+        return assignment_expr;
+    
+    WARN(Hmmm could not parse a suitable statement. Returning null);
+    return null;
+}
+
 
 // ContainerMembers
 //      ContainerDeclarations (ContainerField COMMA)* (ContainerField / ConstainerDeclarations)
@@ -338,9 +372,6 @@ static AstNode* ast_parse_container_members(pars) {
         } // switch(pc->kind)
     } // while(true)
 }
-
-
-
 
 // KEYWORD(if) LPAREN? Expr RPAREN? LBRACE Body RBRACE (KEYWORD(else) Body)?
 static AstNode* ast_parse_if_expr(pars, AstNode* (*body_parser)(Parser*)) {
