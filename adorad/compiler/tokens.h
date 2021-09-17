@@ -158,6 +158,7 @@ TOKENKIND(TOK___SEPARATORS_END, ""), \
 TOKENKIND(TOK___ATTRIBUTES_BEGIN, ""),      \
     TOKENKIND(ATTR_COMPTIME, "[comptime]"),   \
     TOKENKIND(ATTR_INLINE,   "[inline]"),     \
+    TOKENKIND(ATTR_NOINLINE, "[noinline]"),     \
 TOKENKIND(TOK___ATTRIBUTES_END, ""),    \
 \
     /* Keywords */ \
