@@ -405,7 +405,6 @@ typedef struct AstNodeAliasDecl {
 typedef struct AstNodeTypeEnumDecl {
     Buff* name;
     VisibilityMode visibility;
-    Location* loc;
     Vec* fields;     // typedef enum value fields
     Vec* attributes; // typedef enum attributes 
 } AstNodeTypeEnumDecl;
