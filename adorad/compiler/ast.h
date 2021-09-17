@@ -46,8 +46,8 @@ enum AstNodeKind {
     AstNodeKindNilLiteral,    // `nil`
 
     // Declarations
-    AstNodeKindEnumDecl,      // `type Fruits enum { ... }`
-    AstNodeKindUnionDecl,     // `type Fruits union { ... }`
+    AstNodeKindEnumDecl,      // `enum foo { ... }`
+    AstNodeKindUnionDecl,     // `union bar { ... }`
     AstNodeKindVarDecl,       // `some_type var_name = ...`
 
     // Expressions
@@ -398,8 +398,8 @@ typedef struct AstNodeExpression {
 } AstNodeExpression;
 
 typedef struct AstNodeAliasDecl {
-    AstNode* name;
-    AstNode* asname; // can be null
+    Buff* original;
+    Buff* alias;
 } AstNodeAliasDecl;
 
 typedef struct AstNodeTypeEnumDecl {
