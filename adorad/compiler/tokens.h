@@ -194,7 +194,6 @@ TOKENKIND(TOK___KEYWORDS_BEGIN, ""),  \
     TOKENKIND(IMPORT,        "import"),   \
     TOKENKIND(IN,            "in"),       \
     TOKENKIND(INCLUDE,       "include"),  \
-    TOKENKIND(INLINE,        "inline"),   \
     TOKENKIND(ISA,           "isa"),      \
     TOKENKIND(MACRO,         "macro"),    \
     TOKENKIND(MAP,           "map"),      \
