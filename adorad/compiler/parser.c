@@ -476,3 +476,10 @@ static AstNode* ast_parse_loop_expr(Parser* parser) {
     out->data.expr->loop_expr->is_inline = cast(bool)(inline_attr != null);
     return out;
 }
+
+/*
+    TODO: Add implementation for:
+        1. ast_parse_loop_while_expr(parser)
+        2. ast_parse_loop_c_expr(parser)
+        3. ast_parse_loop_in_expr(parser)
+*/
