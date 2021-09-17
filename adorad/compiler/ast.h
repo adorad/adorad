@@ -476,6 +476,8 @@ typedef struct AstNodeFuncDecl {
 //     | AstNodeGlobalDecl
 //     | AstNodeSumTypeDecl 
 typedef struct AstNodeDecl {
+    Buff* name;
+    VisibilityMode visibility;
     union {
         AstNodeAliasDecl* alias_decl;
         AstNodeTypeDecl* type_decl;
@@ -484,8 +486,6 @@ typedef struct AstNodeDecl {
         AstNodeGlobalDecl* global_decl;
         AstNodeSumTypeDecl* sumtype_decl;
     };
-    Buff* name;
-    VisibilityMode visibility;
 } AstNodeDecl;
 
 typedef struct AstNodeAssignmentStatement {
