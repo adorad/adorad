@@ -144,7 +144,7 @@ static inline char advancen(Lexer* lexer, UInt32 n) {
 
 // Returns the previous element in the Lexical buffer.
 // This is non-destructive --> the buffer offset is not updated.
-static inline char lexer_prev(Lexer* lexer) {
+static inline char prev(Lexer* lexer) {
     if(lexer->offset <= 0)
         return nullchar;
 
@@ -153,7 +153,7 @@ static inline char lexer_prev(Lexer* lexer) {
 
 // Returns the previous `n` elements in the Lexical buffer.
 // This is non-destructive --> the buffer offset is not updated.
-static inline char lexer_prevn(Lexer* lexer, UInt32 n) {
+static inline char prevn(Lexer* lexer, UInt32 n) {
     if(lexer->offset - n + 1 <= 0)
         return nullchar;
 
@@ -161,20 +161,20 @@ static inline char lexer_prevn(Lexer* lexer, UInt32 n) {
 }
 
 // Returns the current element in the Lexical Buffer.
-static inline char lexer_peek(Lexer* lexer) {
+static inline char peek(Lexer* lexer) {
     return buff_at(lexer->buffer, lexer->offset);
 }
 
 // "Look ahead" `n` characters in the Lexical buffer.
 // It _does not_ increment the buffer offset.
-static inline char lexer_peekn(Lexer* lexer, UInt32 n) {
+static inline char peekn(Lexer* lexer, UInt32 n) {
     if(lexer->offset + n >= lexer->buff_cap)
         return nullchar;
     
     return (char)lexer->buffer->data[lexer->offset + n];
 }
 
-static void lexer_maketoken(Lexer* lexer, TokenKind kind, Buff* value, UInt32 offset, UInt32 line, UInt32 col) {  
+static void maketoken(Lexer* lexer, TokenKind kind, Buff* value, UInt32 offset, UInt32 line, UInt32 col) {  
     Token* token = token_init();
     CORETEN_ENFORCE_NN(token, "Could not allocate memory. Memory full.");
 
@@ -183,7 +183,7 @@ static void lexer_maketoken(Lexer* lexer, TokenKind kind, Buff* value, UInt32 of
 
         if(kind == STRING || kind == IDENTIFIER || kind == INTEGER || kind == HEX_INT || kind == BIN_INT ||
            kind == OCT_INT)
-            WARN("Expected a token value. Got `null`\n");
+            WARN(Expected a token value. Got `null`\n);
     }
 
     token->kind = kind;
@@ -197,7 +197,7 @@ static void lexer_maketoken(Lexer* lexer, TokenKind kind, Buff* value, UInt32 of
 
 // Scan a comment (single line)
 // We store comments in the lexing phase. The Parser will decide which comments are actually useful and which aren't
-static inline void lexer_lex_sl_comment(Lexer* lexer) {
+static inline void lex_sl_comment(Lexer* lexer) {
     char ch = lexer_advance();
     int comment_length = 0;
     UInt32 prev_offset = lexer->offset - 1;
@@ -217,14 +217,14 @@ static inline void lexer_lex_sl_comment(Lexer* lexer) {
 
     Buff* comment_value = buff_slice(lexer->buffer, prev_offset, comment_length - 1);
     CORETEN_ENFORCE_NN(comment_value, "`comment_value` must not be null");
-    lexer_maketoken(lexer, COMMENT, comment_value, prev_offset, line, col);
+    maketoken(lexer, COMMENT, comment_value, prev_offset, line, col);
 
     LEXER_DECREMENT_OFFSET;
 }
 
 // Scan a comment (multi-line)
 // We have no reason, at the moment, to store a multi-line comment as a Token
-static inline void lexer_lex_ml_comment(Lexer* lexer) {
+static inline void lex_ml_comment(Lexer* lexer) {
     char ch = lexer_advance();
     bool asterisk_found = false; 
     while(ch && !(ch == '/' && asterisk_found)) {
@@ -241,7 +241,7 @@ static inline void lexer_lex_ml_comment(Lexer* lexer) {
 }
 
 // Scan a character
-static inline void lexer_lex_char(Lexer* lexer) {
+static inline void lex_char(Lexer* lexer) {
     char ch = lexer_advance();
     if(ch) {
         LEXER_INCREMENT_OFFSET;
@@ -253,11 +253,11 @@ static inline void lexer_lex_char(Lexer* lexer) {
 }
 
 // Scan an escape char
-static inline void lexer_lex_esc_char(Lexer* lexer) {
+static inline void lex_esc_char(Lexer* lexer) {
 }
 
 // Scan a macro (begins with `@`)
-static inline void lexer_lex_macro(Lexer* lexer) {
+static inline void lex_macro(Lexer* lexer) {
     char ch = lexer_advance();
     int macro_length = 0;
 
@@ -278,13 +278,13 @@ static inline void lexer_lex_macro(Lexer* lexer) {
 
     Buff* macro_value = buff_slice(lexer->buffer, prev_offset - 1, offset_diff);
     CORETEN_ENFORCE_NN(macro_value, "`macro_value` must not be null");
-    lexer_maketoken(lexer, MACRO, macro_value, prev_offset - 1, line, col - 1);
+    maketoken(lexer, MACRO, macro_value, prev_offset - 1, line, col - 1);
 
     LEXER_DECREMENT_OFFSET;
 }
 
 // Scan a string
-static inline void lexer_lex_string(Lexer* lexer) {
+static inline void lex_string(Lexer* lexer) {
     // We already know that the curr char is _not_ a quote (`"`) since an empty string token (`""`) is
     // handled by `lexer_lex()`
     CORETEN_ENFORCE(LEXER_CURR_CHAR != '"');
@@ -312,11 +312,11 @@ static inline void lexer_lex_string(Lexer* lexer) {
     // `offset_diff - 1` so as to ignore the closing quote `"`
     Buff* str_value = buff_slice(lexer->buffer, prev_offset, offset_diff - 1);
     CORETEN_ENFORCE_NN(str_value, "`str_value` must not be null");
-    lexer_maketoken(lexer, STRING, str_value, prev_offset - 1, line, col - 1);
+    maketoken(lexer, STRING, str_value, prev_offset - 1, line, col - 1);
 }
 
 // Returns whether `value` is a keyword or an identifier
-static inline TokenKind lexer_is_keyword_or_identifier(char* value) {
+static inline TokenKind is_keyword_or_identifier(char* value) {
     // Search `tokenHash` for a match for `value`. 
     // If we can't find one, we assume an identifier
     for(TokenKind tokenkind = TOK___KEYWORDS_BEGIN + 1; tokenkind < TOK___KEYWORDS_END; tokenkind++)
@@ -328,13 +328,13 @@ static inline TokenKind lexer_is_keyword_or_identifier(char* value) {
 }
 
 // Scan an identifier
-static inline void lexer_lex_identifier(Lexer* lexer) {
+static inline void lex_identifier(Lexer* lexer) {
     // When this function is called, we alread know that the first character statisfies the `case ALPHA`.
     // So, the remaining characters are ALPHA, DIGIT, or `_`
     // Still, we check it either way to ensure sanity.
-    CORETEN_ENFORCE(char_is_letter(lexer_prev(lexer)) || char_is_digit(lexer_prev(lexer)),
+    CORETEN_ENFORCE(char_is_letter(prev(lexer)) || char_is_digit(prev(lexer)),
                "This message means you've encountered a serious bug within Adorad. Please file an issue on "
-               "Adorad's Github repo.\nError: `lexer_lex_identifier()` hasn't been called with a valid identifier character");
+               "Adorad's Github repo.\nError: `lex_identifier()` hasn't been called with a valid identifier character");
 
     UInt32 prev_offset = lexer->offset;
     UInt32 line = lexer->loc->line;
@@ -355,15 +355,15 @@ static inline void lexer_lex_identifier(Lexer* lexer) {
     CORETEN_ENFORCE_NN(ident_value, "`ident_value` must not be null");
 
     // Determine if a keyword or just a regular identifier
-    TokenKind tokenkind = lexer_is_keyword_or_identifier(ident_value->data);
-    lexer_maketoken(lexer, tokenkind, ident_value, prev_offset - 1, line, col - 1);
+    TokenKind tokenkind = is_keyword_or_identifier(ident_value->data);
+    maketoken(lexer, tokenkind, ident_value, prev_offset - 1, line, col - 1);
 
     LEXER_DECREMENT_OFFSET;
 }
 
 // Attributes
 // Eg. [inline] or [comptime]
-static inline void lexer_lex_attribute(Lexer* lexer) {
+static inline void lex_attribute(Lexer* lexer) {
     UInt32 prev_offset = lexer->offset;
     UInt32 line = lexer->loc->line;
     UInt32 col = lexer->loc->col;
@@ -388,7 +388,7 @@ static inline void lexer_lex_attribute(Lexer* lexer) {
             CORETEN_ENFORCE_NN(attr_value, "`attr_value` must not be null");
 
             // Determine if a keyword or just a regular identifier
-            lexer_maketoken(lexer, ATTRIBUTE, attr_value, prev_offset - 1, line, col - 1);
+            maketoken(lexer, ATTRIBUTE, attr_value, prev_offset - 1, line, col - 1);
 
             LEXER_DECREMENT_OFFSET;
             break;
@@ -398,14 +398,14 @@ static inline void lexer_lex_attribute(Lexer* lexer) {
 }
 
 // Numeric lexing! Finally, the feast can start.
-static inline void lexer_lex_digit(Lexer* lexer) {
+static inline void lex_digit(Lexer* lexer) {
     // 0x... --> Hexadecimal ("0x"|"0X")[0-9A-Fa-f_]+
     // 0o... --> Octal       ("0o"|"0O")[0-7_]+
     // 0b... --> Binary      ("0b"|"0B")[01_]+
     // This cannot be `lexer_advance(lexer)` because we enter here from `lexer_lex()` where we already
     // know that the first char is a digit value. 
     // This value needs to be captured as well in `token->value`
-    char ch = lexer_prev(lexer);
+    char ch = prev(lexer);
     UInt32 prev_offset = lexer->offset - 1;
     UInt32 line = lexer->loc->line;
     UInt32 col = lexer->loc->col - 1;
@@ -529,7 +529,7 @@ static inline void lexer_lex_digit(Lexer* lexer) {
     CORETEN_ENFORCE_NN(digit_value, "`digit_value` must not be null");
     if(!digit_value)
         printf("digit_value = null\n");
-    lexer_maketoken(lexer, tokenkind, digit_value, prev_offset, line, col);
+    maketoken(lexer, tokenkind, digit_value, prev_offset, line, col);
 
     LEXER_DECREMENT_OFFSET;
 }
@@ -547,13 +547,13 @@ static void lexer_lex(Lexer* lexer) {
     TokenKind tokenkind = TOK_ILLEGAL;
 
     while(true) {
-        // `lexer_advance()` returns the current character and moves forward, and `lexer_peek()` returns the current
+        // `lexer_advance()` returns the current character and moves forward, and `peek()` returns the current
         // character (after the advance).
         // For example, if we start from buff[0], 
         //      curr = buff[0]
         //      next = buff[1]
         curr = lexer_advance();
-        next = lexer_peek(lexer);
+        next = peek(lexer);
         tokenkind = TOK_ILLEGAL;
 
         switch(curr) {
@@ -566,15 +566,15 @@ static void lexer_lex(Lexer* lexer) {
                 tokenkind = TOK_NULL;
                 break;
             // Identifier
-            case ALPHA: case '_': tokenkind = TOK_NULL; lexer_lex_identifier(lexer); break;
-            case DIGIT: tokenkind = TOK_NULL; lexer_lex_digit(lexer); break;
+            case ALPHA: case '_': tokenkind = TOK_NULL; lex_identifier(lexer); break;
+            case DIGIT: tokenkind = TOK_NULL; lex_digit(lexer); break;
             case '"':
                 switch(next) {
                     // Empty String literal 
-                    case '"': LEXER_INCREMENT_OFFSET; lexer_maketoken(lexer, STRING, buff_new("\"\""), lexer->offset - 1, 
+                    case '"': LEXER_INCREMENT_OFFSET; maketoken(lexer, STRING, buff_new("\"\""), lexer->offset - 1, 
                                                                       lexer->loc->line, lexer->loc->col - 1); 
                               break;
-                    default: tokenkind = TOK_NULL; lexer_lex_string(lexer); break;
+                    default: tokenkind = TOK_NULL; lex_string(lexer); break;
                 }
                 break;
             case ';':  tokenkind = SEMICOLON; break;
@@ -586,7 +586,7 @@ static void lexer_lex(Lexer* lexer) {
                 // TODO(jasmcaus) Whitespace between `[` and an identifier token needs to be handled appropriately
                 // (whitespace needs to be skipped)
                 switch(next) {
-                    case ALPHA: tokenkind = TOK_NULL; lexer_lex_attribute(lexer); break;
+                    case ALPHA: tokenkind = TOK_NULL; lex_attribute(lexer); break;
                     default: tokenkind = LSQUAREBRACK; break;
                 }
                 break;
@@ -632,15 +632,15 @@ static void lexer_lex(Lexer* lexer) {
                 switch(next) {
                     // Add tokenkind here? 
                     // (TODO) jasmcaus
-                    case '/': tokenkind = TOK_NULL; lexer_lex_sl_comment(lexer); break;
-                    case '*': tokenkind = TOK_NULL; lexer_lex_ml_comment(lexer); break;
+                    case '/': tokenkind = TOK_NULL; lex_sl_comment(lexer); break;
+                    case '*': tokenkind = TOK_NULL; lex_ml_comment(lexer); break;
                     case '=': LEXER_INCREMENT_OFFSET; tokenkind = SLASH_EQUALS; break;
                     default: tokenkind = SLASH; break;
                 }
                 break;
             case '#': 
                 // Ignore shebang on the first line
-                if(lexer->loc->line == 1 && next == '!' && lexer_peekn(lexer, 1) == '/') {
+                if(lexer->loc->line == 1 && next == '!' && peekn(lexer, 1) == '/') {
                     tokenkind = TOK_NULL;
                     // Skip till end of line
                     while(LEXER_CURR_CHAR && (LEXER_CURR_CHAR != '\n' || LEXER_CURR_CHAR != nullchar))
@@ -649,7 +649,7 @@ static void lexer_lex(Lexer* lexer) {
                 // Comment
                 else {
                     tokenkind = TOK_NULL;
-                    lexer_lex_sl_comment(lexer);
+                    lex_sl_comment(lexer);
                 }
                 break;
             case '!':
@@ -692,7 +692,7 @@ static void lexer_lex(Lexer* lexer) {
                     case '-': LEXER_INCREMENT_OFFSET; tokenkind = LARROW; break;
                     case '<': 
                         LEXER_INCREMENT_OFFSET;
-                        char c = lexer_peek(lexer);
+                        char c = peek(lexer);
                         if(c == '=') {
                             LEXER_INCREMENT_OFFSET; tokenkind = LBITSHIFT_EQUALS;
                         } else {
@@ -707,7 +707,7 @@ static void lexer_lex(Lexer* lexer) {
                     case '=': LEXER_INCREMENT_OFFSET; tokenkind = GREATER_THAN_OR_EQUAL_TO; break;
                     case '>': 
                         LEXER_INCREMENT_OFFSET;
-                        char c = lexer_peek(lexer);
+                        char c = peek(lexer);
                         if(c == '=') {
                             LEXER_INCREMENT_OFFSET; tokenkind = RBITSHIFT_EQUALS;
                         } else {
@@ -727,7 +727,7 @@ static void lexer_lex(Lexer* lexer) {
                 switch(next) {
                     case '.': 
                         LEXER_INCREMENT_OFFSET;
-                        char c = lexer_peek(lexer);
+                        char c = peek(lexer);
                         if(c == '.') {
                             LEXER_INCREMENT_OFFSET; tokenkind = ELLIPSIS;
                         } else {
@@ -736,7 +736,7 @@ static void lexer_lex(Lexer* lexer) {
                         break;
                     // Fractions are possible here:
                     // Eg: `.0192` or `.9983838`
-                    case DIGIT: tokenkind = TOK_NULL; lexer_lex_digit(lexer); break;
+                    case DIGIT: tokenkind = TOK_NULL; lex_digit(lexer); break;
                     default: tokenkind = DOT; break;
                 }
                 break;
@@ -747,17 +747,17 @@ static void lexer_lex(Lexer* lexer) {
                 }
                 break;
             case '?': tokenkind = QUESTION; break;
-            case '@': tokenkind = TOK_NULL; lexer_lex_macro(lexer); break;
+            case '@': tokenkind = TOK_NULL; lex_macro(lexer); break;
             default:
                 lexer_error(ErrorSyntaxError, "Invalid character `%c`", curr);
                 break;
         } // switch(ch)
 
         if(tokenkind == TOK_NULL) continue;
-        lexer_maketoken(lexer, tokenkind, buff_new(null), lexer->offset - 1, lexer->loc->line, lexer->loc->col - 1);
+        maketoken(lexer, tokenkind, buff_new(null), lexer->offset - 1, lexer->loc->line, lexer->loc->col - 1);
     } // while
 
 lex_eof:;
 
-    lexer_maketoken(lexer, TOK_EOF, buff_new(null), lexer->offset - 1, lexer->loc->line, lexer->loc->col - 1);
+    maketoken(lexer, TOK_EOF, buff_new(null), lexer->offset - 1, lexer->loc->line, lexer->loc->col - 1);
 }
