@@ -165,6 +165,7 @@ TOKENKIND(TOK___KEYWORDS_BEGIN, ""),  \
     TOKENKIND(KEYWORD,       ""), /* Token Classification*/ \
     TOKENKIND(ANY,           "any"),      \
     TOKENKIND(AS,            "as"),       \
+    TOKENKIND(ALIAS,         "alias"),    \
     TOKENKIND(ASYNC,         "async"),    \
     TOKENKIND(ATOMIC,        "atomic"),   \
     TOKENKIND(BREAK,         "break"),    \
