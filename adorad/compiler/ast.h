@@ -452,11 +452,11 @@ typedef struct AstNodeFuncDecl {
     Buff* parent_type; // the `type` of which the function belongs to (nullptr, if not a method)
     Buff* return_type;
     bool is_variadic;  // variadic arguments
-    VisibilityMode visibility;    // true for `export func abc()`
     bool is_noreturn;  // true for `[noreturn] func 
     bool is_main;      // true for `func main()`
     bool is_test;      // true for `func test_yyy()`
     bool no_body;      // true for function definitions (no function body) `func abc()`
+    VisibilityMode visibility;
 
     AstNode* parameters;
     AstNode* body;      // can be nullptr for no-body functions (just declarations)
