@@ -463,9 +463,9 @@ typedef struct AstNodeFuncDecl {
     bool is_inline;
     bool is_noinline;
 
-    AstNode* params;
+    AstNode* prototype;
     AstNode* body;      // can be nullptr for no-body functions (just declarations)
-    
+
     VisibilityMode visibility;
 } AstNodeFuncDecl;
 
