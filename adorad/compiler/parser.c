@@ -332,7 +332,6 @@ static AstNode* ast_parse_statement(Parser* parser) {
     return null;
 }
 
-
 // ContainerMembers
 //      ContainerDeclarations (ContainerField COMMA)* (ContainerField / ConstainerDeclarations)
 // ContainerDeclarations
@@ -427,5 +426,55 @@ static AstNode* ast_parse_if_expr(Parser* parser) {
     out->data.expr->if_expr->if_body = if_body;
     out->data.expr->if_expr->has_else = else_body != null;
     out->data.expr->if_expr->else_node = else_body;
+    return out;
+}
+
+// Labeled Statements
+//      BlockLabel? (Block / LoopStatement)
+static AstNode* ast_parse_labeled_statement(Parser* parser) {
+    Token* label = ast_parse_block_label(parser);
+    if(label == null)
+        ast_expected("Label");
+
+    AstNode* block = ast_parse_block_expr(parser);
+    if(block != null) {
+        block->data.stmt->block_stmt->label = label != null ? label->value : null;
+        return block;
+    }
+
+    AstNode* loop_statement = ast_parse_loop_expr(parser);
+    if(loop_statement != null) {
+        loop_statement->data.expr->loop_expr->label = label != null ? label->value : null;
+        return loop_statement;
+    }
+
+    if(label != null)
+        ast_expected("either a block or loop statement");
+
+    return null;
+}
+
+// LoopStatement
+//      | ATTRIBUTE(inline)? (LoopWhileExpr / LoopCExpr / LoopInExpr)
+static AstNode* ast_parse_loop_expr(Parser* parser) {
+    Token* inline_attr = parser_chomp_if(ATTR_INLINE);
+    AstNode* out = null;
+
+    AstNode* loop_while_expr = ast_parse_loop_while_expr(parser);
+    if(loop_while_expr != null)
+        out = loop_while_expr;
+
+    AstNode* loop_c_expr = ast_parse_loop_c_expr(parser);
+    if(loop_c_expr != null)
+        out = loop_c_expr;
+
+    AstNode* loop_in_expr = ast_parse_loop_in_expr(parser);
+    if(loop_in_expr != null)
+        out = loop_in_expr;
+
+    if(out == null)
+        ast_expected("loop statement");
+    
+    out->data.expr->loop_expr->is_inline = cast(bool)(inline_attr != null);
     return out;
 }
