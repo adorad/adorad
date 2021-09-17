@@ -48,7 +48,7 @@ enum AstNodeKind {
     // Declarations
     AstNodeKindEnumDecl,      // `enum foo { ... }`
     AstNodeKindUnionDecl,     // `union bar { ... }`
-    AstNodeKindVarDecl,       // `some_type var_name = ...`
+    AstNodeKindVariableDecl,  // `some_type var_name = ...`
 
     // Expressions
     AstNodeKindAliasDeclExpr,  // `alias foo as bar`
@@ -664,27 +664,30 @@ typedef struct AstNodeCompileTimeValue {
 typedef struct AstNodeConstField {
     Buff* module;
     Buff* name;
-    AstNodeExpression* expr;
+    AstNode* expr;
     AstNodeCompileTimeValue* comptime_value;
     VisibilityMode visibility;
 } AstNodeConstField;
 
 typedef struct AstNodeGlobalField {
     Buff* name;
-    AstNodeExpression* expr;
+    AstNode* expr;
 
     bool has_expr;
 } AstNodeGlobalField;
 
 typedef struct AstNodeVariable {
     Buff* name;
-    AstNodeExpression* expr;
-    VisibilityMode visibility;
+    AstNode* type_expr;
+    AstNode* init_expr;
+    bool is_local;     // false, for global vars
+    bool is_comptime;
     bool is_mutable;
     bool is_argument;
     bool is_used;
     bool is_tmp;
     bool is_heap_obj;
+    VisibilityMode visibility;
 } AstNodeVariable;
 
 // This can be one of:
@@ -692,12 +695,12 @@ typedef struct AstNodeVariable {
 //     | AstNodeGlobalField
 //     | AstNodeVariable
 typedef struct AstNodeScopeObject {
+    Buff* name;
     union {
         AstNodeConstField* const_field;
         AstNodeGlobalField* global_field;
         AstNodeVariable* var;
     };
-    Buff* name;
     // AstNodeType* type;
 } AstNodeScopeObject;
 
