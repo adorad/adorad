@@ -463,7 +463,6 @@ typedef struct AstNodeFuncDecl {
 
     AstNode* parameters;
     AstNode* body;      // can be nullptr for no-body functions (just declarations)
-    Location* loc;     // location of the `func` declaration
 } AstNodeFuncDecl;
 
 // This can be one of:
