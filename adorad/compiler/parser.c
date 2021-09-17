@@ -3,14 +3,12 @@
 
 #define pt      parser->toklist
 #define pc      parser->curr_tok
-#define pars    Parser* parser
 
 #define nodepush(node)              vec_push(parser->nodelist, node)
 
 #define parser_chomp()              chomp(parser)
 #define parser_chomp_if(kind)       chomp_if(parser, kind)
 #define parser_expect_token(kind)   expect_token(parser, kind)
-#define CURR_TOK_KIND               parser->curr_tok->kind
 
 #define ast_error(...)              panic(ErrorParseError, __VA_ARGS__)
 #define ast_expected(...)           (ast_error("Expected %s; got `%s`", __VA_ARGS__, tokenHash[pc->kind]))
@@ -332,6 +330,7 @@ static AstNode* ast_parse_statement(Parser* parser) {
     return null;
 }
 
+/*
 // ContainerMembers
 //      ContainerDeclarations (ContainerField COMMA)* (ContainerField / ConstainerDeclarations)
 // ContainerDeclarations
@@ -340,7 +339,6 @@ static AstNode* ast_parse_statement(Parser* parser) {
 //      | KEYWORD(export)? TopLevelDecl ContainerDeclarations
 // TopLevelComptime
 //      ATTRIBUTE(comptime) BlockExpr
-/*
 static AstNode* ast_parse_container_members(pars) {
     while(true) {
         switch(pc->kind) {
