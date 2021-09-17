@@ -430,7 +430,6 @@ typedef struct AstNodeTypeDecl {
 typedef struct AstNodeConstantDecl {
     VisibilityMode visibility;
     bool is_block;  // `const ( ... )`
-    Location* loc;
     Vec* fields;    // various constant declarations
 } AstNodeConstantDecl;
 
