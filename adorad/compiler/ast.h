@@ -681,7 +681,6 @@ typedef struct AstNodeConstField {
 
 typedef struct AstNodeGlobalField {
     Buff* name;
-    Location* type_loc;
     AstNodeExpression* expr;
 
     bool has_expr;
