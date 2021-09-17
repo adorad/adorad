@@ -81,8 +81,8 @@ AstNode* ast_create_node(AstNodeKind kind) {
 }
 
 // TopLevelDecl
-//      | KEYWORD(module) Expr
-//      | KEYWORD(import) Expr
+//      | KEYWORD(module) Statement
+//      | KEYWORD(import) Statement
 //      | KEYWORD(alias) Expr
 //      | ATTRIBUTE(comptime) (Expr / BlockExpr)
 //      | VariableDecl
@@ -90,11 +90,11 @@ AstNode* ast_create_node(AstNodeKind kind) {
 //      | StructDecl
 //      | EnumDecl
 static AstNode* ast_parse_toplevel_decl(Parser* parser) {
-    AstNode* module = ast_parse_module_expr(parser);
+    AstNode* module = ast_parse_module_statement(parser);
     if(module != null)
         return module;
     
-    AstNode* import = ast_parse_import_expr(parser);
+    AstNode* import = ast_parse_import_statement(parser);
     if(import != null)
         return null;
     
@@ -125,9 +125,9 @@ static AstNode* ast_parse_toplevel_decl(Parser* parser) {
     return null;
 }
 
-// ModuleExpr
-//      KEYWORD(module) Expr SEMICOLON?
-static AstNode* ast_parse_module_expr(Parser* parser) {
+// ModuleStatement
+//      KEYWORD(module) Statement SEMICOLON?
+static AstNode* ast_parse_module_statement(Parser* parser) {
     Token* module_kwd = parser_chomp_if(MODULE);
     if(module_kwd == null)
         ast_expected("`module` keyword");
@@ -138,8 +138,53 @@ static AstNode* ast_parse_module_expr(Parser* parser) {
     
     Token* semicolon = parser_chomp_if(SEMICOLON); // this is optional
 
-    AstNode* out = ast_create_node(AstNodeKindModuleExpr);
-    out->data.expr->module_expr->name = module_name->value;
+    AstNode* out = ast_create_node(AstNodeKindModuleStatement);
+    out->data.stmt->module_stmt->name = module_name->value;
+    return out;
+}
+
+// ImportStatement
+//      | KEYWORD(import) Statement
+static AstNode* ast_parse_import_statement(Parser* parser) {
+    Token* import_kwd = parser_chomp_if(IMPORT);
+    if(import_kwd == null)
+        ast_expected("`import` keyword");
+    
+    Token* import_name = parser_chomp_if(IDENTIFIER);
+    if(import_name == null)
+        ast_expected("import name");
+    
+    Token* semicolon = parser_chomp_if(SEMICOLON); // this is optional
+
+    AstNode* out = ast_create_node(AstNodeKindImportStatement);
+    out->data.stmt->import_stmt->name = import_name->value;
+    return out;
+}
+
+// AliasDecl
+//      KEYWORD(alias) IDENTIFER KEYWORD(as) IDENTIFIER
+static AstNode* ast_parse_alias_decl(Parser* parser) {
+    Token* alias_kwd = parser_chomp_if(ALIAS);
+    if(alias_kwd == null)
+        unreachable();
+    
+    Token* original = parser_chomp_if(IDENTIFIER);
+    if(original == null)
+        ast_expected("an identifier after `alias`");
+    
+    Token* as_kwd = parser_chomp_if(AS);
+    if(as_kwd == null)
+        ast_expected("`as` keyword");
+    
+    Token* aliased = parser_chomp_if(IDENTIFIER);
+    if(aliased == null)
+        ast_expected("an alias for identifier `%s`", original->value);
+    
+    Token* semicolon = parser_chomp_if(SEMICOLON); // this is optional
+
+    AstNode* out = ast_create_node(AstNodeKindAliasDeclExpr);
+    out->data.decl->alias_decl->original = original->value;
+    out->data.decl->alias_decl->alias = aliased->value;
     return out;
 }
 

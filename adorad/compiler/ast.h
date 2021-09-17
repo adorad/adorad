@@ -439,7 +439,6 @@ typedef struct AstNodeConstantDecl {
 typedef struct AstNodeGlobalDecl {
     Buff* module;    // globals declared in a module, persist through that module
     bool is_block;   // `global ( ... )`
-    Location* loc;
     Vec* fields;     // various global declarations
 } AstNodeGlobalDecl;
 
@@ -447,7 +446,6 @@ typedef struct AstNodeSumTypeDecl {
     Buff* name;
     VisibilityMode visibility;
     Vec* variant_types; // Vec<AstNodeType*>
-    Location* loc;
 } AstNodeSumTypeDecl;
 
 // Function or Method Declaration
