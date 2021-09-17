@@ -219,7 +219,7 @@ CORETEN_STATIC_ASSERT(sizeof(UIntptr) == sizeof(Intptr));
         #define false  false
         #define true   true
     #else
-        typedef Bool32 bool;
+        typedef Bool8 bool;
         static const bool false = 0;
         static const bool true = 1;
     #endif // __cplusplus   
