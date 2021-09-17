@@ -456,7 +456,6 @@ typedef struct AstNodeFuncDecl {
     bool is_main;      // true for `func main()`
     bool is_test;      // true for `func test_yyy()`
     bool no_body;      // true for function definitions (no function body) `func abc()`
-    VisibilityMode visibility;
 
     // Attributes
     bool is_noreturn;  // true for `[noreturn] func
@@ -466,6 +465,8 @@ typedef struct AstNodeFuncDecl {
 
     AstNode* params;
     AstNode* body;      // can be nullptr for no-body functions (just declarations)
+    
+    VisibilityMode visibility;
 } AstNodeFuncDecl;
 
 // This can be one of:
