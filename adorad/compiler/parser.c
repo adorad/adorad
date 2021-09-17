@@ -483,3 +483,17 @@ static AstNode* ast_parse_loop_expr(Parser* parser) {
         2. ast_parse_loop_c_expr(parser)
         3. ast_parse_loop_in_expr(parser)
 */
+static AstNode* ast_parse_loop_while_expr(Parser* parser) {
+    CORETEN_ENFORCE(false, "TODO");
+    return null;
+}
+
+static AstNode* ast_parse_loop_c_expr(Parser* parser) {
+    CORETEN_ENFORCE(false, "TODO");
+    return null;
+}
+
+static AstNode* ast_parse_loop_in_expr(Parser* parser) {
+    CORETEN_ENFORCE(false, "TODO");
+    return null;
+}
