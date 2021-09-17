@@ -497,3 +497,21 @@ static AstNode* ast_parse_loop_in_expr(Parser* parser) {
     CORETEN_ENFORCE(false, "TODO");
     return null;
 }
+
+// BlockExprStatement
+//      | BlockExpr
+//      | AssignmentExpr SEMICOLON?
+static AstNode* ast_parse_block_expr_statement(Parser* parser) {
+    AstNode* block_expr = ast_parse_block_expr(parser);
+    if(block_expr != null)
+        return block_expr;
+    
+    AstNode* assignment_expr = ast_parse_assignment_expr(parser);
+    if(assignment_expr != null) {
+        Token* semicolon = parser_chomp_if(SEMICOLON);
+        return assignment_expr;
+    }
+
+    ast_expected("block or assignment expression");
+    return null;
+}
