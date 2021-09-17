@@ -155,10 +155,11 @@ TOKENKIND(TOK___SEPARATORS_BEGIN, ""), \
 TOKENKIND(TOK___SEPARATORS_END, ""), \
 \
     /* Attributes */ \
-TOKENKIND(TOK___ATTRIBUTES_BEGIN, ""),      \
+TOKENKIND(TOK___ATTRIBUTES_BEGIN, ""),        \
     TOKENKIND(ATTR_COMPTIME, "[comptime]"),   \
     TOKENKIND(ATTR_INLINE,   "[inline]"),     \
-    TOKENKIND(ATTR_NOINLINE, "[noinline]"),     \
+    TOKENKIND(ATTR_NOINLINE, "[noinline]"),   \
+    TOKENKIND(ATTR_NORETURN, "[noreturn]"),   \
 TOKENKIND(TOK___ATTRIBUTES_END, ""),    \
 \
     /* Keywords */ \
