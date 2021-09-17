@@ -695,7 +695,6 @@ typedef struct AstNodeVariable {
     bool is_used;
     bool is_tmp;
     bool is_heap_obj;
-    Location* loc;
 } AstNodeVariable;
 
 // This can be one of:
