@@ -35,6 +35,7 @@ typedef struct Parser {
     // These are little hacks used during Parsing. This is expected to be removed in the future
     bool is_builtin_module;
     Buff* mod_name;   // null if `is_builtin_module` is false
+    bool is_in_global_context; // false, if parsing inside a scoped field
 } Parser;
 
 Parser* parser_init(Lexer* lexer);
