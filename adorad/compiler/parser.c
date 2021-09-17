@@ -383,10 +383,8 @@ static AstNode* ast_parse_container_members(pars) {
 //      KEYWORD(if) LPAREN? Expr RPAREN? LBRACE
 static AstNode* ast_parse_if_expr(Parser* parser) {
     Token* if_token = parser_chomp_if(IF);
-    if(if_token == null) {
+    if(if_token == null)
         unreachable();
-        // return null;
-    }
 
     Token* lparen = parser_chomp_if(LPAREN); // this is optional
     AstNode* condition = ast_parse_expr(parser);
@@ -423,7 +421,7 @@ static AstNode* ast_parse_if_expr(Parser* parser) {
     
     if(else_body == null && semicolon == null)  
         ast_expected("Semicolon or `else` block");
-        
+
     AstNode* out = ast_create_node(AstNodeKindIfExpr);
     out->data.expr->if_expr->condition = condition;
     out->data.expr->if_expr->if_body = if_body;
