@@ -639,7 +639,6 @@ typedef struct AstNodeIntegerLiteral {
 
 typedef struct AstNodeCharLiteral {
     Buff* value;
-    Location* loc;
 } AstNodeCharLiteral;
 
 typedef struct AstNodeStringLiteral {
