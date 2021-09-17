@@ -486,12 +486,10 @@ typedef struct AstNodeDecl {
     };
     Buff* name;
     VisibilityMode visibility;
-    Location* loc;
 } AstNodeDecl;
 
 typedef struct AstNodeAssignmentStatement {
     AstNodeKind op;
-    Location* loc;
     Vec* right;        // Vec<AstNodeExpression*>
     Vec* left;         // Vec<AstNodeExpression*>
     Vec* right_types;  // Vec<AstNodeExpression*>
