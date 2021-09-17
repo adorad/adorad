@@ -491,7 +491,7 @@ typedef struct AstNodeAssignmentStatement {
 
 // `{ ... }`
 typedef struct AstNodeBlock {
-    Buff* name; // for labeled block statements
+    Buff* label; // for labeled block statements
     Vec* statements;
 } AstNodeBlock;
 
