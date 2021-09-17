@@ -411,7 +411,6 @@ typedef struct AstNodeTypeEnumDecl {
 
 typedef struct AstNodeTypeStructDecl {
     Buff* name;
-    Location* loc;
     Vec* fields;    // variables, etc
     Vec* methods;   // methods
 } AstNodeTypeStructDecl;
