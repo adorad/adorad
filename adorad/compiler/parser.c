@@ -381,7 +381,7 @@ static AstNode* ast_parse_container_members(pars) {
 //      | IfPrefix AssignmentExpr (SEMICOLON / KEYWORD(else) Statement)?
 // where IfPrefix is:
 //      KEYWORD(if) LPAREN? Expr RPAREN? LBRACE
-static AstNode* ast_parse_if_expr(Parser* parser, AstNode* (*body_parser)(Parser*)) {
+static AstNode* ast_parse_if_expr(Parser* parser) {
     Token* if_token = parser_chomp_if(IF);
     if(if_token == null) {
         unreachable();
@@ -396,11 +396,10 @@ static AstNode* ast_parse_if_expr(Parser* parser, AstNode* (*body_parser)(Parser
 
     if(lparen != null && rparen == null)
         ast_expected("closing `(`");
-    
     if(lparen == null && rparen != null)
         ast_error("Extra `)` token not expected at this point");
     
-    AstNode* if_body = body_parser(parser);
+    AstNode* if_body = ast_parse_block_expr(parser);
     if(if_body == null)
         ast_expected("`if_body`");
     
