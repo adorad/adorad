@@ -191,22 +191,22 @@ static AstNode* ast_parse_func_prototype(Parser* parser) {
     }
 
     AstNode* out = ast_create_node(AstNodeKindFuncPrototype);
-    out->data.stmt->func_proto_decl->name = identifier->value;
-    out->data.stmt->func_proto_decl->params = params;
-    out->data.stmt->func_proto_decl->return_type = return_type;
+    // out->data.stmt->func_proto_decl->name = identifier->value;
+    // out->data.stmt->func_proto_decl->params = params;
+    // out->data.stmt->func_proto_decl->return_type = return_type;
 
     for(UInt64 i = 0; i < vec_size(params); i++) {
         AstNode* param_decl = vec_at(params, i);
         CORETEN_ENFORCE(param_decl->kind == AstNodeKindParamDecl);
-        if(param_decl->data.param_decl->is_var_args)
-            out->data.stmt->func_proto_decl->is_var_args = true;
+        // if(param_decl->data.param_decl->is_var_args)
+        //     out->data.stmt->func_proto_decl->is_var_args = true;
         
         // Check for multiple variadic arguments in prototype
         // Adorad supports only 1
-        if(i != vec_size(params) - 1 && out->data.stmt->func_proto_decl->is_var_args)
-            ast_error(
-                "Cannot have multiple variadic arguments in function prototype"
-            );
+    //     if(i != vec_size(params) - 1 && out->data.stmt->func_proto_decl->is_var_args)
+    //         ast_error(
+    //             "Cannot have multiple variadic arguments in function prototype"
+    //         );
     }
     return out;
 }
@@ -230,7 +230,7 @@ static AstNode* ast_parse_var_decl(Parser* parser) {
     
     parser_expect_token(SEMICOLON); // TODO: Remove this need
 
-    AstNode* out = ast_create_node(AstNodeKindVarDecl);
+    AstNode* out = ast_create_node(AstNodeKindVariableDecl);
     out->data.stmt->var_decl->name = identifier->value;
     out->data.stmt->var_decl->visibility = export_kwd != null ? VisibilityModePublic : VisibilityModePrivate;;
     out->data.stmt->var_decl->is_mutable = mutable_kwd != null;
@@ -243,7 +243,7 @@ static AstNode* ast_parse_var_decl(Parser* parser) {
 static AstNode* ast_parse_statement(Parser* parser) {
     AstNode* var_decl = ast_parse_var_decl(parser);
     if(var_decl != null) {
-        CORETEN_ENFORCE(var_decl->kind == AstNodeKindVarDecl);
+        CORETEN_ENFORCE(var_decl->kind == AstNodeKindVariableDecl);
         return var_decl;
     }
 
@@ -353,7 +353,7 @@ static AstNode* ast_parse_labeled_statements(Parser* parser) {
 // Loops
 //      (KEYWORD(inline))? loop ... {  }
 static AstNode* ast_parse_loop_statement(Parser* parser) {
-    Token* inline_token = parser_chomp_if(INLINE);
+    Token* inline_token = parser_chomp_if(ATTR_INLINE);
 
     CORETEN_ENFORCE(false);
     // TODO

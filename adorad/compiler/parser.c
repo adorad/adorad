@@ -271,8 +271,9 @@ func_no_attrs:
     AstNode* out = ast_create_node(AstNodeKindFuncDecl);
     switch(pc->kind) {
         case SEMICOLON:
-            Token* semicolon = parser_chomp();
+            parser_chomp();
             no_body = true;
+            break;
         case LBRACE:
             body = ast_parse_block(parser);
             if(body == null)
@@ -340,6 +341,7 @@ static AstNode* ast_parse_statement(Parser* parser) {
 //      | KEYWORD(export)? TopLevelDecl ContainerDeclarations
 // TopLevelComptime
 //      ATTRIBUTE(comptime) BlockExpr
+/*
 static AstNode* ast_parse_container_members(pars) {
     while(true) {
         switch(pc->kind) {
@@ -372,6 +374,7 @@ static AstNode* ast_parse_container_members(pars) {
         } // switch(pc->kind)
     } // while(true)
 }
+*/
 
 // KEYWORD(if) LPAREN? Expr RPAREN? LBRACE Body RBRACE (KEYWORD(else) Body)?
 static AstNode* ast_parse_if_expr(pars, AstNode* (*body_parser)(Parser*)) {
