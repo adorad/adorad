@@ -125,13 +125,6 @@ typedef enum IdentifierKind {
     IdentifierKindGlobal,     // if declared within a `global` scope
 } IdentifierKind;
 
-typedef enum AttributeKind {
-    AttributeKindPlain,      // [name]
-    AttributeKindString,     // ['name']
-    AttributeKindNumber,     // [123]
-    AttributeKindCompileTime // [compiletime]
-} AttributeKind;
-
 // The `[]` before a function/variable
 // Eg: [inline], [compiletime]
 typedef struct AstNodeAttribute {
@@ -167,14 +160,9 @@ typedef struct AstNodeAsCast {
     AstNode* expr;
 } AstNodeAsCast;
 
-typedef enum AttributeKind {
-    AttributeKindComptime,
-    AttributeKindInline
-} AttributeKind;
-
 typedef struct AstNodeAttributeExpr { 
     AstNode* expr;
-    AttributeKind kind;
+    // AttributeKind kind;
 } AstNodeAttributeExpr;
 
 typedef struct AstNodeCastExpr {
