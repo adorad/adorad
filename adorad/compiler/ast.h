@@ -51,7 +51,7 @@ enum AstNodeKind {
     AstNodeKindVarDecl,       // `some_type var_name = ...`
 
     // Expressions
-    AstNodeKindModuleExpr,     // `module foo`
+    AstNodeKindAliasDeclExpr,  // `alias foo as bar`
     AstNodeKindFuncCallExpr,   // `sayHello('Hello!')`
     AstNodeKindIfExpr,         // `if cond { ...}`
     AstNodeKindLoopWhileExpr,  // `loop {}`
@@ -69,6 +69,9 @@ enum AstNodeKind {
     AstNodeKindArrayAccessExpr,
     AstNodeKindArrayType,
     AstNodeKindInferredArrayType,
+
+    AstNodeKindModuleStatement,     // `module foo`
+    AstNodeKindImportStatement,     // `import foo as bar`'
 
     // Fields
     AstNodeKindTypeDecl,       // `type name T { ... }`  where T is one of {enum/struct}
@@ -271,10 +274,6 @@ typedef struct AstNodeMatchRangeExpr {
     AstNode* end;
 } AstNodeMatchRangeExpr;
 
-typedef struct AstNodeModuleExpr {
-    Buff* name;
-} AstNodeModuleExpr;
-
 typedef struct AstNodeCatchExpr {
     AstNode* op1;
     AstNode* symbol; // can be nullptr
@@ -370,7 +369,6 @@ typedef struct AstNodeSliceExpr {
 //     | AstNodeMatchExpr
 //     | AstNodeMatchBranchExpr
 //     | AstNodeMatchRangeExpr
-//     | AstNodeModuleExpr
 //     | AstNodeCatchExpr
 //     | AstNodeBinaryOpExpr
 //     | AstNodeTypeExpr
@@ -387,7 +385,6 @@ typedef struct AstNodeExpression {
         AstNodeMatchExpr* match_expr;
         AstNodeMatchBranchExpr* match_branch_expr;
         AstNodeMatchRangeExpr* match_range_expr;
-        AstNodeModuleExpr* module_expr;
         AstNodeCatchExpr* catch_expr;
         AstNodeTryExpr* try_expr;
         AstNodeBinaryOpExpr* binary_op_expr;
@@ -549,8 +546,8 @@ typedef struct AstNodeFuncPrototype {
 } AstNodeFuncPrototype;
 
 typedef struct AstNodeImportStatement {
-    Buff* module;
-    Buff* alias;           // can be null
+    Buff* name;
+    Buff* alias; // can be null
 } AstNodeImportStatement;
 
 typedef struct AstNodeModuleStatement {
