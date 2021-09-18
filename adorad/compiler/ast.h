@@ -86,6 +86,7 @@ enum AstNodeKind {
     AstNodeKindUnreachable,
     AstNodeKindMatchBranch,
     AstNodeKindMatchRange,
+    AstNodeKindOptional,
 };
 
 typedef enum VisibilityMode {
