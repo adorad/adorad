@@ -691,3 +691,18 @@ static AstNode* ast_parse_prefix_expr(Parser* parser) {
     out->data.prefix_op_expr->expr = lhs;
     return out;
 }
+
+// TypeExpr
+//      PrefixTypeOp*
+// where PrefixTypeOp is one of:
+//      | QUESTION  (?)
+//      | SliceTypeStart 
+//      | PointerTypeStart LPAREN Expr RPAREN 
+//      | ArrayTypeStart
+// where SliceTypeStart is
+//      LSQUAREBRACK (COLON EXPR)? RSQUAREBRACK
+// PointerTypeStart
+//      | MULT (*)
+//      | LSQUAREBRACK MULT (LETTERC / COLON Expr)? RSQUAREBRACK
+// and ArrayTypeStart
+//      LSQUAREBRACK Expr (COLON Expr)? RSQUAREBRACK
