@@ -585,11 +585,12 @@ static AstNode* ast_parse_assignment_expr(Parser* parser) {
 
 typedef struct ast_prec_table {
     TokenKind tok_kind;
-    UInt8 prec_value;
+    UInt8 prec;
     BinaryOpKind bin_kind;
 } ast_prec_table;
 
 // A table of binary operator precedence. Higher precedence numbers are stickier.
+#define PRECEDENCE_TABLE_SIZE   (sizeof(precedence_table)/sizeof(precedence_table[0]))
 static const ast_prec_table precedence_table[] = {
     // { MULT_MULT, 60, BinaryOpKindMultMult  },
     { MULT, 60, BinaryOpKindMult  },
@@ -615,3 +616,50 @@ static const ast_prec_table precedence_table[] = {
 
     { OR, 10, BinaryOpKindBoolOr  },
 };
+
+static ast_prec_table lookup_precedence(TokenKind kind) {
+    for(int i = 0; i < PRECEDENCE_TABLE_SIZE; i++) {
+        if(precedence_table[i].tok_kind == kind)
+            return precedence_table[i];
+    }
+    ast_error("Expected a valid assignment token op");
+}
+
+static AstNode* ast_parse_precedence(Parser* parser, UInt8 min_prec) {
+    AstNode* out = ast_parse_prefix_expr(parser);
+    if(out == null)
+        return null;
+    
+    UInt8 banned_prec = 0;
+
+    while(true) {
+        ast_prec_table prec = lookup_precedence(pc->kind);
+        if(prec.prec < min_prec or prec.prec == banned_prec)
+            break;
+        
+        parser_chomp();
+        Token* op_token = pc;
+
+        AstNode* rhs = ast_parse_precedence(parser, prec.prec + 1);
+        if(rhs == null)
+            ast_error("Invalid token");
+        
+        out->data.expr->binary_op_expr->lhs = out;
+        out->data.expr->binary_op_expr->op = prec.bin_kind;
+        out->data.expr->binary_op_expr->rhs = rhs;
+
+        switch(pc->kind) {
+            case EQUALS_EQUALS:
+            case EXCLAMATION_EQUALS:
+            case GREATER_THAN:
+            case LESS_THAN:
+            case GREATER_THAN_OR_EQUAL_TO:
+            case LESS_THAN_OR_EQUAL_TO:
+                banned_prec = prec.prec;
+                break;
+            default:
+                break;
+        }
+    }
+    return out;
+}
