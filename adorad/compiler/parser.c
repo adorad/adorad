@@ -592,29 +592,29 @@ typedef struct ast_prec_table {
 // A table of binary operator precedence. Higher precedence numbers are stickier.
 #define PRECEDENCE_TABLE_SIZE   (sizeof(precedence_table)/sizeof(precedence_table[0]))
 static const ast_prec_table precedence_table[] = {
-    // { MULT_MULT, 60, BinaryOpKindMultMult  },
-    { MULT, 60, BinaryOpKindMult  },
-    { MOD, 60, BinaryOpKindMod  },
-    { SLASH, 60, BinaryOpKindDiv  },
+    // { MULT_MULT, 60, BinaryOpKindMultMult },
+    { MULT, 60, BinaryOpKindMult },
+    { MOD, 60, BinaryOpKindMod },
+    { SLASH, 60, BinaryOpKindDiv },
 
-    { PLUS, 50, BinaryOpKindAdd  },
-    { MINUS, 50, BinaryOpKindSubtract  },
-    { PLUS_EQUALS, 50, BinaryOpKindAssignmentPlus  },
-    { MINUS_EQUALS, 50, BinaryOpKindAssignmentMinus  },
+    { PLUS, 50, BinaryOpKindAdd },
+    { MINUS, 50, BinaryOpKindSubtract },
+    { PLUS_EQUALS, 50, BinaryOpKindAssignmentPlus },
+    { MINUS_EQUALS, 50, BinaryOpKindAssignmentMinus },
 
-    { LBITSHIFT, 40, BinaryOpKindBitshitLeft  },
-    { RBITSHIFT, 40, BinaryOpKindBitshitRight  },
+    { LBITSHIFT, 40, BinaryOpKindBitshitLeft },
+    { RBITSHIFT, 40, BinaryOpKindBitshitRight },
     
-    { EQUALS_EQUALS, 30, BinaryOpKindCmpEqual  },
-    { EXCLAMATION_EQUALS, 30, BinaryOpKindCmpNotEqual  },
-    { GREATER_THAN, 30, BinaryOpKindCmpGreaterThan  },
-    { LESS_THAN, 30, BinaryOpKindCmpLessThan  },
-    { GREATER_THAN_OR_EQUAL_TO, 30, BinaryOpKindCmpGreaterThanorEqualTo  },
-    { LESS_THAN_OR_EQUAL_TO, 30, BinaryOpKindCmpLessThanorEqualTo  },
+    { EQUALS_EQUALS, 30, BinaryOpKindCmpEqual },
+    { EXCLAMATION_EQUALS, 30, BinaryOpKindCmpNotEqual },
+    { GREATER_THAN, 30, BinaryOpKindCmpGreaterThan },
+    { LESS_THAN, 30, BinaryOpKindCmpLessThan },
+    { GREATER_THAN_OR_EQUAL_TO, 30, BinaryOpKindCmpGreaterThanorEqualTo },
+    { LESS_THAN_OR_EQUAL_TO, 30, BinaryOpKindCmpLessThanorEqualTo },
 
-    { AND, 20, BinaryOpKindBoolAnd  },
+    { AND, 20, BinaryOpKindBoolAnd },
 
-    { OR, 10, BinaryOpKindBoolOr  },
+    { OR, 10, BinaryOpKindBoolOr },
 };
 
 static ast_prec_table lookup_precedence(TokenKind kind) {
