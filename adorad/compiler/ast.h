@@ -276,16 +276,16 @@ typedef struct AstNodeTryExpr {
 
 typedef enum BinaryOpKind {
     BinaryOpKindInvalid,
-    BinaryOpKindAssignmentPlus,    // +=
-    BinaryOpKindAssignmentMinus,   // -=
     BinaryOpKindAssignmentMult,    // *=
     BinaryOpKindAssignmentDiv,     // /=
     BinaryOpKindAssignmentMod,     // %=
+    BinaryOpKindAssignmentPlus,    // +=
+    BinaryOpKindAssignmentMinus,   // -=
     BinaryOpKindAssignmentBitshiftLeft,  // <<=
     BinaryOpKindAssignmentBitshiftRight, // >>=
     BinaryOpKindAssignmentBitAnd, // &=
-    BinaryOpKindAssignmentBitOr,  // |=
     BinaryOpKindAssignmentBitXor, // ^=
+    BinaryOpKindAssignmentBitOr,  // |=
     BinaryOpKindAssignmentEquals, // =
 
     BinaryOpKindCmpEqual,                 // ==
