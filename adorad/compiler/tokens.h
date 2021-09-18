@@ -160,7 +160,9 @@ TOKENKIND(TOK___ATTRIBUTES_BEGIN, ""),        \
     TOKENKIND(ATTR_INLINE,   "[inline]"),     \
     TOKENKIND(ATTR_NOINLINE, "[noinline]"),   \
     TOKENKIND(ATTR_NORETURN, "[noreturn]"),   \
-TOKENKIND(TOK___ATTRIBUTES_END, ""),    \
+    TOKENKIND(ATTR_LIKELY,   "[likely]"),     \
+    TOKENKIND(ATTR_UNLIKELY, "[unlikely]"),   \
+TOKENKIND(TOK___ATTRIBUTES_END, ""),          \
 \
     /* Keywords */ \
 TOKENKIND(TOK___KEYWORDS_BEGIN, ""),  \
