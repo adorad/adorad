@@ -663,3 +663,31 @@ static AstNode* ast_parse_precedence(Parser* parser, UInt8 min_prec) {
     }
     return out;
 }
+
+// PrefixExpr
+//      PrefixOp* PrimaryExpr
+// where PrefixOp is one of:
+//      | EXCLAMATION   (!)
+//      | MINUS         (-)
+//      | TILDA         (~)
+//      | AND           (&)
+//      | KEYWORD(try)
+static AstNode* ast_parse_prefix_expr(Parser* parser) {
+    PrefixOpKind op;
+    switch(parser->curr_tok->kind) {
+        case NOT: op = PrefixOpKindBoolNot; break;
+        case EXCLAMATION: op = PrefixOpKindNegation; break;
+        case AND: op = PrefixOpKindAddrOf; break;
+        case TRY: op = PrefixOpKindTry; break;
+        default: return ast_parse_primary_expr(parser);
+    }
+
+    AstNode* lhs = ast_parse_prefix_expr(parser);
+    if(lhs == null)
+        ast_expected("prefix op expression");
+
+    AstNode* out = ast_create_node(AstNodeKindPrefixOpExpr);
+    out->data.prefix_op_expr->op = op;
+    out->data.prefix_op_expr->expr = lhs;
+    return out;
+}
