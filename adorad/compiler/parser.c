@@ -515,3 +515,70 @@ static AstNode* ast_parse_block_expr_statement(Parser* parser) {
     ast_expected("block or assignment expression");
     return null;
 }
+
+// BlockExpr
+//      BlockLabel? Block
+static AstNode* ast_parse_block_expr(Parser* parser) {
+    switch(pc->kind) {
+        case IDENTIFIER:
+            if((pc->kind + 1) == COLON && (pc->kind + 2) == LBRACE) {
+                pc += 2;
+                return ast_parse_block(parser);    
+            } else {
+                return null;
+            }
+            break;
+        case LBRACE:
+            return ast_parse_block(parser);
+        default:
+            return null;
+    }
+}
+
+// AssignmentExpr
+//      Expr (AssignmentOp Expr)?
+// where AssignmentOp can be one of:
+//      | MULT_EQUALS       (*=)
+//      | SLASH_EQUALS      (/=)
+//      | MOD_EQUALS        (%=)
+//      | PLUS_EQUALS       (+=)
+//      | MINUS_EQUALS      (-=)
+//      | LBITSHIFT_EQUALS  (<<=)
+//      | RBITSHIFT_EQUALS  (>>=)
+//      | AND_EQUALS        (&=)
+//      | XOR_EQUALS        (^=)
+//      | OR_EQUALS         (|=)
+//      | EQUALS            (=)
+static AstNode* ast_parse_assignment_expr(Parser* parser) {
+    AstNode* lhs = ast_parse_expr(parser);
+    if(lhs == null)
+        return null;
+
+    BinaryOpKind op;
+    switch(pc->kind) {
+        // AssignmentOp
+        case MULT_EQUALS: op = BinaryOpKindAssignmentMult; break;
+        case SLASH_EQUALS: op = BinaryOpKindAssignmentDiv; break;
+        case MOD_EQUALS: op = BinaryOpKindAssignmentMod; break;
+        case PLUS_EQUALS: op = BinaryOpKindAssignmentPlus; break;
+        case MINUS_EQUALS: op = BinaryOpKindAssignmentMinus; break;
+        case LBITSHIFT_EQUALS: op = BinaryOpKindAssignmentBitshiftLeft; break;
+        case RBITSHIFT_EQUALS: op = BinaryOpKindAssignmentBitshiftRight; break;
+        case AND_EQUALS: op = BinaryOpKindAssignmentBitAnd; break;
+        case XOR_EQUALS: op = BinaryOpKindAssignmentBitXor; break;
+        case OR_EQUALS: op = BinaryOpKindAssignmentBitOr; break;
+        case EQUALS: op = BinaryOpKindAssignmentEquals; break;
+
+        default: return lhs;
+    }
+
+    AstNode* rhs = ast_parse_expr(parser);
+    if(rhs == null)
+        ast_expected("an expression after assignment op");
+
+    AstNode* out = ast_create_node(AstNodeKindBinaryOpExpr);
+    out->data.expr->binary_op_expr->op = op;
+    out->data.expr->binary_op_expr->lhs = lhs;
+    out->data.expr->binary_op_expr->rhs = rhs;
+    return out;
+}
