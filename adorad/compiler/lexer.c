@@ -181,7 +181,7 @@ static void maketoken(Lexer* lexer, TokenKind kind, Buff* value, UInt32 offset, 
     if(!value->data) {
         value = token_to_buff(kind);
 
-        if(kind == STRING || kind == IDENTIFIER || kind == INTEGER || kind == HEX_INT || kind == BIN_INT ||
+        if(kind == STRING or kind == IDENTIFIER or kind == INTEGER or kind == HEX_INT or kind == BIN_INT or
            kind == OCT_INT)
             WARN(Expected a token value. Got `null`\n);
     }
@@ -204,7 +204,7 @@ static inline void lex_sl_comment(Lexer* lexer) {
     UInt32 line = lexer->loc->line;
     UInt32 col = lexer->loc->col;
 
-    while(ch && ch != '\n') {
+    while(ch != nullchar and ch != '\n') {
         ch = lexer_advance();
         ++comment_length;
     }
@@ -227,9 +227,9 @@ static inline void lex_sl_comment(Lexer* lexer) {
 static inline void lex_ml_comment(Lexer* lexer) {
     char ch = lexer_advance();
     bool asterisk_found = false; 
-    while(ch && !(ch == '/' && asterisk_found)) {
+    while(ch and !(ch == '/' and asterisk_found)) {
         asterisk_found = false; 
-        while(ch && ch!= '*')
+        while(ch and ch!= '*')
             ch = lexer_advance();
         
         if(ch == '*')
@@ -266,7 +266,7 @@ static inline void lex_macro(Lexer* lexer) {
     UInt32 line = lexer->loc->line;
     UInt32 col = lexer->loc->col;
 
-    while(char_is_letter(ch) || char_is_digit(ch)) {
+    while(char_is_letter(ch) or char_is_digit(ch)) {
         ch = lexer_advance();
         ++macro_length;
     }
@@ -332,7 +332,7 @@ static inline void lex_identifier(Lexer* lexer) {
     // When this function is called, we alread know that the first character statisfies the `case ALPHA`.
     // So, the remaining characters are ALPHA, DIGIT, or `_`
     // Still, we check it either way to ensure sanity.
-    CORETEN_ENFORCE(char_is_letter(prev(lexer)) || char_is_digit(prev(lexer)),
+    CORETEN_ENFORCE(char_is_letter(prev(lexer)) or char_is_digit(prev(lexer)),
                "This message means you've encountered a serious bug within Adorad. Please file an issue on "
                "Adorad's Github repo.\nError: `lex_identifier()` hasn't been called with a valid identifier character");
 
@@ -342,7 +342,7 @@ static inline void lex_identifier(Lexer* lexer) {
     int ident_length = 0;
     char ch = lexer_advance();
 
-    while(char_is_letter(ch) || char_is_digit(ch)) {
+    while(char_is_letter(ch) or char_is_digit(ch)) {
         ch = lexer_advance();
         ++ident_length;
     }
@@ -378,7 +378,7 @@ static inline void lex_attribute(Lexer* lexer) {
         // Possible attribute text
         case ALPHA:
             ch = lexer_advance();
-            while(char_is_letter(ch) || char_is_digit(ch)) {
+            while(char_is_letter(ch) or char_is_digit(ch)) {
                 ch = lexer_advance();
                 ++attr_length;
             }
@@ -478,17 +478,17 @@ static inline void lex_digit(Lexer* lexer) {
         // Fractions, or Integer?
         else {
             // Normal Floats
-            if(ch == '.' || ch == '_') {
+            if(ch == '.' or ch == '_') {
                 ch = lexer_advance();
                 if(ch == '_')
                     lexer_error(ErrorSyntaxError, "Unexpected `_` near `.`");
             }
             
             // Exponents (Float)
-            else if(ch == 'e' || ch == 'E') {
+            else if(ch == 'e' or ch == 'E') {
                 // Skip over [eE]
                 ch = lexer_advance();
-                if(ch == '+' || ch == '-') { 
+                if(ch == '+' or ch == '-') { 
                     ch = lexer_advance();
                 } else {
                     lexer_error(ErrorSyntaxError, "Expected [+-] after exponent `e`. Got `%c`", ch);
@@ -506,7 +506,7 @@ static inline void lex_digit(Lexer* lexer) {
                 digit_length = exp_digits + 1; // Account for the prev digit
             }
             // Imaginary
-            else if(ch == 'j' || ch == 'J') {
+            else if(ch == 'j' or ch == 'J') {
                 // digit_length = imag_count;
             }
         }
@@ -539,7 +539,7 @@ static void lexer_lex(Lexer* lexer) {
     // Some UTF8 text may start with a 3-byte 'BOM' marker sequence. If it exists, skip over them because they 
     // are useless bytes. Generally, it is not recommended to add BOM markers to UTF8 texts, but it's not 
     // uncommon (especially on Windows).
-    if(lexer->buffer->data[0] == (char)0xef && lexer->buffer->data[1] == (char)0xbb && lexer->buffer->data[2] == (char)0xbf)
+    if(lexer->buffer->data[0] == (char)0xef and lexer->buffer->data[1] == (char)0xbb and lexer->buffer->data[2] == (char)0xbf)
         lexer_advancen(3);
 
     char next = nullchar;
@@ -640,10 +640,10 @@ static void lexer_lex(Lexer* lexer) {
                 break;
             case '#': 
                 // Ignore shebang on the first line
-                if(lexer->loc->line == 1 && next == '!' && peekn(lexer, 1) == '/') {
+                if(lexer->loc->line == 1 and next == '!' and peekn(lexer, 1) == '/') {
                     tokenkind = TOK_NULL;
                     // Skip till end of line
-                    while(LEXER_CURR_CHAR && (LEXER_CURR_CHAR != '\n' || LEXER_CURR_CHAR != nullchar))
+                    while(LEXER_CURR_CHAR and (LEXER_CURR_CHAR != '\n' or LEXER_CURR_CHAR != nullchar))
                         curr = lexer_advance();
                 }
                 // Comment

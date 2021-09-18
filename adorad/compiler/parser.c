@@ -261,7 +261,7 @@ func_no_attrs:
     AstNode* return_type_expr = ast_parse_type_expr(parser);
     if(return_type_expr == null)
         ast_expected("Return type expression. Use `void` if your function doesn't return anything");
-    if(larrow == null && return_type_expr != null)
+    if(larrow == null and return_type_expr != null)
         ast_expected("trailing `->` after function prototype");
     
     bool no_body = false;
@@ -389,9 +389,9 @@ static AstNode* ast_parse_if_expr(Parser* parser) {
         ast_expected("condition");
     Token* rparen = parser_chomp_if(RPAREN); // this is optional
 
-    if(lparen != null && rparen == null)
+    if(lparen != null and rparen == null)
         ast_expected("closing `(`");
-    if(lparen == null && rparen != null)
+    if(lparen == null and rparen != null)
         ast_error("Extra `)` token not expected at this point");
     
     AstNode* if_body = null;
@@ -416,7 +416,7 @@ static AstNode* ast_parse_if_expr(Parser* parser) {
     if(else_kwd != null)
         else_body = body_parser(parser);
     
-    if(else_body == null && semicolon == null)  
+    if(else_body == null and semicolon == null)  
         ast_expected("Semicolon or `else` block");
 
     AstNode* out = ast_create_node(AstNodeKindIfExpr);
@@ -521,7 +521,7 @@ static AstNode* ast_parse_block_expr_statement(Parser* parser) {
 static AstNode* ast_parse_block_expr(Parser* parser) {
     switch(pc->kind) {
         case IDENTIFIER:
-            if((pc->kind + 1) == COLON && (pc->kind + 2) == LBRACE) {
+            if((pc->kind + 1) == COLON and (pc->kind + 2) == LBRACE) {
                 pc += 2;
                 return ast_parse_block(parser);    
             } else {
