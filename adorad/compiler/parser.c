@@ -717,5 +717,7 @@ static AstNode* ast_parse_type_expr(Parser* parser) {
             out->data.prefix_op_expr->expr = expr;
             out->data.prefix_op_expr->op = PrefixOpKindOptional;
             return out;
+        default:
+            CORETEN_ENFORCE(false, "TODO");
     }
 }
