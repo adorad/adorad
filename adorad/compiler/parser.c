@@ -706,3 +706,16 @@ static AstNode* ast_parse_prefix_expr(Parser* parser) {
 //      | LSQUAREBRACK MULT (LETTERC / COLON Expr)? RSQUAREBRACK
 // and ArrayTypeStart
 //      LSQUAREBRACK Expr (COLON Expr)? RSQUAREBRACK
+static AstNode* ast_parse_type_expr(Parser* parser) {
+    AstNode* out = null;
+    switch(pc->kind) {
+        case QUESTION:
+            AstNode* expr = ast_parse_expr(parser);
+            if(expr == null)
+                ast_error("expression");
+            out = ast_create_node(AstNodeKindPrefixOpExpr);
+            out->data.prefix_op_expr->expr = expr;
+            out->data.prefix_op_expr->op = PrefixOpKindOptional;
+            return out;
+    }
+}
