@@ -459,17 +459,24 @@ static AstNode* ast_parse_loop_expr(Parser* parser) {
     AstNode* out = null;
 
     AstNode* loop_while_expr = ast_parse_loop_while_expr(parser);
-    if(loop_while_expr != null)
+    if(loop_while_expr != null) {
         out = loop_while_expr;
+        goto outexpect;
+    }
 
     AstNode* loop_c_expr = ast_parse_loop_c_expr(parser);
-    if(loop_c_expr != null)
+    if(loop_c_expr != null) {
         out = loop_c_expr;
+        goto outexpect;
+    }
 
     AstNode* loop_in_expr = ast_parse_loop_in_expr(parser);
-    if(loop_in_expr != null)
+    if(loop_in_expr != null) {
         out = loop_in_expr;
+        goto outexpect;
+    }
 
+outexpect:
     if(out == null)
         ast_expected("loop statement");
     
