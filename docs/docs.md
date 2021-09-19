@@ -317,12 +317,12 @@ These are the allowed possibilities:
 
 ```adorad
    Int8 → Int16 → Int → Int64
-                     ↘      ↘
-                    Float32 → Float64
-                       ↗       ↗
- Byte → Unsigned16 → Unsigned32 → Unsigned64 ⬎
-      ↘     ↘     ↘      Ptr
-   Int8 → Int16 → Int → Int64 ⬏
+                ↘            ↘
+                  Float32 → Float64
+                 ↗           ↗
+ Byte → Unsigned16 → Unsigned32 → Unsigned64
+      ↘      ↘        ↘           ↳ Ptr
+       Int8 → Int16 → Int → Int64 ↗
 ```
 
 An `Int` value for example can be automatically promoted to `Float64` or `Int64` but **not** to `Float32` or `Unsigned32`. (`Float32` would mean a precision loss for large values and `Unsigned32` would mean loss of the sign for negative values).
