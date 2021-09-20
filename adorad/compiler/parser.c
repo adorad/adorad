@@ -590,15 +590,15 @@ static AstNode* ast_parse_assignment_expr(Parser* parser) {
     return out;
 }
 
-typedef struct ast_prec_table {
+typedef struct ast_prec {
     TokenKind tok_kind;
     UInt8 prec;
     BinaryOpKind bin_kind;
-} ast_prec_table;
+} ast_prec;
 
 // A table of binary operator precedence. Higher precedence numbers are stickier.
 #define PRECEDENCE_TABLE_SIZE   (sizeof(precedence_table)/sizeof(precedence_table[0]))
-static const ast_prec_table precedence_table[] = {
+static const ast_prec precedence_table[] = {
     // { MULT_MULT, 60, BinaryOpKindMultMult },
     { MULT, 60, BinaryOpKindMult },
     { MOD, 60, BinaryOpKindMod },
@@ -624,7 +624,7 @@ static const ast_prec_table precedence_table[] = {
     { OR, 10, BinaryOpKindBoolOr },
 };
 
-static ast_prec_table lookup_precedence(TokenKind kind) {
+static ast_prec lookup_precedence(TokenKind kind) {
     for(int i = 0; i < PRECEDENCE_TABLE_SIZE; i++) {
         if(precedence_table[i].tok_kind == kind)
             return precedence_table[i];
@@ -640,7 +640,7 @@ static AstNode* ast_parse_precedence(Parser* parser, UInt8 min_prec) {
     UInt8 banned_prec = 0;
 
     while(true) {
-        ast_prec_table prec = lookup_precedence(pc->kind);
+        ast_prec prec = lookup_precedence(pc->kind);
         if(prec.prec < min_prec or prec.prec == banned_prec)
             break;
         
