@@ -11,36 +11,7 @@ The language promotes writing simple and clear code with minimal abstraction.
 
 Despite being simple, Adorad gives you a ton of power. Anything you can do in other languages, you can do in Adorad.
 
-## Install from source
-The major way to get the latest and greatest V, is to **install it from source**.
-It is **easy**, and it usually takes **only a few seconds**.
-
-
-### Linux, macOS, FreeBSD, etc:
-You need `git`, and a C compiler like `tcc`, `gcc` or `clang`, and `make`:
-```bash
-git clone https://github.com/adorad-lang/Adorad
-cd Adorad
-make
-```
-
-### Windows:
-You need `git`, and a C compiler like `tcc`, `gcc`, `clang` or `msvc`:
-```bash
-git clone https://github.com/adorad-lang/Adorad
-cd Adorad
-make.bat -tcc
-```
-NB: You can also pass one of `-gcc`, `-msvc`, `-clang` to `make.bat` instead,
-if you do prefer to use a different C compiler, but -tcc is small, fast, and
-easy to install (Adorad will download a prebuilt binary automatically).
-
-It is recommended to add this folder to the PATH of your environment variables.
-This can be done with the command `adorad.exe symlink`.
-
-
 ## Table of Contents
-
 <table>
     <tr><td width=33% valign=top>
 
@@ -128,15 +99,42 @@ This can be done with the command `adorad.exe symlink`.
 </td></tr>
 </table>
 
-<!--
-NB: there are several special keywords, which you can put after the code fences for v:
-compile, live, ignore, failcompile, oksyntax, badsyntax, wip, nofmt
-For more details, do: `v check-md`
--->
+## 1. Lexical Conventions
+### a. Source Encoding
+Adorad source code is UTF-8 encoded. Invalid UTF-8 byte sequences result in compile-time errors.
+
+### b. Whitespace
+Whitespace is any non-empty string containing either of the following patterns:
+* `U+0009` (horizontal tab, `'\t'`)
+* `U+000A` (line feed, `'\n'`)
+* `U+000B` (vertical tab)
+* `U+000C` (form feed)
+* `U+000D` (carriage return, `'\r'`)
+* `U+0020` (space, ' ')
+* `U+0085` (next line)
+* `U+200E` (left-to-right mark)
+* `U+200F` (right-to-left mark)
+* `U+2028` (line separator)
+* `U+2029` (paragraph separator)
+
+### c. Comments
+<!-- Syntax for multiline comments are expected to be changed before the official release -->
+```python
+# this is a comment
+"""
+this is a multiline comment
+"""
+```
+
+### d. Identifiers
+An identifier is a non-empty Unicode string of the following pattern:
+`(letter | _) {letter | 0-9 | _}*`
+where `letter` is: `[A-Z][a-z]`.
+
+All characters in an identifier are meaningful. Adorad's current implementation allows, at most, 256 characters in an identifier.
 
 
-## Hello World
-
+## 2. Hello World
 
 ```adorad
 print('Hello World')
@@ -151,7 +149,7 @@ Congratulations - you just wrote and executed your first Adorad program!
 You can compile a program without execution with `adorad hello.ad`.
 See `adorad help` for all supported commands.
 
-In many other languages (such as C/C++, Go, and Rust), `main` is the entry point for your program. Adorad doesn't mind whichever you use. Write a ``main()`` function or don't - Adorad will work the same regardless. 
+In many other languages (such as C/C++, D, Go, and Rust), `main` is the entry point for your program. Adorad doesn't mind whichever you use. Write a ``main()`` function or don't - Adorad will work the same regardless. 
 
 ```adorad
 func main() {
@@ -163,18 +161,7 @@ For the sake of brevity, you can completely omit the `func main()` for small pro
 We do, however, recommend you add the ``func main()`` for larger programs (such as [Modules](#modules))
 
 
-## Comments
-
-```adorad
-// This is a single line comment.
-"""
-This is a multiline comment.
-   /* This can be nested. */
-   """ This however won't work """ 
-"""
-```
-
-## Functions
+## 3. Functions
 
 ```adorad
 func main() {
@@ -182,18 +169,18 @@ func main() {
 	print(sub(100, 50))
 }
 
-func Int add(Int x, Int y) {
+func add(Int x, Int y) -> Int {
 	return x + y
 }
 
-func Int sub(Int x, Int y) {
+func sub(Int x, Int y) -> Int {
 	return x - y
 }
 ```
 
 Here, the type comes *before* the argument's name.
 
-Adorad will support functional overloading via <ins>Multiple Dispatch</ins> in version 2.0. 
+- Note: Adorad will support functional overloading in version 2.0. 
 
 Functions can be used before their declaration:
 `add` and `sub` are declared after `main`, but can still be called from `main`.
@@ -204,55 +191,51 @@ and declarations.
 ### Returning multiple values
 
 ```adorad
-func {Int, Int} foo(){
+func foo() -> {Int, Int} {
 	return 2, 3
 }
 
 a, b = foo()
-print(a) // 2
-print(b) // 3
-c, _ = foo() // ignore values using `_`
+print(a) # 2
+print(b) # 3
+c, _ = foo() # ignore values using `_`
 ```
 
-## Symbol visibility
+## 4. Symbol visibility
 
 ```adorad
-public func public_function() {
+export func public_function() {
 }
 
 func private_function() {
 }
 ```
 
-Functions are private (*i.e* not exported) by default. To allow other modules to use them, prepend `public`. The same applies
-to constants and types.
+Symbols in Adorad are private (*i.e* not exported) by default. To allow other modules to use them, 
+prepend the `export` keyword.
+This applies to variables, constants, and functions.
 
-Note: `public` can only be used from a named module.
-For information about creating a module, see [Modules](#modules).
-
-
-## Variables
+## 5. Variables
 
 ```adorad
-name = 'Bob'
-age = 20
-large_number = Int64(9999999999)
+name = "Bob"  # string
+age = 20      # Int32 (or just `Int`)
+large_number = 9999999999 # Int64
 
 print(name)
 print(age)
 print(large_number)
 ```
 
-Variables are declared and initialized with `=`. This is the only way to declare variables in Adorad. This means that 
-variables *must always* have an initial value.
+Variables are declared and initialized with `=`. This is the only way to declare variables in Adorad.
 
 The variable's type is inferred from the value on the right hand side.
 To choose a different type, use type conversion:
-the expression `T(v)` converts the value `v` to the type `T`.
+the expression `@cast(T)v` converts the value `v` to the type `T`.
 
 Unlike most other languages, Adorad only allows defining variables in functions. Global (module level) variables are not allowed. There's no global state in Adorad (see [Pure functions by default](#pure-functions-by-default) for details).
 
-If you *absolutely must* need a global variable, you may do so using a <ins>Macro</ins>.
+If you *absolutely must* need a global variable, you may do so using the `global` block.
 
 For consistency across different code bases, all variable and function names must use the `snake_case` style, as opposed to type names, which must use `PascalCase`.
 
@@ -260,11 +243,12 @@ For consistency across different code bases, all variable and function names mus
 ### Mutable variables
 
 ```adorad
+name = "John"
 mutable age = 20
-print(age)
+print(f"{name} is {age}")
 
-age = 21
-print(age)
+age = 21      # allowed
+name = "Jack" # not allowed (compile-time error)
 ```
 
 To change the value of the variable use `=`. In Adorad, variables are immutable by default (except `String`s)
@@ -276,7 +260,7 @@ Try compiling the program above after removing `mutable` from the first line.
 ### Declaration errors
 
 In development mode, the compiler will warn you that you haven't used a variable (you'll get an "Unused Variable" warning).
-This is turned off in production mode but you can always enable it by passing the `-prod` flag to adorad – `adorad -prod foo.ad`): it will not compile at all (like in Go).
+This is turned off in production mode but you can always enable it by passing the `-prod` flag to adorad – `adorad -prod foo.ad`): it will not compile at all.
 
 ```adorad
 func main() {
@@ -286,12 +270,12 @@ func main() {
     if true {
         a = 20
     }
-    // warning: unused variable `b`
+    # warning: unused variable `b`
 }
 ```
 
 
-## Types
+## 6. Types
 
 ### Primitive types
 
@@ -301,13 +285,11 @@ Bool
 String
 
 Int8, Int16, Int, Int64, Int128
-Byte, Unsigned 16, Unsigned32, Unsigned 128
+Byte, UInt16, UInt32, UInt64, UInt128
 
 Float32, Float64
 
-byteptr, voidptr, charptr, size_t // these are mostly used for C interoperability
-
-Any // similar to C's `void*`
+Any
 ```
 
 Note that unlike C and Go, `Int` is always a 32 bit integer.
@@ -316,50 +298,50 @@ There is an exception to the rule that all operators in Adorad must have values 
 These are the allowed possibilities:
 
 ```adorad
-   Int8 → Int16 → Int → Int64
-                ↘            ↘
-                  Float32 → Float64
-                 ↗           ↗
- Byte → Unsigned16 → Unsigned32 → Unsigned64
+Int8 → Int16 → Int → Int64
+           ↘            ↘
+              Float32 → Float64
+            ↗           ↗
+ Byte → UInt16 → UInt32 → UInt64
       ↘      ↘        ↘           ↳ Ptr
        Int8 → Int16 → Int → Int64 ↗
 ```
 
-An `Int` value for example can be automatically promoted to `Float64` or `Int64` but **not** to `Float32` or `Unsigned32`. (`Float32` would mean a precision loss for large values and `Unsigned32` would mean loss of the sign for negative values).
+An `Int` value for example can be automatically promoted to `Float64` or `Int64` but **not** to `Float32` or `UInt32`. (`Float32` would mean a precision loss for large values and `UInt32` would mean loss of the sign for negative values).
 
 Literals like `123` or `4.56` are treated in a special way. They do not lead to type promotions, however they default to `Int` and `Float64` respectively, when their type has to be decided:
 
 ```adorad
-u = Unsigned16(12)
-v = 13 + u    // v is of type `Unsigned16` - no promotion
-x = Float32(45.6)
-y = x + 3.14  // x is of type `Float32` - no promotion
-a = 75        // a is of type `Int` - default for Int literal
-b = 14.7      // b is of type `Float64` - default for Float literal
-c = u + a     // c is of type `Int` - automatic promotion of `u`'s value
-d = b + x     // d is of type `Float64` - automatic promotion of `x`'s value
+u = @cast(UInt16)12
+v = 13 + u    # v is of type `UInt16` - no promotion
+x = @cast(Float32)45.6
+y = x + 3.14  # x is of type `Float32` - no promotion
+a = 75        # a is of type `Int` - default for Int literal
+b = 14.7      # b is of type `Float64` - default for Float literal
+c = u + a     # c is of type `Int` - automatic promotion of `u`'s value
+d = b + x     # d is of type `Float64` - automatic promotion of `x`'s value
 ```
 
 
 ### Strings
 
 ```adorad
-name = 'Bob'
+name = "Bob"
 
 print(name.len)
-print(name[0]) // indexing gives a Byte B
-print(name[1..3]) // slicing gives a String 'ob'
+print(name[0])    # indexing gives a Byte `B`
+print(name[1..3]) # slicing gives a String 'ob'
 
-windows_newline = '\r\n' // escape special characters like in C
+windows_newline = "\r\n" # escape special characters like in C
 @assert(windows_newline.len == 2)
 ```
 
-In Adorad, a string is a read-only (non-immutable) tensor of bytes. String data is encoded using UTF-8.
+In Adorad, a string is a read-only (non-immutable) array of bytes. String data is encoded using UTF-8.
 You **cannot** mutate elements:
 
 ```adorad
-mutable s = 'hello 🌎' // Error: Cannot make an immutable object of type 'String' mutable
-s[0] = `H` // not allowed
+mutable s = 'hello 🌎' # Error: Cannot make an immutable object of type 'String' mutable
+s[0] = `H` # not allowed
 ```
 > Error: cannot assign to `s[i]` since Adorad strings are immutable
 
@@ -372,53 +354,53 @@ unless the string contains a single quote character.
 For raw strings, prepend `r`. *Raw strings are not escaped*:
 
 ```adorad
-s = r'hello\nworld'
-print(s) // "hello\nworld"
+s = r"hello\nworld"
+print(s) # "hello\nworld"
 ```
 
 Strings can be easily converted to integers:
 
 ```adorad
-s = '42'
-n = s.int() // 42
+s = "42"
+n = s.int() # 42
 ```
 
 
 ### String interpolation
 
-Basic interpolation syntax is pretty simple - use `$` before a variable name.
+Basic interpolation syntax is pretty simple - use a format string.
 
 The variable will be converted to a string and embedded into the literal:
 ```adorad
-name = 'Bob'
-print('Hello, $name!') // Hello, Bob!
+name = "Jill"
+print(f"Hello, {name}!") # Hello, Jill!
 ```
 
-It also works with fields: `'age = $user.age'`.
-If you need more complex expressions, use `${}`: `'can register = ${user.age > 13}'`.
+It also works with fields: `f"age = {user.age}"`.
+If you need more complex expressions, use `${}`: `f"can register = {@cast(bool)(user.age > 13)}"`.
 
-Format specifiers similar to those in C's `printf()` are also supported.
+<!-- Format specifiers similar to those in C's `printf()` are also supported.
 `f`, `g`, `x`, etc. are optional and specify the output format.
-The compiler takes care of the storage size, so there is no `hd` or `llu`.
+The compiler takes care of the storage size, so there is no `hd` or `llu`. -->
 
 ```adorad
 x = 123.4567
-print('x = ${x:4.2f}')
-print('[${x:10}]') // pad with spaces on the left => [   123.457]
-print('[${int(x):-10}]') // pad with spaces on the right => [123       ]
-print('[${int(x):010}]') // pad with zeros on the left => [0000000123]
+print(f"x = ${x:4.2f}")
+print(f"[{x:10}]") # pad with spaces on the left => [   123.457]
+print(f"[{@cast(Int)x : -10}]") # pad with spaces on the right => [123       ]
+print(f"[{@cast(Int)x : 010}]") # pad with zeros on the left => [0000000123]
 ```
 
 ### String operators
 
 ```adorad
-name = 'Bob'
-bobby = name + 'by' // '+' is used to concatenate strings
-print(bobby) // "Bobby"
+name = "Bob"
+bobby = name + "by" # '+' is used to concatenate strings
+print(bobby) # "Bobby"
 
-mutable s = 'hello '
-s += 'world' // `+=` is used to append to a string
-print(s) // "hello world"
+mutable s = "hello "
+s += "world" # `+=` is used to append to a string
+print(s) # "hello world"
 ```
 
 All operators in Adorad must have values of the same type on both sides. 
@@ -426,7 +408,7 @@ You cannot concatenate an integer to a string:
 
 ```adorad
 age = 10
-print('age = ' + age) // not allowed (concatenates and then enters the output stream)
+print('age = ' + age) # not allowed (concatenates and then enters the output stream)
 ```
 > Error: infix expr: cannot use `int` (right expression) as `string`
 
@@ -441,7 +423,7 @@ or use string interpolation (this is the preferred way):
 
 ```adorad
 age = 12
-print('age = $age')
+print(f"age = {age}")
 ```
 
 ### Numbers
@@ -466,27 +448,27 @@ All of these will be assigned the same value, 123. They will all have type `Int`
 Adorad also supports writing numbers with `_` as separator:
 
 ```adorad
-num = 1_000_000 // same as 1000000
-three = 0b0_11 // same as 0b11
-float_num = 3_122.55 // same as 3122.55
-hexa = 0xF_F // same as 255
-oct = 0o17_3 // same as 0o173
+num = 1_000_000      # same as 1000000
+three = 0b0_11       # same as 0b11
+float_num = 3_122.55 # same as 3122.55
+hexa = 0xF_F         # same as 255
+oct = 0o17_3         # same as 0o173
 ```
 
 If you want a different type of integer, you can use casting:
 
 ```adorad
-a = Int64(123)
-b = Byte(42)
-c = Int16(12345)
+a = @cast(Int64)123
+b = @cast(Byte)42
+c = @cast(Int16)12345
 ```
 
 Assigning floating point numbers works the same way:
 
 ```adorad
 f = 1.0
-f1 = Float64(3.14)
-f2 = Float32(3.14)
+f1 = @cast(Float64)3.14
+f2 = @cast(Float32)3.14
 ```
 
 If you do not specify the type explicitly, by default float literals will have the type of `Float64`.
@@ -496,18 +478,18 @@ If you do not specify the type explicitly, by default float literals will have t
 
 ```adorad
 mutable nums = [1, 2, 3]
-print(nums) // "[1, 2, 3]"
-print(nums[1]) // "2"
+print(nums) # "[1, 2, 3]"
+print(nums[1]) # "2"
 
 nums[1] = 5
-print(nums) // "[1, 5, 3]"
-print(nums.len) // "3"
+print(nums) # "[1, 5, 3]"
+print(nums.len) # "3"
 
-nums = [] // The tensor is now empty
-print(nums.len) // "0"
+nums = [] # The tensor is now empty
+print(nums.len) # "0"
 
-// Declare an empty tensor:
-users = [] // by default, it is of type `Float64`
+# Declare an empty tensor:
+users = [] # by default, it is of type `Float64`
 ```
 
 In Adorad, arrays are primarily called Tensors. This means that "arrays" in C/C++, Python, etc are `Tensors` in Adorad. 
@@ -529,19 +511,19 @@ Exported fields are read-only by default in Adorad (see [Access modifiers](#acce
 ```adorad
 mutable nums = [1, 2, 3]
 nums << 4
-print(nums) // "[1, 2, 3, 4]"
+print(nums) # "[1, 2, 3, 4]"
 
-// Append a Tensor to another Tensor
+# Append a Tensor to another Tensor
 nums << [5, 6, 7]
-print(nums) // "[1, 2, 3, 4, 5, 6, 7]"
+print(nums) # "[1, 2, 3, 4, 5, 6, 7]"
 
 mutable names = ['John']
 names << 'Peter'
 names << 'Sam'
-// names << 10  <-- This will not compile. `names` is an tensor of strings.
-print(names.len) // "3"
+# names << 10  <-- This will not compile. `names` is an tensor of strings.
+print(names.len) # "3"
 
-print('Alex' in names) // "false"
+print('Alex' in names) # "false"
 ```
 
 `<<` is an operator that appends a value to the end of the tensor. It can even append an entire tensor.
@@ -557,16 +539,16 @@ During initialization you can specify the capacity of the tensor (`cap`), its in
 
 ```adorad
 arr = Int( {len: 5, init: -1} )
-// `[-1, -1, -1, -1, -1]`
+# `[-1, -1, -1, -1, -1]`
 ```
 
 Setting the capacity improves performance of insertions, as it reduces the number of reallocations needed:
 
 ```adorad
 mutable numbers = Int( {cap: 1000} )
-print(numbers.len) // 0
+print(numbers.len) # 0
 
-// Now appending elements won't reallocate
+# Now appending elements won't reallocate
 for i in 0 .. 1000 {
 	numbers << i
 }
@@ -590,9 +572,9 @@ Tensors can be efficiently filtered and mapped with the `.filter()` and `.map()`
 ```adorad
 nums = [1, 2, 3, 4, 5, 6]
 even = nums.filter(it % 2 == 0)
-print(even) // [2, 4, 6]
+print(even) # [2, 4, 6]
 
-// filter can accept anonymous functions
+# filter can accept anonymous functions
 even_func = nums.filter(func Bool (Int x) {
 	return x % 2 == 0
 })
@@ -600,13 +582,13 @@ print(even_def)
 
 words = ['Hello', 'World']
 upper = words.map(it.to_upper())
-print(upper) // ['HELLO', 'WORLD']
+print(upper) # ['HELLO', 'WORLD']
 
-// Map can also accept anonymous functions
+# Map can also accept anonymous functions
 upper_func = words.map(func String (String w) {
 	return w.to_upper()
 })
-print(upper_def) // ['HELLO', 'WORLD']
+print(upper_def) # ['HELLO', 'WORLD']
 ```
 
 `it` is a builtin variable which refers to element currently being processed in filter/map methods.
@@ -620,14 +602,14 @@ Tensors can have more than one dimension.
 ```adorad
 mutable a = Int( {len: 2, init: Int( {len: 3}} ) )
 a[0][1] = 2
-print(a) // [ [0, 2, 0], [0, 0, 0] ]
+print(a) # [ [0, 2, 0], [0, 0, 0] ]
 ```
 
 3d tensor example:
 ```adorad
 mutable a = Int( {len: 2, init: Int( {len: 3, init: Int( {len: 2}}} ) ) )
 a[0][1][1] = 2
-print(a) // [[[0, 0], [0, 2], [0, 0]], [[0, 0], [0, 0], [0, 0]]]
+print(a) # [[[0, 0], [0, 2], [0, 0]], [[0, 0], [0, 0], [0, 0]]]
 ```
 
 #### Sorting tensors
@@ -636,19 +618,19 @@ Sorting tensors of all kinds is very simple and intuitive. Special variables `a`
 
 ```adorad
 mutable numbers = [1, 3, 2]
-numbers.sort() // 1, 2, 3
-numbers.sort(a > b) // 3, 2, 1
+numbers.sort() # 1, 2, 3
+numbers.sort(a > b) # 3, 2, 1
 ```
 
 ```adorad
 struct User {
-	age  int
-	name string
+	Int age
+	String name
 }
 
 mutable users = [User{21, 'Bob'}, User{20, 'Zarkon'}, User{25, 'Alice'}]
-users.sort(a.age < b.age) // sort by User.age int field
-users.sort(a.name > b.name) // reverse sort by User.name string field
+users.sort(a.age < b.age) # sort by User.age int field
+users.sort(a.name > b.name) # reverse sort by User.name string field
 ```
 
 
@@ -662,9 +644,9 @@ If a left-side index is absent, it is assumed to be 0.
 
 ```adorad
 nums = [1, 2, 3, 4, 5]
-print(nums[1..4]) // [2, 3, 4]
-print(nums[..4]) // [1, 2, 3, 4]
-print(nums[1..]) // [2, 3, 4, 5]
+print(nums[1..4]) # [2, 3, 4]
+print(nums[..4]) # [1, 2, 3, 4]
+print(nums[1..]) # [2, 3, 4, 5]
 ```
 
 All tensor operations may be performed on slices.
@@ -675,7 +657,7 @@ tensor_1 = [3, 5, 4, 7, 6]
 mutable tensor_2 = [0, 1]
 
 tensor_2 << tensor_1[..3]
-print(tensor_2) // [0, 1, 3, 5, 4]
+print(tensor_2) # [0, 1, 3, 5, 4]
 ```
 
 
@@ -693,16 +675,16 @@ Most methods are defined to work on ordinary tensors, not on fixed size tensors.
 You can convert a fixed size tensor to an ordinary tensor with slicing:
 
 ```adorad
-mutable defums = Int( {len: 3}) // defums is a fixed size tensor with 3 elements.
+mutable defums = Int( {len: 3}) # defums is a fixed size tensor with 3 elements.
 defums[0] = 1
 defums[1] = 10
 defums[2] = 100
-print(defums) // => [1, 10, 100]
-print(typeof(defums).name) // => `TensorInt` of length "3"
+print(defums) # => [1, 10, 100]
+print(typeof(defums).name) # => `TensorInt` of length "3"
 
 anums = defums[0..defums.len]
-print(anums) // => [1, 10, 100]
-print(typeof(anums).name) // => TensorInt
+print(anums) # => [1, 10, 100]
+print(typeof(anums).name) # => TensorInt
 ```
 
 Note that slicing will cause the data of the fixed size tensor to be copied to the newly created ordinary tensor.
@@ -711,12 +693,12 @@ Note that slicing will cause the data of the fixed size tensor to be copied to t
 ### Maps
 
 ```adorad
-mutable m = map[string]int{} // a map with `string` keys and `int` values
+mutable m = map[string]int{} # a map with `string` keys and `int` values
 m['one'] = 1
 m['two'] = 2
-print(m['one']) // "1"
-print(m['bad_key']) // "0"
-print('bad_key' in m) // Use `in` to detect whether such key exists
+print(m['one']) # "1"
+print(m['bad_key']) # "0"
+print('bad_key' in m) # Use `in` to detect whether such key exists
 m.delete('two')
 ```
 Maps can have keys of type string, rune, integer, float or voidptr.
@@ -737,7 +719,7 @@ sm = map{
 	'abc': 'xyz'
 }
 val = sm['bad_key']
-print(val) // ''
+print(val) # ''
 ```
 ```adorad
 intm = map{
@@ -745,7 +727,7 @@ intm = map{
 	2: 5678
 }
 s = intm[3]
-print(s) // 0
+print(s) # 0
 ```
 
 It's also possible to use an `or {}` block to handle missing keys:
@@ -773,11 +755,12 @@ Modules can be imported using the `import` keyword:
 import os
 
 func main() {
-	// read text from stdin
-	name = os.input('Enter your name: ')
-	print('Hello, $name!')
+	# read text from stdin
+	name = osinput('Enter your name: ')
+	print(f"Hello, {name}")
 }
 ```
+
 This program can use any public definitions from the `os` module, such
 as the `input` function. See the standard library.)
 documentation for a list of common modules and their public symbols.
@@ -787,19 +770,19 @@ This may seem verbose at first, but it makes code much more readable
 and easier to understand - it's always clear which function from
 which module is being called. This is especially useful in large code bases.
 
-Cyclic module imports are not allowed, like in Go.
+Cyclic module imports are not allowed.
 
 ### Selective imports
 
 You can also import specific functions and types from modules directly:
 
 ```adorad
-import os { input }
+from os import input
 
 func main() {
-	// read text from stdin
+	# read text from stdin
 	name = input('Enter your name: ')
-	print('Hello, $name!')
+	print(f"Hello, {name}")
 }
 ```
 Note: This is not allowed for constants - they must always be prefixed.
@@ -807,12 +790,12 @@ Note: This is not allowed for constants - they must always be prefixed.
 You can import several specific symbols at once:
 
 ```adorad
-import os { input, user_os }
+from os import { input, user_os }
 
-name = input('Enter your name: ')
-print('Name: $name')
+name = input("Enter your name: ")
+print(f"Name: {name}")
 os = user_os()
-print('Your OS is ${os}.')
+print(f"Your OS is {os}")
 ```
 
 ### Module import aliasing
@@ -820,14 +803,15 @@ print('Your OS is ${os}.')
 Any imported module name can be aliased using the `as` keyword:
 
 NOTE: this example will not compile unless you have created `mymod/sha256.ad`
+
 ```adorad
 import crypto.sha256
 import mymod.sha256 as mysha256
 
 func main() {
-    v_hash = sha256.sum('hi'.bytes()).hex()
-    my_hash = mysha256.sum('hi'.bytes()).hex()
-    assert my_hash == v_hash
+    hash = sha256.sum("hi".bytes()).hex()
+    my_hash = mysha256.sum("hi".bytes()).hex()
+    assert my_hash == hash
 }
 ```
 
@@ -840,22 +824,22 @@ import math
 
 type MyTime = time.Time
 
-func (mutable t MyTime) century() int {
-	return int(1.0 + math.trunc(f64(t.year) * 0.009999794661191))
+func (mutable t MyTime) century() -> Int {
+	return @cast(Int)(1.0 + math.trunc(f64(t.year) * 0.009999794661191))
 }
 
 func main() {
-	mutable my_time = MyTime{
+	mutable my_time = MyTime {
 		year: 2020
 		month: 12
 		day: 25
 	}
 	print(time.new_time(my_time).utc_string())
-	print('Century: $my_time.century()')
+	print(f"Century: {my_time.century()}")
 }
 ```
 
-## Statements & expressions
+## 7. Statements & expressions
 
 ### If
 
@@ -881,7 +865,7 @@ there are no parentheses surrounding the condition and the braces are always req
 num = 777
 s = if num % 2 == 0 { 'even' } else { 'odd' }
 print(s)
-// "odd"
+# "odd"
 ```
 
 #### Type checks and casts
@@ -890,33 +874,35 @@ You can check the current type of a sum type using `is` and its negated form `!i
 You can do it either in an `if`:
 ```adorad
 struct Abc {
-	val string
+	String val
 }
 
 struct Xyz {
-	foo string
+	String foo
 }
 
 type Alphabet = Abc | Xyz
 
-x = Alphabet(Abc{'test'}) // sum type
+x = Alphabet(Abc{'test'}) # sum type
 if x is Abc {
-	// x is automatically casted to Abc and can be used here
+	# x is automatically casted to Abc and can be used here
 	print(x)
 }
 if x !is Abc {
 	print('Not Abc')
 }
 ```
+
 or using `match`:
+
 ```adorad
 match x {
 	Abc {
-		// x is automatically casted to Abc and can be used here
+		# x is automatically casted to Abc and can be used here
 		print(x)
 	}
 	Xyz {
-		// x is automatically casted to Xyz and can be used here
+		# x is automatically casted to Xyz and can be used here
 		print(x)
 	}
 }
@@ -925,11 +911,11 @@ match x {
 This works also with struct fields:
 ```adorad
 struct MyStruct {
-	x int
+	Int x
 }
 
 struct MyStruct2 {
-	y string
+	String y
 }
 
 type MySumType = MyStruct | MyStruct2
@@ -938,16 +924,16 @@ struct Abc {
 	bar MySumType
 }
 
-x = Abc{
-	bar: MyStruct{123} // MyStruct will be converted to MySumType type automatically
+x = Abc {
+	bar: MyStruct{123} # MyStruct will be converted to MySumType type automatically
 }
 if x.bar is MyStruct {
-	// x.bar is automatically casted
+	# x.bar is automatically casted
 	print(x.bar)
 }
 match x.bar {
 	MyStruct {
-		// x.bar is automatically casted
+		# x.bar is automatically casted
 		print(x.bar)
 	}
 	else {}
@@ -963,15 +949,15 @@ It works like this:
 ```adorad
 mutable x = MySumType(MyStruct{123})
 if mutable x is MyStruct {
-	// x is casted to MyStruct even if it's mutable
-	// without the mutable keyword that wouldn't work
+	# x is casted to MyStruct even if it's mutable
+	# without the mutable keyword that wouldn't work
 	print(x)
 }
-// same with match
+# same with match
 match mutable x {
 	MyStruct {
-		// x is casted to MyStruct even it's mutable
-		// without the mutable keyword that wouldn't work
+		# x is casted to MyStruct even it's mutable
+		# without the mutable keyword that wouldn't work
 		print(x)
 	}
 }
@@ -984,14 +970,14 @@ To do the opposite, use `!in`.
 
 ```adorad
 nums = [1, 2, 3]
-print(1 in nums) // true
-print(4 !in nums) // true
+print(1 in nums) # true
+print(4 !in nums) # true
 m = map{
 	'one': 1
 	'two': 2
 }
-print('one' in m) // true
-print('three' !in m) // true
+print('one' in m) # true
+print('three' !in m) # true
 ```
 
 It's also useful for writing boolean expressions that are clearer and more compact:
@@ -1010,10 +996,10 @@ struct Parser {
 
 parser = Parser{}
 if parser.token == .plus || parser.token == .minus || parser.token == .div || parser.token == .mult {
-	// ...
+	# ...
 }
 if parser.token in [.plus, .minus, .div, .mult] {
-	// ...
+	# ...
 }
 ```
 
@@ -1039,8 +1025,8 @@ for num in numbers {
 names = ['Sam', 'Peter']
 for i, name in names {
 	print('$i) $name')
-	// Output: 0) Sam
-	//         1) Peter
+	# Output: 0) Sam
+	#         1) Peter
 }
 ```
 
@@ -1055,7 +1041,7 @@ mutable numbers = [0, 1, 2]
 for i, _ in numbers {
 	numbers[i]++
 }
-print(numbers) // [1, 2, 3]
+print(numbers) # [1, 2, 3]
 ```
 When an identifier is just a single underscore, it is ignored.
 
@@ -1068,8 +1054,8 @@ m = map{
 }
 for key, value in m {
 	print('$key -> $value')
-	// Output: one -> 1
-	//         two -> 2
+	# Output: one -> 1
+	#         two -> 2
 }
 ```
 
@@ -1079,24 +1065,24 @@ m = map{
 	'one': 1
 	'two': 2
 }
-// iterate over keys
+# iterate over keys
 for key, _ in m {
 	print(key)
-	// Output: one
-	//         two
+	# Output: one
+	#         two
 }
-// iterate over values
+# iterate over values
 for _, value in m {
 	print(value)
-	// Output: 1
-	//         2
+	# Output: 1
+	#         2
 }
 ```
 
 ##### Range `for`
 
 ```adorad
-// Prints '01234'
+# Prints '01234'
 for i in 0 .. 5 {
 	print(i)
 }
@@ -1113,7 +1099,7 @@ for i <= 100 {
 	sum += i
 	i++
 }
-print(sum) // "5050"
+print(sum) # "5050"
 ```
 
 This form of the loop is similar to `while` loops in other languages.
@@ -1130,7 +1116,7 @@ for {
 		break
 	}
 }
-print(num) // "10"
+print(num) # "10"
 ```
 
 The condition can be omitted, resulting in an infinite loop.
@@ -1139,7 +1125,7 @@ The condition can be omitted, resulting in an infinite loop.
 
 ```adorad
 for i = 0; i < 10; i += 2 {
-	// Don't print 6
+	# Don't print 6
 	if i == 6 {
 		continue
 	}
@@ -1216,7 +1202,7 @@ enum Color {
 
 func is_red_or_blue(c Color) bool {
 	return match c {
-		.red, .blue { true } // comma can be used to test multiple values
+		.red, .blue { true } # comma can be used to test multiple values
 		.green { false }
 	}
 }
@@ -1235,7 +1221,7 @@ typ = match c {
 	else { 'other' }
 }
 print(typ)
-// 'lowercase'
+# 'lowercase'
 ```
 
 You can also use ranges as `match` patterns. If the value falls within the range
@@ -1261,13 +1247,13 @@ func read_log() {
 	defer {
 		f.close()
 	}
-	// ...
+	# ...
 	if !ok {
-		// defer statement will be called here, the file will be closed
+		# defer statement will be called here, the file will be closed
 		return
 	}
-	// ...
-	// defer statement will be called here, the file will be closed
+	# ...
+	# defer statement will be called here, the file will be closed
 }
 ```
 
@@ -1283,8 +1269,8 @@ mutable p = Point{
 	x: 10
 	y: 20
 }
-print(p.x) // Struct fields are accessed using a dot
-// Alternative literal syntax for structs with 3 fields or fewer
+print(p.x) # Struct fields are accessed using a dot
+# Alternative literal syntax for structs with 3 fields or fewer
 p = Point{10, 20}
 assert p.x == 10
 ```
@@ -1301,7 +1287,7 @@ struct Point {
 }
 
 p = &Point{10, 10}
-// References have the same syntax for accessing fields
+# References have the same syntax for accessing fields
 print(p.x)
 ```
 
@@ -1339,10 +1325,10 @@ button.widget.x = 3
 
 ```adorad
 struct Foo {
-	n   int    // n is 0 by default
-	s   string // s is '' by default
-	a   []int  // a is `[]int{}` by default
-	pos int = -1 // custom default value
+	n   int    # n is 0 by default
+	s   string # s is '' by default
+	a   []int  # a is `[]int{}` by default
+	pos int = -1 # custom default value
 }
 ```
 
@@ -1381,7 +1367,7 @@ mutable p = Point{
 	x: 10
 	y: 20
 }
-// you can omit the struct name when it's already known
+# you can omit the struct name when it's already known
 p = {
 	x: 30
 	y: 4
@@ -1420,7 +1406,7 @@ func new_button(c ButtonConfig) &Button {
 }
 
 button = new_button(text: 'Click me', width: 100)
-// the height is unset, so it's the default value
+# the height is unset, so it's the default value
 assert button.height == 20
 ```
 
@@ -1440,17 +1426,17 @@ Their access modifiers can be changed with
 
 ```adorad
 struct Foo {
-	a int // private immutable (default)
+	a int # private immutable (default)
 mut:
-	b int // private mutable
-	c int // (you can list multiple fields with the same access modifier)
+	b int # private mutable
+	c int # (you can list multiple fields with the same access modifier)
 pub:
-	d int // public immutable (readonly)
+	d int # public immutable (readonly)
 pub mut:
-	e int // public, but mutable only in parent module
+	e int # public, but mutable only in parent module
 __global:
-	// (not recommended to use, that's why the 'global' keyword starts with __)
-	f int // public and mutable both inside and outside parent module
+	# (not recommended to use, that's why the 'global' keyword starts with __)
+	f int # public and mutable both inside and outside parent module
 }
 ```
 
@@ -1470,8 +1456,8 @@ The `len` field is public, but immutable:
 ```adorad
 func main() {
     str = 'hello'
-    len = str.len // OK
-    str.len++      // Compilation error
+    len = str.len # OK
+    str.len++      # Compilation error
 }
 ```
 
@@ -1492,11 +1478,11 @@ func (u User) can_register() bool {
 user = User{
 	age: 10
 }
-print(user.can_register()) // "false"
+print(user.can_register()) # "false"
 user2 = User{
 	age: 20
 }
-print(user2.can_register()) // "true"
+print(user2.can_register()) # "true"
 ```
 
 Adorad doesn't have classes, but you can define methods on types.
@@ -1578,9 +1564,9 @@ func (mutable u User) register() {
 }
 
 mutable user = User{}
-print(user.is_registered) // "false"
+print(user.is_registered) # "false"
 user.register()
-print(user.is_registered) // "true"
+print(user.is_registered) # "true"
 ```
 
 In this example, the receiver (which is simply the first argument) is marked as mutable,
@@ -1596,7 +1582,7 @@ func multiply_by_2(mutable arr []int) {
 mutable nums = [1, 2, 3]
 multiply_by_2(mutable nums)
 print(nums)
-// "[2, 4, 6]"
+# "[2, 4, 6]"
 ```
 
 Note, that you have to add `mut` before `nums` when calling this function. This makes
@@ -1649,14 +1635,14 @@ func sum(a ...int) int {
 	return total
 }
 
-print(sum()) // 0
-print(sum(1)) // 1
-print(sum(2, 3)) // 5
-// using tensor decomposition
+print(sum()) # 0
+print(sum(1)) # 1
+print(sum(2, 3)) # 5
+# using tensor decomposition
 a = [2, 3, 4]
-print(sum(...a)) // <-- using prefix ... here. output: 9
+print(sum(...a)) # <-- using prefix ... here. output: 9
 b = [5, 6, 7]
-print(sum(...b)) // output: 18
+print(sum(...b)) # output: 18
 ```
 
 ### Anonymous & high order functions
@@ -1675,26 +1661,26 @@ func run(value int, op func (int) int) int {
 }
 
 func main() {
-	// Functions can be passed to other functions
-	print(run(5, sqr)) // "25"
-	// Anonymous functions can be declared inside other functions:
+	# Functions can be passed to other functions
+	print(run(5, sqr)) # "25"
+	# Anonymous functions can be declared inside other functions:
 	double_func = func (n int) int {
 		return n + n
 	}
-	print(run(5, double_def)) // "10"
-	// Functions can be passed around without assigning them to variables:
+	print(run(5, double_def)) # "10"
+	# Functions can be passed around without assigning them to variables:
 	res = run(5, func (n int) int {
 		return n + n
 	})
-	print(res) // "10"
-	// You can even have an tensor/map of functions:
+	print(res) # "10"
+	# You can even have an tensor/map of functions:
 	defs = [sqr, cube]
-	print(defs[0](10)) // "100"
+	print(defs[0](10)) # "100"
 	defs_map = map{
 		'sqr':  sqr
 		'cube': cube
 	}
-	print(defs_map['cube'](2)) // "8"
+	print(defs_map['cube'](2)) # "8"
 }
 ```
 
@@ -1704,11 +1690,11 @@ func main() {
 struct Foo {}
 
 func (foo Foo) bar_method() {
-	// ...
+	# ...
 }
 
 func bar_function(foo Foo) {
-	// ...
+	# ...
 }
 ```
 
@@ -1791,7 +1777,7 @@ const (
 		g: 0
 		b: 0
 	}
-	// evaluate function call at compile-time*
+	# evaluate function call at compile-time*
 	blue    = rgb(0, 0, 255)
 )
 
@@ -1831,15 +1817,15 @@ print('Top cities: ${top_cities.filter(.usa)}')
 Some functions are builtin like `print`. Here is the complete list:
 
 ```adorad
-func print(s string) // print anything on sdtout
-func print(s string) // print anything and a newline on sdtout
+func print(s string) # print anything on sdtout
+func print(s string) # print anything and a newline on sdtout
 
-func eprint(s string) // same as print(), but use stderr
-func eprint(s string) // same as print(), but use stderr
+func eprint(s string) # same as print(), but use stderr
+func eprint(s string) # same as print(), but use stderr
 
-func exit(code int) // terminate the program with a custom error code
-func panic(s string) // print a message and backtraces on stderr, and terminate the program with error code 1
-func print_backtrace() // print backtraces on stderr
+func exit(code int) # terminate the program with a custom error code
+func panic(s string) # print a message and backtraces on stderr, and terminate the program with error code 1
+func print_backtrace() # print backtraces on stderr
 ```
 
 `print` is a simple yet powerful builtin function, that can print anything:
@@ -1851,10 +1837,10 @@ struct User {
 	age  int
 }
 
-print(1) // "1"
-print('hi') // "hi"
-print([1, 2, 3]) // "[1, 2, 3]"
-print(User{ name: 'Bob', age: 20 }) // "User{name:'Bob', age:20}"
+print(1) # "1"
+print('hi') # "hi"
+print([1, 2, 3]) # "[1, 2, 3]"
+print(User{ name: 'Bob', age: 20 }) # "User{name:'Bob', age:20}"
 ```
 
 <a id='custom-print-of-types' />
@@ -1899,10 +1885,10 @@ mkdir mymodule
 vim mymodule/myfile.ad
 ```
 ```adorad
-// myfile.ad
+# myfile.ad
 module mymodule
 
-// To export a function we have to use `pub`
+# To export a function we have to use `pub`
 pub func say_hi() {
     print('hello from mymodule!')
 }
@@ -1932,7 +1918,7 @@ you can use a module `init` function:
 
 ```adorad
 func init() {
-	// your setup code here ...
+	# your setup code here ...
 }
 ```
 
@@ -1960,7 +1946,7 @@ func (c Cat) speak() string {
 	return 'meow'
 }
 
-// unlike Go and like TypeScript, V's interfaces can define fields, not just methods.
+# unlike Go and like TypeScript, V's interfaces can define fields, not just methods.
 interface Speaker {
 	breed string
 	speak() string
@@ -1988,7 +1974,7 @@ interface Something {}
 
 func announce(s Something) {
 	if s is Dog {
-		print('a $s.breed dog') // `s` is automatically cast to `Dog` (smart cast)
+		print('a $s.breed dog') # `s` is automatically cast to `Dog` (smart cast)
 	} else if s is Cat {
 		print('a $s.breed cat')
 	} else {
@@ -2030,7 +2016,7 @@ func main() {
 	a = new_adoptable()
 	assert a.speak() == 'adopt me!'
 	if a is Cat {
-		print(a.speak()) // meow!
+		print(a.speak()) # meow!
 	}
 }
 ```
@@ -2045,9 +2031,9 @@ enum Color {
 }
 
 mutable color = Color.red
-// Adorad knows that `color` is a `Color`. No need to use `color = Color.green` here.
+# Adorad knows that `color` is a `Color`. No need to use `color = Color.green` here.
 color = .green
-print(color) // "green"
+print(color) # "green"
 match color {
 	.red { print('the color was red') }
 	.green { print('the color was green') }
@@ -2115,7 +2101,7 @@ type.
 
 With sum types you could build recursive structures and write concise but powerful code on them.
 ```adorad
-// V's binary tree
+# V's binary tree
 struct Empty {}
 
 struct Node {
@@ -2126,10 +2112,10 @@ struct Node {
 
 type Tree = Empty | Node
 
-// sum up all node values
+# sum up all node values
 func sum(tree Tree) f64 {
 	return match tree {
-		Empty { f64(0) } // TODO: as match gets smarter just remove f64()
+		Empty { f64(0) } # TODO: as match gets smarter just remove f64()
 		Node { tree.value + sum(tree.left) + sum(tree.right) }
 	}
 }
@@ -2138,7 +2124,7 @@ func main() {
 	left = Node{0.2, Empty{}, Empty{}}
 	right = Node{0.3, Empty{}, Node{0.4, Empty{}, Empty{}}}
 	tree = Node{0.5, left, right}
-	print(sum(tree)) // 0.2 + 0.3 + 0.4 + 0.5 = 1.4
+	print(sum(tree)) # 0.2 + 0.3 + 0.4 + 0.5 = 1.4
 }
 ```
 
@@ -2164,7 +2150,7 @@ func main() {
 	mutable w = World(Moon{})
 	assert w is Moon
 	w = Mars{}
-	// use `as` to access the Mars instance
+	# use `as` to access the Mars instance
 	mars = w as Mars
 	if mars.dust_storm() {
 		print('bad weather!')
@@ -2220,13 +2206,13 @@ func open_parachutes(n int) {
 
 func land(w World) {
 	match w {
-		Moon {} // no atmosphere
+		Moon {} # no atmosphere
 		Mars {
-			// light atmosphere
+			# light atmosphere
 			open_parachutes(3)
 		}
 		Venus {
-			// heavy atmosphere
+			# heavy atmosphere
 			open_parachutes(1)
 		}
 	}
@@ -2248,7 +2234,7 @@ func (v Venus) sweat() {}
 
 func pass_time(w World) {
     match w {
-        // using the shadowed match variable, in this case `w` (smart cast)
+        # using the shadowed match variable, in this case `w` (smart cast)
         Moon { w.moon_walk() }
         Mars { w.shiver() }
         else {}
@@ -2272,7 +2258,7 @@ struct Repo {
 func (r Repo) find_user_by_id(id int) ?User {
 	for user in r.users {
 		if user.id == id {
-			// Adorad automatically wraps this into an option type
+			# Adorad automatically wraps this into an option type
 			return user
 		}
 	}
@@ -2283,11 +2269,11 @@ func main() {
 	repo = Repo{
 		users: [User{1, 'Andrew'}, User{2, 'Bob'}, User{10, 'Charles'}]
 	}
-	user = repo.find_user_by_id(10) or { // Option types must be handled by `or` blocks
+	user = repo.find_user_by_id(10) or { # Option types must be handled by `or` blocks
 		return
 	}
-	print(user.id) // "10"
-	print(user.name) // "Charles"
+	print(user.id) # "10"
+	print(user.name) # "Charles"
 }
 ```
 
@@ -2308,7 +2294,7 @@ to the `error()` function. `err` is empty if `none` was returned.
 
 ```adorad
 user = repo.find_user_by_id(7) or {
-	print(err) // "User 7 not found"
+	print(err) # "User 7 not found"
 	return
 }
 ```
@@ -2366,11 +2352,11 @@ func do_something(s string) ?string {
 	if s == 'foo' {
 		return 'foo'
 	}
-	return error('invalid string') // Could be `return none` as well
+	return error('invalid string') # Could be `return none` as well
 }
 
-a = do_something('foo') or { 'default' } // a will be 'foo'
-b = do_something('bar') or { 'default' } // b will be 'default'
+a = do_something('foo') or { 'default' } # a will be 'foo'
+b = do_something('bar') or { 'default' } # b will be 'default'
 print(a)
 print(b)
 ```
@@ -2381,8 +2367,8 @@ The fourth method is to use `if` unwrapping:
 ```adorad
 import net.http
 
-if resp = http.get('https://google.com') {
-	print(resp.text) // resp is a http.Response, not an optional
+if resp = http.get('https:#google.com') {
+	print(resp.text) # resp is a http.Response, not an optional
 } else {
 	print(err)
 }
@@ -2402,17 +2388,17 @@ func new_repo<T>(db DB) Repo<T> {
     return Repo<T>{db: db}
 }
 
-// This is a generic function. Adorad will generate it for every type it's used with.
+# This is a generic function. Adorad will generate it for every type it's used with.
 func (r Repo<T>) find_by_id(id int) ?T {
-    table_name = T.name // in this example getting the name of the type gives us the table name
+    table_name = T.name # in this example getting the name of the type gives us the table name
     return r.db.query_one<T>('select * from $table_name where id = ?', id)
 }
 
 db = new_db()
-users_repo = new_repo<User>(db) // returns Repo<User>
-posts_repo = new_repo<Post>(db) // returns Repo<Post>
-user = users_repo.find_by_id(1)? // find_by_id<User>
-post = posts_repo.find_by_id(1)? // find_by_id<Post>
+users_repo = new_repo<User>(db) # returns Repo<User>
+posts_repo = new_repo<Post>(db) # returns Repo<Post>
+user = users_repo.find_by_id(1)? # find_by_id<User>
+post = posts_repo.find_by_id(1)? # find_by_id<Post>
 ```
 At the moment only one type parameter named `T` is supported.
 
@@ -2433,18 +2419,18 @@ func compare<T>(a T, b T) int {
 	return 0
 }
 
-// compare<int>
-print(compare(1, 0)) // Outputs: 1
-print(compare(1, 1)) //          0
-print(compare(1, 2)) //         -1
-// compare<string>
-print(compare('1', '0')) // Outputs: 1
-print(compare('1', '1')) //          0
-print(compare('1', '2')) //         -1
-// compare<f64>
-print(compare(1.1, 1.0)) // Outputs: 1
-print(compare(1.1, 1.1)) //          0
-print(compare(1.1, 1.2)) //         -1
+# compare<int>
+print(compare(1, 0)) # Outputs: 1
+print(compare(1, 1)) #          0
+print(compare(1, 2)) #         -1
+# compare<string>
+print(compare('1', '0')) # Outputs: 1
+print(compare('1', '1')) #          0
+print(compare('1', '2')) #         -1
+# compare<f64>
+print(compare(1.1, 1.0)) # Outputs: 1
+print(compare(1.1, 1.1)) #          0
+print(compare(1.1, 1.2)) #         -1
 ```
 
 
@@ -2456,14 +2442,14 @@ a different thread, just call it with `go foo()`:
 ```adorad
 import math
 
-func p(a f64, b f64) { // ordinary function without return value
+func p(a f64, b f64) { # ordinary function without return value
 	c = math.sqrt(a * a + b * b)
 	print(c)
 }
 
 func main() {
 	go p(3, 4)
-	// p will be run in parallel thread
+	# p will be run in parallel thread
 }
 ```
 
@@ -2474,16 +2460,16 @@ to this handle later:
 ```adorad
 import math
 
-func p(a f64, b f64) { // ordinary function without return value
+func p(a f64, b f64) { # ordinary function without return value
 	c = math.sqrt(a * a + b * b)
-	print(c) // prints `5`
+	print(c) # prints `5`
 }
 
 func main() {
 	h = go p(3, 4)
-	// p() runs in parallel thread
+	# p() runs in parallel thread
 	h.wait()
-	// p() has definitely finished
+	# p() has definitely finished
 }
 ```
 
@@ -2494,16 +2480,16 @@ concurrently.
 ```adorad
 import math { sqrt }
 
-func get_hypot(a f64, b f64) f64 { //       ordinary function returning a value
+func get_hypot(a f64, b f64) f64 { #       ordinary function returning a value
 	c = sqrt(a * a + b * b)
 	return c
 }
 
 func main() {
-	g = go get_hypot(54.06, 2.08) // spawn thread and get handle to it
-	h1 = get_hypot(2.32, 16.74) //   do some other calculation here
-	h2 = g.wait() //                 get result from spawned thread
-	print('Results: $h1, $h2') //   prints `Results: 16.9, 54.1`
+	g = go get_hypot(54.06, 2.08) # spawn thread and get handle to it
+	h1 = get_hypot(2.32, 16.74) #   do some other calculation here
+	h2 = g.wait() #                 get result from spawned thread
+	print('Results: $h1, $h2') #   prints `Results: 16.9, 54.1`
 }
 ```
 
@@ -2528,14 +2514,14 @@ func main() {
 	print('done')
 }
 
-// Output:
-// task 1 begin
-// task 2 begin
-// task 3 begin
-// task 3 end
-// task 1 end
-// task 2 end
-// done
+# Output:
+# task 1 begin
+# task 2 begin
+# task 3 begin
+# task 3 end
+# task 1 end
+# task 2 end
+# done
 ```
 
 Additionally for threads that return the same type, calling `wait()`
@@ -2551,12 +2537,12 @@ func main() {
 	for i in 1 .. 10 {
 		threads << go expensive_computing(i)
 	}
-	// Join all tasks
+	# Join all tasks
 	r = threads.wait()
 	print('All jobs finished: $r')
 }
 
-// Output: All jobs finished: [1, 4, 9, 16, 25, 36, 49, 64, 81]
+# Output: All jobs finished: [1, 4, 9, 16, 25, 36, 49, 64, 81]
 ```
 
 ### Channels
@@ -2569,8 +2555,8 @@ Channels have the type `chan objtype`. An optional buffer length can specified a
 in the declaration:
 
 ```adorad
-ch = chan int{} // unbuffered - "synchronous"
-ch2 = chan f64{cap: 100} // buffer length 100
+ch = chan int{} # unbuffered - "synchronous"
+ch2 = chan f64{cap: 100} # buffer length 100
 ```
 
 Channels do not have to be declared as `mut`. The buffer length is not part of the type but
@@ -2579,13 +2565,13 @@ variables:
 
 ```adorad
 func f(ch chan int) {
-	// ...
+	# ...
 }
 
 func main() {
 	ch = chan int{}
 	go f(ch)
-	// ...
+	# ...
 }
 ```
 
@@ -2598,11 +2584,11 @@ ch2 = chan f64{}
 n = 5
 x = 7.3
 ch <- n
-// push
+# push
 ch2 <- x
 mutable y = f64(0.0)
-m = <-ch // pop creating new variable
-y = <-ch2 // pop into existing variable
+m = <-ch # pop creating new variable
+y = <-ch2 # pop into existing variable
 ```
 
 A channel can be closed to indicate that no further objects can be pushed. Any attempt
@@ -2614,14 +2600,14 @@ handled using an or branch (see [Handling Optionals](#handling-optionals)).
 ```adorad
 ch = chan int{}
 ch2 = chan f64{}
-// ...
+# ...
 ch.close()
-// ...
+# ...
 m = <-ch or {
     print('channel has been closed')
 }
 
-// propagate error
+# propagate error
 y = <-ch2 ?
 ```
 
@@ -2638,19 +2624,19 @@ func main () {
   ch2 = chan f64{}
   ch3 = chan f64{}
   mutable b = 0.0
-  // ...
+  # ...
   select {
     a = <-ch {
-        // do something with `a`
+        # do something with `a`
     }
     b = <-ch2 {
-        // do something with predeclared variable `b`
+        # do something with predeclared variable `b`
     }
     ch3 <- c {
-        // do something if `c` was sent
+        # do something if `c` was sent
     }
     > 500 * time.millisecond {
-        // do something if no channel has become ready within 0.5s
+        # do something if no channel has become ready within 0.5s
     }
   }
 }
@@ -2665,12 +2651,12 @@ that becomes `false` if all channels are closed:
 ```adorad
 if select {
     ch <- a {
-        // ...
+        # ...
     }
 } {
-    // channel was open
+    # channel was open
 } else {
-    // channel is closed
+    # channel is closed
 }
 ```
 
@@ -2684,16 +2670,16 @@ struct Abc {
 
 a = 2.13
 ch = chan f64{}
-res = ch.try_push(a) // try to perform `ch <- a`
+res = ch.try_push(a) # try to perform `ch <- a`
 print(res)
-l = ch.len // number of elements in queue
-c = ch.cap // maximum queue length
-is_closed = ch.closed // bool flag - has `ch` been closed
+l = ch.len # number of elements in queue
+c = ch.cap # maximum queue length
+is_closed = ch.closed # bool flag - has `ch` been closed
 print(l)
 print(c)
 mutable b = Abc{}
 ch2 = chan Abc{}
-res2 = ch2.try_pop(b) // try to perform `b = <-ch2`
+res2 = ch2.try_pop(b) # try to perform `b = <-ch2`
 ```
 
 The `try_push/pop()` methods will return immediately with one of the results
@@ -2715,12 +2701,12 @@ using `rlock` for read-only and `lock` for read/write access.
 ```adorad
 struct St {
 mut:
-	x int // data to shared
+	x int # data to shared
 }
 
 func (shared b St) g() {
 	lock b {
-		// read/modify/write b.x
+		# read/modify/write b.x
 	}
 }
 
@@ -2729,9 +2715,9 @@ func main() {
 		x: 10
 	}
 	go a.g()
-	// ...
+	# ...
 	rlock a {
-		// read a.x
+		# read a.x
 	}
 }
 ```
@@ -2749,9 +2735,9 @@ struct Foo {
 struct User {
 	name string
 	age  int
-	// Use the `skip` attribute to skip certain fields
+	# Use the `skip` attribute to skip certain fields
 	foo Foo [skip]
-	// If the field name is different in JSON, it can be specified
+	# If the field name is different in JSON, it can be specified
 	last_name string [json: lastName]
 }
 
@@ -2763,7 +2749,7 @@ user = json.decode(User, data) or {
 print(user.name)
 print(user.last_name)
 print(user.age)
-// You can also decode JSON tensors:
+# You can also decode JSON tensors:
 sfoos = '[{"x":123},{"x":456}]'
 foos = json.decode([]Foo, sfoos) ?
 print(foos[0].x)
@@ -2801,7 +2787,7 @@ unexpected value. Assert statements can be used in any function.
 ### Test files
 
 ```adorad
-// hello.ad
+# hello.ad
 module main
 
 func hello() string {
@@ -2815,7 +2801,7 @@ func main() {
 
 ```adorad
 module main
-// hello_test.ad
+# hello_test.ad
 func test_hello() {
     assert hello() == 'Hello world'
 }
@@ -2879,17 +2865,17 @@ For example:
 import strings
 
 func draw_text(s string, x int, y int) {
-	// ...
+	# ...
 }
 
 func draw_scene() {
-	// ...
+	# ...
 	name1 = 'abc'
 	name2 = 'func ghi'
 	draw_text('hello $name1', 10, 10)
 	draw_text('hello $name2', 100, 10)
 	draw_text(strings.repeat(`X`, 10000), 10, 50)
-	// ...
+	# ...
 }
 ```
 
@@ -2906,13 +2892,13 @@ struct User {
 }
 
 func test() []int {
-	number = 7 // stack variable
-	user = User{} // struct allocated on stack
-	numbers = [1, 2, 3] // tensor allocated on heap, will be freed as the function exits
+	number = 7 # stack variable
+	user = User{} # struct allocated on stack
+	numbers = [1, 2, 3] # tensor allocated on heap, will be freed as the function exits
 	print(number)
 	print(user)
 	print(numbers)
-	numbers2 = [4, 5, 6] // tensor that's being returned, won't be freed here
+	numbers2 = [4, 5, 6] # tensor that's being returned, won't be freed here
 	return numbers2
 }
 ```
@@ -2937,21 +2923,21 @@ V's ORM provides a number of benefits:
 import sqlite
 
 struct Customer {
-	// struct name has to be the same as the table name (for now)
-	id        int // a field named `id` of integer type must be the first field
+	# struct name has to be the same as the table name (for now)
+	id        int # a field named `id` of integer type must be the first field
 	name      string
 	nr_orders int
 	country   string
 }
 
 db = sqlite.connect('customers.db') ?
-// select count(*) from Customer
+# select count(*) from Customer
 nr_customers = sql db {
 	select count from Customer
 }
 print('number of all customers: $nr_customers')
-// Adorad syntax can be used to build queries
-// db.select returns an tensor
+# Adorad syntax can be used to build queries
+# db.select returns an tensor
 uk_customers = sql db {
 	select from Customer where country == 'uk' && nr_orders > 0
 }
@@ -2959,12 +2945,12 @@ print(uk_customers.len)
 for customer in uk_customers {
 	print('$customer.id - $customer.name')
 }
-// by adding `limit 1` we tell Adorad that there will be only one object
+# by adding `limit 1` we tell Adorad that there will be only one object
 customer = sql db {
 	select from Customer where id == 1 limit 1
 }
 print('$customer.id - $customer.name')
-// insert a new customer
+# insert a new customer
 new_customer = Customer{
 	name: 'Bob'
 	nr_orders: 10
@@ -2974,7 +2960,7 @@ sql db {
 }
 ```
 
-<!-- For more examples, see <a href='https://github.com/vlang/v/blob/master/vlib/orm/orm_test.ad'>vlib/orm/orm_test.ad</a>. -->
+<!-- For more examples, see <a href='https:#github.com/vlang/v/blob/master/vlib/orm/orm_test.ad'>vlib/orm/orm_test.ad</a>. -->
 
 ## Writing Documentation
 
@@ -2985,7 +2971,7 @@ vdoc will generate it from docstrings in the source code.
 Documentation for each function/type/const must be placed right before the declaration:
 
 ```adorad
-// clearall clears all bits in the tensor
+# clearall clears all bits in the tensor
 func clearall() {
 }
 ```
@@ -2996,10 +2982,10 @@ Sometimes one line isn't enough to explain what a function does, in that case co
 span to the documented function using single line comments:
 
 ```adorad
-// copy_all recursively copies all elements of the tensor by their value,
-// if `dupes` is false all duplicate values are eliminated in the process.
+# copy_all recursively copies all elements of the tensor by their value,
+# if `dupes` is false all duplicate values are eliminated in the process.
 func copy_all(dupes bool) {
-	// ...
+	# ...
 }
 ```
 
@@ -3072,16 +3058,16 @@ Examples of potentially memory-unsafe operations are:
 To mark potentially memory-unsafe operations, enclose them in an `unsafe` block:
 
 ```adorad
-// allocate 2 uninitialized bytes & return a reference to them
+# allocate 2 uninitialized bytes & return a reference to them
 mutable p = unsafe { malloc(2) }
-p[0] = `h` // Error: pointer indexing is only allowed in `unsafe` blocks
+p[0] = `h` # Error: pointer indexing is only allowed in `unsafe` blocks
 unsafe {
-    p[0] = `h` // OK
+    p[0] = `h` # OK
     p[1] = `i`
 }
-p++ // Error: pointer arithmetic is only allowed in `unsafe` blocks
+p++ # Error: pointer arithmetic is only allowed in `unsafe` blocks
 unsafe {
-    p++ // OK
+    p++ # OK
 }
 assert *p == `i`
 ```
@@ -3110,11 +3096,11 @@ cause a panic.
 ```adorad
 struct Node {
 	a &Node
-	b &Node = 0 // Auto-initialized to nil, use with caution!
+	b &Node = 0 # Auto-initialized to nil, use with caution!
 }
 
-// Reference fields must be initialized unless an initial value is declared.
-// Zero (0) is OK but use with caution, it's a nil pointer.
+# Reference fields must be initialized unless an initial value is declared.
+# Zero (0) is OK but use with caution, it's a nil pointer.
 foo = Node{
 	a: 0
 }
@@ -3156,7 +3142,7 @@ assert offsetof(Foo, b) == 4
 ```adorad
 #flag -lsqlite3
 #include "sqlite3.h"
-// See also the example from https://www.sqlite.org/quickstart.html
+# See also the example from https:#www.sqlite.org/quickstart.html
 struct C.sqlite3 {
 }
 
@@ -3171,7 +3157,7 @@ func C.sqlite3_close(&C.sqlite3) int
 
 func C.sqlite3_column_int(stmt &C.sqlite3_stmt, n int) int
 
-// ... you can also just define the type of parameter and leave out the C. prefix
+# ... you can also just define the type of parameter and leave out the C. prefix
 func C.sqlite3_prepare_v2(&sqlite3, charptr, int, &&sqlite3_stmt, &charptr) int
 
 func C.sqlite3_step(&sqlite3_stmt)
@@ -3193,20 +3179,20 @@ func my_callback(arg voidptr, howmany int, cvalues &charptr, cnames &charptr) in
 }
 
 func main() {
-	db = &C.sqlite3(0) // this means `sqlite3* db = 0`
-	// passing a string literal to a C function call results in a C string, not a Adorad string
+	db = &C.sqlite3(0) # this means `sqlite3* db = 0`
+	# passing a string literal to a C function call results in a C string, not a Adorad string
 	C.sqlite3_open('users.db', &db)
-	// C.sqlite3_open(db_path.str, &db)
+	# C.sqlite3_open(db_path.str, &db)
 	query = 'select count(*) from users'
 	stmt = &C.sqlite3_stmt(0)
-	// NB: you can also use the `.str` field of a Adorad string,
-	// to get its C style zero terminated representation
+	# NB: you can also use the `.str` field of a Adorad string,
+	# to get its C style zero terminated representation
 	C.sqlite3_prepare_v2(db, query.str, -1, &stmt, 0)
 	C.sqlite3_step(stmt)
 	nr_users = C.sqlite3_column_int(stmt, 0)
 	C.sqlite3_finalize(stmt)
 	print('There are $nr_users users in the database.')
-	//
+	#
 	error_msg = charptr(0)
 	query_all_users = 'select * from users'
 	rc = C.sqlite3_exec(db, query_all_users.str, my_callback, 7, &error_msg)
@@ -3305,9 +3291,9 @@ and tries to compile it to a .o file, then will use that.
 
 This allows you to have C code, that is contained in a Adorad module, so that its distribution is easier.
 You can see a complete minimal example for using C code in a Adorad wrapper module here:
-[project_with_c_code](https://github.com/vlang/v/tree/master/vlib/v/tests/project_with_c_code).
+[project_with_c_code](https:#github.com/vlang/v/tree/master/vlib/v/tests/project_with_c_code).
 Another example, demonstrating passing structs from C to Adorad and back again:
-[interoperate between C to Adorad to C](https://github.com/vlang/v/tree/master/vlib/v/tests/project_with_c_code_2).
+[interoperate between C to Adorad to C](https:#github.com/vlang/v/tree/master/vlib/v/tests/project_with_c_code_2).
 
 ### C types
 
@@ -3334,7 +3320,7 @@ To cast a `voidptr` to a Adorad reference, use `user = &User(user_void_ptr)`.
 
 `voidptr` can also be dereferenced into a Adorad struct through casting: `user = User(user_void_ptr)`.
 
-<!-- [an example of a module that calls C code from V](https://github.com/vlang/v/blob/master/vlib/v/tests/project_with_c_code/mod1/wrapper.v) -->
+<!-- [an example of a module that calls C code from V](https:#github.com/vlang/v/blob/master/vlib/v/tests/project_with_c_code/mod1/wrapper.v) -->
 
 ## Debugging generated C code
 
@@ -3379,17 +3365,17 @@ use `v help`, `v help build` and `v help build-c`.
 
 #### $if
 ```adorad
-// Support for multiple conditions in one branch
+# Support for multiple conditions in one branch
 $if ios || android {
 	print('Running on a mobile device!')
 }
 $if linux && x64 {
 	print('64-bit Linux.')
 }
-// Usage as expression
+# Usage as expression
 os = $if windows { 'Windows' } $else { 'UNIX' }
 print('Using $os')
-// $else-$if branches
+# $else-$if branches
 $if tinyc {
 	print('tinyc')
 } $else $if clang {
@@ -3402,11 +3388,11 @@ $if tinyc {
 $if test {
 	print('testing')
 }
-// v -cg ...
+# v -cg ...
 $if debug {
 	print('debugging')
 }
-// v -d option ...
+# v -d option ...
 $if option ? {
 	print('custom option')
 }
@@ -3636,21 +3622,21 @@ Having built-in JSON support is nice, but Adorad also allows you to create effic
 serializers for any data format. Adorad has compile-time `if` and `for` constructs:
 
 ```adorad
-// TODO: not fully implemented
+# TODO: not fully implemented
 
 struct User {
     name string
     age  int
 }
 
-// Note: T should be passed a struct name only
+# Note: T should be passed a struct name only
 func decode<T>(data string) T {
     mutable result = T{}
-    // compile-time `for` loop
-    // T.fields gives an tensor of a field metadata type
+    # compile-time `for` loop
+    # T.fields gives an tensor of a field metadata type
     $for field in T.fields {
         $if field.typ is string {
-            // $(string_expr) produces an identifier
+            # $(string_expr) produces an identifier
             result.$(field.name) = get_string(data, field.name)
         } $else $if field.typ is int {
             result.$(field.name) = get_int(data, field.name)
@@ -3659,7 +3645,7 @@ func decode<T>(data string) T {
     return result
 }
 
-// `decode<User>` generates:
+# `decode<User>` generates:
 func decode_User(data string) User {
     mutable result = User{}
     result.name = get_string(data, 'name')
@@ -3692,10 +3678,10 @@ func main() {
 	a = Vec{2, 3}
 	b = Vec{4, 5}
 	mutable c = Vec{1, 2}
-	print(a + b) // "{6, 8}"
-	print(a - b) // "{-2, -2}"
+	print(a + b) # "{6, 8}"
+	print(a - b) # "{-2, -2}"
 	c += a
-	print(c) // "{3, 5}"
+	print(c) # "{3, 5}"
 }
 ```
 
@@ -3772,7 +3758,7 @@ This will generate a directory `libsodium` with a Adorad module.
 
 Example of a C2Adorad generated libsodium wrapper:
 
-https://github.com/medvednikov/libsodium
+https:#github.com/medvednikov/libsodium
 
 <br>
 
@@ -3817,7 +3803,7 @@ before their definition.
 Right now it's not possible to modify types while the program is running.
 
 <!-- More examples, including a graphical application:
-[github.com/vlang/v/tree/master/examples/hot_code_reload](https://github.com/vlang/v/tree/master/examples/hot_reload). -->
+[github.com/vlang/v/tree/master/examples/hot_code_reload](https:#github.com/vlang/v/tree/master/examples/hot_reload). -->
 
 ## Cross compilation
 
@@ -3854,38 +3840,38 @@ module global (so that you can use `mkdir()` instead of `os.mkdir()`, for exampl
 An example `deploy.adsh`:
 ```bash
 #!/usr/bin/env -S adorad run
-// The shebang above associates the file to Adorad on Unix-like systems,
-// so it can be run just by specifying the path to the file
-// once it's made executable using `chmod +x`.
+# The shebang above associates the file to Adorad on Unix-like systems,
+# so it can be run just by specifying the path to the file
+# once it's made executable using `chmod +x`.
 
-// Remove if build/ exits, ignore any errors if it doesn't
+# Remove if build/ exits, ignore any errors if it doesn't
 rmdir_all('build') or { }
 
-// Create build/, never fails as build/ does not exist
+# Create build/, never fails as build/ does not exist
 mkdir('build') ?
 
-// Move *.ad files to build/
+# Move *.ad files to build/
 result = exec('mv *.ad build/') ?
 if result.exit_code != 0 {
 	print(result.output)
 }
-// Similar to:
-// files = ls('.') ?
-// mutable count = 0
-// if files.len > 0 {
-//     for file in files {
-//         if file.ends_with('.ad') {
-//              mv(file, 'build/') or {
-//                  print('err: $err')
-//                  return
-//              }
-//         }
-//         count++
-//     }
-// }
-// if count == 0 {
-//     print('No files')
-// }
+# Similar to:
+# files = ls('.') ?
+# mutable count = 0
+# if files.len > 0 {
+#     for file in files {
+#         if file.ends_with('.ad') {
+#              mv(file, 'build/') or {
+#                  print('err: $err')
+#                  return
+#              }
+#         }
+#         count++
+#     }
+# }
+# if count == 0 {
+#     print('No files')
+# }
 ```
 
 Now you can either compile this like a normal Adorad program and get an executable you can deploy and run
@@ -3906,55 +3892,55 @@ An attribute is a compiler instruction specified inside `[]` right before a
 function/struct/enum declaration and applies only to the following declaration.
 
 ```adorad
-// Calling this function will result in a deprecation warning
+# Calling this function will result in a deprecation warning
 [deprecated]
 func old_function() {
 }
 
-// This function's calls will be inlined.
+# This function's calls will be inlined.
 [inline]
 func inlined_function() {
 }
 
-// The following struct must be allocated on the heap. Therefore, it can only be used as a
-// reference (`&Window`) or inside another reference (`&OuterStruct{ Window{...} }`).
+# The following struct must be allocated on the heap. Therefore, it can only be used as a
+# reference (`&Window`) or inside another reference (`&OuterStruct{ Window{...} }`).
 [heap]
 struct Window {
 }
 
-// Adorad will not generate this function and all its calls if the provided flag is false.
-// To use a flag, use `v -d flag`
+# Adorad will not generate this function and all its calls if the provided flag is false.
+# To use a flag, use `v -d flag`
 [if debug]
 func foo() {
 }
 
 func bar() {
-	foo() // will not be called if `-d debug` is not passed
+	foo() # will not be called if `-d debug` is not passed
 }
 
-// Calls to this function must be in unsafe{} blocks
+# Calls to this function must be in unsafe{} blocks
 [unsafe]
 func risky_business() {
 }
 
-// V's autofree engine will not take care of memory management in this function
+# V's autofree engine will not take care of memory management in this function
 [manualfree]
 func custom_allocations() {
 }
 
-// For C interop only, tells Adorad that the following struct is defined with `typefunc struct` in C
+# For C interop only, tells Adorad that the following struct is defined with `typefunc struct` in C
 [typedef]
 struct C.Foo {
 }
 
-// Used in Win32 API code when you need to pass callback function
+# Used in Win32 API code when you need to pass callback function
 [windows_stdcall]
 func C.DefWindowProc(hwnd int, msg int, lparam int, wparam int)
 
-// Windows only:
-// If a default graphics library is imported (ex. gg, ui), then the graphical window takes
-// priority and no console window is created, effectively disabling print() statements.
-// Use to explicity create console window. Valid before main() only.
+# Windows only:
+# If a default graphics library is imported (ex. gg, ui), then the graphical window takes
+# priority and no console window is created, effectively disabling print() statements.
+# Use to explicity create console window. Valid before main() only.
 [console]
 func main() {
 }
@@ -3970,13 +3956,13 @@ jumping back to code that accesses memory that has already been freed, so it req
 
 ```adorad
 if x {
-	// ...
+	# ...
 	if y {
 		unsafe {
 			goto my_label
 		}
 	}
-	// ...
+	# ...
 }
 my_label:
 ```
