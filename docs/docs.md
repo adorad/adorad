@@ -39,4 +39,6 @@ this is a multiline comment
 ### d. Identifiers
 An identifier is a non-empty Unicode string of the following pattern:
 `(letter | _) {letter | 0-9 | _}*`
-where `letter` is: `[A-Z][a-z]`
+where `letter` is: `[A-Z][a-z]`.
+
+All characters in an identifier are meaningful. Adorad's current implementation allows, at most, 256 characters in an identifier.
