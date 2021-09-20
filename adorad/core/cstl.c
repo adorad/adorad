@@ -412,7 +412,7 @@ Int32 digit_to_int(char c) {
 }
 
 bool char_is_hex_digit(char c) {
-    return char_is_digit(c)                   or
+    return char_is_digit(c)                or
            CORETEN_IS_BETWEEN(c, 'a', 'f') or
            CORETEN_IS_BETWEEN(c, 'A', 'F'); 
 }
