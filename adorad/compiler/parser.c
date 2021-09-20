@@ -596,7 +596,8 @@ typedef struct ast_prec {
     BinaryOpKind bin_kind;
 } ast_prec;
 
-// A table of binary operator precedence. Higher precedence numbers are stickier.
+// A table of binary operator precedence, from strong to weak. Binary Operators of the same precedence value
+// are grouped together in the order given by their associativity.
 #define PRECEDENCE_TABLE_SIZE   (sizeof(precedence_table)/sizeof(precedence_table[0]))
 static const ast_prec precedence_table[] = {
     // { MULT_MULT, 60, BinaryOpKindMultMult },
