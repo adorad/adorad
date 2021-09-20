@@ -458,9 +458,9 @@ static AstNode* ast_parse_loop_expr(Parser* parser) {
     Token* inline_attr = parser_chomp_if(ATTR_INLINE);
     AstNode* out = null;
 
-    AstNode* loop_while_expr = ast_parse_loop_while_expr(parser);
-    if(loop_while_expr != null) {
-        out = loop_while_expr;
+    AstNode* loop_inf_expr = ast_parse_loop_inf_expr(parser);
+    if(loop_inf_expr != null) {
+        out = loop_inf_expr;
         goto outexpect;
     }
 
@@ -486,11 +486,11 @@ outexpect:
 
 /*
     TODO: Add implementation for:
-        1. ast_parse_loop_while_expr(parser)
+        1. ast_parse_loop_inf_expr(parser)
         2. ast_parse_loop_c_expr(parser)
         3. ast_parse_loop_in_expr(parser)
 */
-static AstNode* ast_parse_loop_while_expr(Parser* parser) {
+static AstNode* ast_parse_loop_inf_expr(Parser* parser) {
     CORETEN_ENFORCE(false, "TODO");
     return null;
 }
