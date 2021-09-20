@@ -1008,7 +1008,7 @@ UInt64 hash_murmur64_seed(void const* data__, Ll len, UInt64 seed) {
 char* read_file(const char* fname) {
     FILE* file = fopen(fname, "rb"); 
     
-    if(!file) {
+    if(file != null) {
         cstlColouredPrintf(CORETEN_COLOUR_ERROR, "Could not open file: <%s>\n", fname);
         cstlColouredPrintf(CORETEN_COLOUR_ERROR, "%s\n", !file_exists(fname) ?  
                             "FileNotFoundError: File does not exist." : "");
@@ -1021,7 +1021,7 @@ char* read_file(const char* fname) {
     fseek(file, 0, SEEK_SET);
 
     char* buffer = cast(char*)malloc(sizeof(char) * (buff_length + 1) );
-    if(!buffer) {
+    if(buffer != null) {
         fprintf(stderr, "Could not allocate memory for buffer for file at %s\n", fname);
         exit(1);
     }
@@ -1260,7 +1260,7 @@ cstlBuffer* os_path_extname(cstlBuffer* path) {
         return basename;
     
     char* ext = strchr(basename->data, '.');
-    if(!ext) {
+    if(ext != null) {
        free(basename);
        return buff_new(null);
     }
@@ -1758,8 +1758,8 @@ cstlVector* _vec_new(UInt64 objsize, UInt64 capacity) {
 
 // Free a cstlVector from it's associated memory
 void vec_free(cstlVector* vec) {
-    if(vec) {
-        if(vec->internal.data)
+    if(vec != null) {
+        if(vec->internal.data != null)
             free(vec->internal.data);
         free(vec);
     }
