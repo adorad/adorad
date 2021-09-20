@@ -485,7 +485,7 @@ double now() {
 
 // Get duration between `start` and `end` in seconds.
 double duration(clock_t start, clock_t end) {
-    return (double)(end - start)/CLOCKS_PER_SEC;
+    return cast(double)(end - start)/CLOCKS_PER_SEC;
 }
 
 // -------------------------------------------------------------------------
