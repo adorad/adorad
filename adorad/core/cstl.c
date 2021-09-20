@@ -328,7 +328,6 @@ cstlBuffer* buff_clone_n(cstlBuffer* buffer, int n) {
     return clone;
 }
 
-
 // Free the buffer from its associated memory
 void buff_free(cstlBuffer* buffer) {
     if(buffer != null)
