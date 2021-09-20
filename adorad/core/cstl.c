@@ -1005,7 +1005,7 @@ UInt64 hash_murmur64_seed(void const* data__, Ll len, UInt64 seed) {
 // io.h
 // -------------------------------------------------------------------------
 
-char* readFile(const char* fname) {
+char* read_file(const char* fname) {
     FILE* file = fopen(fname, "rb"); 
     
     if(!file) {

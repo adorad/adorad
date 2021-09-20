@@ -22,7 +22,7 @@ typedef struct File {
     char* contents;
 } File;
 
-char* readFile(const char* fname);
+char* read_file(const char* fname);
 bool file_exists(const char* path);
 
 #endif // CORETEN_IO_H
