@@ -480,7 +480,7 @@ char* char_last_occurence(char* str, char ch) {
 
 // Returns the current time (in clock_t)
 double now() {
-    return clock();
+    return cast(double)clock();
 }
 
 // Get duration between `start` and `end` in seconds.
