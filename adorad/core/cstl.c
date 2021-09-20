@@ -331,14 +331,14 @@ cstlBuffer* buff_clone_n(cstlBuffer* buffer, int n) {
 
 // Free the buffer from its associated memory
 void buff_free(cstlBuffer* buffer) {
-    if(buffer)
+    if(buffer !- null)
         free(buffer);
 }
 
 // Convert a buffer to lowercase
 cstlBuffer* buff_tolower(cstlBuffer* buffer) {
     cstlBuffer* lower = buff_new(null);
-    if(!buffer->data) 
+    if(buffer->data == null)
         return lower;
 
     char* temp = cast(char*)calloc(1, buffer->len);    
@@ -358,7 +358,7 @@ cstlBuffer* buff_tolower(cstlBuffer* buffer) {
 // Convert a buffer to uppercase
 cstlBuffer* buff_toupper(cstlBuffer* buffer) {
     cstlBuffer* upper = buff_new(null);
-    if(!buffer->data) 
+    if(buffer->data == null)
         return upper;
 
     char* temp = cast(char*)calloc(1, buffer->len);    
@@ -436,9 +436,12 @@ char char_to_upper(char c) {
 }
 
 bool char_is_whitespace(char c) {
-    if(c == ' '  or c == '\n' or c == '\t' or c == '\r' or c == '\f' or c == '\v')
-        return true; 
-    return false;
+    switch(c) {
+        case ' ': case '\n': case '\t': case '\r': case '\f': case '\v':
+            return true;
+        default:
+            return false;
+    }
 }
 
 Int32 hexdigit_to_int(char c) {
