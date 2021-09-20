@@ -54,7 +54,7 @@ enum AstNodeKind {
     AstNodeKindAliasDeclExpr,  // `alias foo as bar`
     AstNodeKindFuncCallExpr,   // `sayHello('Hello!')`
     AstNodeKindIfExpr,         // `if cond { ...}`
-    AstNodeKindLoopWhileExpr,  // `loop {}`
+    AstNodeKindLoopInfExpr,  // `loop {}`
     AstNodeKindLoopCExpr,      // `loop i=0; i<10; i++ {}`
     AstNodeKindLoopInExpr,     // `loop i in 0..10 {}`
     AstNodeKindMatchExpr,      // `match expr { ... }`
@@ -191,11 +191,11 @@ typedef struct AstNodeInitExpr {
     } kind;
 } AstNodeInitExpr;
 
-typedef struct AstNodeLoopWhileExpr {
+typedef struct AstNodeLoopInfExpr {
     AstNode* cond;
     Vec* statements;
     AstNodeScope* scope;
-} AstNodeLoopWhileExpr;
+} AstNodeLoopInfExpr;
 
 typedef struct AstNodeLoopCExpr {
     Buff* label;
@@ -225,7 +225,7 @@ typedef struct AstNodeLoopExpr {
     Buff* label;
     bool is_inline;
     union {
-        AstNodeLoopWhileExpr* loop_while_expr;
+        AstNodeLoopInfExpr* loop_while_expr;
         AstNodeLoopCExpr* loop_c_expr;
         AstNodeLoopInExpr* loop_in_expr;
     };
