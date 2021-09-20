@@ -225,7 +225,7 @@ typedef struct AstNodeLoopExpr {
     Buff* label;
     bool is_inline;
     union {
-        AstNodeLoopInfExpr* loop_while_expr;
+        AstNodeLoopInfExpr* loop_inf_expr;
         AstNodeLoopCExpr* loop_c_expr;
         AstNodeLoopInExpr* loop_in_expr;
     };
