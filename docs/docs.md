@@ -35,3 +35,8 @@ Whitespace is any non-empty string containing either of the following patterns:
 this is a multiline comment
 """
 ```
+
+### d. Identifiers
+An identifier is a non-empty Unicode string of the following pattern:
+`(letter | _) {letter | 0-9 | _}*`
+where `letter` is: `[A-Z][a-z]`
