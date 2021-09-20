@@ -600,29 +600,29 @@ typedef struct ast_prec {
 // are grouped together in the order given by their associativity.
 #define PRECEDENCE_TABLE_SIZE   (sizeof(precedence_table)/sizeof(precedence_table[0]))
 static const ast_prec precedence_table[] = {
-    // { MULT_MULT, 60, BinaryOpKindMultMult },
-    { MULT, 60, BinaryOpKindMult },
-    { MOD, 60, BinaryOpKindMod },
-    { SLASH, 60, BinaryOpKindDiv },
+    // { .tok_kind = MULT_MULT, .prec = 60, .bin_kind = BinaryOpKindMultMult },
+    { .tok_kind = MULT,  .prec = 60, .bin_kind = BinaryOpKindMult },
+    { .tok_kind = MOD,   .prec = 60, .bin_kind = BinaryOpKindMod },
+    { .tok_kind = SLASH, .prec = 60, .bin_kind = BinaryOpKindDiv },
 
-    { PLUS, 50, BinaryOpKindAdd },
-    { MINUS, 50, BinaryOpKindSubtract },
-    { PLUS_EQUALS, 50, BinaryOpKindAssignmentPlus },
-    { MINUS_EQUALS, 50, BinaryOpKindAssignmentMinus },
+    { .tok_kind = PLUS,         .prec = 50, .bin_kind = BinaryOpKindAdd },
+    { .tok_kind = MINUS,        .prec = 50, .bin_kind = BinaryOpKindSubtract },
+    { .tok_kind = PLUS_EQUALS,  .prec = 50, .bin_kind = BinaryOpKindAssignmentPlus },
+    { .tok_kind = MINUS_EQUALS, .prec = 50, .bin_kind = BinaryOpKindAssignmentMinus },
 
-    { LBITSHIFT, 40, BinaryOpKindBitshitLeft },
-    { RBITSHIFT, 40, BinaryOpKindBitshitRight },
+    { .tok_kind = LBITSHIFT, .prec = 40, .bin_kind = BinaryOpKindBitshitLeft },
+    { .tok_kind = RBITSHIFT, .prec = 40, .bin_kind = BinaryOpKindBitshitRight },
     
-    { EQUALS_EQUALS, 30, BinaryOpKindCmpEqual },
-    { EXCLAMATION_EQUALS, 30, BinaryOpKindCmpNotEqual },
-    { GREATER_THAN, 30, BinaryOpKindCmpGreaterThan },
-    { LESS_THAN, 30, BinaryOpKindCmpLessThan },
-    { GREATER_THAN_OR_EQUAL_TO, 30, BinaryOpKindCmpGreaterThanorEqualTo },
-    { LESS_THAN_OR_EQUAL_TO, 30, BinaryOpKindCmpLessThanorEqualTo },
+    { .tok_kind = LESS_THAN,                 .prec = 30, .bin_kind = BinaryOpKindCmpLessThan },
+    { .tok_kind = GREATER_THAN,              .prec = 30, .bin_kind = BinaryOpKindCmpGreaterThan },
+    { .tok_kind = EQUALS_EQUALS,             .prec = 30, .bin_kind = BinaryOpKindCmpEqual },
+    { .tok_kind = EXCLAMATION_EQUALS,        .prec = 30, .bin_kind = BinaryOpKindCmpNotEqual },
+    { .tok_kind = LESS_THAN_OR_EQUAL_TO,     .prec = 30, .bin_kind = BinaryOpKindCmpLessThanorEqualTo },
+    { .tok_kind = GREATER_THAN_OR_EQUAL_TO,  .prec = 30, .bin_kind = BinaryOpKindCmpGreaterThanorEqualTo },
 
-    { AND, 20, BinaryOpKindBoolAnd },
+    { .tok_kind = AND, .prec = 20, .bin_kind = BinaryOpKindBoolAnd },
 
-    { OR, 10, BinaryOpKindBoolOr },
+    { .tok_kind = OR,  .prec = 10, .bin_kind = BinaryOpKindBoolOr },
 };
 
 static ast_prec lookup_precedence(TokenKind kind) {
