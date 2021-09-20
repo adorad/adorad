@@ -26,3 +26,12 @@ Whitespace is any non-empty string containing either of the following patterns:
 * `U+200F` (right-to-left mark)
 * `U+2028` (line separator)
 * `U+2029` (paragraph separator)
+
+### c. Comments
+<!-- Syntax for multiline comments are expected to be changed before the official release -->
+```python
+# this is a comment
+"""
+this is a multiline comment
+"""
+```
