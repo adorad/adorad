@@ -827,6 +827,7 @@ static AstNode* ast_parse_block(Parser* parser) {
     return out;
 }
 
+/* WIP */
 // BraceSuffixExpr
 //      TypeExpr InitList?
 // where InitList is:
@@ -842,9 +843,11 @@ static AstNode* ast_parse_brace_suffix_expr(Parser* parser) {
     if(lbrace == null)
         return type_expr;
     
-    Vec* fields = vec_new(AstNode, 1);
+    Vec* fields = null;
     AstNode* field_init = ast_parse_field_init(parser);
     if(field_init != null) {
+        fields = vec_new(AstNode, 1);
+        vec_push(fields, field_init);
         while(true) {
             switch(pc->kind) {
                 case COMMA: parser_chomp(1); break;
@@ -864,6 +867,33 @@ static AstNode* ast_parse_brace_suffix_expr(Parser* parser) {
             vec_push(fields, field_init);
         } // while(true)
         Token* comma = parser_chomp_if(COMMA);
-        AstNode* out = ast_create_node(AstNodeKindBraceSuffixExpr);
+        AstNode* out = ast_create_node(AstNodeKindStructExpr);
+        out->data.expr->init_expr->kind = InitExprKindStruct;
+        out->data.expr->init_expr->entries = fields;
+        return out;
     }
+
+    AstNode* out = ast_create_node(AstNodeKindArrayInitExpr);
+    out->data.expr->init_expr->type = InitExprKindArray;
+
+    AstNode* expr = ast_parse_expr(parser);
+    if(expr != null) {
+        Vec* fields = vec_new(AstNode, 1);
+        vec_push(fields, expr);
+        Token* comma = null;
+        while(pc->kind != COMMA) {
+            AstNode* exp = ast_parse_expr(parser);
+            if(exp == null)
+                break;
+            vec_push(fields, exp);
+        }
+        out->data.expr->init_expr->entries = fields;
+        return out;
+    }
+
+    Token* rbrace = parser_chomp_if(RBRACE);
+    if(rbrace == null)
+        ast_expected("RBRACE");
+    
+    return out;
 }

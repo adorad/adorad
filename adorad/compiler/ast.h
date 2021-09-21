@@ -65,6 +65,7 @@ enum AstNodeKind {
     AstNodeKindInferredArrayType,
     AstNodeKindStructExpr,
     AstNodeKindEnumExpr,
+    AstNodeKindArrayInitExpr,
 
     AstNodeKindModuleStatement,     // `module foo`
     AstNodeKindImportStatement,     // `import foo as bar`'
