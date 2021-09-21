@@ -239,7 +239,7 @@ typedef enum {
     FuncCallModifierCompileTime
 } FuncCallModifier;
 
-typedef struct AstNodeFuncCallExpr {
+typedef struct {
     AstNode* func_call_expr;
     Vec* params;
     FuncCallModifier modifier;
