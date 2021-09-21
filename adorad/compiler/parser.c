@@ -6,9 +6,7 @@
 
 #define nodepush(node)              vec_push(parser->nodelist, node)
 
-#define parser_chomp(n)              \
-    while(n-- != 0)                  \
-        chomp(parser)
+#define parser_chomp(n)             chomp(parser, n)
 #define parser_chomp_if(kind)       chomp_if(parser, kind)
 #define parser_expect_token(kind)   expect_token(parser, kind)
 
@@ -37,10 +35,10 @@ static inline Token* parser_peek_next(Parser* parser) {
     if(parser->offset + 1 >= parser->num_tokens)
         return null;
 
-    return cast(Token*)parser->toklist + parser->offset + 1;
+    return cast(Token*)(parser->toklist + parser->offset + 1);
 }
 
-// Consumes a token and moves on to the next token
+// Consumes a token and moves on to the next `N` tokenS
 static inline Token* chomp(Parser* parser, UInt64 n) {
     if(parser->offset + n >= parser->num_tokens)
         return null;
@@ -738,7 +736,7 @@ static AstNode* ast_parse_type_expr(Parser* parser) {
 //      | KEYWORD(return) Expr?
 //      | BlockLabel? ATTRIBUTE(inline)? LoopExpr
 //      | Block
-static AstNode* ast_parse_primary_expr(Parser* parser {
+static AstNode* ast_parse_primary_expr(Parser* parser) {
     switch(pc->kind) {
         case IF: return ast_parse_if_expr(parser);
         case BREAK: 
