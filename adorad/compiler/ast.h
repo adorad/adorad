@@ -489,7 +489,7 @@ typedef struct {
 } AstNodeAssignmentStatement;
 
 // `{ ... }`
-typedef struct AstNodeBlock {
+typedef struct {
     Buff* label; // for labeled block statements
     Vec* statements;
 } AstNodeBlock;
