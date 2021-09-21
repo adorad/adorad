@@ -495,7 +495,7 @@ typedef struct {
 } AstNodeBlock;
 
 // break/continue
-typedef struct AstNodeBranchStatement {
+typedef struct {
     Buff* name;
     AstNode* expr;  // can be nullptr (`break`). always nullptr for `continue`
     enum {
