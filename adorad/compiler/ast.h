@@ -702,7 +702,7 @@ typedef struct {
 //     };
 // };
 
-typedef struct AstNodeParamDecl {
+typedef struct {
     Buff* name;
     AstNode* type;
     bool is_alias;
