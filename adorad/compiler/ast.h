@@ -389,7 +389,7 @@ typedef struct {
     Buff* alias;
 } AstNodeAliasDecl;
 
-typedef struct AstNodeTypeEnumDecl {
+typedef struct {
     Buff* name;
     VisibilityMode visibility;
     Vec* fields;     // typedef enum value fields
