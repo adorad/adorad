@@ -800,7 +800,7 @@ typedef struct {
     AstNode* subscript;
 } AstNodeArrayAccessExpr;
 
-typedef struct AstNodeInferredArrayType {
+typedef struct {
     AstNode* sentinel; // can be null
     AstNode* child_type;
 } AstNodeInferredArrayType;
