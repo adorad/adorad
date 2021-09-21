@@ -713,7 +713,7 @@ typedef struct {
     AstNode* expr;
 } AstNodeReturnExpr;
 
-typedef struct AstNodeTestDecl {
+typedef struct {
     Buff* name;   // can be nullptr if no name
     AstNode* body;
 } AstNodeTestDecl;
