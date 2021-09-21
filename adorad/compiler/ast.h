@@ -414,7 +414,7 @@ typedef struct {
     };
 } AstNodeTypeDecl;
 
-typedef struct AstNodeConstantDecl {
+typedef struct {
     VisibilityMode visibility;
     bool is_block;  // `const ( ... )`
     Vec* fields;    // various constant declarations
