@@ -791,7 +791,7 @@ typedef struct {
     AstNode* expr;
 } AstNodePrefixOpExpr;
 
-typedef struct AstNodeCompileTime {
+typedef struct {
     AstNode* expr;
 } AstNodeCompileTime;
 
