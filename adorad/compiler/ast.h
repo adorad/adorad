@@ -773,7 +773,7 @@ typedef enum {
     OperatorKindFloorDiv,
 } OperatorKind;
 
-typedef struct AstNodeOperator {
+typedef struct {
     Buff* delete_me;
 } AstNodeOperator;
 
