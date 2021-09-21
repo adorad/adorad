@@ -166,7 +166,7 @@ typedef struct {
     // AttributeKind kind;
 } AstNodeAttributeExpr;
 
-typedef struct AstNodeCastExpr {
+typedef struct {
     AstNode* arg;
     AstNode* expr;
     Buff* type;
