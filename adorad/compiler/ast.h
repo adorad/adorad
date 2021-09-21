@@ -275,7 +275,7 @@ typedef struct {
     Buff* err_symbol;
 } AstNodeTryExpr;
 
-typedef enum BinaryOpKind {
+typedef enum {
     BinaryOpKindInvalid,
     BinaryOpKindAssignmentMult,    // *=
     BinaryOpKindAssignmentDiv,     // /=
