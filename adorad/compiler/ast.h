@@ -756,23 +756,6 @@ typedef struct {
     AstNode* op2;
 } AstNodeComparisonOpExpr;
 
-// TODO(jasmcaus): Do we need an `OperatorKind` and `AstNodeOperator`?
-typedef enum {
-    OperatorKindAdd,
-    OperatorKindSub,
-    OperatorKindMult,
-    OperatorKindMatMult,
-    OperatorKindDiv,
-    OperatorKindMod,
-    OperatorKindPow,
-    OperatorKindLShift,
-    OperatorKindRShift,
-    OperatorKindBitWiseOr,
-    OperatorKindBitWiseXor,
-    OperatorKindBitWiseAnd,
-    OperatorKindFloorDiv,
-} OperatorKind;
-
 typedef enum {
     PrefixOpKindInvalid,
     PrefixOpKindBoolNot,   // KEYWORD(not)
