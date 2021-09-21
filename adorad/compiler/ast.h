@@ -504,7 +504,7 @@ typedef struct {
     } type;
 } AstNodeBranchStatement;
 
-typedef struct AstNodeDeferStatement {
+typedef struct {
     AstNode* expr;
 } AstNodeDeferStatement;
 
