@@ -322,7 +322,7 @@ typedef struct {
     AstNode* rhs;
 } AstNodeBinaryOpExpr;
 
-typedef struct AstNodeTypeOfExpr {
+typedef struct {
     AstNode* expr;
 } AstNodeTypeOfExpr;
 
