@@ -726,7 +726,7 @@ typedef struct {
 } AstNodeTestExpr;
 
 // TODO(jasmcaus): Work on this
-typedef enum UnaryOpKind {
+typedef enum {
     UnaryOpKindNot,
     UnaryOpKindInvert,
 } UnaryOpKind;
