@@ -737,7 +737,7 @@ typedef struct AstNodeUnaryOpExpr {
     AstNode* rhs;
 } AstNodeUnaryOpExpr;
 
-typedef enum ComparisonOpKind {
+typedef enum {
     ComparisonOpKindEqual,
     ComparisonOpKindNotEqual,
     ComparisonOpKindLessThan,
