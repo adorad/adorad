@@ -157,7 +157,7 @@ typedef struct {
     AstNode* value;
 } AstNodeKwdData;
 
-typedef struct AstNodeAsCast {
+typedef struct {
     AstNode* expr;
 } AstNodeAsCast;
 
