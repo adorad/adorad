@@ -691,17 +691,6 @@ typedef struct {
     // AstNodeType* type;
 } AstNodeScopeObject;
 
-// // There are only 4 possible versions of a Type info you will use:
-// //    1. Enum
-// //    2. Union
-// //    3. Sum Type
-// //    4. Interface (can be generic)
-// struct {
-//     union {
-//         AstNode
-//     };
-// };
-
 typedef struct {
     Buff* name;
     AstNode* type;
