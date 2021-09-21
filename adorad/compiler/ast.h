@@ -479,7 +479,7 @@ typedef struct {
     };
 } AstNodeDecl;
 
-typedef struct AstNodeAssignmentStatement {
+typedef struct {
     AstNodeKind op;
     Vec* right;        // Vec<AstNodeExpression*>
     Vec* left;         // Vec<AstNodeExpression*>
