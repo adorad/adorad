@@ -538,7 +538,7 @@ typedef struct {
     } kind;
 } AstNodeReturnStatement;
 
-typedef struct AstNodeVarDecl {
+typedef struct {
     Buff* name;
     AstNode* type;    // can be null
     AstNode* expr;
