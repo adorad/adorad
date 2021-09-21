@@ -335,7 +335,7 @@ typedef struct {
     AstNode* expr;
 } AstNodeLambdaExpr;
 
-typedef struct AstNodeAwaitExpr {
+typedef struct {
     AstNode* value;    
 } AstNodeAwaitExpr;
 
