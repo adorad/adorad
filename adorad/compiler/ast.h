@@ -256,7 +256,7 @@ typedef struct {
     bool any_branches_are_ranges; // if any branch is a range-based match
 } AstNodeMatchBranchExpr;
 
-typedef struct AstNodeMatchRangeExpr {
+typedef struct {
     AstNode* begin;
     AstNode* end;
 } AstNodeMatchRangeExpr;
