@@ -512,6 +512,12 @@ typedef struct {
     Buff* fixme;
 } AstNodeEmptyStatement;
 
+typedef enum FuncInline {
+    FuncInlineAuto,
+    FuncInlineInline,
+    FuncInlineNoinline
+} FuncInline;
+
 typedef struct AstNodeImportStatement {
     Buff* name;
     Buff* alias; // can be null
