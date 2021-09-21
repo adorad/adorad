@@ -731,12 +731,6 @@ typedef enum {
     UnaryOpKindInvert,
 } UnaryOpKind;
 
-typedef struct {
-    AstNode* lhs;
-    UnaryOpKind op;
-    AstNode* rhs;
-} AstNodeUnaryOpExpr;
-
 typedef enum {
     PrefixOpKindInvalid,
     PrefixOpKindBoolNot,   // KEYWORD(not)
