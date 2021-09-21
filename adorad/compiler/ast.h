@@ -636,7 +636,7 @@ typedef struct {
 //     | AstNodeIntegerLiteral (8/16/32/64 + unsigned versions) 
 //     | AstNodeCharLiteral
 //     | AstNodeStringLiteral
-typedef struct AstNodeCompileTimeValue {
+typedef struct {
     union {
         AstNodeEmptyExpression* empty_expr;
         AstNodeBoolLiteral* bool_value;
