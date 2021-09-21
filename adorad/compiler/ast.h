@@ -750,12 +750,6 @@ typedef enum {
     ComparisonOpKindNotIn,
 } ComparisonOpKind;
 
-typedef struct {
-    AstNode* op1;
-    BinaryOpKind op;
-    AstNode* op2;
-} AstNodeComparisonOpExpr;
-
 typedef enum {
     PrefixOpKindInvalid,
     PrefixOpKindBoolNot,   // KEYWORD(not)
