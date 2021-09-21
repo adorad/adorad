@@ -384,7 +384,7 @@ typedef struct {
     };
 } AstNodeExpression;
 
-typedef struct AstNodeAliasDecl {
+typedef struct {
     Buff* original;
     Buff* alias;
 } AstNodeAliasDecl;
