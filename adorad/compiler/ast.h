@@ -392,8 +392,8 @@ typedef struct {
 typedef struct {
     Buff* name;
     VisibilityMode visibility;
-    Vec* fields;     // typedef enum value fields
-    Vec* attributes; // typedef enum attributes 
+    Vec* fields;
+    Vec* attributes;
 } AstNodeTypeEnumDecl;
 
 typedef struct {
