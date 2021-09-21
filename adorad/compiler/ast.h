@@ -182,7 +182,7 @@ typedef struct {
     bool has_else;
 } AstNodeIfExpr;
 
-typedef struct AstNodeInitExpr {
+typedef struct {
     AstNode* type;
     Vec* entries;
     enum {
