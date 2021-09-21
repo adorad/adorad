@@ -560,7 +560,7 @@ typedef struct {
 //     | AstNodeModuleStatement
 //     | AstNodeReturnStatement
 //     | AstNodeVarDecl
-typedef struct AstNodeStatement {
+typedef struct {
     union {
         AstNodeAssignmentStatement* assign_stmt;
         AstNodeBlock* block_stmt;
