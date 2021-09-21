@@ -709,7 +709,7 @@ typedef struct {
     bool is_var_args;
 } AstNodeParamDecl;
 
-typedef struct AstNodeReturnExpr {
+typedef struct {
     AstNode* expr;
 } AstNodeReturnExpr;
 
