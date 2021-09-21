@@ -508,10 +508,6 @@ typedef struct {
     AstNode* expr;
 } AstNodeDeferStatement;
 
-typedef struct {
-    Buff* fixme;
-} AstNodeEmptyStatement;
-
 typedef enum FuncInline {
     FuncInlineAuto,
     FuncInlineInline,
@@ -553,7 +549,6 @@ typedef struct {
 //     | AstNodeBlock
 //     | AstNodeBranchStatement
 //     | AstNodeDeferStatement
-//     | AstNodeEmptyStatement
 //     | AstNodeExpression
 //     | AstNodeFuncDecl
 //     | AstNodeImportStatement
@@ -566,7 +561,6 @@ typedef struct {
         AstNodeBlock* block_stmt;
         AstNodeBranchStatement* branch_stmt;
         AstNodeDeferStatement* defer_stmt;
-        AstNodeEmptyStatement* empty_stmt;
         AstNodeExpression* expr_stmt;
         AstNodeImportStatement* import_stmt;
         AstNodeModuleStatement* module_stmt;
