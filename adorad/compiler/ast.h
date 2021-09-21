@@ -618,7 +618,7 @@ typedef struct {
     Buff* value;
 } AstNodeCharLiteral;
 
-typedef struct AstNodeStringLiteral {
+typedef struct {
     Buff* value;
     bool is_special;   // format / raw string
     enum {
