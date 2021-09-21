@@ -777,7 +777,7 @@ typedef struct {
     Buff* delete_me;
 } AstNodeOperator;
 
-typedef enum PrefixOpKind {
+typedef enum {
     PrefixOpKindInvalid,
     PrefixOpKindBoolNot,   // KEYWORD(not)
     PrefixOpKindNegation,  // !var
