@@ -523,7 +523,7 @@ typedef struct {
     Buff* alias; // can be null
 } AstNodeImportStatement;
 
-typedef struct AstNodeModuleStatement {
+typedef struct {
     Buff* name;
     Buff* short_name;
     bool is_skip;
