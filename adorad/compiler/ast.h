@@ -330,7 +330,7 @@ typedef struct {
     Vec* exprs;     // Vec<AstNode*>
 } AstNodeSetExpr;
 
-typedef struct AstNodeLambdaExpr {
+typedef struct {
     AstNodeArguments args;
     AstNode* expr;
 } AstNodeLambdaExpr;
