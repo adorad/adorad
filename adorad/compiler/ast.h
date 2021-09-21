@@ -725,12 +725,6 @@ typedef struct {
     AstNode* else_node;  // null, block node, or an `if expr` node
 } AstNodeTestExpr;
 
-// TODO(jasmcaus): Work on this
-typedef enum {
-    UnaryOpKindNot,
-    UnaryOpKindInvert,
-} UnaryOpKind;
-
 typedef enum {
     PrefixOpKindInvalid,
     PrefixOpKindBoolNot,   // KEYWORD(not)
