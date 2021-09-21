@@ -316,7 +316,7 @@ typedef enum {
     BinaryOpKindMod,      // %
 } BinaryOpKind;
 
-typedef struct AstNodeBinaryOpExpr {
+typedef struct {
     AstNode* lhs;
     BinaryOpKind op;
     AstNode* rhs;
