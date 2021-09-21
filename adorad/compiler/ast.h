@@ -250,7 +250,7 @@ typedef struct {
     Vec* branches;
 } AstNodeMatchExpr;
 
-typedef struct AstNodeMatchBranchExpr {
+typedef struct {
     AstNode* expr;
     Vec* branches;
     bool any_branches_are_ranges; // if any branch is a range-based match
