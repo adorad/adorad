@@ -787,8 +787,8 @@ typedef enum {
 } PrefixOpKind;
 
 typedef struct {
-    PrefixOpKind op;
     AstNode* expr;
+    PrefixOpKind op;
 } AstNodePrefixOpExpr;
 
 typedef struct {
