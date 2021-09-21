@@ -750,7 +750,7 @@ typedef enum {
     ComparisonOpKindNotIn,
 } ComparisonOpKind;
 
-typedef struct AstNodeComparisonOpExpr {
+typedef struct {
     AstNode* op1;
     BinaryOpKind op;
     AstNode* op2;
