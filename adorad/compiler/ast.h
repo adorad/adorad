@@ -339,7 +339,7 @@ typedef struct {
     AstNode* value;    
 } AstNodeAwaitExpr;
 
-typedef struct AstNodeSliceExpr {
+typedef struct {
     AstNode* array_ref_expr;
     AstNode* lower;
     AstNode* upper;
@@ -360,7 +360,7 @@ typedef struct AstNodeSliceExpr {
 //     | AstNodeBinaryOpExpr
 //     | AstNodeTypeExpr
 //     | AstNodeTypeOfExpr
-typedef struct AstNodeExpression {
+typedef struct {
     union {
         AstNodeAsCast* as_cast;
         AstNodeAttributeExpr* attr_expr;
