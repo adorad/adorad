@@ -663,7 +663,7 @@ typedef struct {
     bool has_expr;
 } AstNodeGlobalField;
 
-typedef struct AstNodeVariable {
+typedef struct {
     Buff* name;
     AstNode* type_expr;
     AstNode* init_expr;
