@@ -481,10 +481,10 @@ typedef struct {
 
 typedef struct {
     AstNodeKind op;
-    Vec* right;        // Vec<AstNodeExpression*>
-    Vec* left;         // Vec<AstNodeExpression*>
-    Vec* right_types;  // Vec<AstNodeExpression*>
-    Vec* left_types;   // Vec<AstNodeExpression*>
+    Vec* right;
+    Vec* left;
+    Vec* right_types;
+    Vec* left_types;
     bool is_compound;
 } AstNodeAssignmentStatement;
 
