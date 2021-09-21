@@ -583,7 +583,7 @@ typedef struct {
     bool value;
 } AstNodeBoolLiteral;
 
-typedef struct AstNodeByteLiteral {
+typedef struct {
     Buff* value;
 } AstNodeByteLiteral;
 
