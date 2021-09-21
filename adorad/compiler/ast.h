@@ -530,7 +530,7 @@ typedef struct {
     VisibilityMode visibility;
 } AstNodeModuleStatement;
 
-typedef struct AstNodeReturnStatement {
+typedef struct {
     AstNode* expr;
     enum {
         ReturnKindOk,
