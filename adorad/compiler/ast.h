@@ -420,7 +420,7 @@ typedef struct {
     Vec* fields;    // various constant declarations
 } AstNodeConstantDecl;
 
-typedef struct AstNodeGlobalDecl {
+typedef struct {
     Buff* module;    // globals declared in a module, persist through that module
     bool is_block;   // `global ( ... )`
     Vec* fields;     // various global declarations
