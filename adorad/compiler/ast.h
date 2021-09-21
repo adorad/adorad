@@ -161,7 +161,7 @@ typedef struct {
     AstNode* expr;
 } AstNodeAsCast;
 
-typedef struct AstNodeAttributeExpr { 
+typedef struct { 
     AstNode* expr;
     // AttributeKind kind;
 } AstNodeAttributeExpr;
