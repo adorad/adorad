@@ -231,7 +231,7 @@ typedef struct {
     };
 } AstNodeLoopExpr;
 
-typedef enum FuncCallModifier {
+typedef enum {
     FuncCallModifierNone,
     FuncCallModifierAsync,
     FuncCallModifierNeverInline,
