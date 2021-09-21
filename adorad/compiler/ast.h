@@ -139,7 +139,7 @@ typedef struct {
     bool is_mutable;
 } AstNodeIdentifier;
 
-typedef struct AstNodeArguments {
+typedef struct {
     Vec* positional_args;   // Vec<AstNodeArg*>
     Vec* args;              // Vec<AstNodeArg*>
     Vec* variadic_args;     // Vec<AstNodeArg*>
