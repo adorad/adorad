@@ -815,7 +815,7 @@ typedef struct {
     bool is_volatile;
 } AstNodeArrayType;
 
-typedef struct AstNodeFieldAccessExpr {
+typedef struct {
     AstNode* struct_expr;
     Buff* field_name;
 } AstNodeFieldAccessExpr;
