@@ -128,7 +128,7 @@ typedef enum {
 
 // The `[]` before a function/variable
 // Eg: [inline], [compiletime]
-typedef struct AstNodeAttribute {
+typedef struct {
     Buff* name;   // [inline]
 } AstNodeAttribute;
 
