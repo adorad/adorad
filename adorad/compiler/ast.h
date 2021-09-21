@@ -575,7 +575,7 @@ typedef struct {
     };
 } AstNodeStatement;
 
-typedef struct AstNodeEmptyExpression {
+typedef struct {
     int type; // TODO(remove)
 } AstNodeEmptyExpression;
 
