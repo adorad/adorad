@@ -576,10 +576,6 @@ typedef struct {
 } AstNodeStatement;
 
 typedef struct {
-    int type; // TODO(remove)
-} AstNodeEmptyExpression;
-
-typedef struct {
     bool value;
 } AstNodeBoolLiteral;
 
@@ -629,7 +625,6 @@ typedef struct {
 } AstNodeStringLiteral;
 
 // This can be one of:
-//     | AstNodeEmptyExpression
 //     | AstNodeBoolLiteral
 //     | AstNodeByteLiteral
 //     | AstNodeFloatLiteral (32/64)
@@ -638,7 +633,6 @@ typedef struct {
 //     | AstNodeStringLiteral
 typedef struct {
     union {
-        AstNodeEmptyExpression* empty_expr;
         AstNodeBoolLiteral* bool_value;
         AstNodeByteLiteral* byte_value;
         AstNodeFloatLiteral* float_value;
@@ -659,7 +653,6 @@ typedef struct {
 typedef struct {
     Buff* name;
     AstNode* expr;
-
     bool has_expr;
 } AstNodeGlobalField;
 
