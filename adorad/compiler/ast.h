@@ -191,7 +191,7 @@ typedef struct {
     } kind;
 } AstNodeInitExpr;
 
-typedef struct AstNodeLoopInfExpr {
+typedef struct {
     AstNode* cond;
     Vec* statements;
     AstNodeScope* scope;
