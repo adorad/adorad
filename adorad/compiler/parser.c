@@ -805,3 +805,24 @@ static AstNode* ast_parse_primary_expr(Parser* parser) {
             ast_error("Invalid parser pattern");
     } // switch(pc->kind)
 }
+
+// Block
+//      LBRACE Statement* RBRACE
+static AstNode* ast_parse_block(Parser* parser) {
+    Token* lbrace = parser_chomp_if(LBRACE);
+    if(lbrace == null)
+        ast_expected("LBRACE `{`");
+
+    Vec* statements = vec_new(AstNode, 1);
+    AstNode* statement = null;
+    while((statement = ast_parse_statement(parser)) != null)
+        vec_push(statements, statement);
+
+    Token* rbrace = parser_chomp_if(RBRACE);
+    if(rbrace == null)
+        ast_expected("RBRACE `}`");
+    
+    AstNode* out = ast_create_node(AstNodeKindBlock);
+    out->data.stmt->block_stmt->statements = statements;
+    return out;
+}
