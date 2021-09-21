@@ -94,7 +94,7 @@ typedef enum {
     VisibilityModePublic   // if `export` is used
 } VisibilityMode;
 
-typedef enum AstAddressingMode {
+typedef enum {
     AstAddressingModeInvalid,   // invalid addressing mode
     AstAddressingModeCompile_time_value,  // value known at compile time
     AstAddressingModeVariable, // addressable variable (known at runtime)
