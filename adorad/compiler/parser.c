@@ -729,3 +729,85 @@ static AstNode* ast_parse_type_expr(Parser* parser) {
             CORETEN_ENFORCE(false, "TODO");
     }
 }
+
+// PrimaryExpr
+//      | IfExpr
+//      | KEYWORD(break) BreakLabel? Expr?
+//      | KEYWORD(continue) BreakLabel?
+//      | ATTRIBUTE(comptime) Expr
+//      | KEYWORD(return) Expr?
+//      | BlockLabel? ATTRIBUTE(inline)? LoopExpr
+//      | Block
+static AstNode* ast_parse_primary_expr(Parser* parser {
+    switch(pc->kind) {
+        case IF: return ast_parse_if_expr(parser);
+        case BREAK: 
+            parser_chomp();
+            Token* label = ast_parse_break_label(parser);
+            AstNode* expr = ast_parse_expr(parser);
+
+            AstNode* out = ast_create_node(AstNodeKindBreak);
+            out->data.stmt->branch_stmt->type = AstNodeBranchStatementBreak;
+            out->data.stmt->branch_stmt->name = label != null ? label->value : null;
+            out->data.stmt->branch_stmt->expr = expr;
+            return out;
+        case CONTINUE:
+            parser_chomp();
+            Token* label = ast_parse_break_label(parser);
+            AstNode* out = ast_create_node(AstNodeKindBreak);
+            out->data.stmt->branch_stmt->type = AstNodeBranchStatementContinue;
+            out->data.stmt->branch_stmt->name = label != null ? label->value : null;
+            out->data.stmt->branch_stmt->expr = null;
+            return out;
+        case ATTR_COMPTIME:
+            parser_chomp();
+            AstNode* out = ast_create_node(AstNodeKindAttributeExpr);
+            AstNode* expr = ast_parse_expr(parser);
+            if(expr == null)
+                ast_expected("expression");
+            
+            out->data.expr->attr_expr->expr = expr;
+            return out;
+        case RETURN:
+            parser_chomp();
+            AstNode* out = ast_create_node(AstNodeKindReturn);
+            AstNode* expr = ast_parse_expr(parser);
+            out->data.stmt->return_stmt->expr = expr;
+            return out;
+        case IDENTIFIER:
+            // `foo:`
+            if((pc + 1)->kind == COLON) {
+                switch((pc + 2)->kind) {
+                    case ATTR_INLINE:
+                        parser_chomp();
+                        parser_chomp();
+                        parser_chomp();
+                        switch(pc->kind) {
+                            case LOOP: return ast_parse_loop_expr(parser);
+                            default: ast_expected("inlinable expression");
+                        }
+                    case LOOP:
+                        parser_chomp();
+                        parser_chomp();
+                        return ast_parse_loop_expr(parser);
+                    case LBRACE:
+                        parser_chomp();
+                        parser_chomp();
+                        return ast_parse_block(parser);
+                    default:
+                        unreachable();
+                }
+            }
+            break;
+        case ATTR_INLINE:
+            parser_chomp();
+            switch(pc->kind) {
+                case LOOP: return ast_parse_loop_expr(parser);
+                default: ast_expected("inlinable expression");
+            }
+        case LOOP: 
+            return ast_parse_loop_expr(parser);
+        default:
+            ast_error("Invalid parser pattern");
+    } // switch(pc->kind)
+}
