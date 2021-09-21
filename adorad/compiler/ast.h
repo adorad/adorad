@@ -466,7 +466,7 @@ typedef struct {
 //     | AstNodeConstantDecl
 //     | AstNodeGlobalDecl
 //     | AstNodeSumTypeDecl 
-typedef struct AstNodeDecl {
+typedef struct {
     Buff* name;
     VisibilityMode visibility;
     union {
