@@ -327,7 +327,7 @@ typedef struct {
 } AstNodeTypeOfExpr;
 
 typedef struct {
-    Vec* exprs;     // Vec<AstNode*>
+    Vec* exprs;
 } AstNodeSetExpr;
 
 typedef struct {
