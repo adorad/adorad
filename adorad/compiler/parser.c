@@ -6,7 +6,9 @@
 
 #define nodepush(node)              vec_push(parser->nodelist, node)
 
-#define parser_chomp()              chomp(parser)
+#define parser_chomp(n)              \
+    while(n-- != 0)                  \
+        chomp(parser)
 #define parser_chomp_if(kind)       chomp_if(parser, kind)
 #define parser_expect_token(kind)   expect_token(parser, kind)
 
@@ -43,17 +45,19 @@ static inline Token* parser_peek_next(Parser* parser) {
 }
 
 // Consumes a token and moves on to the next token
-static inline Token* chomp(Parser* parser) {
-    if(parser->offset >= parser->num_tokens)
+static inline Token* chomp(Parser* parser, UInt64 n) {
+    if(parser->offset + n >= parser->num_tokens)
         return null;
 
-    return cast(Token*)parser->toklist + parser->offset++;
+    parser->offset += n;
+    parser->curr_tok += n;
+    return cast(Token*)parser->curr_tok;
 }
 
 // Consumes a token and moves on to the next, if the current token matches the expected token.
 static inline Token* chomp_if(Parser* parser, TokenKind tokenkind) {
     if(parser->curr_tok->kind == tokenkind)
-        return parser_chomp();
+        return chomp(parser, 1);
 
     return null;
 }
@@ -67,7 +71,7 @@ static inline void parser_put_back(Parser* parser) {
 
 static inline Token* expect_token(Parser* parser, TokenKind tokenkind) {
     if(parser->curr_tok->kind == tokenkind)
-        return parser_chomp();
+        return parser_chomp(1);
         
     ast_expected("`%s`", tokenHash[tokenkind]);
 }
@@ -244,7 +248,7 @@ static AstNode* ast_parse_func_decl(Parser* parser) {
         case ATTR_NOINLINE: is_noinline = true; break;
         default: unreachable();
     }
-    Token* attr = parser_chomp();
+    Token* attr = parser_chomp(1);
     if(token_is_attribute(pc->kind))
         ast_error("Can only have one attribute decorating a function");
 
@@ -269,7 +273,7 @@ func_no_attrs:
     AstNode* out = ast_create_node(AstNodeKindFuncDecl);
     switch(pc->kind) {
         case SEMICOLON:
-            parser_chomp();
+            parser_chomp(1);
             no_body = true;
             break;
         case LBRACE:
@@ -343,7 +347,7 @@ static AstNode* ast_parse_container_members(pars) {
     while(true) {
         switch(pc->kind) {
             case ATTR_COMPTIME:
-                Token* comptime_attr = parser_chomp();
+                Token* comptime_attr = parser_chomp(1);
                 switch(pc->kind) {
                     // // Currently, a top-level comptime decl is as follows:
                     // //      `[comptime] { ... }`
@@ -645,7 +649,7 @@ static AstNode* ast_parse_precedence(Parser* parser, UInt8 min_prec) {
         if(prec.prec < min_prec or prec.prec == banned_prec)
             break;
         
-        parser_chomp();
+        parser_chomp(1);
         Token* op_token = pc;
 
         AstNode* rhs = ast_parse_precedence(parser, prec.prec + 1);
@@ -742,7 +746,7 @@ static AstNode* ast_parse_primary_expr(Parser* parser {
     switch(pc->kind) {
         case IF: return ast_parse_if_expr(parser);
         case BREAK: 
-            parser_chomp();
+            parser_chomp(1);
             Token* label = ast_parse_break_label(parser);
             AstNode* expr = ast_parse_expr(parser);
 
@@ -752,7 +756,7 @@ static AstNode* ast_parse_primary_expr(Parser* parser {
             out->data.stmt->branch_stmt->expr = expr;
             return out;
         case CONTINUE:
-            parser_chomp();
+            parser_chomp(1);
             Token* label = ast_parse_break_label(parser);
             AstNode* out = ast_create_node(AstNodeKindBreak);
             out->data.stmt->branch_stmt->type = AstNodeBranchStatementContinue;
@@ -760,7 +764,7 @@ static AstNode* ast_parse_primary_expr(Parser* parser {
             out->data.stmt->branch_stmt->expr = null;
             return out;
         case ATTR_COMPTIME:
-            parser_chomp();
+            parser_chomp(1);
             AstNode* out = ast_create_node(AstNodeKindAttributeExpr);
             AstNode* expr = ast_parse_expr(parser);
             if(expr == null)
@@ -769,7 +773,7 @@ static AstNode* ast_parse_primary_expr(Parser* parser {
             out->data.expr->attr_expr->expr = expr;
             return out;
         case RETURN:
-            parser_chomp();
+            parser_chomp(1);
             AstNode* out = ast_create_node(AstNodeKindReturn);
             AstNode* expr = ast_parse_expr(parser);
             out->data.stmt->return_stmt->expr = expr;
@@ -779,20 +783,16 @@ static AstNode* ast_parse_primary_expr(Parser* parser {
             if((pc + 1)->kind == COLON) {
                 switch((pc + 2)->kind) {
                     case ATTR_INLINE:
-                        parser_chomp();
-                        parser_chomp();
-                        parser_chomp();
+                        parser_chomp(3);
                         switch(pc->kind) {
                             case LOOP: return ast_parse_loop_expr(parser);
                             default: ast_expected("inlinable expression");
                         }
                     case LOOP:
-                        parser_chomp();
-                        parser_chomp();
+                        parser_chomp(2);
                         return ast_parse_loop_expr(parser);
                     case LBRACE:
-                        parser_chomp();
-                        parser_chomp();
+                        parser_chomp(2);
                         return ast_parse_block(parser);
                     default:
                         unreachable();
@@ -800,7 +800,7 @@ static AstNode* ast_parse_primary_expr(Parser* parser {
             }
             break;
         case ATTR_INLINE:
-            parser_chomp();
+            parser_chomp(1);
             switch(pc->kind) {
                 case LOOP: return ast_parse_loop_expr(parser);
                 default: ast_expected("inlinable expression");
