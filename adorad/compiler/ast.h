@@ -681,7 +681,7 @@ typedef struct {
 //     | AstNodeConstField
 //     | AstNodeGlobalField
 //     | AstNodeVariable
-typedef struct AstNodeScopeObject {
+typedef struct {
     Buff* name;
     union {
         AstNodeConstField* const_field;
