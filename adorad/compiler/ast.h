@@ -718,7 +718,7 @@ typedef struct {
     AstNode* body;
 } AstNodeTestDecl;
 
-typedef struct AstNodeTestExpr {
+typedef struct {
     Buff* symbol;
     AstNode* target_node;
     AstNode* then_node;
