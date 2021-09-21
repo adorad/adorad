@@ -433,7 +433,7 @@ typedef struct {
 } AstNodeSumTypeDecl;
 
 // Function or Method Declaration
-typedef struct AstNodeFuncDecl {
+typedef struct {
     Buff* name;
     Buff* module;      // name of the module
     Vec* params;
