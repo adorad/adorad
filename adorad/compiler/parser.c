@@ -33,10 +33,6 @@ Parser* parser_init(Lexer* lexer) {
     return parser;
 }
 
-static inline Token* parser_peek_token(Parser* parser) {
-    return parser->curr_tok;
-}
-
 static inline Token* parser_peek_next(Parser* parser) {
     if(parser->offset + 1 >= parser->num_tokens)
         return null;
