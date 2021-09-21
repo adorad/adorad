@@ -757,7 +757,7 @@ typedef struct {
 } AstNodeComparisonOpExpr;
 
 // TODO(jasmcaus): Do we need an `OperatorKind` and `AstNodeOperator`?
-typedef enum OperatorKind {
+typedef enum {
     OperatorKindAdd,
     OperatorKindSub,
     OperatorKindMult,
