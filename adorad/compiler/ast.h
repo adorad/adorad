@@ -117,7 +117,7 @@ typedef struct {
     Buff* scope;
 } AstNodeScope;
 
-typedef enum IdentifierKind {
+typedef enum {
     IdentifierKindUnresolved,
     IdentifierKindBlankident, // `_`
     IdentifierKindVariable,
