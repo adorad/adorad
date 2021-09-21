@@ -267,7 +267,7 @@ typedef struct {
     AstNode* op2;
 } AstNodeCatchExpr;
 
-typedef struct AstNodeTryExpr {
+typedef struct {
     Buff* symbol;
     AstNode* target_node;
     AstNode* then_node;
