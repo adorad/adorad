@@ -731,7 +731,7 @@ typedef enum {
     UnaryOpKindInvert,
 } UnaryOpKind;
 
-typedef struct AstNodeUnaryOpExpr {
+typedef struct {
     AstNode* lhs;
     UnaryOpKind op;
     AstNode* rhs;
