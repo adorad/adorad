@@ -113,7 +113,7 @@ typedef enum {
     AstLanguageRv32,
 } AstLanguage;
 
-typedef struct AstNodeScope {
+typedef struct {
     Buff* scope;
 } AstNodeScope;
 
