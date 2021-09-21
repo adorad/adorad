@@ -614,7 +614,7 @@ typedef struct {
     } type;
 } AstNodeIntegerLiteral;
 
-typedef struct AstNodeCharLiteral {
+typedef struct {
     Buff* value;
 } AstNodeCharLiteral;
 
