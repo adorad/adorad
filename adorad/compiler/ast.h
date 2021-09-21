@@ -197,7 +197,7 @@ typedef struct {
     AstNodeScope* scope;
 } AstNodeLoopInfExpr;
 
-typedef struct AstNodeLoopCExpr {
+typedef struct {
     Buff* label;
     AstNode* init;
     bool has_init;
