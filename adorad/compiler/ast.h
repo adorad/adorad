@@ -426,7 +426,7 @@ typedef struct {
     Vec* fields;     // various global declarations
 } AstNodeGlobalDecl;
 
-typedef struct AstNodeSumTypeDecl {
+typedef struct {
     Buff* name;
     VisibilityMode visibility;
     Vec* variant_types; // Vec<AstNodeType*>
