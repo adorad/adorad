@@ -508,7 +508,7 @@ typedef struct {
     AstNode* expr;
 } AstNodeDeferStatement;
 
-typedef struct AstNodeEmptyStatement {
+typedef struct {
     Buff* fixme;
 } AstNodeEmptyStatement;
 
