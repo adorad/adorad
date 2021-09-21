@@ -406,7 +406,7 @@ typedef struct {
 //     | AstNodeTypeEnumDecl
 //     | AstNodeTypeUnionDecl (disabled for now)
 //     | AstNodeTypeStructDecl
-typedef struct AstNodeTypeDecl {
+typedef struct {
     union {
         AstNodeTypeEnumDecl* enum_decl;
         // AstNodeTypeUnionDecl* union_decl;
