@@ -152,7 +152,7 @@ typedef struct {
     Buff* type_comment;
 } AstNodeArgData;
 
-typedef struct AstNodeKwdData {
+typedef struct {
     AstNode* ident;
     AstNode* value;
 } AstNodeKwdData;
