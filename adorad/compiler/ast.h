@@ -146,7 +146,7 @@ typedef struct {
     Vec* kwd_args;          // Vec<AstNodeArg*>
 } AstNodeArguments;
 
-typedef struct AstNodeArgData {
+typedef struct {
     AstNode* arg;
     AstNode* annotation;
     Buff* type_comment;
