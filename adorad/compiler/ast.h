@@ -656,7 +656,7 @@ typedef struct {
     VisibilityMode visibility;
 } AstNodeConstField;
 
-typedef struct AstNodeGlobalField {
+typedef struct {
     Buff* name;
     AstNode* expr;
 
