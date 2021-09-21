@@ -173,7 +173,7 @@ typedef struct {
     bool has_arg;
 } AstNodeCastExpr;
 
-typedef struct AstNodeIfExpr {
+typedef struct {
     AstNode* condition;
     AstNode* if_body;
     AstNode* else_node;
