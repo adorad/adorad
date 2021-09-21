@@ -132,7 +132,7 @@ typedef struct {
     Buff* name;   // [inline]
 } AstNodeAttribute;
 
-typedef struct AstNodeIdentifier {
+typedef struct {
     AstNode* type;
     bool is_const;
     VisibilityMode visibility;
