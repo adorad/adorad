@@ -102,7 +102,7 @@ typedef enum {
     AstAddressingModeType,     // type  
 } AstAddressingMode;
 
-typedef enum AstLanguage {
+typedef enum {
     AstLanguageAdorad,
     AstLanguageC,
     AstLanguageAmd64,
