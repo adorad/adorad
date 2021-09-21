@@ -245,7 +245,7 @@ typedef struct {
     FuncCallModifier modifier;
 } AstNodeFuncCallExpr;
 
-typedef struct AstNodeMatchExpr {
+typedef struct {
     AstNode* expr;
     Vec* branches;
 } AstNodeMatchExpr;
