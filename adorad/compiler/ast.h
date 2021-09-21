@@ -261,7 +261,7 @@ typedef struct {
     AstNode* end;
 } AstNodeMatchRangeExpr;
 
-typedef struct AstNodeCatchExpr {
+typedef struct {
     AstNode* op1;
     AstNode* symbol; // can be nullptr
     AstNode* op2;
