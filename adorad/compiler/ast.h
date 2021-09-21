@@ -396,7 +396,7 @@ typedef struct {
     Vec* attributes; // typedef enum attributes 
 } AstNodeTypeEnumDecl;
 
-typedef struct AstNodeTypeStructDecl {
+typedef struct {
     Buff* name;
     Vec* fields;    // variables, etc
     Vec* methods;   // methods
