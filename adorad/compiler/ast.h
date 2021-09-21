@@ -89,7 +89,7 @@ enum AstNodeKind {
     AstNodeKindOptional,
 };
 
-typedef enum VisibilityMode {
+typedef enum {
     VisibilityModePrivate, // default
     VisibilityModePublic   // if `export` is used
 } VisibilityMode;
