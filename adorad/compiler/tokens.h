@@ -189,7 +189,6 @@ TOKENKIND(TOK___KEYWORDS_BEGIN, ""),  \
     TOKENKIND(EXTERN,        "extern"),   \
     TOKENKIND(FINALLY,       "finally"),  \
     TOKENKIND(FALLTHROUGH,   "fallthrough"),  \
-    TOKENKIND(FOR,           "for"),      \
     TOKENKIND(FROM,          "from"),     \
     TOKENKIND(FUNC,          "func"),     \
     TOKENKIND(GLOBAL,        "global"),   \
@@ -198,6 +197,7 @@ TOKENKIND(TOK___KEYWORDS_BEGIN, ""),  \
     TOKENKIND(IN,            "in"),       \
     TOKENKIND(INCLUDE,       "include"),  \
     TOKENKIND(ISA,           "isa"),      \
+    TOKENKIND(LOOP,          "loop"),    \
     TOKENKIND(MACRO,         "macro"),    \
     TOKENKIND(MAP,           "map"),      \
     TOKENKIND(MATCH,         "match"), /* similar to 'switch' in C++ & Java */ \
@@ -216,7 +216,6 @@ TOKENKIND(TOK___KEYWORDS_BEGIN, ""),  \
     TOKENKIND(TYPEOF,        "typeof"),   \
     TOKENKIND(WHEN,          "when"),     \
     TOKENKIND(WHERE,         "where"),    \
-    TOKENKIND(WHILE,         "while"),    \
     TOKENKIND(UNION,         "union"),    \
     TOKENKIND(USE,           "use"), /* aliasing purposes */ \
     TOKENKIND(VOLATILE,      "volatile"), \
