@@ -587,7 +587,7 @@ typedef struct {
     Buff* value;
 } AstNodeByteLiteral;
 
-typedef struct AstNodeFloatLiteral {
+typedef struct {
     Buff* value;
     // TODO (jasmcaus) - Come up with a workaround for this
     enum {
