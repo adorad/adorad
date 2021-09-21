@@ -795,7 +795,7 @@ typedef struct {
     AstNode* expr;
 } AstNodeCompileTime;
 
-typedef struct AstNodeArrayAccessExpr {
+typedef struct {
     AstNode* array_ref_expr;
     AstNode* subscript;
 } AstNodeArrayAccessExpr;
