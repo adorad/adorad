@@ -579,7 +579,7 @@ typedef struct {
     int type; // TODO(remove)
 } AstNodeEmptyExpression;
 
-typedef struct AstNodeBoolLiteral {
+typedef struct {
     bool value;
 } AstNodeBoolLiteral;
 
