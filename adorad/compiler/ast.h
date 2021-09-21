@@ -648,7 +648,7 @@ typedef struct {
     };
 } AstNodeCompileTimeValue;
 
-typedef struct AstNodeConstField {
+typedef struct {
     Buff* module;
     Buff* name;
     AstNode* expr;
