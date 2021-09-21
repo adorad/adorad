@@ -209,7 +209,7 @@ typedef struct {
     AstNodeScope* scope;
 } AstNodeLoopCExpr;
 
-typedef struct AstNodeLoopInExpr {
+typedef struct {
     Buff* label;
     Buff* key_var;
     Buff* val_var;
@@ -221,7 +221,7 @@ typedef struct AstNodeLoopInExpr {
     AstNodeScope* scope;
 } AstNodeLoopInExpr;
 
-typedef struct AstNodeLoopExpr {
+typedef struct {
     Buff* label;
     bool is_inline;
     union {
