@@ -738,19 +738,6 @@ typedef struct {
 } AstNodeUnaryOpExpr;
 
 typedef enum {
-    ComparisonOpKindEqual,
-    ComparisonOpKindNotEqual,
-    ComparisonOpKindLessThan,
-    ComparisonOpKindLessThanOrEqualTo,
-    ComparisonOpKindGreaterThan,
-    ComparisonOpKindGreaterThanOrEqualTo,
-    ComparisonOpKindIs,
-    ComparisonOpKindIsNot,
-    ComparisonOpKindIn,
-    ComparisonOpKindNotIn,
-} ComparisonOpKind;
-
-typedef enum {
     PrefixOpKindInvalid,
     PrefixOpKindBoolNot,   // KEYWORD(not)
     PrefixOpKindNegation,  // !var
