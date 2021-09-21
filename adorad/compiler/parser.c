@@ -826,3 +826,44 @@ static AstNode* ast_parse_block(Parser* parser) {
     out->data.stmt->block_stmt->statements = statements;
     return out;
 }
+
+// BraceSuffixExpr
+//      TypeExpr InitList?
+// where InitList is:
+//      | LBRACE FieldInit (COMMA FieldInit)* COMMA? RBRACE
+//      | LBRACE Expr (COMMA Expr)* COMMA? RBRACE
+//      | LBRACE RBRACE
+static AstNode* ast_parse_brace_suffix_expr(Parser* parser) {
+    AstNode* type_expr = ast_parse_type_expr(parser);
+    if(type_expr == null)
+        ast_expected("type expression");
+    
+    Token* lbrace = parser_chomp_if(LBRACE);
+    if(lbrace == null)
+        return type_expr;
+    
+    Vec* fields = vec_new(AstNode, 1);
+    AstNode* field_init = ast_parse_field_init(parser);
+    if(field_init != null) {
+        while(true) {
+            switch(pc->kind) {
+                case COMMA: parser_chomp(1); break;
+                case RBRACE: parser_chomp(1); break;
+                case COLON: case RPAREN: case RSQUAREBRACK:
+                    ast_expected("RBRACE");
+                default:
+                    // Likely just a missing comma; warn, but continue parsing
+                    WARN(missing comma);
+            }
+            Token* rbrace = parser_chomp_if(RBRACE);
+            if(rbrace != null)
+                break;
+            AstNode* field_init = ast_parse_field_init(parser);
+            if(field_init == null)
+                ast_expected("field init");
+            vec_push(fields, field_init);
+        } // while(true)
+        Token* comma = parser_chomp_if(COMMA);
+        AstNode* out = ast_create_node(AstNodeKindBraceSuffixExpr);
+    }
+}
