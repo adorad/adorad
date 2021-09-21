@@ -805,7 +805,7 @@ typedef struct {
     AstNode* child_type;
 } AstNodeInferredArrayType;
 
-typedef struct AstNodeArrayType {
+typedef struct {
     AstNode* size;
     AstNode* sentinel;
     AstNode* child_type;
