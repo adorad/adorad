@@ -773,10 +773,6 @@ typedef enum {
     OperatorKindFloorDiv,
 } OperatorKind;
 
-typedef struct {
-    Buff* delete_me;
-} AstNodeOperator;
-
 typedef enum {
     PrefixOpKindInvalid,
     PrefixOpKindBoolNot,   // KEYWORD(not)
