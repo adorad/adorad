@@ -518,7 +518,7 @@ typedef enum FuncInline {
     FuncInlineNoinline
 } FuncInline;
 
-typedef struct AstNodeImportStatement {
+typedef struct {
     Buff* name;
     Buff* alias; // can be null
 } AstNodeImportStatement;
