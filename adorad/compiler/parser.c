@@ -745,7 +745,7 @@ static AstNode* ast_parse_prefix_expr(Parser* parser) {
 //      | LSQUAREBRACK MULT (LETTERC / COLON Expr)? RSQUAREBRACK
 // and ArrayTypeStart
 //      LSQUAREBRACK Expr (COLON Expr)? RSQUAREBRACK
-static AstNode* parse_type_expr(Parser* parser) {
+static AstNode* ast_parse_type_expr(Parser* parser) {
     AstNode* out = null;
     switch(pc->kind) {
         case QUESTION:
