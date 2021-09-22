@@ -171,7 +171,7 @@ static Vec* parse_param_list(Parser* parser, AstNode* (*param_parser)(Parser* pa
 
 // General format:
 //      KEYWORD(func) IDENT LPAREN ParamDeclList RPAREN LARROW RETURNTYPE
-static AstNode* ast_parse_func_prototype(Parser* parser) {
+static AstNode* parse_func_prototype(Parser* parser) {
     Token* func = parser_chomp_if(FUNC);
     if(func == null)
         return null;
