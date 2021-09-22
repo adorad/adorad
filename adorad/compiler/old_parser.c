@@ -268,7 +268,7 @@ static AstNode* parse_statement(Parser* parser) {
         return labeled_statement;
 
     // Match statements
-    AstNode* match_expr = ast_parse_match_expr(parser);
+    AstNode* match_expr = parse_match_expr(parser);
     if(match_expr != null)
         return match_expr;
 
