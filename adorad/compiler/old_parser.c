@@ -817,7 +817,7 @@ static AstNode* ast_parse_type_expr(Parser* parser) {
 //      | PrimaryTypeExpr SuffixOp* FuncCallArgs
 //      | PrimaryTypeExpr (SuffixOp / FuncCallArguments)*
 static AstNode* ast_parse_suffix_expr(Parser* parser) {
-    AstNode* out = parse_primary_type_expr(parser);
+    AstNode* out = ast_parse_primary_type_expr(parser);
     if(out == null)
         return null;
     
