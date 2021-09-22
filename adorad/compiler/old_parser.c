@@ -784,7 +784,7 @@ static AstNode* ast_parse_init_list(Parser* parser) {
     out->data.expr->init_expr->kind = InitExprKindArray;
     out->data.expr->init_expr->entries = vec_new(AstNode, 1);
 
-    AstNode* first = parse_expr(parser);
+    AstNode* first = ast_parse_expr(parser);
     if(first != null) {
         vec_push(out->data.expr->init_expr->entries, first);
 
