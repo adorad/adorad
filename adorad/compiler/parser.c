@@ -119,7 +119,7 @@ static AstNode* parse_toplevel_decl(Parser* parser) {
 
 // ModuleStatement
 //      KEYWORD(module) Statement SEMICOLON?
-static AstNode* ast_parse_module_statement(Parser* parser) {
+static AstNode* parse_module_statement(Parser* parser) {
     Token* module_kwd = parser_chomp_if(MODULE);
     if(module_kwd == null)
         ast_expected("`module` keyword");
