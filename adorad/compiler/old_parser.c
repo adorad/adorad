@@ -1096,7 +1096,7 @@ static AstNode* parse_assignment_op(Parser* parser) {
 //      | LESS_THAN_OR_EQUAL_TO
 //      | EQUALS_EQUALS
 //      | EXCLAMATION_EQUALS
-static AstNode* ast_parse_comparison_op(Parser* parser) {
+static AstNode* parse_comparison_op(Parser* parser) {
     return ast_parse_op(parser);
 }
 
