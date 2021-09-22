@@ -152,7 +152,7 @@ static AstNode* parse_labeled_statements(Parser* parser);
 static AstNode* parse_if_prefix(Parser* parser);
 static AstNode* parse_statement(Parser* parser);
 static AstNode* parse_var_decl(Parser* parser);
-static AstNode* ast_parse_func_prototype(Parser* parser);
+static AstNode* parse_func_prototype(Parser* parser);
 
 static Vec* ast_parse_param_list(Parser* parser, AstNode* (*param_parser)(Parser* parser)) {
     Vec* out = vec_new(AstNode, 1);
