@@ -1295,6 +1295,6 @@ static AstNode* parse_func_call_args(Parser* parser) {
 
 // Main entry point of the Parser.
 // It will return the whole AST tree of the entire source code (for each file) when parsed. 
-static AstNode* ast_parse(Parser* parser) { 
+static AstNode* parse(Parser* parser) { 
     return null;
 }
