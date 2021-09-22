@@ -465,7 +465,7 @@ static AstNode* parse_labeled_statement(Parser* parser) {
     if(label == null)
         ast_expected("Label");
 
-    AstNode* block = ast_parse_block_expr(parser);
+    AstNode* block = parse_block_expr(parser);
     if(block != null) {
         block->data.stmt->block_stmt->label = label != null ? label->value : null;
         return block;
