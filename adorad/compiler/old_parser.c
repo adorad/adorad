@@ -655,7 +655,7 @@ static AstNode* parse_addition_expr(Parser* parser) {
         parser,
         BinaryOpChainInfinity,
         parse_addition_op,
-        ast_parse_multiplication_expr
+        parse_multiplication_expr
     ); 
 }
 
