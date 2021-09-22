@@ -27,14 +27,13 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     as well as in Syntax.toml (adorad/compiler/syntax/syntax.toml)
 */
 #define ALLTOKENS \
-    /* Special (internal usage only) */ \
-    TOKENKIND(TOK_NULL = 0, ""),        \
-    TOKENKIND(TOK_ILLEGAL,  ""),        \
+    /* Special (internal usage only) */      \
+    TOKENKIND(TOK_NULL = 0, ""),             \
+    TOKENKIND(TOK_ILLEGAL,  ""),             \
     TOKENKIND(TOK_EOF,      "TOK_EOF"),  /* End of Input */ \
-    TOKENKIND(COMMENT,      "COMMENT"),          \
+    TOKENKIND(COMMENT,      "COMMENT"),      \
     TOKENKIND(DOCS_COMMENT, "DOCS_COMMENT"), \
-    TOKENKIND(ATTRIBUTE,    "attribute"),\
-    TOKENKIND(UNREACHABLE,  "unreachable"),\
+    TOKENKIND(UNREACHABLE,  "unreachable"),  \
 \
     /* Literals */ \
 TOKENKIND(TOK___LITERALS_BEGIN, ""), \
