@@ -820,7 +820,7 @@ static AstNode* parse_primary_expr(Parser* parser) {
                         return parse_loop_expr(parser);
                     case LBRACE:
                         parser_chomp(2);
-                        return ast_parse_block(parser);
+                        return parse_block(parser);
                     default:
                         unreachable();
                 }
