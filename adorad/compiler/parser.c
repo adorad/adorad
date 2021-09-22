@@ -1241,7 +1241,7 @@ static AstNode* parse_suffix_op(Parser* parser) {
             upper = parse_expr(parser);
             Token* colon = parser_chomp_if(COLON);
             if(colon != null) {
-                sentinel = ast_parse_expr(parser);
+                sentinel = parse_expr(parser);
             }
             Token* rbrace = parser_expect_token(RBRACE);
 
@@ -1271,7 +1271,7 @@ static AstNode* parse_suffix_op(Parser* parser) {
 }
 
 // StringLiteral
-static AstNode* ast_parse_string_literal(Parser* parser) {
+static AstNode* parse_string_literal(Parser* parser) {
     if(pc->kind == STRING) {
         parser_chomp(1);
         AstNode* out = ast_create_node(AstNodeKindStringLiteral);
