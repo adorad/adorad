@@ -721,7 +721,7 @@ static AstNode* ast_parse_prefix_expr(Parser* parser) {
         default: return ast_parse_primary_expr(parser);
     }
 
-    AstNode* lhs = parse_prefix_expr(parser);
+    AstNode* lhs = ast_parse_prefix_expr(parser);
     if(lhs == null)
         ast_expected("prefix op expression");
 
