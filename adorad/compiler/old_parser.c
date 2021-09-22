@@ -977,7 +977,7 @@ static Token* parse_break_label(Parser* parser) {
 
 // BlockLabel
 //      IDENTIFIER COLON
-static Token* ast_parse_block_label(Parser* parser) {
+static Token* parse_block_label(Parser* parser) {
     Token* ident = parser_chomp_if(IDENTIFIER);
     if(ident == null)
         return null;
