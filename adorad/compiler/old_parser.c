@@ -408,7 +408,7 @@ static AstNode* parse_block_expr_statement(Parser* parser) {
 
 // Block Expression
 //      (BlockLabel)? block
-static AstNode* ast_parse_block_expr(Parser* parser) {
+static AstNode* parse_block_expr(Parser* parser) {
     Token* block_label = ast_parse_block_label(parser);
     if(block_label != null) {
         AstNode* out = ast_parse_block(parser);
