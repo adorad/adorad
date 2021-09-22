@@ -94,7 +94,7 @@ static AstNode* ast_parse_toplevel_decl(Parser* parser) {
     if(import != null)
         return null;
     
-    AstNode* alias = parse_alias_decl(parser);
+    AstNode* alias = ast_parse_alias_decl(parser);
     if(alias != null)
         return alias;
     
