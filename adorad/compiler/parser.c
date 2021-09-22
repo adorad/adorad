@@ -587,7 +587,7 @@ static AstNode* ast_parse_block_expr(Parser* parser) {
 //      | XOR_EQUALS        (^=)
 //      | OR_EQUALS         (|=)
 //      | EQUALS            (=)
-static AstNode* parse_assignment_expr(Parser* parser) {
+static AstNode* ast_parse_assignment_expr(Parser* parser) {
     AstNode* lhs = parse_expr(parser);
     if(lhs == null)
         return null;
