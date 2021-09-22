@@ -1097,3 +1097,17 @@ static Token* ast_parse_break_label(Parser* parser) {
     Token* ident = parser_expect_token(IDENTIFIER);
     return ident;
 }
+
+// BlockLabel
+//      IDENTIFIER COLON
+static Token* ast_parse_block_label(Parser* parser) {
+    Token* ident = parser_chomp_if(IDENTIFIER);
+    if(ident == null)
+        return null;
+    
+    Token* colon = parser_chomp_if(COLON);
+    if(colon == null)
+        return null;
+
+    return ident;
+}
