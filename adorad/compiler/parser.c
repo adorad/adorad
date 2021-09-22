@@ -1071,9 +1071,8 @@ static AstNode* ast_parse_match_expr(Parser* parser) {
     if(expr == null)
         ast_expected("expression");
     Token* rparen = parser_chomp_if(RPAREN); // this is optional
-    Token* lbrace = parser_chomp_if(RBRACE); // required
-    if(lbrace == null)
-        ast_expected("LBRACE");
+    Token* lbrace = parser_expect_token(RBRACE); // required
+    
     Vec* branches = ast_parse_match_branches(parser);
     if(branches == null)
         ast_expected("branches for `match`");
@@ -1098,9 +1097,7 @@ static AstNode* ast_parse_match_branch(Parser* parser) {
     Token* colon = parser_chomp_if(COLON); // `:`
     Token* equals_arrow = parser_chomp_if(EQUALS_ARROW); // `=>`
     if(colon == null && equals_arrow == null)
-        ast_error(
-            "Missing token after `case`. Either `:` or `=>`"
-        );
+        ast_error("Missing token after `case`. Either `:` or `=>`");
 
     AstNode* expr = ast_parse_assignment_expr(parser);
     out->data.expr->match_branch_expr->expr = expr;
