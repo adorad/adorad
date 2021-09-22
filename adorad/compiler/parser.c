@@ -957,7 +957,7 @@ static AstNode* ast_parse_suffix_expr(Parser* parser) {
     Vec* params = vec_new(AstNode, 1);
     AstNode* param = null;
     while(parser_chomp(1)->kind != RPAREN) {
-        param = parse_expr(parser);
+        param = ast_parse_expr(parser);
         if(param == null)
             break;
         vec_push(params, param);
@@ -995,7 +995,7 @@ static AstNode* ast_parse_suffix_expr(Parser* parser) {
 // and LabeledTypeExpr is one of:
 //      | BlockLabel Block
 //      | BlockLabel? LoopTypeExpr
-static AstNode* parse_primary_type_expr(Parser* parser) {
+static AstNode* ast_parse_primary_type_expr(Parser* parser) {
     AstNode* out = null;
     AstNode* expr = null;
     Token* tok = null;
