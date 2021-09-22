@@ -353,7 +353,7 @@ static AstNode* ast_parse_statement(Parser* parser) {
     if(match_expr != null)
         return match_expr;
     
-    AstNode* assignment_expr = parse_assignment_expr(parser);
+    AstNode* assignment_expr = ast_parse_assignment_expr(parser);
     if(assignment_expr != null)
         return assignment_expr;
     
