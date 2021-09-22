@@ -101,7 +101,7 @@ typedef enum BinaryOpChain {
 } BinaryOpChain;
 
 static AstNode* parse_func_call_args(Parser* parser);
-static AstNode* ast_parse_suffix_op(Parser* parser);
+static AstNode* parse_suffix_op(Parser* parser);
 static AstNode* ast_parse_prefix_op_expr(Parser* parser,
                                          AstNode* (*op_parser)(Parser*),
                                          AstNode* (*child_parser)(Parser*));
