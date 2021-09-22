@@ -1219,7 +1219,7 @@ static AstNode* parse_field_init(Parser* parser) {
        (pc + 1)->kind == IDENTIFIER and
        (pc + 2)->kind == EQUALS) {
             parser_chomp(3);
-            AstNode* expr = ast_parse_expr(parser);
+            AstNode* expr = parse_expr(parser);
             if(expr == null)
                 ast_expected("expression");
             return expr;
