@@ -286,7 +286,7 @@ static AstNode* parse_if_prefix(Parser* parser) {
         return null;
     }
     Token* lparen = parser_expect_token(LPAREN);
-    AstNode* condition = ast_parse_expr(parser);
+    AstNode* condition = parse_expr(parser);
     Token* rparen = parser_expect_token(RPAREN);
 
     AstNode* out = ast_create_node(AstNodeKindIfExpr);
