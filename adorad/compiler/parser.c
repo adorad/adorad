@@ -1171,7 +1171,7 @@ static AstNode* ast_parse_match_case_kwd(Parser* parser) {
 
 // MatchItem
 //      Expr (ELLIPSIS Expr)?
-static AstNode* parse_match_item(Parser* parser) {
+static AstNode* ast_parse_match_item(Parser* parser) {
     AstNode* expr = parse_expr(parser);
     if(expr == null)
         return null;
