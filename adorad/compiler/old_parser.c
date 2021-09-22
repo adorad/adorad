@@ -809,7 +809,7 @@ static AstNode* parse_type_expr(Parser* parser) {
     return parse_prefix_op_expr(
         parser,
         parse_prefix_type_op,
-        ast_parse_suffix_expr
+        parse_suffix_expr
     );
 }
 
