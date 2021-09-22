@@ -833,7 +833,7 @@ static AstNode* ast_parse_primary_expr(Parser* parser) {
                 default: ast_expected("inlinable expression");
             }
         case LOOP: 
-            return parse_loop_expr(parser);
+            return ast_parse_loop_expr(parser);
         default:
             ast_error("Invalid parser pattern");
     } // switch(pc->kind)
