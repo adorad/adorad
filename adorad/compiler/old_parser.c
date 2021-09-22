@@ -735,7 +735,7 @@ static AstNode* ast_parse_primary_expr(Parser* parser) {
         return out;
     }
 
-    AstNode* block = parse_block(parser);
+    AstNode* block = ast_parse_block(parser);
     if(block != null)
         return block;
     
