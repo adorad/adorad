@@ -1111,3 +1111,18 @@ static Token* ast_parse_block_label(Parser* parser) {
 
     return ident;
 }
+
+// FieldInit
+//      DOT IDENTIFIER EQUALS Expr
+static AstNode* ast_parse_field_init(Parser* parser) {
+    if((pc + 0)->kind == DOT and
+       (pc + 1)->kind == IDENTIFIER and
+       (pc + 2)->kind == EQUALS) {
+            parser_chomp(3);
+            AstNode* expr = ast_parse_expr(parser);
+            if(expr == null)
+                ast_expected("expression");
+            return expr;
+    }
+    return null;
+}
