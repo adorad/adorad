@@ -1158,7 +1158,7 @@ static AstNode* ast_parse_prefix_op(Parser* parser) {
 // PrefixTypeOp
 //      | QUESTION
 //      | ArrayTypeStart (KEYWORD(const) / KEYWORD(volatile))*
-static AstNode* parse_prefix_type_op(Parser* parser) {
+static AstNode* ast_parse_prefix_type_op(Parser* parser) {
     Token* question_mark = parser_chomp_if(QUESTION);
     if(question_mark != null) {
         AstNode* out = ast_create_node(AstNodeKindPrefixOpExpr);
