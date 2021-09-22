@@ -1097,7 +1097,7 @@ static AstNode* ast_parse_assignment_op(Parser* parser) {
 //      | EQUALS_EQUALS
 //      | EXCLAMATION_EQUALS
 static AstNode* ast_parse_comparison_op(Parser* parser) {
-    return parse_op(parser);
+    return ast_parse_op(parser);
 }
 
 // BitwiseOp can be one of:
