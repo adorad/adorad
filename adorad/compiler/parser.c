@@ -774,7 +774,7 @@ static AstNode* ast_parse_primary_expr(Parser* parser) {
         case IF: return ast_parse_if_expr(parser);
         case BREAK: 
             parser_chomp(1);
-            Token* label = parse_break_label(parser);
+            Token* label = ast_parse_break_label(parser);
             AstNode* expr = ast_parse_expr(parser);
 
             AstNode* out = ast_create_node(AstNodeKindBreak);
