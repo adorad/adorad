@@ -327,7 +327,7 @@ static AstNode* parse_if_expr(Parser* parser) {
 // Labeled Statements
 static AstNode* parse_labeled_statements(Parser* parser) {
     Token* label = parse_block_label(parser);
-    AstNode* block = ast_parse_block(parser);
+    AstNode* block = parse_block(parser);
     if(block != null) {
         CORETEN_ENFORCE(block->kind == AstNodeKindBlock);
         block->data.stmt->block_stmt->name = label->value;
