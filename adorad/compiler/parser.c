@@ -718,7 +718,7 @@ static AstNode* ast_parse_prefix_expr(Parser* parser) {
         case EXCLAMATION: op = PrefixOpKindNegation; break;
         case AND: op = PrefixOpKindAddrOf; break;
         case TRY: op = PrefixOpKindTry; break;
-        default: return parse_primary_expr(parser);
+        default: return ast_parse_primary_expr(parser);
     }
 
     AstNode* lhs = parse_prefix_expr(parser);
