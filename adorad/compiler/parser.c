@@ -225,7 +225,7 @@ static AstNode* ast_parse_variable_decl(Parser* parser) {
 //      | ATTR_COMPTIME
 //      | ATTR_INLINE
 //      | ATTR_NOINLINE
-static AstNode* ast_parse_func_decl(Parser* parser) {
+static AstNode* parse_func_decl(Parser* parser) {
     // Attributes?
     if(!token_is_attribute(pc->kind))
         goto func_no_attrs;
