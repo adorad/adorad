@@ -769,7 +769,7 @@ static AstNode* ast_parse_type_expr(Parser* parser) {
 //      | KEYWORD(return) Expr?
 //      | BlockLabel? ATTRIBUTE(inline)? LoopExpr
 //      | Block
-static AstNode* parse_primary_expr(Parser* parser) {
+static AstNode* ast_parse_primary_expr(Parser* parser) {
     switch(pc->kind) {
         case IF: return parse_if_expr(parser);
         case BREAK: 
