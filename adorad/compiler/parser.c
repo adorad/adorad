@@ -518,7 +518,7 @@ outexpect:
 /*
     TODO: Add implementation for:
         1. parse_loop_inf_expr(parser)
-        2. ast_parse_loop_c_expr(parser)
+        2. parse_loop_c_expr(parser)
         3. ast_parse_loop_in_expr(parser)
 */
 static AstNode* ast_parse_loop_inf_expr(Parser* parser) {
