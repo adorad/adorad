@@ -417,7 +417,7 @@ static AstNode* ast_parse_block_expr(Parser* parser) {
         return out;
     }
 
-    return parse_block(parser);
+    return ast_parse_block(parser);
 }
 
 // AssignmentExpr
