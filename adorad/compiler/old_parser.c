@@ -618,7 +618,7 @@ static AstNode* parse_boolean_or_expr(Parser* parser) {
 // ComparisonExpr
 //      BitwiseExpr (ComparisonOp BitwiseExpr)*
 static AstNode* parse_comparison_expr(Parser* parser) {
-    return ast_parse_binary_op_expr(
+    return parse_binary_op_expr(
         parser,
         BinaryOpChainOnce,
         ast_parse_comparison_op,
