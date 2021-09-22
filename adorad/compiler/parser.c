@@ -561,7 +561,7 @@ static AstNode* ast_parse_block_expr(Parser* parser) {
         case IDENTIFIER:
             if((pc->kind + 1) == COLON and (pc->kind + 2) == LBRACE) {
                 pc += 2;
-                return parse_block(parser);    
+                return ast_parse_block(parser);    
             } else {
                 return null;
             }
