@@ -119,8 +119,8 @@ static AstNode* parse_match_case_kwd(Parser* parser);
 static AstNode* parse_match_branch(Parser* parser);
 static Token* parse_block_label(Parser* parser);
 static Token* parse_break_label(Parser* parser);
-static AstNode* parse_match_expr(Parser* parser);
-static AstNode* parse_primary_type_expr(Parser* parser);
+static AstNode* ast_parse_match_expr(Parser* parser);
+static AstNode* ast_parse_primary_type_expr(Parser* parser);
 static AstNode* parse_suffix_expr(Parser* parser);
 static AstNode* parse_type_expr(Parser* parser);
 static AstNode* parse_init_list(Parser* parser);
@@ -1178,8 +1178,8 @@ static AstNode* parse_prefix_type_op(Parser* parser) {
         } else {
             AstNode* sentinel = null;
             Token* colon = parser_chomp_if(COLON);
-            ifs(colon != null)
-                sentinel = parse_expr(parser);
+            if(colon != null)
+                sentinel = ast_parse_expr(parser);
             
             Token* rbrace = parser_expect_token(RBRACE);
             AstNode* out = ast_create_node(AstNodeKindArrayType);
