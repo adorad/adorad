@@ -915,7 +915,7 @@ static AstNode* ast_parse_brace_suffix_expr(Parser* parser) {
         vec_push(fields, expr);
         Token* comma = null;
         while(pc->kind != COMMA) {
-            AstNode* exp = parse_expr(parser);
+            AstNode* exp = ast_parse_expr(parser);
             if(exp == null)
                 break;
             vec_push(fields, exp);
