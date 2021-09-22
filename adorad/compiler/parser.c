@@ -203,7 +203,7 @@ static AstNode* ast_parse_variable_decl(Parser* parser) {
     AstNode* init_expr = null;
     if(equals != null) {
         // Expect an expression
-        init_expr = ast_parse_expr(parser);
+        init_expr = parse_expr(parser);
     }
 
     Token* semicolon = parser_chomp_if(SEMICOLON);
