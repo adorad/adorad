@@ -445,7 +445,7 @@ static AstNode* parse_assignment_expr(Parser* parser) {
     );
 }
 
-static AstNode* ast_parse_block(Parser* parser) {
+static AstNode* parse_block(Parser* parser) {
     Token* lbrace = parser_chomp_if(LBRACE);
     if(lbrace == null)
         return null;
