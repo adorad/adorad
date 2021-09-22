@@ -185,10 +185,10 @@ TOKENKIND(TOK___KEYWORDS_BEGIN, ""),  \
     TOKENKIND(IN,            "in"),       \
     TOKENKIND(INCLUDE,       "include"),  \
     TOKENKIND(ISA,           "isa"),      \
-    TOKENKIND(LOOP,          "loop"),    \
+    TOKENKIND(LOOP,          "loop"),     \
     TOKENKIND(MACRO,         "macro"),    \
     TOKENKIND(MAP,           "map"),      \
-    TOKENKIND(MATCH,         "match"), /* similar to 'switch' in C++ & Java */ \
+    TOKENKIND(MATCH,         "match"),    \
     TOKENKIND(MODULE,        "module"),   \
     TOKENKIND(MUTABLE,       "mutable"),  \
     TOKENKIND(NOT,           "not"),      \
@@ -205,7 +205,7 @@ TOKENKIND(TOK___KEYWORDS_BEGIN, ""),  \
     TOKENKIND(WHEN,          "when"),     \
     TOKENKIND(WHERE,         "where"),    \
     TOKENKIND(UNION,         "union"),    \
-    TOKENKIND(USE,           "use"), /* aliasing purposes */ \
+    TOKENKIND(USE,           "use"),      \
     TOKENKIND(VOLATILE,      "volatile"), \
 TOKENKIND(TOK___KEYWORDS_END, ""),    \
 \
