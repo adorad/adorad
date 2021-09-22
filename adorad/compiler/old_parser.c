@@ -325,7 +325,7 @@ static AstNode* ast_parse_if_expr(Parser* parser) {
 }
 
 // Labeled Statements
-static AstNode* parse_labeled_statements(Parser* parser) {
+static AstNode* ast_parse_labeled_statements(Parser* parser) {
     Token* label = parse_block_label(parser);
     AstNode* block = parse_block(parser);
     if(block != null) {
