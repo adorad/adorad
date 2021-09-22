@@ -545,7 +545,7 @@ static BinaryOpKind tokenkind_to_binaryopkind(TokenKind kind) {
 // A `generic`-like function that parses binary expressions.
 // These (expressions) utilize similar functionality, so this function is here to avoid code duplication.
 // Here, `op_parser` parses the operand (e.g. `+=`, `or`...)
-static AstNode* parse_binary_op_expr(
+static AstNode* ast_parse_binary_op_expr(
     Parser* parser,
     BinaryOpChain chain,
     AstNode* (*op_parser)(Parser*),
