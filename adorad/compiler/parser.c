@@ -1214,7 +1214,7 @@ static Token* ast_parse_block_label(Parser* parser) {
 
 // FieldInit
 //      DOT IDENTIFIER EQUALS Expr
-static AstNode* parse_field_init(Parser* parser) {
+static AstNode* ast_parse_field_init(Parser* parser) {
     if((pc + 0)->kind == DOT and
        (pc + 1)->kind == IDENTIFIER and
        (pc + 2)->kind == EQUALS) {
