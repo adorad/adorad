@@ -784,7 +784,7 @@ static AstNode* ast_parse_primary_expr(Parser* parser) {
             return out;
         case CONTINUE:
             parser_chomp(1);
-            Token* label = parse_break_label(parser);
+            Token* label = ast_parse_break_label(parser);
             AstNode* out = ast_create_node(AstNodeKindBreak);
             out->data.stmt->branch_stmt->type = AstNodeBranchStatementContinue;
             out->data.stmt->branch_stmt->name = label != null ? label->value : null;
