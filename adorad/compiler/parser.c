@@ -1027,7 +1027,7 @@ static AstNode* parse_primary_type_expr(Parser* parser) {
         case FUNC: return parse_func_decl(parser);
         case IF: return ast_parse_if_expr(parser);
         case MATCH: return parse_match_expr(parser);
-        case STRUCT: return ast_parse_struct_decl(parser);
+        case STRUCT: return parse_struct_decl(parser);
         case ENUM: return ast_parse_enum_decl(parser);
         case ATTR_COMPTIME:
             out = ast_create_node(AstNodeKindAttributeExpr);
