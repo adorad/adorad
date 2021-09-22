@@ -250,7 +250,7 @@ static AstNode* ast_parse_statement(Parser* parser) {
     // Defer
     Token* defer_stmt = parser_chomp_if(DEFER);
     if(defer_stmt != null) {
-        AstNode* statement = parse_block_expr_statement(parser);
+        AstNode* statement = ast_parse_block_expr_statement(parser);
         AstNode* out = ast_create_node(AstNodeKindDefer);
         
         out->data.stmt->defer_stmt->expr = statement;
