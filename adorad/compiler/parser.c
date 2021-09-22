@@ -556,7 +556,7 @@ static AstNode* ast_parse_block_expr_statement(Parser* parser) {
 
 // BlockExpr
 //      BlockLabel? Block
-static AstNode* parse_block_expr(Parser* parser) {
+static AstNode* ast_parse_block_expr(Parser* parser) {
     switch(pc->kind) {
         case IDENTIFIER:
             if((pc->kind + 1) == COLON and (pc->kind + 2) == LBRACE) {
