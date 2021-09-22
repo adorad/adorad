@@ -1118,8 +1118,8 @@ static AstNode* parse_bitshift_op(Parser* parser) {
 // AdditionOp can be one of:
 //      | PLUS
 //      | MINUS
-static AstNode* ast_parse_addition_op(Parser* parser) {
-    return ast_parse_op(parser);
+static AstNode* parse_addition_op(Parser* parser) {
+    return parse_op(parser);
 }
 
 // MultiplicationOp can be one of:
