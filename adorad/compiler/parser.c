@@ -85,8 +85,8 @@ AstNode* ast_create_node(AstNodeKind kind) {
 //      | (ATTRIBUTE(INLINE) / ATTRIBUTE(NOINLINE) / ATTRIBUTE(NORETURN))? FuncDecl
 //      | StructDecl
 //      | EnumDecl
-static AstNode* ast_parse_toplevel_decl(Parser* parser) {
-    AstNode* module = ast_parse_module_statement(parser);
+static AstNode* parse_toplevel_decl(Parser* parser) {
+    AstNode* module = parse_module_statement(parser);
     if(module != null)
         return module;
     
