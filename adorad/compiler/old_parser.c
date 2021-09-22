@@ -622,7 +622,7 @@ static AstNode* ast_parse_comparison_expr(Parser* parser) {
         parser,
         BinaryOpChainOnce,
         ast_parse_comparison_op,
-        parse_bitwise_expr
+        ast_parse_bitwise_expr
     ); 
 }
 
