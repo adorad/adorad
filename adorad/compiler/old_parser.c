@@ -352,7 +352,7 @@ static AstNode* ast_parse_labeled_statements(Parser* parser) {
 
 // Loops
 //      (KEYWORD(inline))? loop ... {  }
-static AstNode* parse_loop_statement(Parser* parser) {
+static AstNode* ast_parse_loop_statement(Parser* parser) {
     Token* inline_token = parser_chomp_if(ATTR_INLINE);
 
     CORETEN_ENFORCE(false);
