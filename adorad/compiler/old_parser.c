@@ -838,7 +838,7 @@ static AstNode* parse_suffix_expr(Parser* parser) {
             continue;
         }
 
-        AstNode* call = ast_parse_func_call_args(parser);
+        AstNode* call = parse_func_call_args(parser);
         if(call != null) {
             CORETEN_ENFORCE(call->kind == AstNodeKindFuncCallExpr);
             call->data.expr->func_call_expr->func_call_expr = out;
