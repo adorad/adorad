@@ -393,7 +393,7 @@ static AstNode* parse_loop_statement(Parser* parser) {
 //     BlockExpr       // { ... }
 //     AssignmentExpr 
 static AstNode* parse_block_expr_statement(Parser* parser) {
-    AstNode* block = ast_parse_block_expr(parser);
+    AstNode* block = parse_block_expr(parser);
     if(block != null)
         return block;
     
