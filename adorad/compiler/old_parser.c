@@ -221,7 +221,7 @@ static AstNode* parse_var_decl(Parser* parser) {
     if(mutable_kwd && const_kwd)
         ast_error("Cannot decorate a variable as both `mutable` and `const`");
 
-    AstNode* type_expr = ast_parse_type_expr(parser);
+    AstNode* type_expr = parse_type_expr(parser);
     Token* identifier = parser_expect_token(IDENTIFIER);
     Token* equals = parser_chomp_if(EQUALS);
     AstNode* expr;
