@@ -919,7 +919,7 @@ static AstNode* parse_primary_type_expr(Parser* parser) {
         return ast_create_node(AstNodeKindStringLiteral);
     }
 
-    AstNode* match_token = ast_parse_match_expr(parser);
+    AstNode* match_token = parse_match_expr(parser);
     if(match_token != null)
         return match_token;
 
