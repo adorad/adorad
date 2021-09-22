@@ -713,7 +713,7 @@ static AstNode* parse_primary_expr(Parser* parser) {
     
     Token* continue_token = parser_chomp_if(CONTINUE);
     if(continue_token != null) {
-        Token* label = ast_parse_break_label(parser);
+        Token* label = parse_break_label(parser);
         AstNode* out = ast_create_node(AstNodeKindContinue);
         out->data.stmt->branch_stmt->name = label == null ? label->value : null;
         out->data.stmt->branch_stmt->type = AstNodeBranchStatementContinue;
