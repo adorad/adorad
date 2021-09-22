@@ -1106,7 +1106,7 @@ static AstNode* parse_match_expr(Parser* parser) {
     Token* rparen = parser_chomp_if(RPAREN); // this is optional
     Token* lbrace = parser_expect_token(RBRACE); // required
 
-    Vec* branches = ast_parse_match_branches(parser);
+    Vec* branches = parse_match_branches(parser);
     if(branches == null)
         ast_expected("branches for `match`");
     
