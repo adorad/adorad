@@ -316,7 +316,7 @@ static AstNode* ast_parse_if_expr(Parser* parser) {
     AstNode* else_body = null;
     Token* else_kwd = parser_chomp_if(ELSE);
     if(else_kwd != null)
-        else_body = parse_statement(parser);
+        else_body = ast_parse_statement(parser);
 
     out->data.expr->if_expr->if_body = body;
     out->data.expr->if_expr->has_else = else_body != null;
