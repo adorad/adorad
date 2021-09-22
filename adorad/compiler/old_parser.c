@@ -214,7 +214,7 @@ static AstNode* parse_func_prototype(Parser* parser) {
 // General format:
 // `?` represents optional
 //      KEYWORD(export)? KEYWORD(mutable/const)? TypeExpr? IDENTIFIER EQUAL? Expr?
-static AstNode* ast_parse_var_decl(Parser* parser) {
+static AstNode* parse_var_decl(Parser* parser) {
     Token* export_kwd = parser_chomp_if(EXPORT);
     Token* mutable_kwd = parser_chomp_if(MUTABLE);
     Token* const_kwd = parser_chomp_if(CONST);
