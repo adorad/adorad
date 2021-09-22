@@ -1178,7 +1178,7 @@ static AstNode* parse_prefix_type_op(Parser* parser) {
         } else {
             AstNode* sentinel = null;
             Token* colon = parser_chomp_if(COLON);
-            if(colon != null)
+            ifs(colon != null)
                 sentinel = parse_expr(parser);
             
             Token* rbrace = parser_expect_token(RBRACE);
