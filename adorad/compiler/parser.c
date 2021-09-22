@@ -1233,7 +1233,7 @@ static AstNode* parse_field_init(Parser* parser) {
 static AstNode* parse_suffix_op(Parser* parser) {
     Token* lbrace = parser_chomp_if(LBRACE);
     if(lbrace != null) {
-        AstNode* lower = ast_parse_expr(parser);
+        AstNode* lower = parse_expr(parser);
         AstNode* upper = null;
         Token* ellipsis = parser_chomp_if(ELLIPSIS);
         if(ellipsis != null) {
