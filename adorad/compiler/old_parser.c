@@ -1111,7 +1111,7 @@ static AstNode* ast_parse_bitwise_op(Parser* parser) {
 // BitshiftOp can be one of:
 //      | LBITSHIFT
 //      | RBITSHIFT
-static AstNode* parse_bitshift_op(Parser* parser) {
+static AstNode* ast_parse_bitshift_op(Parser* parser) {
     return parse_op(parser);
 }
 
