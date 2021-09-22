@@ -271,7 +271,7 @@ func_no_attrs:
             no_body = true;
             break;
         case LBRACE:
-            body = parse_block(parser);
+            body = ast_parse_block(parser);
             if(body == null)
                 ast_expected("Expected a body");
             break;
