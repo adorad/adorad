@@ -701,7 +701,7 @@ static AstNode* parse_primary_expr(Parser* parser) {
 
     Token* break_token = parser_chomp_if(BREAK);
     if(break_token != null) {
-        Token* label = ast_parse_break_label(parser);
+        Token* label = parse_break_label(parser);
         AstNode* expr = ast_parse_expr(parser);
         
         AstNode* out = ast_create_node(AstNodeKindBreak);
