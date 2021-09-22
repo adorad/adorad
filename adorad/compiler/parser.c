@@ -802,7 +802,7 @@ static AstNode* parse_primary_expr(Parser* parser) {
         case RETURN:
             parser_chomp(1);
             AstNode* out = ast_create_node(AstNodeKindReturn);
-            AstNode* expr = ast_parse_expr(parser);
+            AstNode* expr = parse_expr(parser);
             out->data.stmt->return_stmt->expr = expr;
             return out;
         case IDENTIFIER:
@@ -915,7 +915,7 @@ static AstNode* parse_brace_suffix_expr(Parser* parser) {
         vec_push(fields, expr);
         Token* comma = null;
         while(pc->kind != COMMA) {
-            AstNode* exp = ast_parse_expr(parser);
+            AstNode* exp = parse_expr(parser);
             if(exp == null)
                 break;
             vec_push(fields, exp);
