@@ -98,7 +98,7 @@ static AstNode* parse_toplevel_decl(Parser* parser) {
     if(alias != null)
         return alias;
     
-    AstNode* comptime = ast_parse_attribute_expr(parser, ATTR_COMPTIME);
+    AstNode* comptime = parse_attribute_expr(parser, ATTR_COMPTIME);
     if(comptime != null)
         return comptime;
 
