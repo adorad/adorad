@@ -926,7 +926,7 @@ static AstNode* ast_parse_primary_type_expr(Parser* parser) {
     return null;
 }
 
-static Vec* parse_branch_list(Parser* parser, AstNode* (*list_parser)(Parser* parser)) {
+static Vec* ast_parse_branch_list(Parser* parser, AstNode* (*list_parser)(Parser* parser)) {
     Vec* out = vec_new(AstNode, 1);
     while(true) {
         AstNode* curr = list_parser(parser);
