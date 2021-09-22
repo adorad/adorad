@@ -531,7 +531,7 @@ static AstNode* ast_parse_loop_c_expr(Parser* parser) {
     return null;
 }
 
-static AstNode* parse_loop_in_expr(Parser* parser) {
+static AstNode* ast_parse_loop_in_expr(Parser* parser) {
     CORETEN_ENFORCE(false, "TODO");
     return null;
 }
