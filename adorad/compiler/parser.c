@@ -90,7 +90,7 @@ static AstNode* ast_parse_toplevel_decl(Parser* parser) {
     if(module != null)
         return module;
     
-    AstNode* import = parse_import_statement(parser);
+    AstNode* import = ast_parse_import_statement(parser);
     if(import != null)
         return null;
     
