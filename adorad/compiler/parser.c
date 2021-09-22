@@ -1025,7 +1025,7 @@ static AstNode* ast_parse_primary_type_expr(Parser* parser) {
             return out;
         case BUILTIN: return parse_builtin_call(parser);
         case FUNC: return parse_func_decl(parser);
-        case IF: return parse_if_expr(parser);
+        case IF: return ast_parse_if_expr(parser);
         case MATCH: return ast_parse_match_expr(parser);
         case STRUCT: return ast_parse_struct_decl(parser);
         case ENUM: return ast_parse_enum_decl(parser);
