@@ -1060,3 +1060,29 @@ static AstNode* ast_parse_primary_type_expr(Parser* parser) {
             return out;
     }
 }
+
+static AstNode* ast_parse_match_expr(Parser* parser) {
+    Token* switch_kwd = parser_chomp_if(MATCH);
+    if(switch_kwd == null)
+        ast_expected("`switch` keyword");
+    
+    Token* lparen = parser_chomp_if(LPAREN); // this is optional
+    AstNode* expr = ast_parse_expr(parser);
+    if(expr == null)
+        ast_expected("expression");
+    Token* rparen = parser_chomp_if(RPAREN); // this is optional
+    Token* lbrace = parser_chomp_if(RBRACE); // required
+    if(lbrace == null)
+        ast_expected("LBRACE");
+    Vec* branches = ast_parse_match_branches(parser);
+    if(branches == null)
+        ast_expected("branches for `match`");
+    
+    // Parse any trailing comma
+    Token* comma = parser_chomp_if(COMMA);
+
+    AstNode* out = ast_create_node(AstNodeKindMatchExpr);
+    out->data.expr->match_expr->expr = expr;
+    out->data.expr->match_expr->branches = branches;
+    return out;
+}
