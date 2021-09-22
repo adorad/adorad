@@ -169,6 +169,7 @@ TOKENKIND(TOK___KEYWORDS_BEGIN, ""),  \
     TOKENKIND(CONTINUE,      "continue"), \
     TOKENKIND(DO,            "do"),       \
     TOKENKIND(DECL,          "decl"),     \
+    TOKENKIND(DEFAULT,       "default"),  \
     TOKENKIND(DEFER,         "defer"),    \
     TOKENKIND(ENUM,          "enum"),     \
     TOKENKIND(ELSE,          "else"),     \
