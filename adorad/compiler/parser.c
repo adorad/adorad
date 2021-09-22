@@ -941,7 +941,7 @@ static AstNode* ast_parse_brace_suffix_expr(Parser* parser) {
 // and ExprList is
 //      (Expr COMMA)* Expr?
 static AstNode* ast_parse_suffix_expr(Parser* parser) {
-    AstNode* out = parse_primary_type_expr(parser);
+    AstNode* out = ast_parse_primary_type_expr(parser);
     while(true) {
         AstNode* suffix_op = parse_suffix_op(parser);
         if(suffix_op == null)
