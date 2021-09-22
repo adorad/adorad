@@ -790,7 +790,7 @@ static AstNode* parse_init_list(Parser* parser) {
 
         Token* comma;
         while((comma = parser_chomp_if(COMMA)) != null) {
-            AstNode* expr = ast_parse_expr(parser);
+            AstNode* expr = parse_expr(parser);
             if(expr == null)
                 break;
             vec_push(out->data.expr->init_expr->entries, expr);
