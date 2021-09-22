@@ -1179,7 +1179,7 @@ static AstNode* parse_prefix_type_op(Parser* parser) {
             AstNode* sentinel = null;
             Token* colon = parser_chomp_if(COLON);
             if(colon != null)
-                sentinel = ast_parse_expr(parser);
+                sentinel = parse_expr(parser);
             
             Token* rbrace = parser_expect_token(RBRACE);
             AstNode* out = ast_create_node(AstNodeKindArrayType);
