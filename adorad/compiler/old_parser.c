@@ -303,7 +303,7 @@ static AstNode* parse_if_expr(Parser* parser) {
     
     AstNode* body = parse_block_expr(parser);
     if(body == null)
-        body = ast_parse_assignment_expr(parser);
+        body = parse_assignment_expr(parser);
     
     if(body == null) {
         Token* token = parser_chomp();
