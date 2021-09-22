@@ -1127,7 +1127,7 @@ static AstNode* ast_parse_addition_op(Parser* parser) {
 //      | SLASH
 //      | MOD
 static AstNode* ast_parse_multiplication_op(Parser* parser) {
-    return parse_op(parser);
+    return ast_parse_op(parser);
 }
 
 // PrefixOp can be one of:
