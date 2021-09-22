@@ -771,7 +771,7 @@ static AstNode* parse_type_expr(Parser* parser) {
 //      | Block
 static AstNode* parse_primary_expr(Parser* parser) {
     switch(pc->kind) {
-        case IF: return ast_parse_if_expr(parser);
+        case IF: return parse_if_expr(parser);
         case BREAK: 
             parser_chomp(1);
             Token* label = ast_parse_break_label(parser);
