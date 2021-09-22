@@ -79,6 +79,7 @@ enum AstNodeKind {
 
     // Misc
     AstNodeKindParamDecl,
+    AstNodeKindParamList,
     AstNodeKindDefer,
     AstNodeKindReturn,
     AstNodeKindUnreachable,
@@ -689,6 +690,11 @@ typedef struct {
 } AstNodeParamDecl;
 
 typedef struct {
+    Vec* params;
+    bool is_variadic;
+} AstNodeParamList;
+
+typedef struct {
     AstNode* expr;
 } AstNodeReturnExpr;
 
@@ -763,6 +769,7 @@ struct AstNode {
         AstNodeTestExpr* test_expr;
         AstNodePrefixOpExpr* prefix_op_expr;
         AstNodeParamDecl* param_decl;
+        AstNodeParamList* param_list;
         AstNodeArrayAccessExpr* array_access_expr;
         AstNodeInferredArrayType* inferred_array_type;
         AstNodeArrayType* array_type;

@@ -296,6 +296,39 @@ func_no_attrs:
     return out;
 }
 
+// ParamList
+//      (ParamDecl COMMA)* ParamDecl?
+static AstNode* ast_parse_param_list(Parser* parser) {
+    Token* lparen = parser_expect_token(LPAREN);
+    bool seen_varargs = false;
+    Vec* params = vec_new(AstNode, 1);
+    while(true) {
+        if(parser_chomp_if(RPAREN) == null)
+            break;
+        AstNode* param = ast_parse_param_decl(parser);
+        if(param != null) {
+            vec_push(params, param);
+        } else if((pc - 1)->kind == ELLIPSIS) {
+            seen_varargs = true;
+        }
+
+        switch(pc->kind) {
+            case COMMA: parser_chomp(1);
+            case RPAREN: parser_chomp(1); break;
+            case COLON: case RBRACE: case RSQUAREBRACK: 
+                ast_expected("RPAREN");
+            default:
+                WARN(Expected comma);
+                break;
+        }
+    }
+
+    AstNode* out = ast_create_node(AstNodeKindParamList);
+    out->data.param_list->is_variadic = cast(bool)seen_varargs;
+    out->data.param_list->params = params;
+    return out;
+}
+
 // Statement
 //      | VariableDecl
 //      | BlockExpr
