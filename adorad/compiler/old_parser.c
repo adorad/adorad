@@ -678,7 +678,7 @@ static AstNode* parse_multiplication_expr(Parser* parser) {
 //      | TILDA         (~)
 //      | AND           (&)
 //      | KEYWORD(try) 
-static AstNode* parse_prefix_expr(Parser* parser) {
+static AstNode* ast_parse_prefix_expr(Parser* parser) {
     return parse_prefix_op_expr(
         parser,
         parse_prefix_op,
