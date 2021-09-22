@@ -54,7 +54,6 @@ TOKENKIND(TOK___LITERALS_BEGIN, ""), \
     TOKENKIND(UINT64_LIT,   "UINT64_LIT"),    \
     /* FLOAT conflicts with a typedef in <windows.h> */ \
     TOKENKIND(FLOAT_LIT,     "FLOAT"),        \
-    TOKENKIND(FLOAT32_LIT,   "FLOAT32_LIT"),   \
     TOKENKIND(FLOAT64_LIT,   "FLOAT64_LIT"),   \
     TOKENKIND(FLOAT128_LIT,  "FLOAT128_LIT"),  \
     TOKENKIND(IMAG,          "IMAG"),         \
