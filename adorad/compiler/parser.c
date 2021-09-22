@@ -471,7 +471,7 @@ static AstNode* parse_labeled_statement(Parser* parser) {
         return block;
     }
 
-    AstNode* loop_statement = ast_parse_loop_expr(parser);
+    AstNode* loop_statement = parse_loop_expr(parser);
     if(loop_statement != null) {
         loop_statement->data.expr->loop_expr->label = label != null ? label->value : null;
         return loop_statement;
