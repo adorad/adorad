@@ -415,7 +415,7 @@ static AstNode* ast_parse_if_expr(Parser* parser) {
         unreachable();
 
     Token* lparen = parser_chomp_if(LPAREN); // this is optional
-    AstNode* condition = parse_expr(parser);
+    AstNode* condition = ast_parse_expr(parser);
     if(condition == null)
         ast_expected("condition");
     Token* rparen = parser_chomp_if(RPAREN); // this is optional
