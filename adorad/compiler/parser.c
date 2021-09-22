@@ -939,3 +939,124 @@ static AstNode* ast_parse_suffix_expr(Parser* parser) {
     }
 }
 */
+
+// PrimaryTypeExpr
+//      BUILTINIDENTIFIER FuncCallArgs
+//      CHAR_LITERAL
+//      StructDecl
+//      EnumDecl
+//      DOT IDENTIFIER
+//      FLOAT_LITERAL
+//      FuncPrototype
+//      GroupedExpr
+//      LabeledTypeExpr
+//      IDENTIFIER
+//      IfTypeExpr
+//      INTEGER_LITERAL
+//      ATTRIBUTE(comptime) TypeExpr
+//      KEYWORD(unreachable)
+//      STRING_LITERAL
+//      MatchExpr
+// where GroupedExpr is:
+//      LPAREN Expr RPAREN
+// and LabeledTypeExpr is one of:
+//      | BlockLabel Block
+//      | BlockLabel? LoopTypeExpr
+static AstNode* ast_parse_primary_type_expr(Parser* parser) {
+    AstNode* out = null;
+    AstNode* expr = null;
+    Token* tok = null;
+    switch(pc->kind) {
+        case CHAR_LIT:
+            out = ast_create_node(AstNodeKindCharLiteral);
+            out->data.comptime_value->char_value->value = pc->value;
+            parser_chomp(1);
+            return out;
+        case INTEGER:
+            out = ast_create_node(AstNodeKindIntLiteral);
+            out->data.comptime_value->int_value->value = pc->value;
+            parser_chomp(1);
+            return out;
+        case FLOAT_LIT:
+            out = ast_create_node(AstNodeKindFloatLiteral);
+            out->data.comptime_value->float_value->value = pc->value;
+            parser_chomp(1);
+            return out;
+        case UNREACHABLE:
+            out = ast_create_node(AstNodeKindUnreachable);
+            parser_chomp(1);
+            return out;
+        case STRING:
+            out = ast_create_node(AstNodeKindStringLiteral);
+            parser_chomp(1);
+            return out;
+        case BUILTIN: return ast_parse_builtin_call(parser);
+        case FUNC: return ast_parse_func_decl(parser);
+        case IF: return ast_parse_if_expr(parser);
+        case MATCH: return ast_parse_match_expr(parser);
+        case STRUCT: return ast_parse_struct_decl(parser);
+        case ENUM: return ast_parse_enum_decl(parser);
+        case ATTR_COMPTIME:
+            out = ast_create_node(AstNodeKindAttributeExpr);
+            expr = ast_parse_type_expr(parser);
+            if(expr == null)
+                ast_expected("type expr");
+            out->data.expr->attr_expr->expr = expr;
+            return out;
+        case IDENTIFIER:
+            switch((pc + 1)->kind) {
+                case COLON:
+                    switch((pc + 2)->kind) {
+                        case ATTR_INLINE:
+                            parser_chomp(3);
+                            switch(pc->kind) {
+                                case LOOP: return ast_parse_loop_expr(parser);
+                                default: ast_expected("inlinable expression");
+                            }
+                        case LOOP:
+                            parser_chomp(2);
+                            return ast_parse_loop_expr(parser);
+                        case LBRACE:
+                            parser_chomp(2);
+                            return ast_parse_block(parser);
+                        default:
+                            out = ast_create_node(AstNodeKindIdentifier);
+                            parser_chomp(1);
+                            return out;
+                    }
+                default:
+                    out = ast_create_node(AstNodeKindIdentifier);
+                    parser_chomp(1);
+                    return out;
+            }
+            break;
+        case ATTR_INLINE:
+            parser_chomp(1);
+            switch(pc->kind) {
+                case LOOP: return ast_parse_loop_expr(parser);
+                default: ast_expected("inlinable expression");
+            }
+            break;
+        case LOOP: return ast_parse_loop_expr(parser);
+        case DOT:
+            switch((pc + 1)->kind) {
+                case IDENTIFIER:
+                    out = ast_create_node(AstNodeKindIdentifier);
+                    parser_chomp(1);
+                    return out;
+                default: return null;
+            }
+            break;
+        case LPAREN:
+            out = ast_create_node(AstNodeKindGroupedExpr);
+            expr = ast_parse_expr(parser);
+            if(expr == null)
+                ast_expected("expression");
+            tok = parser_chomp_if(RPAREN);
+            if(tok == null)
+                ast_expected("RPAREN");
+
+            out->data.expr->grouped_expr->expr = expr;
+            return out;
+    }
+}

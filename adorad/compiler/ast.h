@@ -57,6 +57,7 @@ enum AstNodeKind {
     AstNodeKindPrefixOpExpr,
     AstNodeKindFieldAccessExpr,
     AstNodeKindAttributeExpr,
+    AstNodeKindGroupedExpr,
     
     AstNodeKindInitExpr,
     AstNodeKindSliceExpr,
@@ -244,6 +245,10 @@ typedef struct {
 
 typedef struct {
     AstNode* expr;
+} AstNodeGroupedExpr;
+
+typedef struct {
+    AstNode* expr;
     Vec* branches;
 } AstNodeMatchExpr;
 
@@ -366,6 +371,7 @@ typedef struct {
         AstNodeInitExpr* init_expr;
         AstNodeLoopExpr* loop_expr;
         AstNodeFuncCallExpr* func_call_expr;
+        AstNodeGroupedExpr* grouped_expr;
         AstNodeMatchExpr* match_expr;
         AstNodeMatchBranchExpr* match_branch_expr;
         AstNodeMatchRangeExpr* match_range_expr;
