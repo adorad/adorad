@@ -429,7 +429,7 @@ static AstNode* ast_parse_if_expr(Parser* parser) {
     AstNode* assignment_expr = null;
     AstNode* block_expr = ast_parse_block_expr(parser);
     if(block_expr == null) {
-        assignment_expr = parse_assignment_expr(parser);
+        assignment_expr = ast_parse_assignment_expr(parser);
         if(assignment_expr == null)
             ast_expected("block / assignment expression");
     }
