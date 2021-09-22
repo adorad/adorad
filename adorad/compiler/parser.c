@@ -749,7 +749,7 @@ static AstNode* parse_type_expr(Parser* parser) {
     AstNode* out = null;
     switch(pc->kind) {
         case QUESTION:
-            AstNode* expr = ast_parse_expr(parser);
+            AstNode* expr = parse_expr(parser);
             if(expr == null)
                 ast_error("expression");
             out = ast_create_node(AstNodeKindPrefixOpExpr);
