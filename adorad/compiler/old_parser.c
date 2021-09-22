@@ -886,7 +886,7 @@ static AstNode* parse_primary_type_expr(Parser* parser) {
         return ast_create_node(AstNodeKindIdentifier);
     }
 
-    // Token* if_type_expr = ast_parse_if_type_expr(parser);
+    // Token* if_type_expr = parse_if_type_expr(parser);
     // if(if_type_expr != null)
     //     return if_type_expr;
 
