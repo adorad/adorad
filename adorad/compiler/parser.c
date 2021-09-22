@@ -485,7 +485,7 @@ static AstNode* parse_labeled_statement(Parser* parser) {
 
 // LoopExpr
 //      | ATTRIBUTE(inline)? (LoopWhileExpr / LoopCExpr / LoopInExpr)
-static AstNode* ast_parse_loop_expr(Parser* parser) {
+static AstNode* parse_loop_expr(Parser* parser) {
     Token* inline_attr = parser_chomp_if(ATTR_INLINE);
     AstNode* out = null;
 
