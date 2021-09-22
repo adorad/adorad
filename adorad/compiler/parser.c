@@ -1189,7 +1189,7 @@ static AstNode* parse_match_item(Parser* parser) {
 }
 // BreakLabel
 //      COLON IDENTIFIER
-static Token* ast_parse_break_label(Parser* parser) {
+static Token* parse_break_label(Parser* parser) {
     Token* colon = parser_chomp_if(COLON);
     if(colon == null)
         return null;
