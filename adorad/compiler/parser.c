@@ -894,7 +894,7 @@ static AstNode* ast_parse_brace_suffix_expr(Parser* parser) {
             Token* rbrace = parser_chomp_if(RBRACE);
             if(rbrace != null)
                 break;
-            AstNode* field_init = parse_field_init(parser);
+            AstNode* field_init = ast_parse_field_init(parser);
             if(field_init == null)
                 ast_expected("field init");
             vec_push(fields, field_init);
