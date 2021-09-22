@@ -644,7 +644,7 @@ static AstNode* ast_parse_bitshift_expr(Parser* parser) {
         parser,
         BinaryOpChainInfinity,
         ast_parse_bitshift_op,
-        parse_addition_expr
+        ast_parse_addition_expr
     ); 
 }
 
