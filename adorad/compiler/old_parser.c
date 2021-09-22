@@ -721,7 +721,7 @@ static AstNode* ast_parse_primary_expr(Parser* parser) {
 
     // Token* attribute = parser_chomp_if(ATTRIBUTE);
     // if (attribute != 0) {
-    //     AstNode* expr = parse_expr();
+    //     AstNode* expr = ast_parse_expr();
     //     AstNode* out = ast_create_node(AstNodeKindAttribute);
     //     out->data.attribute_expr.expr = expr;
     //     return out;
