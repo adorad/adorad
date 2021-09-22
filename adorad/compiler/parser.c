@@ -345,7 +345,7 @@ static AstNode* ast_parse_statement(Parser* parser) {
     if(block_expr != null)
         return block_expr;
     
-    AstNode* if_expr = parse_if_expr(parser);
+    AstNode* if_expr = ast_parse_if_expr(parser);
     if(if_expr != null)
         return if_expr;
     
