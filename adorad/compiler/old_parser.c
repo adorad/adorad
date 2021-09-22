@@ -666,7 +666,7 @@ static AstNode* parse_multiplication_expr(Parser* parser) {
         parser,
         BinaryOpChainInfinity,
         ast_parse_multiplication_op,
-        parse_bitwise_expr
+        ast_parse_bitwise_expr
     ); 
 }
 
