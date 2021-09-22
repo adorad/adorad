@@ -632,7 +632,7 @@ static AstNode* parse_bitwise_expr(Parser* parser) {
     return parse_binary_op_expr(
         parser,
         BinaryOpChainInfinity,
-        ast_parse_bitwise_op,
+        parse_bitwise_op,
         ast_parse_bitshift_expr
     ); 
 }
