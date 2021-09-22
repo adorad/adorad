@@ -121,7 +121,7 @@ static Token* ast_parse_block_label(Parser* parser);
 static Token* parse_break_label(Parser* parser);
 static AstNode* parse_match_expr(Parser* parser);
 static AstNode* parse_primary_type_expr(Parser* parser);
-static AstNode* parse_suffix_expr(Parser* parser);
+static AstNode* ast_parse_suffix_expr(Parser* parser);
 static AstNode* ast_parse_type_expr(Parser* parser);
 static AstNode* ast_parse_init_list(Parser* parser);
 static AstNode* ast_parse_if_expr(Parser* parser);
