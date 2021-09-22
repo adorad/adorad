@@ -146,7 +146,7 @@ static BinaryOpKind tokenkind_to_binaryopkind(TokenKind kind);
 static AstNode* parse_block(Parser* parser);
 static AstNode* parse_assignment_expr(Parser* parser);
 static AstNode* parse_block_expr(Parser* parser);
-static AstNode* ast_parse_block_expr_statement(Parser* parser);
+static AstNode* parse_block_expr_statement(Parser* parser);
 static AstNode* ast_parse_loop_statement(Parser* parser);
 static AstNode* ast_parse_labeled_statements(Parser* parser);
 static AstNode* ast_parse_if_prefix(Parser* parser);
