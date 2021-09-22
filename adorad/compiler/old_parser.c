@@ -1105,7 +1105,7 @@ static AstNode* ast_parse_comparison_op(Parser* parser) {
 //      | OR
 //      | XOR
 static AstNode* ast_parse_bitwise_op(Parser* parser) {
-    return parse_op(parser);
+    return ast_parse_op(parser);
 }
 
 // BitshiftOp can be one of:
