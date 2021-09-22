@@ -544,7 +544,7 @@ static AstNode* ast_parse_block_expr_statement(Parser* parser) {
     if(block_expr != null)
         return block_expr;
     
-    AstNode* assignment_expr = parse_assignment_expr(parser);
+    AstNode* assignment_expr = ast_parse_assignment_expr(parser);
     if(assignment_expr != null) {
         Token* semicolon = parser_chomp_if(SEMICOLON);
         return assignment_expr;
