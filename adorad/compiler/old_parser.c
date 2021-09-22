@@ -1280,7 +1280,7 @@ static AstNode* parse_prefix_op_expr(
 }
 
 // FuncCallArguments
-static AstNode* ast_parse_func_call_args(Parser* parser) {
+static AstNode* parse_func_call_args(Parser* parser) {
     Token* lparen = parser_chomp_if(LPAREN);
     if(lparen == null)
         return null;
