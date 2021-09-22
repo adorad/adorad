@@ -679,7 +679,7 @@ static AstNode* parse_precedence(Parser* parser, UInt8 min_prec) {
         parser_chomp(1);
         Token* op_token = pc;
 
-        AstNode* rhs = ast_parse_precedence(parser, prec.prec + 1);
+        AstNode* rhs = parse_precedence(parser, prec.prec + 1);
         if(rhs == null)
             ast_error("Invalid token");
         
