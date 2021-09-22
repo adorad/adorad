@@ -1094,7 +1094,7 @@ static AstNode* parse_primary_type_expr(Parser* parser) {
     }
 }
 
-static AstNode* ast_parse_match_expr(Parser* parser) {
+static AstNode* parse_match_expr(Parser* parser) {
     Token* switch_kwd = parser_chomp_if(MATCH);
     if(switch_kwd == null)
         ast_expected("`switch` keyword");
