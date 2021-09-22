@@ -1043,7 +1043,7 @@ static AstNode* ast_parse_primary_type_expr(Parser* parser) {
                         case ATTR_INLINE:
                             parser_chomp(3);
                             switch(pc->kind) {
-                                case LOOP: return parse_loop_expr(parser);
+                                case LOOP: return ast_parse_loop_expr(parser);
                                 default: ast_expected("inlinable expression");
                             }
                         case LOOP:
