@@ -155,7 +155,7 @@ static AstNode* ast_parse_import_statement(Parser* parser) {
 
 // AliasDecl
 //      KEYWORD(alias) IDENTIFER KEYWORD(as) IDENTIFIER SEMICOLON?
-static AstNode* parse_alias_decl(Parser* parser) {
+static AstNode* ast_parse_alias_decl(Parser* parser) {
     Token* alias_kwd = parser_chomp_if(ALIAS);
     if(alias_kwd == null)
         unreachable();
