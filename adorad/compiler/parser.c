@@ -1082,7 +1082,7 @@ static AstNode* parse_primary_type_expr(Parser* parser) {
             break;
         case LPAREN:
             out = ast_create_node(AstNodeKindGroupedExpr);
-            expr = ast_parse_expr(parser);
+            expr = parse_expr(parser);
             if(expr == null)
                 ast_expected("expression");
             tok = parser_chomp_if(RPAREN);
