@@ -397,7 +397,7 @@ static AstNode* parse_block_expr_statement(Parser* parser) {
     if(block != null)
         return block;
     
-    AstNode* assignment_expr = ast_parse_assignment_expr(parser);
+    AstNode* assignment_expr = parse_assignment_expr(parser);
     if(assignment_expr != null) {
         Token* semi = parser_expect_token(SEMICOLON);
         return assignment_expr;
