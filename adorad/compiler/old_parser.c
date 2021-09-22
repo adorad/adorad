@@ -114,7 +114,7 @@ static AstNode* ast_parse_bitwise_op(Parser* parser);
 static AstNode* ast_parse_comparison_op(Parser* parser);
 static AstNode* ast_parse_assignment_op(Parser* parser);
 static AstNode* parse_op(Parser* parser);
-static AstNode* ast_parse_match_item(Parser* parser);
+static AstNode* parse_match_item(Parser* parser);
 static AstNode* parse_match_case_kwd(Parser* parser);
 static AstNode* parse_match_branch(Parser* parser);
 static Token* parse_block_label(Parser* parser);
