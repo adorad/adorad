@@ -125,7 +125,7 @@ static AstNode* parse_suffix_expr(Parser* parser);
 static AstNode* parse_type_expr(Parser* parser);
 static AstNode* parse_init_list(Parser* parser);
 static AstNode* parse_if_expr(Parser* parser);
-static AstNode* ast_parse_boolean_and_op(Parser* parser);
+static AstNode* parse_boolean_and_op(Parser* parser);
 static AstNode* ast_parse_boolean_or_op(Parser* parser);
 static AstNode* ast_parse_primary_expr(Parser* parser);
 static AstNode* ast_parse_prefix_expr(Parser* parser);
