@@ -1014,7 +1014,7 @@ static AstNode* ast_parse_match_branch(Parser* parser) {
 // MatchCase
 //      | MatchItem (COMMA MatchItem)* COMMA?
 //      | KEYWORD(else)
-static AstNode* parse_match_case_kwd(Parser* parser) {
+static AstNode* ast_parse_match_case_kwd(Parser* parser) {
     AstNode* match_item = ast_parse_match_item(parser);
     if(match_item != null) {
         AstNode* out = ast_create_node(AstNodeKindMatchBranch);
