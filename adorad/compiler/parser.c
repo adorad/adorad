@@ -501,7 +501,7 @@ static AstNode* parse_loop_expr(Parser* parser) {
         goto outexpect;
     }
 
-    AstNode* loop_in_expr = ast_parse_loop_in_expr(parser);
+    AstNode* loop_in_expr = parse_loop_in_expr(parser);
     if(loop_in_expr != null) {
         out = loop_in_expr;
         goto outexpect;
