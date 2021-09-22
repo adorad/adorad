@@ -409,7 +409,7 @@ static AstNode* parse_container_members(pars) {
 //      | IfPrefix AssignmentExpr (SEMICOLON / KEYWORD(else) Statement)?
 // where IfPrefix is:
 //      KEYWORD(if) LPAREN? Expr RPAREN?
-static AstNode* ast_parse_if_expr(Parser* parser) {
+static AstNode* parse_if_expr(Parser* parser) {
     Token* if_token = parser_chomp_if(IF);
     if(if_token == null)
         unreachable();
