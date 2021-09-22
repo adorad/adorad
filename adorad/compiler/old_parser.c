@@ -100,27 +100,27 @@ typedef enum BinaryOpChain {
     BinaryOpChainInfinity
 } BinaryOpChain;
 
-static AstNode* parse_func_call_args(Parser* parser);
-static AstNode* parse_suffix_op(Parser* parser);
-static AstNode* parse_prefix_op_expr(Parser* parser,
+static AstNode* ast_parse_func_call_args(Parser* parser);
+static AstNode* ast_parse_suffix_op(Parser* parser);
+static AstNode* ast_parse_prefix_op_expr(Parser* parser,
                                          AstNode* (*op_parser)(Parser*),
                                          AstNode* (*child_parser)(Parser*));
-static AstNode* parse_prefix_type_op(Parser* parser);
-static AstNode* parse_prefix_op(Parser* parser);
-static AstNode* parse_multiplication_op(Parser* parser);
-static AstNode* parse_addition_op(Parser* parser);
-static AstNode* parse_bitshift_op(Parser* parser);
-static AstNode* parse_bitwise_op(Parser* parser);
-static AstNode* parse_comparison_op(Parser* parser);
-static AstNode* parse_assignment_op(Parser* parser);
-static AstNode* parse_op(Parser* parser);
-static AstNode* parse_match_item(Parser* parser);
+static AstNode* ast_parse_prefix_type_op(Parser* parser);
+static AstNode* ast_parse_prefix_op(Parser* parser);
+static AstNode* ast_parse_multiplication_op(Parser* parser);
+static AstNode* ast_parse_addition_op(Parser* parser);
+static AstNode* ast_parse_bitshift_op(Parser* parser);
+static AstNode* ast_parse_bitwise_op(Parser* parser);
+static AstNode* ast_parse_comparison_op(Parser* parser);
+static AstNode* ast_parse_assignment_op(Parser* parser);
+static AstNode* ast_parse_op(Parser* parser);
+static AstNode* ast_parse_match_item(Parser* parser);
 static AstNode* parse_match_case_kwd(Parser* parser);
 static AstNode* parse_match_branch(Parser* parser);
 static Token* parse_block_label(Parser* parser);
-static Token* ast_ast_ast_ast_ast_ast_parse_break_label(Parser* parser);
-static AstNode* ast_ast_ast_ast_ast_ast_parse_match_expr(Parser* parser);
-static AstNode* ast_parse_primary_type_expr(Parser* parser);
+static Token* parse_break_label(Parser* parser);
+static AstNode* parse_match_expr(Parser* parser);
+static AstNode* parse_primary_type_expr(Parser* parser);
 static AstNode* parse_suffix_expr(Parser* parser);
 static AstNode* parse_type_expr(Parser* parser);
 static AstNode* parse_init_list(Parser* parser);
@@ -128,8 +128,8 @@ static AstNode* parse_if_expr(Parser* parser);
 static AstNode* parse_boolean_and_op(Parser* parser);
 static AstNode* parse_boolean_or_op(Parser* parser);
 static AstNode* parse_primary_expr(Parser* parser);
-static AstNode* parse_prefix_expr(Parser* parser);
-static AstNode* parse_multiplication_expr(Parser* parser);
+static AstNode* ast_parse_prefix_expr(Parser* parser);
+static AstNode* ast_parse_multiplication_expr(Parser* parser);
 static AstNode* parse_addition_expr(Parser* parser);
 static AstNode* parse_bitshift_expr(Parser* parser);
 static AstNode* parse_bitwise_expr(Parser* parser);
@@ -977,7 +977,7 @@ static Token* parse_break_label(Parser* parser) {
 
 // BlockLabel
 //      IDENTIFIER COLON
-static Token* parse_block_label(Parser* parser) {
+static Token* ast_parse_block_label(Parser* parser) {
     Token* ident = parser_chomp_if(IDENTIFIER);
     if(ident == null)
         return null;
@@ -992,7 +992,7 @@ static Token* parse_block_label(Parser* parser) {
 
 // MatchBranch
 //      KEYWORD(case) (COLON? / EQUALS_ARROW?) AssignmentExpr
-static AstNode* parse_match_branch(Parser* parser) {
+static AstNode* ast_parse_match_branch(Parser* parser) {
     AstNode* out = parse_match_case_kwd(parser);
     CORETEN_ENFORCE(out->kind == AstNodeKindMatchBranch);
     if(out == null)
@@ -1015,7 +1015,7 @@ static AstNode* parse_match_branch(Parser* parser) {
 //      | MatchItem (COMMA MatchItem)* COMMA?
 //      | KEYWORD(else)
 static AstNode* parse_match_case_kwd(Parser* parser) {
-    AstNode* match_item = parse_match_item(parser);
+    AstNode* match_item = ast_parse_match_item(parser);
     if(match_item != null) {
         AstNode* out = ast_create_node(AstNodeKindMatchBranch);
         vec_push(out->data.expr->match_branch_expr->branches, match_item);
@@ -1202,10 +1202,10 @@ static AstNode* parse_suffix_op(Parser* parser) {
         Token* ellipsis = parser_chomp_if(ELLIPSIS);
         if(ellipsis != null) {
             AstNode* sentinel = null;
-            upper = parse_expr(parser);
+            upper = ast_parse_expr(parser);
             Token* colon = parser_chomp_if(COLON);
             if(colon != null) {
-                sentinel = parse_expr(parser);
+                sentinel = ast_parse_expr(parser);
             }
             Token* rbrace = parser_expect_token(RBRACE);
 
@@ -1234,7 +1234,7 @@ static AstNode* parse_suffix_op(Parser* parser) {
     return null;
 }
 
-static AstNode* parse_prefix_op_expr( 
+static AstNode* ast_parse_prefix_op_expr( 
     Parser* parser,
     AstNode* (*op_parser)(Parser*),
     AstNode* (*child_parser)(Parser*)
@@ -1280,12 +1280,12 @@ static AstNode* parse_prefix_op_expr(
 }
 
 // FuncCallArguments
-static AstNode* parse_func_call_args(Parser* parser) {
+static AstNode* ast_parse_func_call_args(Parser* parser) {
     Token* lparen = parser_chomp_if(LPAREN);
     if(lparen == null)
         return null;
     
-    Vec* params = parse_param_list(parser, parse_expr);
+    Vec* params = ast_parse_param_list(parser, ast_parse_expr);
     Token* rparen = parser_expect_token(RPAREN);
 
     AstNode* out = ast_create_node(AstNodeKindFuncCallExpr);
@@ -1295,6 +1295,6 @@ static AstNode* parse_func_call_args(Parser* parser) {
 
 // Main entry point of the Parser.
 // It will return the whole AST tree of the entire source code (for each file) when parsed. 
-static AstNode* parse(Parser* parser) { 
+static AstNode* ast_parse(Parser* parser) { 
     return null;
 }
