@@ -365,7 +365,7 @@ static AstNode* parse_loop_statement(Parser* parser) {
     //     return loop_c_statement;
     // }
 
-    // AstNode* loop_while_statement = parse_loop_while_statement(parser);
+    // AstNode* loop_while_statement = ast_parse_loop_while_statement(parser);
     // if(loop_while_statement != null) {
     //     CORETEN_ENFORCE(loop_while_statement->kind == AstNodeKindLoopWhileExpr);
     //     loop_while_statement->data.expr->loop_expr->loop_while_expr->is_inline = inline_token != null;
