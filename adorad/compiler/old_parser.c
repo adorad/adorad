@@ -107,7 +107,7 @@ static AstNode* ast_parse_prefix_op_expr(Parser* parser,
                                          AstNode* (*child_parser)(Parser*));
 static AstNode* ast_parse_prefix_type_op(Parser* parser);
 static AstNode* ast_parse_prefix_op(Parser* parser);
-static AstNode* ast_parse_multiplication_op(Parser* parser);
+static AstNode* parse_multiplication_op(Parser* parser);
 static AstNode* ast_parse_addition_op(Parser* parser);
 static AstNode* ast_parse_bitshift_op(Parser* parser);
 static AstNode* ast_parse_bitwise_op(Parser* parser);
