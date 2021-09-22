@@ -258,7 +258,7 @@ static AstNode* ast_parse_statement(Parser* parser) {
     }
 
     // If statement
-    AstNode* if_statement = parse_if_expr(parser);
+    AstNode* if_statement = ast_parse_if_expr(parser);
     if(if_statement != null)
         return if_statement;
     
