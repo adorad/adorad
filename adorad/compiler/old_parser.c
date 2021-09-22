@@ -280,7 +280,7 @@ static AstNode* ast_parse_statement(Parser* parser) {
     return null;
 }
 
-static AstNode* parse_if_prefix(Parser* parser) {
+static AstNode* ast_parse_if_prefix(Parser* parser) {
     Token* if_kwd = parser_chomp_if(IF);
     if(if_kwd == null) {
         return null;
