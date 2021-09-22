@@ -1149,7 +1149,7 @@ static AstNode* ast_parse_match_case_kwd(Parser* parser) {
 
         Token* comma;
         while((comma = parser_chomp_if(COMMA)) != null) {
-            AstNode* item = parse_match_item(parser);
+            AstNode* item = ast_parse_match_item(parser);
             if(item == null)
                 break;
             
