@@ -263,7 +263,7 @@ static AstNode* parse_statement(Parser* parser) {
         return if_statement;
     
     // Labeled Statements
-    AstNode* labeled_statement = ast_parse_labeled_statements(parser);
+    AstNode* labeled_statement = parse_labeled_statements(parser);
     if(labeled_statement != null)
         return labeled_statement;
 
