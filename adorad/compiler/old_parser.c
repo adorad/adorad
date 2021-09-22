@@ -131,7 +131,7 @@ static AstNode* parse_primary_expr(Parser* parser);
 static AstNode* ast_parse_prefix_expr(Parser* parser);
 static AstNode* ast_parse_multiplication_expr(Parser* parser);
 static AstNode* parse_addition_expr(Parser* parser);
-static AstNode* parse_bitshift_expr(Parser* parser);
+static AstNode* ast_parse_bitshift_expr(Parser* parser);
 static AstNode* ast_parse_bitwise_expr(Parser* parser);
 static AstNode* ast_parse_comparison_expr(Parser* parser);
 static AstNode* ast_parse_boolean_or_expr(Parser* parser);
@@ -358,7 +358,7 @@ static AstNode* parse_loop_statement(Parser* parser) {
     CORETEN_ENFORCE(false);
     // TODO
 
-    // AstNode* loop_c_statement = parse_loop_c_statement(parser);
+    // AstNode* loop_c_statement = ast_parse_loop_c_statement(parser);
     // if(loop_c_statement != null) {
     //     CORETEN_ENFORCE(loop_c_statement->kind == AstNodeKindLoopCExpr);
     //     loop_c_statement->data.expr->loop_expr->loop_c_expr->is_inline = inline_token != null;
