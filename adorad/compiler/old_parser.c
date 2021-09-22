@@ -452,7 +452,7 @@ static AstNode* ast_parse_block(Parser* parser) {
 
     Vec* statements = vec_new(AstNode, 1);
     AstNode* statement = null;
-    while((statement = parse_statement(parser)) != null)
+    while((statement = ast_parse_statement(parser)) != null)
         vec_push(statements, statement);
 
     Token* rbrace = parser_expect_token(RBRACE);
