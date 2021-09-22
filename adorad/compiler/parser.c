@@ -50,7 +50,7 @@ static inline Token* chomp(Parser* parser, UInt64 n) {
 
 // Consumes a token and moves on to the next, if the current token matches the expected token.
 static inline Token* chomp_if(Parser* parser, TokenKind tokenkind) {
-    if(parser->curr_tok->kind == tokenkind)
+    if((parser->curr_tok + 1) != null && (parser->curr_tok + 1)->kind == tokenkind)
         return chomp(parser, 1);
 
     return null;
@@ -898,6 +898,8 @@ static AstNode* ast_parse_brace_suffix_expr(Parser* parser) {
     return out;
 }
 
+/* WIP */
+/*
 // SuffixExpr
 //      PrimaryTypeExpr SuffixOp* FuncCallArgs
 //      PrimaryTypeExpr (SuffixOp / FuncCallArgs)*
@@ -920,7 +922,20 @@ static AstNode* ast_parse_suffix_expr(Parser* parser) {
     }
 
     Vec* params = vec_new(AstNode, 1);
-    while(true) {
-
+    AstNode* param = null;
+    while(parser_chomp(1)->kind != RPAREN) {
+        param = ast_parse_expr(parser);
+        if(param == null)
+            break;
+        vec_push(params, param);
+        switch(pc->kind) {
+            case COMMA: parser_chomp(1);
+            case RPAREN: parser_chomp(1); break;
+            case COLON: case RBRACE: case RSQUAREBRACK:
+                ast_expected("RBRACE");
+            default:
+                WARN(Expected comma);
+        }
     }
 }
+*/
