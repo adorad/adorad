@@ -137,7 +137,7 @@ static AstNode* ast_parse_module_statement(Parser* parser) {
 
 // ImportStatement
 //      | KEYWORD(import) Statement
-static AstNode* ast_parse_import_statement(Parser* parser) {
+static AstNode* parse_import_statement(Parser* parser) {
     Token* import_kwd = parser_chomp_if(IMPORT);
     if(import_kwd == null)
         ast_expected("`import` keyword");
