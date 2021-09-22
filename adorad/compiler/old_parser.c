@@ -877,7 +877,7 @@ static AstNode* ast_parse_primary_type_expr(Parser* parser) {
         return ast_create_node(AstNodeKindFloatLiteral);
     }
 
-    AstNode* func_prototype = parse_func_prototype(parser);
+    AstNode* func_prototype = ast_parse_func_prototype(parser);
     if(func_prototype != null)
         return func_prototype;
 
