@@ -817,7 +817,7 @@ static AstNode* ast_parse_primary_expr(Parser* parser) {
                         }
                     case LOOP:
                         parser_chomp(2);
-                        return parse_loop_expr(parser);
+                        return ast_parse_loop_expr(parser);
                     case LBRACE:
                         parser_chomp(2);
                         return parse_block(parser);
