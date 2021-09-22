@@ -664,7 +664,7 @@ static ast_prec lookup_precedence(TokenKind kind) {
     ast_error("Expected a valid assignment token op");
 }
 
-static AstNode* ast_parse_precedence(Parser* parser, UInt8 min_prec) {
+static AstNode* parse_precedence(Parser* parser, UInt8 min_prec) {
     AstNode* out = ast_parse_prefix_expr(parser);
     if(out == null)
         return null;
