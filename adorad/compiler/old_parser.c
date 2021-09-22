@@ -301,7 +301,7 @@ static AstNode* parse_if_expr(Parser* parser) {
         return null;
     }
     
-    AstNode* body = ast_parse_block_expr(parser);
+    AstNode* body = parse_block_expr(parser);
     if(body == null)
         body = ast_parse_assignment_expr(parser);
     
