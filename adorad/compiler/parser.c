@@ -909,7 +909,7 @@ static AstNode* parse_brace_suffix_expr(Parser* parser) {
     AstNode* out = ast_create_node(AstNodeKindArrayInitExpr);
     out->data.expr->init_expr->type = InitExprKindArray;
 
-    AstNode* expr = ast_parse_expr(parser);
+    AstNode* expr = parse_expr(parser);
     if(expr != null) {
         Vec* fields = vec_new(AstNode, 1);
         vec_push(fields, expr);
