@@ -682,7 +682,7 @@ static AstNode* parse_prefix_expr(Parser* parser) {
     return parse_prefix_op_expr(
         parser,
         parse_prefix_op,
-        ast_parse_primary_expr
+        parse_primary_expr
     );
 }
 
