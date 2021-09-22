@@ -665,7 +665,7 @@ static ast_prec lookup_precedence(TokenKind kind) {
 }
 
 static AstNode* parse_precedence(Parser* parser, UInt8 min_prec) {
-    AstNode* out = ast_parse_prefix_expr(parser);
+    AstNode* out = parse_prefix_expr(parser);
     if(out == null)
         return null;
     
