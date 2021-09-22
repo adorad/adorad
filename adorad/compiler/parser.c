@@ -802,7 +802,7 @@ static AstNode* ast_parse_primary_expr(Parser* parser) {
         case RETURN:
             parser_chomp(1);
             AstNode* out = ast_create_node(AstNodeKindReturn);
-            AstNode* expr = parse_expr(parser);
+            AstNode* expr = ast_parse_expr(parser);
             out->data.stmt->return_stmt->expr = expr;
             return out;
         case IDENTIFIER:
