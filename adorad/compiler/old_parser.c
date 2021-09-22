@@ -178,7 +178,7 @@ static AstNode* parse_func_prototype(Parser* parser) {
     
     Token* identifier = parser_chomp_if(IDENTIFIER);
     Token* lparen = parser_expect_token(LPAREN);
-    Vec* params = ast_parse_param_list(parser, ast_parse_match_branch);
+    Vec* params = parse_param_list(parser, ast_parse_match_branch);
     Token* rparen = parser_expect_token(RPAREN);
 
     AstNode* return_type = ast_parse_type_expr(parser);
