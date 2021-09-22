@@ -370,7 +370,7 @@ static AstNode* ast_parse_statement(Parser* parser) {
 //      | KEYWORD(export)? TopLevelDecl ContainerDeclarations
 // TopLevelComptime
 //      ATTRIBUTE(comptime) BlockExpr
-static AstNode* ast_parse_container_members(pars) {
+static AstNode* parse_container_members(pars) {
     while(true) {
         switch(pc->kind) {
             case ATTR_COMPTIME:
