@@ -1194,7 +1194,7 @@ static AstNode* parse_prefix_type_op(Parser* parser) {
 // SuffixOp
 //      | LBRACKET Expr (DOT2 (Expr (COLON Expr)?)?)? RBRACKET
 //      | DOT IDENTIFIER
-static AstNode* ast_parse_suffix_op(Parser* parser) {
+static AstNode* parse_suffix_op(Parser* parser) {
     Token* lbrace = parser_chomp_if(LBRACE);
     if(lbrace != null) {
         AstNode* lower = ast_parse_expr(parser);
