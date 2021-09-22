@@ -256,7 +256,7 @@ func_no_attrs:
     Token* identifier = parser_chomp_if(IDENTIFIER);
     Vec* params = ast_parse_param_list(parser, &is_variadic);
     Token* larrow = parser_chomp_if(LARROW);
-    AstNode* return_type_expr = ast_parse_type_expr(parser);
+    AstNode* return_type_expr = parse_type_expr(parser);
     if(return_type_expr == null)
         ast_expected("Return type expression. Use `void` if your function doesn't return anything");
     if(larrow == null and return_type_expr != null)
