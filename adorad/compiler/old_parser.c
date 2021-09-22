@@ -950,7 +950,7 @@ static AstNode* ast_parse_match_expr(Parser* parser) {
 
     // Left and Right Parenthesis' here are optional
     Token* lparen = parser_chomp_if(LPAREN);
-    AstNode* expr = parse_expr(parser);
+    AstNode* expr = ast_parse_expr(parser);
     Token* rparen = parser_chomp_if(RPAREN);
 
     // These *aren't* optional
