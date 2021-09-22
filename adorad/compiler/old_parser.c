@@ -822,7 +822,7 @@ static AstNode* ast_parse_suffix_expr(Parser* parser) {
         return null;
     
     while(true) {
-        AstNode* suffix = parse_suffix_op(parser);
+        AstNode* suffix = ast_parse_suffix_op(parser);
         if(suffix != null) { 
             switch(suffix->kind) {
                 case AstNodeKindSliceExpr:
