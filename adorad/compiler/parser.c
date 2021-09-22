@@ -1070,7 +1070,7 @@ static AstNode* parse_primary_type_expr(Parser* parser) {
                 default: ast_expected("inlinable expression");
             }
             break;
-        case LOOP: return ast_parse_loop_expr(parser);
+        case LOOP: return parse_loop_expr(parser);
         case DOT:
             switch((pc + 1)->kind) {
                 case IDENTIFIER:
