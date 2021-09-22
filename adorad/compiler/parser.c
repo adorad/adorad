@@ -995,7 +995,7 @@ static AstNode* parse_suffix_expr(Parser* parser) {
 // and LabeledTypeExpr is one of:
 //      | BlockLabel Block
 //      | BlockLabel? LoopTypeExpr
-static AstNode* ast_parse_primary_type_expr(Parser* parser) {
+static AstNode* parse_primary_type_expr(Parser* parser) {
     AstNode* out = null;
     AstNode* expr = null;
     Token* tok = null;
