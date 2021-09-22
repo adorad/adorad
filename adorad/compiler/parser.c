@@ -1051,7 +1051,7 @@ static AstNode* ast_parse_primary_type_expr(Parser* parser) {
                             return ast_parse_loop_expr(parser);
                         case LBRACE:
                             parser_chomp(2);
-                            return parse_block(parser);
+                            return ast_parse_block(parser);
                         default:
                             out = ast_create_node(AstNodeKindIdentifier);
                             parser_chomp(1);
