@@ -43,7 +43,6 @@ TOKENKIND(TOK___LITERALS_BEGIN, ""), \
     TOKENKIND(BIN_INT,      "BIN_INT"),       \
     TOKENKIND(HEX_INT,      "HEX_INT"),       \
     TOKENKIND(OCT_INT,      "OCT_INT"),       \
-    TOKENKIND(INT8_LIT,     "INT8_LIT"),      \
     TOKENKIND(UINT_LIT,     "UINT_LIT"),      \
     /* FLOAT conflicts with a typedef in <windows.h> */ \
     TOKENKIND(FLOAT_LIT,     "FLOAT"),        \
