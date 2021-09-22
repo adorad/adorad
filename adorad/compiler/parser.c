@@ -1072,7 +1072,7 @@ static AstNode* ast_parse_match_expr(Parser* parser) {
         ast_expected("expression");
     Token* rparen = parser_chomp_if(RPAREN); // this is optional
     Token* lbrace = parser_expect_token(RBRACE); // required
-    
+
     Vec* branches = ast_parse_match_branches(parser);
     if(branches == null)
         ast_expected("branches for `match`");
@@ -1191,5 +1191,48 @@ static AstNode* ast_parse_field_init(Parser* parser) {
                 ast_expected("expression");
             return expr;
     }
+    return null;
+}
+
+// SuffixOp
+//      | LBRACKET Expr (DOT2 (Expr (COLON Expr)?)?)? RBRACKET
+//      | DOT IDENTIFIER
+static AstNode* ast_parse_suffix_op(Parser* parser) {
+    Token* lbrace = parser_chomp_if(LBRACE);
+    if(lbrace != null) {
+        AstNode* lower = ast_parse_expr(parser);
+        AstNode* upper = null;
+        Token* ellipsis = parser_chomp_if(ELLIPSIS);
+        if(ellipsis != null) {
+            AstNode* sentinel = null;
+            upper = ast_parse_expr(parser);
+            Token* colon = parser_chomp_if(COLON);
+            if(colon != null) {
+                sentinel = ast_parse_expr(parser);
+            }
+            Token* rbrace = parser_expect_token(RBRACE);
+
+            AstNode* out = ast_create_node(AstNodeKindSliceExpr);
+            out->data.expr->slice_expr->lower = lower;
+            out->data.expr->slice_expr->upper = upper;
+            out->data.expr->slice_expr->sentinel = sentinel;
+            return out;
+        }
+
+        Token* rbrace = parser_expect_token(RBRACE);
+
+        AstNode* out = ast_create_node(AstNodeKindArrayAccessExpr);
+        out->data.array_access_expr->subscript = lower;
+        return out;
+    }
+
+    Token* dot = parser_chomp_if(DOT);
+    if(dot != null) {
+        Token* identifier = parser_expect_token(IDENTIFIER);
+        AstNode* out = ast_create_node(AstNodeKindFieldAccessExpr);
+        out->data.field_access_expr->field_name = identifier->value;
+        return out;
+    }
+
     return null;
 }
