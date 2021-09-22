@@ -1085,7 +1085,7 @@ static AstNode* parse_op(Parser* parser) {
 //      | XOR_EQUALS
 //      | LBITSHIFT_EQUALS
 //      | RBITSHIFT_EQUALS
-static AstNode* ast_parse_assignment_op(Parser* parser) {
+static AstNode* parse_assignment_op(Parser* parser) {
     return ast_parse_op(parser);
 }
 
