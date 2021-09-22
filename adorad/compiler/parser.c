@@ -1087,6 +1087,76 @@ static AstNode* ast_parse_match_expr(Parser* parser) {
     return out;
 }
 
+// MatchBranch
+//      KEYWORD(case) (COLON? / EQUALS_ARROW?) AssignmentExpr
+static AstNode* ast_parse_match_branch(Parser* parser) {
+    AstNode* out = ast_parse_match_case_kwd(parser);
+    CORETEN_ENFORCE(out->kind == AstNodeKindMatchBranch);
+    if(out == null)
+        return null;
+    
+    Token* colon = parser_chomp_if(COLON); // `:`
+    Token* equals_arrow = parser_chomp_if(EQUALS_ARROW); // `=>`
+    if(colon == null && equals_arrow == null)
+        ast_error(
+            "Missing token after `case`. Either `:` or `=>`"
+        );
+
+    AstNode* expr = ast_parse_assignment_expr(parser);
+    out->data.expr->match_branch_expr->expr = expr;
+
+    return out;
+}
+
+// MatchCase
+//      | MatchItem (COMMA MatchItem)* COMMA?
+//      | KEYWORD(else)
+static AstNode* ast_parse_match_case_kwd(Parser* parser) {
+    AstNode* match_item = ast_parse_match_item(parser);
+    if(match_item != null) {
+        AstNode* out = ast_create_node(AstNodeKindMatchBranch);
+        vec_push(out->data.expr->match_branch_expr->branches, match_item);
+
+        Token* comma;
+        while((comma = parser_chomp_if(COMMA)) != null) {
+            AstNode* item = ast_parse_match_item(parser);
+            if(item == null)
+                break;
+            
+            vec_push(out->data.expr->match_branch_expr->branches, item);
+            out->data.expr->match_branch_expr->any_branches_are_ranges = cast(bool)(item->kind == AstNodeKindMatchRange);
+        }
+
+        return out;
+    }
+
+    Token* else_kwd = parser_chomp_if(ELSE);
+    if(else_kwd != null) {
+        AstNode* out = ast_create_node(AstNodeKindMatchBranch);
+        return out;
+    }
+
+    return null;
+}
+
+// MatchItem
+//      Expr (ELLIPSIS Expr)?
+static AstNode* ast_parse_match_item(Parser* parser) {
+    AstNode* expr = ast_parse_expr(parser);
+    if(expr == null)
+        return null;
+    
+    Token* ellipsis = parser_chomp_if(ELLIPSIS);
+    if(ellipsis != null) {
+        AstNode* expr2 = ast_parse_expr(parser);
+        AstNode* out = ast_create_node(AstNodeKindMatchRange);
+        out->data.expr->match_range_expr->begin = expr;
+        out->data.expr->match_range_expr->end = expr2;
+        return out;
+    }
+
+    return expr;
+}
 // BreakLabel
 //      COLON IDENTIFIER
 static Token* ast_parse_break_label(Parser* parser) {
