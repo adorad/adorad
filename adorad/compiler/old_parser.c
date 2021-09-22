@@ -181,7 +181,7 @@ static AstNode* ast_parse_func_prototype(Parser* parser) {
     Vec* params = ast_parse_param_list(parser, ast_parse_match_branch);
     Token* rparen = parser_expect_token(RPAREN);
 
-    AstNode* return_type = parse_type_expr(parser);
+    AstNode* return_type = ast_parse_type_expr(parser);
     if(return_type == null) {
         Token* next = parser_peek_token(parser);
         ast_error(
