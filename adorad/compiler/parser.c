@@ -1100,7 +1100,7 @@ static AstNode* parse_match_expr(Parser* parser) {
         ast_expected("`switch` keyword");
     
     Token* lparen = parser_chomp_if(LPAREN); // this is optional
-    AstNode* expr = ast_parse_expr(parser);
+    AstNode* expr = parse_expr(parser);
     if(expr == null)
         ast_expected("expression");
     Token* rparen = parser_chomp_if(RPAREN); // this is optional
