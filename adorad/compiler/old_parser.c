@@ -629,7 +629,7 @@ static AstNode* ast_parse_comparison_expr(Parser* parser) {
 // BitwiseExpr
 //      BitShiftExpr (BitwiseOp BitShiftExpr)*
 static AstNode* ast_parse_bitwise_expr(Parser* parser) {
-    return parse_binary_op_expr(
+    return ast_parse_binary_op_expr(
         parser,
         BinaryOpChainInfinity,
         parse_bitwise_op,
