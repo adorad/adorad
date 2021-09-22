@@ -383,7 +383,7 @@ static AstNode* parse_container_members(pars) {
                     // case IDENTIFIER:
                     //     pc += 1;
                     case LBRACE:
-                        AstNode* block = ast_parse_block(parser);
+                        AstNode* block = parse_block(parser);
                         if(block != null) {
                             AstNode* out = ast_create_node(AstNodeKindAttributeExpr);
                             out->data.expr->attr_expr->kind = AttributeKindCompileTime;
