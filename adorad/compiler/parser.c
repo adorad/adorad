@@ -254,7 +254,7 @@ func_no_attrs:
     
     bool is_variadic = false;
     Token* identifier = parser_chomp_if(IDENTIFIER);
-    Vec* params = parse_param_list(parser, &is_variadic);
+    Vec* params = ast_parse_param_list(parser, &is_variadic);
     Token* larrow = parser_chomp_if(LARROW);
     AstNode* return_type_expr = parse_type_expr(parser);
     if(return_type_expr == null)
