@@ -694,7 +694,7 @@ static AstNode* parse_prefix_expr(Parser* parser) {
 //      | KEYWORD(return) Expr?
 //      | BlockLabel? LoopExpr
 //      | Block
-static AstNode* ast_parse_primary_expr(Parser* parser) {
+static AstNode* parse_primary_expr(Parser* parser) {
     AstNode* if_expr = ast_parse_if_expr(parser);
     if (if_expr != null)
         return if_expr;
