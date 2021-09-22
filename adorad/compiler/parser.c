@@ -305,7 +305,7 @@ static AstNode* ast_parse_param_list(Parser* parser) {
     while(true) {
         if(parser_chomp_if(RPAREN) == null)
             break;
-        AstNode* param = parse_param_decl(parser);
+        AstNode* param = ast_parse_param_decl(parser);
         if(param != null) {
             vec_push(params, param);
         } else if((pc - 1)->kind == ELLIPSIS) {
