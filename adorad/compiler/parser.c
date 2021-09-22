@@ -775,7 +775,7 @@ static AstNode* parse_primary_expr(Parser* parser) {
         case BREAK: 
             parser_chomp(1);
             Token* label = parse_break_label(parser);
-            AstNode* expr = ast_parse_expr(parser);
+            AstNode* expr = parse_expr(parser);
 
             AstNode* out = ast_create_node(AstNodeKindBreak);
             out->data.stmt->branch_stmt->type = AstNodeBranchStatementBreak;
