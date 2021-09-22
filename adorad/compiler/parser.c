@@ -187,7 +187,7 @@ static AstNode* ast_parse_variable_decl(Parser* parser) {
     Token* export_kwd = parser_chomp_if(EXPORT);
     Token* mutable_kwd = parser_chomp_if(MUTABLE);
 
-    AstNode* type_expr = parse_type_expr(parser);
+    AstNode* type_expr = ast_parse_type_expr(parser);
     Token* any = null;
     if(type_expr == null) {
         any = parser_chomp_if(ANY);
