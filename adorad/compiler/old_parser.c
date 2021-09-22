@@ -596,7 +596,7 @@ static AstNode* parse_expr(Parser* parser) {
 }
 
 // BooleanAndExpr
-static AstNode* ast_parse_boolean_and_expr(Parser* parser) {
+static AstNode* parse_boolean_and_expr(Parser* parser) {
     return ast_parse_binary_op_expr(
         parser,
         BinaryOpChainInfinity,
