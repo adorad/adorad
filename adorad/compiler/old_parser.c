@@ -1135,7 +1135,7 @@ static AstNode* parse_multiplication_op(Parser* parser) {
 //      | TILDA         (~)
 //      | AND           (&)
 //      | KEYWORD(try) 
-static AstNode* ast_parse_prefix_op(Parser* parser) {
+static AstNode* parse_prefix_op(Parser* parser) {
     PrefixOpKind op;
     switch(parser->curr_tok->kind) {
         case NOT: op = PrefixOpKindBoolNot; break;
