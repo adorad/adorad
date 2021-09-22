@@ -441,7 +441,7 @@ static AstNode* parse_assignment_expr(Parser* parser) {
         parser,
         BinaryOpChainOnce,
         parse_assignment_op,
-        ast_parse_expr
+        parse_expr
     );
 }
 
