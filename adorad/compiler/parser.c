@@ -106,7 +106,7 @@ static AstNode* parse_toplevel_decl(Parser* parser) {
     if(variable != null)
         return variable;
 
-    AstNode* func_decl = ast_parse_func_decl(parser);
+    AstNode* func_decl = parse_func_decl(parser);
     if(func_decl != null)
         return func_decl;
     
