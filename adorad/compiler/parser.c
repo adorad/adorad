@@ -957,7 +957,7 @@ static AstNode* parse_suffix_expr(Parser* parser) {
     Vec* params = vec_new(AstNode, 1);
     AstNode* param = null;
     while(parser_chomp(1)->kind != RPAREN) {
-        param = ast_parse_expr(parser);
+        param = parse_expr(parser);
         if(param == null)
             break;
         vec_push(params, param);
