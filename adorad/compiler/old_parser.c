@@ -768,7 +768,7 @@ static AstNode* ast_parse_boolean_or_op(Parser* parser) {
 //     return ast_parse_loop_expr_helper(
 //         parser,
 //         ast_parse_for_expr,
-//         parse_while_expr
+//         ast_parse_while_expr
 //     );
 // }
 
