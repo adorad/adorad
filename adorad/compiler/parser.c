@@ -1031,7 +1031,7 @@ static AstNode* ast_parse_primary_type_expr(Parser* parser) {
         case ENUM: return ast_parse_enum_decl(parser);
         case ATTR_COMPTIME:
             out = ast_create_node(AstNodeKindAttributeExpr);
-            expr = parse_type_expr(parser);
+            expr = ast_parse_type_expr(parser);
             if(expr == null)
                 ast_expected("type expr");
             out->data.expr->attr_expr->expr = expr;
