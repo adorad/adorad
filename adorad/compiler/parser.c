@@ -897,3 +897,30 @@ static AstNode* ast_parse_brace_suffix_expr(Parser* parser) {
     
     return out;
 }
+
+// SuffixExpr
+//      PrimaryTypeExpr SuffixOp* FuncCallArgs
+//      PrimaryTypeExpr (SuffixOp / FuncCallArgs)*
+// where FuncCallArgs are:
+//      LPAREN ExprList RPAREN
+// and ExprList is
+//      (Expr COMMA)* Expr?
+static AstNode* ast_parse_suffix_expr(Parser* parser) {
+    AstNode* out = ast_parse_primary_type_expr(parser);
+    while(true) {
+        AstNode* suffix_op = ast_parse_suffix_op(parser);
+        if(suffix_op == null)
+            break;
+        out = suffix_op;
+    }
+    Token* lparen = parser_chomp_if(LPAREN);
+    if(lparen == null) {
+        WARN(expected param list);
+        return out;
+    }
+
+    Vec* params = vec_new(AstNode, 1);
+    while(true) {
+
+    }
+}
