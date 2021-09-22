@@ -148,7 +148,7 @@ static AstNode* parse_assignment_expr(Parser* parser);
 static AstNode* ast_parse_block_expr(Parser* parser);
 static AstNode* ast_parse_block_expr_statement(Parser* parser);
 static AstNode* ast_parse_loop_statement(Parser* parser);
-static AstNode* parse_labeled_statements(Parser* parser);
+static AstNode* ast_parse_labeled_statements(Parser* parser);
 static AstNode* parse_if_prefix(Parser* parser);
 static AstNode* parse_statement(Parser* parser);
 static AstNode* parse_var_decl(Parser* parser);
