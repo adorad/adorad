@@ -137,7 +137,7 @@ static AstNode* ast_parse_comparison_expr(Parser* parser);
 static AstNode* ast_parse_boolean_or_expr(Parser* parser);
 static AstNode* ast_parse_boolean_and_expr(Parser* parser);
 static AstNode* ast_parse_expr(Parser* parser);
-static AstNode* parse_try_expr(Parser* parser);
+static AstNode* ast_parse_try_expr(Parser* parser);
 static AstNode* parse_binary_op_expr(Parser* parser, BinaryOpChain chain,
                                          AstNode* (*op_parser)(Parser*),
                                          AstNode* (*child_parser)(Parser*)
