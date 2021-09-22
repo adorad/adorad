@@ -752,7 +752,7 @@ static AstNode* ast_parse_boolean_and_op(Parser* parser) {
     return out;
 }
 
-static AstNode* parse_boolean_or_op(Parser* parser) {
+static AstNode* ast_parse_boolean_or_op(Parser* parser) {
     Token* op_token = parser_chomp_if(OR);
     if(op_token == null)
         return null;
