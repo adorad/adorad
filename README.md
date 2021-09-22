@@ -2,7 +2,7 @@
 <h1>The Adorad Language</h1>
 
 [Adorad](https://github.com/AdoradLang/Adorad) |
-[Documentation](https://github.com/adorad/adorad/blob/master/doc/docs.md) |
+[Documentation](https://github.com/adorad/adorad/blob/dev/docs/docs.md |
 [Contributing](https://github.com/adorad/adorad/blob/master/CONTRIBUTING.md) |
 [Compiler design](https://github.com/adorad/adorad/blob/master/COMPILER.md)
 
