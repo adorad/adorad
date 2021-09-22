@@ -298,7 +298,7 @@ func_no_attrs:
 
 // ParamList
 //      (ParamDecl COMMA)* ParamDecl?
-static AstNode* ast_parse_param_list(Parser* parser) {
+static AstNode* parse_param_list(Parser* parser) {
     Token* lparen = parser_expect_token(LPAREN);
     bool seen_varargs = false;
     Vec* params = vec_new(AstNode, 1);
