@@ -226,7 +226,7 @@ static AstNode* ast_parse_var_decl(Parser* parser) {
     Token* equals = parser_chomp_if(EQUALS);
     AstNode* expr;
     if(equals != null)
-        expr = parse_expr(parser);
+        expr = ast_parse_expr(parser);
     
     parser_expect_token(SEMICOLON); // TODO: Remove this need
 
