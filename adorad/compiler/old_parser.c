@@ -437,7 +437,7 @@ static AstNode* parse_block_expr(Parser* parser) {
 //      | TILDA_EQUALS      (~=)
 //      | EQUALS            (=)
 static AstNode* parse_assignment_expr(Parser* parser) {
-    return ast_parse_binary_op_expr(
+    return parse_binary_op_expr(
         parser,
         BinaryOpChainOnce,
         ast_parse_assignment_op,
