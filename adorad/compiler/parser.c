@@ -610,7 +610,7 @@ static AstNode* parse_assignment_expr(Parser* parser) {
         default: return lhs;
     }
 
-    AstNode* rhs = ast_parse_expr(parser);
+    AstNode* rhs = parse_expr(parser);
     if(rhs == null)
         ast_expected("an expression after assignment op");
 
