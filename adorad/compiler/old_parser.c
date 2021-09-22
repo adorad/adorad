@@ -943,7 +943,7 @@ static Vec* ast_parse_branch_list(Parser* parser, AstNode* (*list_parser)(Parser
 
 // MatchExpr
 //      KEYWORD(match) LPAREN? Expr RPAREN? LBRACE MatchBranchList RBRACE
-static AstNode* parse_match_expr(Parser* parser) {
+static AstNode* ast_parse_match_expr(Parser* parser) {
     Token* match_token = parser_chomp_if(MATCH);
     if(match_token == null)
         return null;
