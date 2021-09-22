@@ -940,7 +940,7 @@ static AstNode* ast_parse_brace_suffix_expr(Parser* parser) {
 //      LPAREN ExprList RPAREN
 // and ExprList is
 //      (Expr COMMA)* Expr?
-static AstNode* parse_suffix_expr(Parser* parser) {
+static AstNode* ast_parse_suffix_expr(Parser* parser) {
     AstNode* out = parse_primary_type_expr(parser);
     while(true) {
         AstNode* suffix_op = parse_suffix_op(parser);
