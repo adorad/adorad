@@ -102,7 +102,7 @@ static AstNode* parse_toplevel_decl(Parser* parser) {
     if(comptime != null)
         return comptime;
 
-    AstNode* variable = ast_parse_variable_decl(parser);
+    AstNode* variable = parse_variable_decl(parser);
     if(variable != null)
         return variable;
 
