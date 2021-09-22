@@ -590,7 +590,7 @@ static AstNode* parse_try_expr(Parser* parser) {
 static AstNode* parse_expr(Parser* parser) {
     return parse_prefix_op_expr(
         parser,
-        ast_parse_try_expr,
+        parse_try_expr,
         ast_parse_boolean_and_expr
     );
 }
