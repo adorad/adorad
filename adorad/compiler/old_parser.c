@@ -1202,7 +1202,7 @@ static AstNode* parse_suffix_op(Parser* parser) {
         Token* ellipsis = parser_chomp_if(ELLIPSIS);
         if(ellipsis != null) {
             AstNode* sentinel = null;
-            upper = ast_parse_expr(parser);
+            upper = parse_expr(parser);
             Token* colon = parser_chomp_if(COLON);
             if(colon != null) {
                 sentinel = ast_parse_expr(parser);
