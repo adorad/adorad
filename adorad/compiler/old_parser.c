@@ -805,7 +805,7 @@ static AstNode* ast_parse_init_list(Parser* parser) {
 
 // TypeExpr
 //      PrefixTypeOp* SuffixExpr
-static AstNode* parse_type_expr(Parser* parser) {
+static AstNode* ast_parse_type_expr(Parser* parser) {
     return parse_prefix_op_expr(
         parser,
         parse_prefix_type_op,
