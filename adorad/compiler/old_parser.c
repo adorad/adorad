@@ -118,7 +118,7 @@ static AstNode* parse_match_item(Parser* parser);
 static AstNode* parse_match_case_kwd(Parser* parser);
 static AstNode* parse_match_branch(Parser* parser);
 static Token* parse_block_label(Parser* parser);
-static Token* ast_parse_break_label(Parser* parser);
+static Token* ast_ast_parse_break_label(Parser* parser);
 static AstNode* ast_ast_ast_ast_ast_ast_parse_match_expr(Parser* parser);
 static AstNode* ast_parse_primary_type_expr(Parser* parser);
 static AstNode* parse_suffix_expr(Parser* parser);
