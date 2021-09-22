@@ -1104,7 +1104,7 @@ static AstNode* ast_parse_comparison_op(Parser* parser) {
 //      | AND
 //      | OR
 //      | XOR
-static AstNode* parse_bitwise_op(Parser* parser) {
+static AstNode* ast_parse_bitwise_op(Parser* parser) {
     return parse_op(parser);
 }
 
