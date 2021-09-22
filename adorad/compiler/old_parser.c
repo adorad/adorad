@@ -611,7 +611,7 @@ static AstNode* ast_parse_boolean_or_expr(Parser* parser) {
         parser,
         BinaryOpChainInfinity,
         ast_parse_boolean_or_op,
-        parse_comparison_expr
+        ast_parse_comparison_expr
     );
 }
 
