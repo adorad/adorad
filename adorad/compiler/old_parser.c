@@ -1051,7 +1051,7 @@ static AstNode* ast_parse_match_item(Parser* parser) {
     
     Token* ellipsis = parser_chomp_if(ELLIPSIS);
     if(ellipsis != null) {
-        AstNode* expr2 = parse_expr(parser);
+        AstNode* expr2 = ast_parse_expr(parser);
         AstNode* out = ast_create_node(AstNodeKindMatchRange);
         out->data.expr->match_range_expr->begin = expr;
         out->data.expr->match_range_expr->end = expr2;
