@@ -1285,7 +1285,7 @@ static AstNode* parse_func_call_args(Parser* parser) {
     if(lparen == null)
         return null;
     
-    Vec* params = ast_parse_param_list(parser, ast_parse_expr);
+    Vec* params = parse_param_list(parser, ast_parse_expr);
     Token* rparen = parser_expect_token(RPAREN);
 
     AstNode* out = ast_create_node(AstNodeKindFuncCallExpr);
