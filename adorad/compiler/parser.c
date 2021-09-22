@@ -182,7 +182,7 @@ static AstNode* ast_parse_alias_decl(Parser* parser) {
 
 // VariableDecl
 //      ATTRIBUTE(comptime)? KEYWORD(export)? KEYWORD(mutable)? (TypeExpr / KEYWORD(any)) IDENTIFIER (EQUALS EXPR)? SEMICOLON?
-static AstNode* parse_variable_decl(Parser* parser) {
+static AstNode* ast_parse_variable_decl(Parser* parser) {
     Token* comptime_attr = parser_chomp_if(ATTR_COMPTIME);
     Token* export_kwd = parser_chomp_if(EXPORT);
     Token* mutable_kwd = parser_chomp_if(MUTABLE);
