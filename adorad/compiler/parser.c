@@ -489,7 +489,7 @@ static AstNode* parse_loop_expr(Parser* parser) {
     Token* inline_attr = parser_chomp_if(ATTR_INLINE);
     AstNode* out = null;
 
-    AstNode* loop_inf_expr = ast_parse_loop_inf_expr(parser);
+    AstNode* loop_inf_expr = parse_loop_inf_expr(parser);
     if(loop_inf_expr != null) {
         out = loop_inf_expr;
         goto outexpect;
