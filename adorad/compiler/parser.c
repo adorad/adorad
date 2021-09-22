@@ -711,7 +711,7 @@ static AstNode* ast_parse_precedence(Parser* parser, UInt8 min_prec) {
 //      | TILDA         (~)
 //      | AND           (&)
 //      | KEYWORD(try)
-static AstNode* parse_prefix_expr(Parser* parser) {
+static AstNode* ast_parse_prefix_expr(Parser* parser) {
     PrefixOpKind op;
     switch(parser->curr_tok->kind) {
         case NOT: op = PrefixOpKindBoolNot; break;
