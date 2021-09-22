@@ -841,7 +841,7 @@ static AstNode* parse_primary_expr(Parser* parser) {
 
 // Block
 //      LBRACE Statement* RBRACE
-static AstNode* ast_parse_block(Parser* parser) {
+static AstNode* parse_block(Parser* parser) {
     Token* lbrace = parser_chomp_if(LBRACE);
     if(lbrace == null)
         ast_expected("LBRACE `{`");
