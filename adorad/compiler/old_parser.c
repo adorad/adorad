@@ -1086,7 +1086,7 @@ static AstNode* ast_parse_op(Parser* parser) {
 //      | LBITSHIFT_EQUALS
 //      | RBITSHIFT_EQUALS
 static AstNode* ast_parse_assignment_op(Parser* parser) {
-    return parse_op(parser);
+    return ast_parse_op(parser);
 }
 
 // ComparisonOp can be one of:
