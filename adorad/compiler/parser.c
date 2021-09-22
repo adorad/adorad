@@ -1241,7 +1241,7 @@ static AstNode* ast_parse_suffix_op(Parser* parser) {
             upper = ast_parse_expr(parser);
             Token* colon = parser_chomp_if(COLON);
             if(colon != null) {
-                sentinel = parse_expr(parser);
+                sentinel = ast_parse_expr(parser);
             }
             Token* rbrace = parser_expect_token(RBRACE);
 
