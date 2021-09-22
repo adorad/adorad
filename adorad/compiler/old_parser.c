@@ -955,7 +955,7 @@ static AstNode* parse_match_expr(Parser* parser) {
 
     // These *aren't* optional
     Token* lbrace = parser_expect_token(LBRACE);
-    Vec* branches = parse_branch_list(parser,ast_parse_match_branch);
+    Vec* branches = parse_branch_list(parser,parse_match_branch);
     Token* rbrace = parser_expect_token(RBRACE);
 
     AstNode* out = ast_create_node(AstNodeKindMatchExpr);
