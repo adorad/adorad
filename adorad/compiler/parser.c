@@ -943,7 +943,7 @@ static AstNode* parse_brace_suffix_expr(Parser* parser) {
 static AstNode* parse_suffix_expr(Parser* parser) {
     AstNode* out = parse_primary_type_expr(parser);
     while(true) {
-        AstNode* suffix_op = ast_parse_suffix_op(parser);
+        AstNode* suffix_op = parse_suffix_op(parser);
         if(suffix_op == null)
             break;
         out = suffix_op;
