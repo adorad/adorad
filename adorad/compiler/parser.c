@@ -567,7 +567,7 @@ static AstNode* ast_parse_block_expr(Parser* parser) {
             }
             break;
         case LBRACE:
-            return parse_block(parser);
+            return ast_parse_block(parser);
         default:
             return null;
     }
