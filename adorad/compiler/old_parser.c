@@ -240,7 +240,7 @@ static AstNode* parse_var_decl(Parser* parser) {
 }
 
 // Statements
-static AstNode* ast_parse_statement(Parser* parser) {
+static AstNode* parse_statement(Parser* parser) {
     AstNode* var_decl = ast_parse_var_decl(parser);
     if(var_decl != null) {
         CORETEN_ENFORCE(var_decl->kind == AstNodeKindVariableDecl);
