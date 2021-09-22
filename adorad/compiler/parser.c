@@ -540,7 +540,7 @@ static AstNode* parse_loop_in_expr(Parser* parser) {
 //      | BlockExpr
 //      | AssignmentExpr SEMICOLON?
 static AstNode* parse_block_expr_statement(Parser* parser) {
-    AstNode* block_expr = ast_parse_block_expr(parser);
+    AstNode* block_expr = parse_block_expr(parser);
     if(block_expr != null)
         return block_expr;
     
