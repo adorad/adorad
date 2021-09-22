@@ -868,7 +868,7 @@ static AstNode* parse_block(Parser* parser) {
 //      | LBRACE Expr (COMMA Expr)* COMMA? RBRACE
 //      | LBRACE RBRACE
 static AstNode* parse_brace_suffix_expr(Parser* parser) {
-    AstNode* type_expr = ast_parse_type_expr(parser);
+    AstNode* type_expr = parse_type_expr(parser);
     if(type_expr == null)
         ast_expected("type expression");
     
