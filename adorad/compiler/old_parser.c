@@ -588,7 +588,7 @@ static AstNode* parse_try_expr(Parser* parser) {
 // Expr
 //      KEYWORD(try)* BoolAndExpr
 static AstNode* parse_expr(Parser* parser) {
-    return ast_parse_prefix_op_expr(
+    return parse_prefix_op_expr(
         parser,
         ast_parse_try_expr,
         ast_parse_boolean_and_expr
