@@ -131,7 +131,7 @@ static AstNode* parse_primary_expr(Parser* parser);
 static AstNode* parse_prefix_expr(Parser* parser);
 static AstNode* parse_multiplication_expr(Parser* parser);
 static AstNode* parse_addition_expr(Parser* parser);
-static AstNode* ast_parse_bitshift_expr(Parser* parser);
+static AstNode* parse_bitshift_expr(Parser* parser);
 static AstNode* ast_parse_bitwise_expr(Parser* parser);
 static AstNode* ast_parse_comparison_expr(Parser* parser);
 static AstNode* ast_parse_boolean_or_expr(Parser* parser);
