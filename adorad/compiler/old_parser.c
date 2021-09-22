@@ -729,7 +729,7 @@ static AstNode* parse_primary_expr(Parser* parser) {
 
     Token* return_token = parser_chomp_if(RETURN);
     if(return_token != null) {
-        AstNode* expr = ast_parse_expr(parser);
+        AstNode* expr = parse_expr(parser);
         AstNode* out = ast_create_node(AstNodeKindReturn);
         out->data.stmt->return_stmt->expr = expr;
         return out;
