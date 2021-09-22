@@ -296,7 +296,7 @@ static AstNode* parse_if_prefix(Parser* parser) {
 }
 
 static AstNode* parse_if_expr(Parser* parser) {
-    AstNode* out = ast_parse_if_prefix(parser);
+    AstNode* out = parse_if_prefix(parser);
     if(out == null) {
         return null;
     }
