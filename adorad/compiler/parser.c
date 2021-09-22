@@ -337,7 +337,7 @@ static AstNode* ast_parse_param_list(Parser* parser) {
 //      | MatchExpr
 //      | AssignmentExpr SEMICOLON?
 static AstNode* parse_statement(Parser* parser) {
-    AstNode* var_decl = ast_parse_variable_decl(parser);
+    AstNode* var_decl = parse_variable_decl(parser);
     if(var_decl != null)
         return var_decl;
     
