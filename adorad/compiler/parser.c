@@ -1086,3 +1086,14 @@ static AstNode* ast_parse_match_expr(Parser* parser) {
     out->data.expr->match_expr->branches = branches;
     return out;
 }
+
+// BreakLabel
+//      COLON IDENTIFIER
+static Token* ast_parse_break_label(Parser* parser) {
+    Token* colon = parser_chomp_if(COLON);
+    if(colon == null)
+        return null;
+        
+    Token* ident = parser_expect_token(IDENTIFIER);
+    return ident;
+}
