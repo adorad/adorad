@@ -866,7 +866,7 @@ static AstNode* parse_suffix_expr(Parser* parser) {
 //      | KEYWORD(unreachable)
 //      | STRING (Literal)
 //      | MatchExpr
-static AstNode* ast_parse_primary_type_expr(Parser* parser) {
+static AstNode* parse_primary_type_expr(Parser* parser) {
     Token* char_lit = parser_chomp_if(CHAR_LIT);
     if(char_lit != null) {
         return ast_create_node(AstNodeKindCharLiteral);
