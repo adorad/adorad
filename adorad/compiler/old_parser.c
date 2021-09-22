@@ -1061,7 +1061,7 @@ static AstNode* ast_parse_match_item(Parser* parser) {
     return expr;
 }
 
-static AstNode* parse_op(Parser* parser) {
+static AstNode* ast_parse_op(Parser* parser) {
     BinaryOpKind op = tokenkind_to_binaryopkind( parser->curr_tok->kind);
 
     if(op != BinaryOpKindInvalid) {
