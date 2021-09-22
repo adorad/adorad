@@ -198,6 +198,7 @@ TOKENKIND(TOK___KEYWORDS_BEGIN, ""),  \
     TOKENKIND(RAISE,         "raise"),    \
     TOKENKIND(RANGE,         "range"),    \
     TOKENKIND(RETURN,        "return"),   \
+    TOKENKIND(STRUCT,        "struct"),  \
     TOKENKIND(SUSPEND,       "suspend"),  \
     TOKENKIND(TRY,           "try"),      \
     TOKENKIND(TUPLE,         "tuple"),    \
