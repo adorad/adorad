@@ -1132,7 +1132,7 @@ static AstNode* parse_match_branch(Parser* parser) {
     if(colon == null && equals_arrow == null)
         ast_error("Missing token after `case`. Either `:` or `=>`");
 
-    AstNode* expr = ast_parse_assignment_expr(parser);
+    AstNode* expr = parse_assignment_expr(parser);
     out->data.expr->match_branch_expr->expr = expr;
 
     return out;
