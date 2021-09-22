@@ -1121,7 +1121,7 @@ static AstNode* parse_match_expr(Parser* parser) {
 
 // MatchBranch
 //      KEYWORD(case) (COLON? / EQUALS_ARROW?) AssignmentExpr
-static AstNode* ast_parse_match_branch(Parser* parser) {
+static AstNode* parse_match_branch(Parser* parser) {
     AstNode* out = ast_parse_match_case_kwd(parser);
     CORETEN_ENFORCE(out->kind == AstNodeKindMatchBranch);
     if(out == null)
