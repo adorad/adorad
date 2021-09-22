@@ -775,7 +775,7 @@ static AstNode* parse_boolean_or_op(Parser* parser) {
 // InitList
 //      | LBRACE Expr (COMMA Expr)* COMMA? RBRACE
 //      | LBRACE RBRACE
-static AstNode* ast_parse_init_list(Parser* parser) {
+static AstNode* parse_init_list(Parser* parser) {
     Token* lbrace = parser_chomp_if(LBRACE);
     if(lbrace == null)
         return null;
