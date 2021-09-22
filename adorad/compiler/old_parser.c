@@ -1126,7 +1126,7 @@ static AstNode* parse_addition_op(Parser* parser) {
 //      | MULT
 //      | SLASH
 //      | MOD
-static AstNode* ast_parse_multiplication_op(Parser* parser) {
+static AstNode* parse_multiplication_op(Parser* parser) {
     return ast_parse_op(parser);
 }
 
