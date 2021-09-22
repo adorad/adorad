@@ -460,7 +460,7 @@ static AstNode* parse_if_expr(Parser* parser) {
 
 // Labeled Statements
 //      BlockLabel? (Block / LoopStatement)
-static AstNode* ast_parse_labeled_statement(Parser* parser) {
+static AstNode* parse_labeled_statement(Parser* parser) {
     Token* label = ast_parse_block_label(parser);
     if(label == null)
         ast_expected("Label");
