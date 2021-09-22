@@ -591,7 +591,7 @@ static AstNode* ast_parse_expr(Parser* parser) {
     return ast_parse_prefix_op_expr(
         parser,
         ast_parse_try_expr,
-        parse_boolean_and_expr
+        ast_parse_boolean_and_expr
     );
 }
 
