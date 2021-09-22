@@ -793,7 +793,7 @@ static AstNode* parse_primary_expr(Parser* parser) {
         case ATTR_COMPTIME:
             parser_chomp(1);
             AstNode* out = ast_create_node(AstNodeKindAttributeExpr);
-            AstNode* expr = ast_parse_expr(parser);
+            AstNode* expr = parse_expr(parser);
             if(expr == null)
                 ast_expected("expression");
             
