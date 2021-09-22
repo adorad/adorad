@@ -1015,7 +1015,7 @@ static AstNode* parse_match_branch(Parser* parser) {
 //      | MatchItem (COMMA MatchItem)* COMMA?
 //      | KEYWORD(else)
 static AstNode* parse_match_case_kwd(Parser* parser) {
-    AstNode* match_item = ast_parse_match_item(parser);
+    AstNode* match_item = parse_match_item(parser);
     if(match_item != null) {
         AstNode* out = ast_create_node(AstNodeKindMatchBranch);
         vec_push(out->data.expr->match_branch_expr->branches, match_item);
