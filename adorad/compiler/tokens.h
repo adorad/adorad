@@ -34,6 +34,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     TOKENKIND(COMMENT,      "COMMENT"),      \
     TOKENKIND(DOCS_COMMENT, "DOCS_COMMENT"), \
     TOKENKIND(UNREACHABLE,  "unreachable"),  \
+    TOKENKIND(BUILTIN,      "builtin"),      \
 \
     /* Literals */ \
 TOKENKIND(TOK___LITERALS_BEGIN, ""), \
