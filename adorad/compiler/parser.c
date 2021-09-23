@@ -1295,5 +1295,6 @@ static AstNode* ast_parse_string_literal(Parser* parser) {
         return out;
     }
 
+    WARN("Entered `ast_parse_string_literal` with unrelated token");
     return null;
 }
