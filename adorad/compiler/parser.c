@@ -1203,6 +1203,7 @@ static AstNode* ast_parse_match_item(Parser* parser) {
 
     return expr;
 }
+
 // BreakLabel
 //      COLON IDENTIFIER
 static Token* ast_parse_break_label(Parser* parser) {
