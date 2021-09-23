@@ -313,7 +313,7 @@ func_no_attrs:
 
 // ParamList
 //      (ParamDecl COMMA)* ParamDecl?
-static AstNode* ast_parse_param_list(Parser* parser) {
+static AstNode* ast_parse_param_list(Parser* parser, bool* is_variadic) {
     Token* lparen = parser_expect_token(LPAREN);
     bool seen_varargs = false;
     Vec* params = vec_new(AstNode, 1);
@@ -341,6 +341,7 @@ static AstNode* ast_parse_param_list(Parser* parser) {
     AstNode* out = ast_create_node(AstNodeKindParamList);
     out->data.param_list->is_variadic = cast(bool)seen_varargs;
     out->data.param_list->params = params;
+    is_variadic = seen_varargs;
     return out;
 }
 
