@@ -183,7 +183,7 @@ static void maketoken(Lexer* lexer, TokenKind kind, Buff* value, UInt32 offset, 
 
         if(kind == STRING or kind == IDENTIFIER or kind == INTEGER or kind == HEX_INT or kind == BIN_INT or
            kind == OCT_INT)
-            WARN(Expected a token value. Got `null`\n);
+            WARN("Expected a token value. Got `null`");
     }
 
     token->kind = kind;
@@ -272,7 +272,7 @@ static inline void lex_macro(Lexer* lexer) {
     }
 
     if(macro_length > MAX_TOKEN_LENGTH)
-        WARN(A number can never have more than 256 characters);
+        WARN("A number can never have more than 256 characters");
 
     UInt32 offset_diff = lexer->offset - prev_offset;
 
@@ -348,7 +348,7 @@ static inline void lex_identifier(Lexer* lexer) {
     }
 
     if(ident_length > MAX_TOKEN_LENGTH)
-        WARN(An identifier can never have more than 256 characters);
+        WARN("An identifier can never have more than 256 characters");
 
     UInt32 offset_diff = lexer->offset - prev_offset;
     Buff* ident_value = buff_slice(lexer->buffer, prev_offset - 1, offset_diff);
@@ -519,7 +519,7 @@ static inline void lex_digit(Lexer* lexer) {
     CORETEN_ENFORCE(offset_diff != 0);
 
     if(digit_length > MAX_TOKEN_LENGTH)
-        WARN(A number can never have more than 256 characters);
+        WARN("A number can never have more than 256 characters");
 
     // digit_length can be 0 and we can still have a number. Reasoning is as follows:
     // This function is guaranteed to be called when there's at least one "number-like". We simply check if

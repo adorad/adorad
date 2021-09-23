@@ -333,7 +333,7 @@ static AstNode* ast_parse_param_list(Parser* parser) {
             case COLON: case RBRACE: case RSQUAREBRACK: 
                 ast_expected("RPAREN");
             default:
-                WARN(Expected comma);
+                WARN("Expected comma");
                 break;
         }
     }
@@ -372,7 +372,7 @@ static AstNode* ast_parse_statement(Parser* parser) {
     if(assignment_expr != null)
         return assignment_expr;
     
-    WARN(Hmmm could not parse a suitable statement. Returning null);
+    WARN("Hmmm could not parse a suitable statement. Returning null");
     return null;
 }
 
@@ -904,7 +904,7 @@ static AstNode* ast_parse_brace_suffix_expr(Parser* parser) {
                     ast_expected("RBRACE");
                 default:
                     // Likely just a missing comma; warn, but continue parsing
-                    WARN(missing comma);
+                    WARN("missing comma");
             }
             Token* rbrace = parser_chomp_if(RBRACE);
             if(rbrace != null)
@@ -965,7 +965,7 @@ static AstNode* ast_parse_suffix_expr(Parser* parser) {
     }
     Token* lparen = parser_chomp_if(LPAREN);
     if(lparen == null) {
-        WARN(expected param list);
+        WARN("expected param list");
         return out;
     }
 
@@ -982,7 +982,7 @@ static AstNode* ast_parse_suffix_expr(Parser* parser) {
             case COLON: case RBRACE: case RSQUAREBRACK:
                 ast_expected("RBRACE");
             default:
-                WARN(Expected comma);
+                WARN("expected comma");
         }
     }
 }
