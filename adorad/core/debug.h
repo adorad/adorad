@@ -142,4 +142,7 @@ void coreten_panic(PanicLevel pl, const char* format, ...);
 #define WARN(...)     \
     cstlColouredPrintf(CORETEN_COLOUR_WARN, "%s:%u:\nWARNING: %s\n", __FILE__, __LINE__, __VA_ARGS__)
 
+#define LOG(...)     \
+    cstlColouredPrintf(CORETEN_COLOUR_WARN, "%s:%u:\n==> LOG: %s\n", __FILE__, __LINE__, __VA_ARGS__)
+
 #endif // CORETEN_DEBUG_H
