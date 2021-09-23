@@ -1,5 +1,6 @@
 #include <adorad/compiler/ast.h>
 #include <adorad/compiler/parser.h>
+#include <adorad/core/debug.h>
 
 #define pt      parser->toklist
 #define pc      parser->curr_tok
@@ -13,6 +14,20 @@
 #define ast_error(...)              panic(ErrorParseError, __VA_ARGS__)
 #define ast_expected(...)           (ast_error("Expected %s; got `%s`", __VA_ARGS__, tokenHash[pc->kind]))
 #define ast_unexpected(...)         (panic(ErrorUnexpectedToken, __VA_ARGS__))
+
+#ifdef ADORAD_DEBUG
+    #define TRACE_PARSER()                                                \
+        cstlColouredPrintf(                                               \
+            CORETEN_COLOUR_WARN,                                          \
+            "parsing file: `%s` | curr_tok: `%s` | position: `%d:%d`",    \
+            parser->basename,                                             \
+            tokenHash[parser->curr_tok->kind],                            \
+            parser->loc->line,                                            \
+            parser->loc->col                                              \
+        )  nn y b8yih    
+#else
+    #define TRACE_PARSER()
+#endif // ADORAD_DEBUG
 
 // Initialize a new Parser
 Parser* parser_init(Lexer* lexer) {
