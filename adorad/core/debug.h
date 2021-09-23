@@ -139,7 +139,7 @@ void coreten_panic(PanicLevel pl, const char* format, ...);
 #define ENFORCE_NULL(val,...)                 CORETEN_ENFORCE((val) == null, __VA_ARGS__)
 #define CORETEN_ENFORCE_NN(val,...)           CORETEN_ENFORCE((val) != null, __VA_ARGS__)
 
-#define WARN(msg)     \
-    cstlColouredPrintf(CORETEN_COLOUR_WARN, "%s:%u:\nWARNING: %s\n", __FILE__, __LINE__, #msg)
+#define WARN(...)     \
+    cstlColouredPrintf(CORETEN_COLOUR_WARN, "%s:%u:\nWARNING: %s\n", __FILE__, __LINE__, __VA_ARGS__)
 
 #endif // CORETEN_DEBUG_H
