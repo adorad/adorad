@@ -1018,17 +1018,17 @@ static AstNode* ast_parse_primary_type_expr(Parser* parser) {
     switch(pc->kind) {
         case CHAR_LIT:
             out = ast_create_node(AstNodeKindCharLiteral);
-            out->data.comptime_value->char_value->value = pc->value;
+            out->data.literal->char_value->value = pc->value;
             parser_chomp(1);
             return out;
         case INTEGER:
             out = ast_create_node(AstNodeKindIntLiteral);
-            out->data.comptime_value->int_value->value = pc->value;
+            out->data.literal->int_value->value = pc->value;
             parser_chomp(1);
             return out;
         case FLOAT_LIT:
             out = ast_create_node(AstNodeKindFloatLiteral);
-            out->data.comptime_value->float_value->value = pc->value;
+            out->data.literal->float_value->value = pc->value;
             parser_chomp(1);
             return out;
         case UNREACHABLE:
