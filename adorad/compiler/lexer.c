@@ -175,6 +175,8 @@ static inline char peekn(Lexer* lexer, UInt32 n) {
 }
 
 static void maketoken(Lexer* lexer, TokenKind kind, Buff* value, UInt32 offset, UInt32 line, UInt32 col) {  
+    LOG("Inside maketoken()");
+
     Token* token = token_init();
     CORETEN_ENFORCE_NN(token, "Could not allocate memory. Memory full.");
 
@@ -198,6 +200,8 @@ static void maketoken(Lexer* lexer, TokenKind kind, Buff* value, UInt32 offset, 
 // Scan a comment (single line)
 // We store comments in the lexing phase. The Parser will decide which comments are actually useful and which aren't
 static inline void lex_sl_comment(Lexer* lexer) {
+    LOG("Inside lex_sl_comment()");
+
     char ch = lexer_advance();
     int comment_length = 0;
     UInt32 prev_offset = lexer->offset - 1;
@@ -225,6 +229,8 @@ static inline void lex_sl_comment(Lexer* lexer) {
 // Scan a comment (multi-line)
 // We have no reason, at the moment, to store a multi-line comment as a Token
 static inline void lex_ml_comment(Lexer* lexer) {
+    LOG("Inside lex_ml_comment()");
+
     char ch = lexer_advance();
     bool asterisk_found = false; 
     while(ch and !(ch == '/' and asterisk_found)) {
@@ -242,6 +248,8 @@ static inline void lex_ml_comment(Lexer* lexer) {
 
 // Scan a character
 static inline void lex_char(Lexer* lexer) {
+    LOG("Inside lex_char()");
+
     char ch = lexer_advance();
     if(ch) {
         LEXER_INCREMENT_OFFSET;
@@ -254,10 +262,13 @@ static inline void lex_char(Lexer* lexer) {
 
 // Scan an escape char
 static inline void lex_esc_char(Lexer* lexer) {
+    LOG("Inside lex_esc_char()");
 }
 
 // Scan a macro (begins with `@`)
 static inline void lex_macro(Lexer* lexer) {
+    LOG("Inside lex_macro()");
+
     char ch = lexer_advance();
     int macro_length = 0;
 
@@ -285,6 +296,8 @@ static inline void lex_macro(Lexer* lexer) {
 
 // Scan a string
 static inline void lex_string(Lexer* lexer) {
+    LOG("Inside lex_string()");
+
     // We already know that the curr char is _not_ a quote (`"`) since an empty string token (`""`) is
     // handled by `lexer_lex()`
     CORETEN_ENFORCE(LEXER_CURR_CHAR != '"');
@@ -329,6 +342,8 @@ static inline TokenKind is_keyword_or_identifier(char* value) {
 
 // Scan an identifier
 static inline void lex_identifier(Lexer* lexer) {
+    LOG("Inside lex_identifier()");
+
     // When this function is called, we alread know that the first character statisfies the `case ALPHA`.
     // So, the remaining characters are ALPHA, DIGIT, or `_`
     // Still, we check it either way to ensure sanity.
@@ -364,6 +379,8 @@ static inline void lex_identifier(Lexer* lexer) {
 // Attributes
 // Eg. [inline] or [comptime]
 static inline void lex_attribute(Lexer* lexer) {
+    LOG("Inside lex_attribute()");
+
     UInt32 prev_offset = lexer->offset;
     UInt32 line = lexer->loc->line;
     UInt32 col = lexer->loc->col;
@@ -387,8 +404,18 @@ static inline void lex_attribute(Lexer* lexer) {
             Buff* attr_value = buff_slice(lexer->buffer, prev_offset - 1, offset_diff);
             CORETEN_ENFORCE_NN(attr_value, "`attr_value` must not be null");
 
-            // Determine if a keyword or just a regular identifier
-            maketoken(lexer, ATTRIBUTE, attr_value, prev_offset - 1, line, col - 1);
+            // Determine what kind of attribute this is:
+            TokenKind kind = TOK_NULL;
+            for(TokenKind i = TOK___ATTRIBUTES_BEGIN; i < TOK___ATTRIBUTES_END; i++) {
+                if(strcmp(attr_value->data, tokenHash[i]) == 0) {
+                    kind = i;
+                    break;
+                }
+            }
+
+            CORETEN_ENFORCE(kind != TOK_NULL, "Compiler error. Expected `kind` to be an attribute");
+            
+            maketoken(lexer, kind, attr_value, prev_offset - 1, line, col - 1);
 
             LEXER_DECREMENT_OFFSET;
             break;
@@ -399,6 +426,7 @@ static inline void lex_attribute(Lexer* lexer) {
 
 // Numeric lexing! Finally, the feast can start.
 static inline void lex_digit(Lexer* lexer) {
+    LOG("Inside lex_digit()");
     // 0x... --> Hexadecimal ("0x"|"0X")[0-9A-Fa-f_]+
     // 0o... --> Octal       ("0o"|"0O")[0-7_]+
     // 0b... --> Binary      ("0b"|"0B")[01_]+
@@ -572,7 +600,7 @@ static void lexer_lex(Lexer* lexer) {
                 switch(next) {
                     // Empty String literal 
                     case '"': LEXER_INCREMENT_OFFSET; maketoken(lexer, STRING, buff_new("\"\""), lexer->offset - 1, 
-                                                                      lexer->loc->line, lexer->loc->col - 1); 
+                                                                lexer->loc->line, lexer->loc->col - 1); 
                               break;
                     default: tokenkind = TOK_NULL; lex_string(lexer); break;
                 }
