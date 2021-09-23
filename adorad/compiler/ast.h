@@ -101,30 +101,6 @@ typedef enum {
     AstAddressingModeType,     // type  
 } AstAddressingMode;
 
-typedef enum {
-    AstLanguageAdorad,
-    AstLanguageC,
-    AstLanguageAmd64,
-    AstLanguageI386,
-    AstLanguageArm64,
-    AstLanguageArm32,
-    AstLanguageRv64,
-    AstLanguageRv32,
-} AstLanguage;
-
-typedef struct {
-    Buff* scope;
-} AstNodeScope;
-
-typedef enum {
-    IdentifierKindUnresolved,
-    IdentifierKindBlankident, // `_`
-    IdentifierKindVariable,
-    IdentifierKindConst,
-    IdentifierKindFunction,
-    IdentifierKindGlobal,     // if declared within a `global` scope
-} IdentifierKind;
-
 // The `[]` before a function/variable
 // Eg: [inline], [comptime]
 typedef struct {
@@ -134,27 +110,9 @@ typedef struct {
 typedef struct {
     AstNode* type;
     bool is_const;
-    VisibilityMode visibility;
     bool is_mutable;
+    VisibilityMode visibility;
 } AstNodeIdentifier;
-
-typedef struct {
-    Vec* positional_args;   // Vec<AstNodeArg*>
-    Vec* args;              // Vec<AstNodeArg*>
-    Vec* variadic_args;     // Vec<AstNodeArg*>
-    Vec* kwd_args;          // Vec<AstNodeArg*>
-} AstNodeArguments;
-
-typedef struct {
-    AstNode* arg;
-    AstNode* annotation;
-    Buff* type_comment;
-} AstNodeArgData;
-
-typedef struct {
-    AstNode* ident;
-    AstNode* value;
-} AstNodeKwdData;
 
 typedef struct {
     AstNode* expr;
@@ -165,13 +123,13 @@ typedef struct {
     // AttributeKind kind;
 } AstNodeAttributeExpr;
 
+// @cast(u8, 292)
 typedef struct {
-    AstNode* arg;
-    AstNode* expr;
-    Buff* type;
-    bool has_arg;
+    Buff* cast_to_type; // `u8`
+    Buff* original_type;   // `292`
 } AstNodeCastExpr;
 
+// `if x < y { ... }`
 typedef struct {
     AstNode* condition;
     AstNode* if_body;
@@ -190,12 +148,13 @@ typedef struct {
     } kind;
 } AstNodeInitExpr;
 
+// `loop { ... }`
 typedef struct {
     AstNode* cond;
     Vec* statements;
-    AstNodeScope* scope;
 } AstNodeLoopInfExpr;
 
+// `loop i = 3; i < 10; i+=1 { ... }`
 typedef struct {
     Buff* label;
     AstNode* init;
@@ -205,9 +164,9 @@ typedef struct {
     AstNode* updation;  // increment/decrement
     bool has_updation;
     Vec* statements;
-    AstNodeScope* scope;
 } AstNodeLoopCExpr;
 
+// `loop arg in args { ... }'
 typedef struct {
     Buff* label;
     Buff* key_var;
@@ -217,7 +176,6 @@ typedef struct {
     bool is_range;
     Vec* statements;
     TokenKind tokenkind;
-    AstNodeScope* scope;
 } AstNodeLoopInExpr;
 
 typedef struct {
@@ -230,29 +188,24 @@ typedef struct {
     };
 } AstNodeLoopExpr;
 
-typedef enum {
-    FuncCallModifierNone,
-    FuncCallModifierAsync,
-    FuncCallModifierNeverInline,
-    FuncCallModifierAlwaysInline,
-    FuncCallModifierCompileTime
-} FuncCallModifier;
-
 typedef struct {
     AstNode* func_call_expr;
     Vec* params;
-    FuncCallModifier modifier;
 } AstNodeFuncCallExpr;
 
+// `(expr)`
 typedef struct {
     AstNode* expr;
 } AstNodeGroupedExpr;
 
+// `match x { when 0..3 ==> ...  }`
 typedef struct {
     AstNode* expr;
     Vec* branches;
 } AstNodeMatchExpr;
 
+// Individual branch of a `match` expression
+// Eg: `when 0..3 ==> ...`
 typedef struct {
     AstNode* expr;
     Vec* branches;
@@ -270,6 +223,7 @@ typedef struct {
     AstNode* op2;
 } AstNodeCatchExpr;
 
+// `try expr`
 typedef struct {
     Buff* symbol;
     AstNode* target_node;
@@ -334,13 +288,8 @@ typedef struct {
 } AstNodeSetExpr;
 
 typedef struct {
-    AstNodeArguments args;
     AstNode* expr;
 } AstNodeLambdaExpr;
-
-typedef struct {
-    AstNode* value;    
-} AstNodeAwaitExpr;
 
 typedef struct {
     AstNode* array_ref_expr;
@@ -383,7 +332,6 @@ typedef struct {
         AstNodeTypeOfExpr* typeof_expr;
         AstNodeSetExpr* set_expr;
         AstNodeLambdaExpr* lambda_expr;
-        AstNodeAwaitExpr* await_expr;
         AstNodeSliceExpr* slice_expr;
     };
 } AstNodeExpression;
@@ -398,34 +346,28 @@ typedef struct {
     VisibilityMode visibility;
     Vec* fields;
     Vec* attributes;
-} AstNodeTypeEnumDecl;
+} AstNodeEnumDecl;
 
 typedef struct {
     Buff* name;
     Vec* fields;    // variables, etc
     Vec* methods;   // methods
-} AstNodeTypeStructDecl;
+} AstNodeStructDecl;
 
 // This can be one of:
-//     | AstNodeTypeEnumDecl
-//     | AstNodeTypeUnionDecl (disabled for now)
-//     | AstNodeTypeStructDecl
+//     | AstNodeEnumDecl
+//     | AstNodeUnionDecl (disabled for now)
+//     | AstNodeStructDecl
 typedef struct {
     union {
-        AstNodeTypeEnumDecl* enum_decl;
-        // AstNodeTypeUnionDecl* union_decl;
-        AstNodeTypeStructDecl* struct_decl;
+        AstNodeEnumDecl* enum_decl;
+        // AstNodeUnionDecl* union_decl;
+        AstNodeStructDecl* struct_decl;
     };
 } AstNodeTypeDecl;
 
 typedef struct {
-    VisibilityMode visibility;
-    bool is_block;  // `const ( ... )`
-    Vec* fields;    // various constant declarations
-} AstNodeConstantDecl;
-
-typedef struct {
-    Buff* module;    // globals declared in a module, persist through that module
+    Buff* module;    // globals declared in a module persist through that module
     bool is_block;   // `global ( ... )`
     Vec* fields;     // various global declarations
 } AstNodeGlobalDecl;
@@ -439,23 +381,23 @@ typedef struct {
 // Function or Method Declaration
 typedef struct {
     Buff* name;
-    Buff* module;      // name of the module
+    Buff* module;         // name of the module
     Vec* params;
-    AstNode* body;      // can be nullptr for no-body functions (just declarations)
+    AstNode* body;        // can be nullptr for no-body functions (just declarations)
     AstNode* return_type;
-    Buff* parent_type; // the `type` of which the function belongs to (null, if not a method)
-    bool is_variadic;  // variadic arguments
+    Buff* parent_type;    // the `type` of which the function belongs to (null, if not a method)
+    bool is_variadic;     // variadic arguments
     bool is_generic;
 
-    bool is_main;      // true for `func main()`
-    bool is_test;      // true for `func test_yyy()`
-    bool no_body;      // true for function definitions (no function body) `func abc()`
+    bool is_main;         // true for `func main()`
+    bool is_test;         // true for `func test_yyy()`
+    bool no_body;         // true for function definitions (no function body) `func abc()`
 
     // Attributes
-    bool is_noreturn;  // true for `[noreturn] func
-    bool is_comptime;
-    bool is_inline;
-    bool is_noinline;
+    bool is_noreturn;     // true for `[noreturn] func
+    bool is_comptime;     // true for `[comptime] func
+    bool is_inline;       // true for `[inline] func
+    bool is_noinline;     // true for `[noinline] func
  
     VisibilityMode visibility;
 } AstNodeFuncDecl;
@@ -467,7 +409,6 @@ typedef struct {
 //     | AstNodeDictDecl
 //     | AstNodeListDecl
 //     | AstNodeTupleDecl
-//     | AstNodeConstantDecl
 //     | AstNodeGlobalDecl
 //     | AstNodeSumTypeDecl 
 typedef struct {
@@ -477,7 +418,6 @@ typedef struct {
         AstNodeAliasDecl* alias_decl;
         AstNodeTypeDecl* type_decl;
         AstNodeFuncDecl* func_decl;
-        AstNodeConstantDecl* const_decl;
         AstNodeGlobalDecl* global_decl;
         AstNodeSumTypeDecl* sumtype_decl;
     };
@@ -512,12 +452,6 @@ typedef struct {
     AstNode* expr;
 } AstNodeDeferStatement;
 
-typedef enum FuncInline {
-    FuncInlineAuto,
-    FuncInlineInline,
-    FuncInlineNoinline
-} FuncInline;
-
 typedef struct {
     Buff* name;
     Buff* alias; // can be null
@@ -532,10 +466,6 @@ typedef struct {
 
 typedef struct {
     AstNode* expr;
-    enum {
-        ReturnKindOk,
-        ReturnKindError,
-    } kind;
 } AstNodeReturnStatement;
 
 typedef struct {
@@ -595,15 +525,15 @@ typedef struct {
     Buff* value;
     // TODO (jasmcaus) - Come up with a workaround for this
     enum {
-        AstNodeIntegerLiteral8,
-        AstNodeIntegerLiteral16,
-        AstNodeIntegerLiteral32, // default
-        AstNodeIntegerLiteral64,
+        AstNodeIntegerLiteral8,  // i8
+        AstNodeIntegerLiteral16, // i16
+        AstNodeIntegerLiteral32, // i32
+        AstNodeIntegerLiteral64, // i64
         // AstNodeIntegerLiteral128 // will be supported later
-        AstNodeUIntLiteral8,
-        AstNodeUIntLiteral16,
-        AstNodeUIntLiteral32, // default
-        AstNodeUIntLiteral64,
+        AstNodeUIntLiteral8,     // u8
+        AstNodeUIntLiteral16,    // u16
+        AstNodeUIntLiteral32,    // u32
+        AstNodeUIntLiteral64,    // u64
         // AstNodeUIntLiteral128 // will be supported later
     } type;
 } AstNodeIntegerLiteral;
@@ -638,13 +568,13 @@ typedef struct {
         AstNodeCharLiteral* char_value;
         AstNodeStringLiteral* str_value;
     };
-} AstNodeCompileTimeValue;
+} AstNodeLiteral;
 
 typedef struct {
     Buff* module;
     Buff* name;
     AstNode* expr;
-    AstNodeCompileTimeValue* comptime_value;
+    AstNodeLiteral* literal;
     VisibilityMode visibility;
 } AstNodeConstField;
 
@@ -695,10 +625,6 @@ typedef struct {
 } AstNodeParamList;
 
 typedef struct {
-    AstNode* expr;
-} AstNodeReturnExpr;
-
-typedef struct {
     Buff* name;   // can be nullptr if no name
     AstNode* body;
 } AstNodeTestDecl;
@@ -723,10 +649,6 @@ typedef struct {
     AstNode* expr;
     PrefixOpKind op;
 } AstNodePrefixOpExpr;
-
-typedef struct {
-    AstNode* expr;
-} AstNodeCompileTime;
 
 typedef struct {
     AstNode* array_ref_expr;
@@ -763,7 +685,7 @@ struct AstNode {
         AstNodeDecl* decl;
         AstNodeExpression* expr;
         AstNodeStatement* stmt;
-        AstNodeCompileTimeValue* comptime_value;
+        AstNodeLiteral* literal;
         AstNodeScopeObject* scope_obj;
         AstNodeTestDecl* test_decl;
         AstNodeTestExpr* test_expr;
