@@ -201,28 +201,14 @@ static void maketoken(Lexer* lexer, TokenKind kind, Buff* value, UInt32 offset, 
 // We store comments in the lexing phase. The Parser will decide which comments are actually useful and which aren't
 static inline void lex_sl_comment(Lexer* lexer) {
     LOG("Inside lex_sl_comment()");
-
     char ch = lexer_advance();
-    int comment_length = 0;
-    UInt32 prev_offset = lexer->offset - 1;
-    UInt32 line = lexer->loc->line;
-    UInt32 col = lexer->loc->col;
 
     while(ch != nullchar and ch != '\n') {
         ch = lexer_advance();
-        ++comment_length;
     }
 
-    CORETEN_ENFORCE(ch =='\n');
+    CORETEN_ENFORCE(ch == '\n');
     
-    // Do not store empty comments
-    if(comment_length == 0) 
-        return;
-
-    Buff* comment_value = buff_slice(lexer->buffer, prev_offset, comment_length - 1);
-    CORETEN_ENFORCE_NN(comment_value, "`comment_value` must not be null");
-    maketoken(lexer, COMMENT, comment_value, prev_offset, line, col);
-
     LEXER_DECREMENT_OFFSET;
 }
 
