@@ -213,7 +213,6 @@ static inline void lex_sl_comment(Lexer* lexer) {
 }
 
 // Scan a comment (multi-line)
-// We have no reason, at the moment, to store a multi-line comment as a Token
 static inline void lex_ml_comment(Lexer* lexer) {
     LOG("Inside lex_ml_comment()");
 
