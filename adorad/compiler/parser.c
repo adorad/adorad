@@ -145,9 +145,9 @@ static AstNode* ast_parse_module_statement(Parser* parser) {
     
     Token* semicolon = parser_chomp_if(SEMICOLON); // this is optional
 
-    AstNode* out = ast_create_node(AstNodeKindModuleStatement);
-    out->data.stmt->module_stmt->name = module_name->value;
-    return out;
+    AstNode* node = ast_create_node(AstNodeKindModuleStatement);
+    node->data.stmt->module_stmt->name = module_name->value;
+    return node;
 }
 
 // ImportStatement
@@ -163,9 +163,9 @@ static AstNode* ast_parse_import_statement(Parser* parser) {
     
     Token* semicolon = parser_chomp_if(SEMICOLON); // this is optional
 
-    AstNode* out = ast_create_node(AstNodeKindImportStatement);
-    out->data.stmt->import_stmt->name = import_name->value;
-    return out;
+    AstNode* node = ast_create_node(AstNodeKindImportStatement);
+    node->data.stmt->import_stmt->name = import_name->value;
+    return node;
 }
 
 // AliasDecl
@@ -189,10 +189,10 @@ static AstNode* ast_parse_alias_decl(Parser* parser) {
     
     Token* semicolon = parser_chomp_if(SEMICOLON); // this is optional
 
-    AstNode* out = ast_create_node(AstNodeKindAliasDeclExpr);
-    out->data.decl->alias_decl->original = original->value;
-    out->data.decl->alias_decl->alias = aliased->value;
-    return out;
+    AstNode* node = ast_create_node(AstNodeKindAliasDeclExpr);
+    node->data.decl->alias_decl->original = original->value;
+    node->data.decl->alias_decl->alias = aliased->value;
+    return node;
 }
 
 // VariableDecl
@@ -223,14 +223,14 @@ static AstNode* ast_parse_variable_decl(Parser* parser) {
 
     Token* semicolon = parser_chomp_if(SEMICOLON);
 
-    AstNode* out = ast_create_node(AstNodeKindVariableDecl);
-    out->data.scope_obj->var->name = identifier->value;
-    out->data.scope_obj->var->init_expr = init_expr;
-    out->data.scope_obj->var->is_local = !parser->is_in_global_context;
-    out->data.scope_obj->var->is_comptime = cast(bool)(comptime_attr != null);
-    out->data.scope_obj->var->is_mutable = cast(bool)(mutable_kwd != null);
-    out->data.scope_obj->var->visibility = export_kwd != null ? VisibilityModePublic : VisibilityModePrivate;
-    return out;
+    AstNode* node = ast_create_node(AstNodeKindVariableDecl);
+    node->data.scope_obj->var->name = identifier->value;
+    node->data.scope_obj->var->init_expr = init_expr;
+    node->data.scope_obj->var->is_local = !parser->is_in_global_context;
+    node->data.scope_obj->var->is_comptime = cast(bool)(comptime_attr != null);
+    node->data.scope_obj->var->is_mutable = cast(bool)(mutable_kwd != null);
+    node->data.scope_obj->var->visibility = export_kwd != null ? VisibilityModePublic : VisibilityModePrivate;
+    return node;
 }
 
 // FuncDecl
@@ -279,7 +279,7 @@ func_no_attrs:
     
     bool no_body = false;
     AstNode* body = null;
-    AstNode* out = ast_create_node(AstNodeKindFuncDecl);
+    AstNode* node = ast_create_node(AstNodeKindFuncDecl);
     switch(pc->kind) {
         case SEMICOLON:
             parser_chomp(1);
@@ -294,21 +294,21 @@ func_no_attrs:
             ast_expected("Semicolon or Function Body");
     } // switch
 
-    out->data.decl->func_decl->name = identifier->value;
-    out->data.decl->func_decl->params = params;
-    out->data.decl->func_decl->return_type = return_type_expr;
-    out->data.decl->func_decl->body = body;
-    out->data.decl->func_decl->params = params;
-    out->data.decl->func_decl->visibility = export_kwd != null ? VisibilityModePublic : VisibilityModePrivate;
+    node->data.decl->func_decl->name = identifier->value;
+    node->data.decl->func_decl->params = params;
+    node->data.decl->func_decl->return_type = return_type_expr;
+    node->data.decl->func_decl->body = body;
+    node->data.decl->func_decl->params = params;
+    node->data.decl->func_decl->visibility = export_kwd != null ? VisibilityModePublic : VisibilityModePrivate;
 
     // Attributes
-    out->data.decl->func_decl->is_variadic = is_variadic;
-    out->data.decl->func_decl->is_comptime = is_comptime;
-    out->data.decl->func_decl->is_noreturn = is_noreturn;
-    out->data.decl->func_decl->is_inline = is_inline;
-    out->data.decl->func_decl->is_noinline = is_noinline;
+    node->data.decl->func_decl->is_variadic = is_variadic;
+    node->data.decl->func_decl->is_comptime = is_comptime;
+    node->data.decl->func_decl->is_noreturn = is_noreturn;
+    node->data.decl->func_decl->is_inline = is_inline;
+    node->data.decl->func_decl->is_noinline = is_noinline;
 
-    return out;
+    return node;
 }
 
 // ParamList
@@ -338,11 +338,11 @@ static AstNode* ast_parse_param_list(Parser* parser, bool* is_variadic) {
         }
     }
 
-    AstNode* out = ast_create_node(AstNodeKindParamList);
-    out->data.param_list->is_variadic = cast(bool)seen_varargs;
-    out->data.param_list->params = params;
+    AstNode* node = ast_create_node(AstNodeKindParamList);
+    node->data.param_list->is_variadic = cast(bool)seen_varargs;
+    node->data.param_list->params = params;
     is_variadic = seen_varargs;
-    return out;
+    return node;
 }
 
 // Statement
@@ -401,9 +401,9 @@ static AstNode* ast_parse_container_members(pars) {
                     case LBRACE:
                         AstNode* block = ast_parse_block(parser);
                         if(block != null) {
-                            AstNode* out = ast_create_node(AstNodeKindAttributeExpr);
-                            out->data.expr->attr_expr->kind = AttributeKindCompileTime;
-                            out->data.expr->attr_expr->expr = block;
+                            AstNode* node = ast_create_node(AstNodeKindAttributeExpr);
+                            node->data.expr->attr_expr->kind = AttributeKindCompileTime;
+                            node->data.expr->attr_expr->expr = block;
                             nodepush(out);
                         }
                         break;
@@ -466,12 +466,12 @@ static AstNode* ast_parse_if_expr(Parser* parser) {
     if(else_body == null and semicolon == null)  
         ast_expected("Semicolon or `else` block");
 
-    AstNode* out = ast_create_node(AstNodeKindIfExpr);
-    out->data.expr->if_expr->condition = condition;
-    out->data.expr->if_expr->if_body = if_body;
-    out->data.expr->if_expr->has_else = else_body != null;
-    out->data.expr->if_expr->else_node = else_body;
-    return out;
+    AstNode* node = ast_create_node(AstNodeKindIfExpr);
+    node->data.expr->if_expr->condition = condition;
+    node->data.expr->if_expr->if_body = if_body;
+    node->data.expr->if_expr->has_else = else_body != null;
+    node->data.expr->if_expr->else_node = else_body;
+    return node;
 }
 
 // Labeled Statements
@@ -503,32 +503,32 @@ static AstNode* ast_parse_labeled_statement(Parser* parser) {
 //      | ATTRIBUTE(inline)? (LoopWhileExpr / LoopCExpr / LoopInExpr)
 static AstNode* ast_parse_loop_expr(Parser* parser) {
     Token* inline_attr = parser_chomp_if(ATTR_INLINE);
-    AstNode* out = null;
+    AstNode* node = null;
 
     AstNode* loop_inf_expr = ast_parse_loop_inf_expr(parser);
     if(loop_inf_expr != null) {
-        out = loop_inf_expr;
+        node = loop_inf_expr;
         goto outexpect;
     }
 
     AstNode* loop_c_expr = ast_parse_loop_c_expr(parser);
     if(loop_c_expr != null) {
-        out = loop_c_expr;
+        node = loop_c_expr;
         goto outexpect;
     }
 
     AstNode* loop_in_expr = ast_parse_loop_in_expr(parser);
     if(loop_in_expr != null) {
-        out = loop_in_expr;
+        node = loop_in_expr;
         goto outexpect;
     }
 
 outexpect:
-    if(out == null)
+    if(node == null)
         ast_expected("loop expression");
 
-    out->data.expr->loop_expr->is_inline = cast(bool)(inline_attr != null);
-    return out;
+    node->data.expr->loop_expr->is_inline = cast(bool)(inline_attr != null);
+    return node;
 }
 
 /*
@@ -630,11 +630,11 @@ static AstNode* ast_parse_assignment_expr(Parser* parser) {
     if(rhs == null)
         ast_expected("an expression after assignment op");
 
-    AstNode* out = ast_create_node(AstNodeKindBinaryOpExpr);
-    out->data.expr->binary_op_expr->op = op;
-    out->data.expr->binary_op_expr->lhs = lhs;
-    out->data.expr->binary_op_expr->rhs = rhs;
-    return out;
+    AstNode* node = ast_create_node(AstNodeKindBinaryOpExpr);
+    node->data.expr->binary_op_expr->op = op;
+    node->data.expr->binary_op_expr->lhs = lhs;
+    node->data.expr->binary_op_expr->rhs = rhs;
+    return node;
 }
 
 typedef struct ast_prec {
@@ -681,8 +681,8 @@ static ast_prec lookup_precedence(TokenKind kind) {
 }
 
 static AstNode* ast_parse_precedence(Parser* parser, UInt8 min_prec) {
-    AstNode* out = ast_parse_prefix_expr(parser);
-    if(out == null)
+    AstNode* node = ast_parse_prefix_expr(parser);
+    if(node == null)
         return null;
     
     UInt8 banned_prec = 0;
@@ -699,9 +699,9 @@ static AstNode* ast_parse_precedence(Parser* parser, UInt8 min_prec) {
         if(rhs == null)
             ast_error("Invalid token");
         
-        out->data.expr->binary_op_expr->lhs = out;
-        out->data.expr->binary_op_expr->op = prec.bin_kind;
-        out->data.expr->binary_op_expr->rhs = rhs;
+        node->data.expr->binary_op_expr->lhs = node;
+        node->data.expr->binary_op_expr->op = prec.bin_kind;
+        node->data.expr->binary_op_expr->rhs = rhs;
 
         switch(pc->kind) {
             case EQUALS_EQUALS:
@@ -716,7 +716,7 @@ static AstNode* ast_parse_precedence(Parser* parser, UInt8 min_prec) {
                 break;
         }
     }
-    return out;
+    return node;
 }
 
 // PrefixExpr
@@ -741,10 +741,10 @@ static AstNode* ast_parse_prefix_expr(Parser* parser) {
     if(lhs == null)
         ast_expected("prefix op expression");
 
-    AstNode* out = ast_create_node(AstNodeKindPrefixOpExpr);
-    out->data.prefix_op_expr->op = op;
-    out->data.prefix_op_expr->expr = lhs;
-    return out;
+    AstNode* node = ast_create_node(AstNodeKindPrefixOpExpr);
+    node->data.prefix_op_expr->op = op;
+    node->data.prefix_op_expr->expr = lhs;
+    return node;
 }
 
 // TypeExpr
@@ -762,16 +762,16 @@ static AstNode* ast_parse_prefix_expr(Parser* parser) {
 // and ArrayTypeStart
 //      LSQUAREBRACK Expr (COLON Expr)? RSQUAREBRACK
 static AstNode* ast_parse_type_expr(Parser* parser) {
-    AstNode* out = null;
+    AstNode* node = null;
     switch(pc->kind) {
         case QUESTION:
             AstNode* expr = ast_parse_expr(parser);
             if(expr == null)
                 ast_error("expression");
-            out = ast_create_node(AstNodeKindPrefixOpExpr);
-            out->data.prefix_op_expr->expr = expr;
-            out->data.prefix_op_expr->op = PrefixOpKindOptional;
-            return out;
+            node = ast_create_node(AstNodeKindPrefixOpExpr);
+            node->data.prefix_op_expr->expr = expr;
+            node->data.prefix_op_expr->op = PrefixOpKindOptional;
+            return node;
         default:
             CORETEN_ENFORCE(false, "TODO");
     }
@@ -793,34 +793,34 @@ static AstNode* ast_parse_primary_expr(Parser* parser) {
             Token* label = ast_parse_break_label(parser);
             AstNode* expr = ast_parse_expr(parser);
 
-            AstNode* out = ast_create_node(AstNodeKindBreak);
-            out->data.stmt->branch_stmt->type = AstNodeBranchStatementBreak;
-            out->data.stmt->branch_stmt->name = label != null ? label->value : null;
-            out->data.stmt->branch_stmt->expr = expr;
-            return out;
+            AstNode* node = ast_create_node(AstNodeKindBreak);
+            node->data.stmt->branch_stmt->type = AstNodeBranchStatementBreak;
+            node->data.stmt->branch_stmt->name = label != null ? label->value : null;
+            node->data.stmt->branch_stmt->expr = expr;
+            return node;
         case CONTINUE:
             parser_chomp(1);
             Token* label = ast_parse_break_label(parser);
-            AstNode* out = ast_create_node(AstNodeKindBreak);
-            out->data.stmt->branch_stmt->type = AstNodeBranchStatementContinue;
-            out->data.stmt->branch_stmt->name = label != null ? label->value : null;
-            out->data.stmt->branch_stmt->expr = null;
-            return out;
+            AstNode* node = ast_create_node(AstNodeKindBreak);
+            node->data.stmt->branch_stmt->type = AstNodeBranchStatementContinue;
+            node->data.stmt->branch_stmt->name = label != null ? label->value : null;
+            node->data.stmt->branch_stmt->expr = null;
+            return node;
         case ATTR_COMPTIME:
             parser_chomp(1);
-            AstNode* out = ast_create_node(AstNodeKindAttributeExpr);
+            AstNode* node = ast_create_node(AstNodeKindAttributeExpr);
             AstNode* expr = ast_parse_expr(parser);
             if(expr == null)
                 ast_expected("expression");
             
-            out->data.expr->attr_expr->expr = expr;
-            return out;
+            node->data.expr->attr_expr->expr = expr;
+            return node;
         case RETURN:
             parser_chomp(1);
-            AstNode* out = ast_create_node(AstNodeKindReturn);
+            AstNode* node = ast_create_node(AstNodeKindReturn);
             AstNode* expr = ast_parse_expr(parser);
-            out->data.stmt->return_stmt->expr = expr;
-            return out;
+            node->data.stmt->return_stmt->expr = expr;
+            return node;
         case IDENTIFIER:
             // `foo:`
             if((pc + 1)->kind == COLON) {
@@ -871,9 +871,9 @@ static AstNode* ast_parse_block(Parser* parser) {
     if(rbrace == null)
         ast_expected("RBRACE `}`");
     
-    AstNode* out = ast_create_node(AstNodeKindBlock);
-    out->data.stmt->block_stmt->statements = statements;
-    return out;
+    AstNode* node = ast_create_node(AstNodeKindBlock);
+    node->data.stmt->block_stmt->statements = statements;
+    return node;
 }
 
 /* WIP */
@@ -916,14 +916,14 @@ static AstNode* ast_parse_brace_suffix_expr(Parser* parser) {
             vec_push(fields, field_init);
         } // while(true)
         Token* comma = parser_chomp_if(COMMA);
-        AstNode* out = ast_create_node(AstNodeKindStructExpr);
-        out->data.expr->init_expr->kind = InitExprKindStruct;
-        out->data.expr->init_expr->entries = fields;
-        return out;
+        AstNode* node = ast_create_node(AstNodeKindStructExpr);
+        node->data.expr->init_expr->kind = InitExprKindStruct;
+        node->data.expr->init_expr->entries = fields;
+        return node;
     }
 
-    AstNode* out = ast_create_node(AstNodeKindArrayInitExpr);
-    out->data.expr->init_expr->type = InitExprKindArray;
+    AstNode* node = ast_create_node(AstNodeKindArrayInitExpr);
+    node->data.expr->init_expr->type = InitExprKindArray;
 
     AstNode* expr = ast_parse_expr(parser);
     if(expr != null) {
@@ -936,15 +936,15 @@ static AstNode* ast_parse_brace_suffix_expr(Parser* parser) {
                 break;
             vec_push(fields, exp);
         }
-        out->data.expr->init_expr->entries = fields;
-        return out;
+        node->data.expr->init_expr->entries = fields;
+        return node;
     }
 
     Token* rbrace = parser_chomp_if(RBRACE);
     if(rbrace == null)
         ast_expected("RBRACE");
     
-    return out;
+    return node;
 }
 
 /* WIP */
@@ -957,17 +957,17 @@ static AstNode* ast_parse_brace_suffix_expr(Parser* parser) {
 // and ExprList is
 //      (Expr COMMA)* Expr?
 static AstNode* ast_parse_suffix_expr(Parser* parser) {
-    AstNode* out = ast_parse_primary_type_expr(parser);
+    AstNode* node = ast_parse_primary_type_expr(parser);
     while(true) {
         AstNode* suffix_op = ast_parse_suffix_op(parser);
         if(suffix_op == null)
             break;
-        out = suffix_op;
+        node = suffix_op;
     }
     Token* lparen = parser_chomp_if(LPAREN);
     if(lparen == null) {
         WARN("expected param list");
-        return out;
+        return node;
     }
 
     Vec* params = vec_new(AstNode, 1);
@@ -1012,33 +1012,33 @@ static AstNode* ast_parse_suffix_expr(Parser* parser) {
 //      | BlockLabel Block
 //      | BlockLabel? LoopTypeExpr
 static AstNode* ast_parse_primary_type_expr(Parser* parser) {
-    AstNode* out = null;
+    AstNode* node = null;
     AstNode* expr = null;
     Token* tok = null;
     switch(pc->kind) {
         case CHAR_LIT:
-            out = ast_create_node(AstNodeKindCharLiteral);
-            out->data.literal->char_value->value = pc->value;
+            node = ast_create_node(AstNodeKindCharLiteral);
+            node->data.literal->char_value->value = pc->value;
             parser_chomp(1);
-            return out;
+            return node;
         case INTEGER:
-            out = ast_create_node(AstNodeKindIntLiteral);
-            out->data.literal->int_value->value = pc->value;
+            node = ast_create_node(AstNodeKindIntLiteral);
+            node->data.literal->int_value->value = pc->value;
             parser_chomp(1);
-            return out;
+            return node;
         case FLOAT_LIT:
-            out = ast_create_node(AstNodeKindFloatLiteral);
-            out->data.literal->float_value->value = pc->value;
+            node = ast_create_node(AstNodeKindFloatLiteral);
+            node->data.literal->float_value->value = pc->value;
             parser_chomp(1);
-            return out;
+            return node;
         case UNREACHABLE:
-            out = ast_create_node(AstNodeKindUnreachable);
+            node = ast_create_node(AstNodeKindUnreachable);
             parser_chomp(1);
-            return out;
+            return node;
         case STRING:
-            out = ast_create_node(AstNodeKindStringLiteral);
+            node = ast_create_node(AstNodeKindStringLiteral);
             parser_chomp(1);
-            return out;
+            return node;
         case BUILTIN: return ast_parse_builtin_call(parser);
         case FUNC: return ast_parse_func_decl(parser);
         case IF: return ast_parse_if_expr(parser);
@@ -1046,12 +1046,12 @@ static AstNode* ast_parse_primary_type_expr(Parser* parser) {
         case STRUCT: return ast_parse_struct_decl(parser);
         case ENUM: return ast_parse_enum_decl(parser);
         case ATTR_COMPTIME:
-            out = ast_create_node(AstNodeKindAttributeExpr);
+            node = ast_create_node(AstNodeKindAttributeExpr);
             expr = ast_parse_type_expr(parser);
             if(expr == null)
                 ast_expected("type expr");
-            out->data.expr->attr_expr->expr = expr;
-            return out;
+            node->data.expr->attr_expr->expr = expr;
+            return node;
         case IDENTIFIER:
             switch((pc + 1)->kind) {
                 case COLON:
@@ -1069,14 +1069,14 @@ static AstNode* ast_parse_primary_type_expr(Parser* parser) {
                             parser_chomp(2);
                             return ast_parse_block(parser);
                         default:
-                            out = ast_create_node(AstNodeKindIdentifier);
+                            node = ast_create_node(AstNodeKindIdentifier);
                             parser_chomp(1);
-                            return out;
+                            return node;
                     }
                 default:
-                    out = ast_create_node(AstNodeKindIdentifier);
+                    node = ast_create_node(AstNodeKindIdentifier);
                     parser_chomp(1);
-                    return out;
+                    return node;
             }
             break;
         case ATTR_INLINE:
@@ -1090,14 +1090,14 @@ static AstNode* ast_parse_primary_type_expr(Parser* parser) {
         case DOT:
             switch((pc + 1)->kind) {
                 case IDENTIFIER:
-                    out = ast_create_node(AstNodeKindIdentifier);
+                    node = ast_create_node(AstNodeKindIdentifier);
                     parser_chomp(1);
-                    return out;
+                    return node;
                 default: return null;
             }
             break;
         case LPAREN:
-            out = ast_create_node(AstNodeKindGroupedExpr);
+            node = ast_create_node(AstNodeKindGroupedExpr);
             expr = ast_parse_expr(parser);
             if(expr == null)
                 ast_expected("expression");
@@ -1105,8 +1105,8 @@ static AstNode* ast_parse_primary_type_expr(Parser* parser) {
             if(tok == null)
                 ast_expected("RPAREN");
 
-            out->data.expr->grouped_expr->expr = expr;
-            return out;
+            node->data.expr->grouped_expr->expr = expr;
+            return node;
     }
 }
 
@@ -1129,18 +1129,18 @@ static AstNode* ast_parse_match_expr(Parser* parser) {
     // Parse any trailing comma
     Token* comma = parser_chomp_if(COMMA);
 
-    AstNode* out = ast_create_node(AstNodeKindMatchExpr);
-    out->data.expr->match_expr->expr = expr;
-    out->data.expr->match_expr->branches = branches;
-    return out;
+    AstNode* node = ast_create_node(AstNodeKindMatchExpr);
+    node->data.expr->match_expr->expr = expr;
+    node->data.expr->match_expr->branches = branches;
+    return node;
 }
 
 // MatchBranch
 //      KEYWORD(case) (COLON? / EQUALS_ARROW?) AssignmentExpr
 static AstNode* ast_parse_match_branch(Parser* parser) {
-    AstNode* out = ast_parse_match_case_kwd(parser);
-    CORETEN_ENFORCE(out->kind == AstNodeKindMatchBranch);
-    if(out == null)
+    AstNode* node = ast_parse_match_case_kwd(parser);
+    CORETEN_ENFORCE(node->kind == AstNodeKindMatchBranch);
+    if(node == null)
         return null;
     
     Token* colon = parser_chomp_if(COLON); // `:`
@@ -1149,9 +1149,9 @@ static AstNode* ast_parse_match_branch(Parser* parser) {
         ast_error("Missing token after `case`. Either `:` or `=>`");
 
     AstNode* expr = ast_parse_assignment_expr(parser);
-    out->data.expr->match_branch_expr->expr = expr;
+    node->data.expr->match_branch_expr->expr = expr;
 
-    return out;
+    return node;
 }
 
 // MatchCase
@@ -1160,8 +1160,8 @@ static AstNode* ast_parse_match_branch(Parser* parser) {
 static AstNode* ast_parse_match_case_kwd(Parser* parser) {
     AstNode* match_item = ast_parse_match_item(parser);
     if(match_item != null) {
-        AstNode* out = ast_create_node(AstNodeKindMatchBranch);
-        vec_push(out->data.expr->match_branch_expr->branches, match_item);
+        AstNode* node = ast_create_node(AstNodeKindMatchBranch);
+        vec_push(node->data.expr->match_branch_expr->branches, match_item);
 
         Token* comma;
         while((comma = parser_chomp_if(COMMA)) != null) {
@@ -1169,17 +1169,17 @@ static AstNode* ast_parse_match_case_kwd(Parser* parser) {
             if(item == null)
                 break;
             
-            vec_push(out->data.expr->match_branch_expr->branches, item);
-            out->data.expr->match_branch_expr->any_branches_are_ranges = cast(bool)(item->kind == AstNodeKindMatchRange);
+            vec_push(node->data.expr->match_branch_expr->branches, item);
+            node->data.expr->match_branch_expr->any_branches_are_ranges = cast(bool)(item->kind == AstNodeKindMatchRange);
         }
 
-        return out;
+        return node;
     }
 
     Token* else_kwd = parser_chomp_if(ELSE);
     if(else_kwd != null) {
-        AstNode* out = ast_create_node(AstNodeKindMatchBranch);
-        return out;
+        AstNode* node = ast_create_node(AstNodeKindMatchBranch);
+        return node;
     }
 
     return null;
@@ -1195,10 +1195,10 @@ static AstNode* ast_parse_match_item(Parser* parser) {
     Token* ellipsis = parser_chomp_if(ELLIPSIS);
     if(ellipsis != null) {
         AstNode* expr2 = ast_parse_expr(parser);
-        AstNode* out = ast_create_node(AstNodeKindMatchRange);
-        out->data.expr->match_range_expr->begin = expr;
-        out->data.expr->match_range_expr->end = expr2;
-        return out;
+        AstNode* node = ast_create_node(AstNodeKindMatchRange);
+        node->data.expr->match_range_expr->begin = expr;
+        node->data.expr->match_range_expr->end = expr2;
+        return node;
     }
 
     return expr;
@@ -1262,26 +1262,26 @@ static AstNode* ast_parse_suffix_op(Parser* parser) {
             }
             Token* rbrace = parser_expect_token(RBRACE);
 
-            AstNode* out = ast_create_node(AstNodeKindSliceExpr);
-            out->data.expr->slice_expr->lower = lower;
-            out->data.expr->slice_expr->upper = upper;
-            out->data.expr->slice_expr->sentinel = sentinel;
-            return out;
+            AstNode* node = ast_create_node(AstNodeKindSliceExpr);
+            node->data.expr->slice_expr->lower = lower;
+            node->data.expr->slice_expr->upper = upper;
+            node->data.expr->slice_expr->sentinel = sentinel;
+            return node;
         }
 
         Token* rbrace = parser_expect_token(RBRACE);
 
-        AstNode* out = ast_create_node(AstNodeKindArrayAccessExpr);
-        out->data.array_access_expr->subscript = lower;
-        return out;
+        AstNode* node = ast_create_node(AstNodeKindArrayAccessExpr);
+        node->data.array_access_expr->subscript = lower;
+        return node;
     }
 
     Token* dot = parser_chomp_if(DOT);
     if(dot != null) {
         Token* identifier = parser_expect_token(IDENTIFIER);
-        AstNode* out = ast_create_node(AstNodeKindFieldAccessExpr);
-        out->data.field_access_expr->field_name = identifier->value;
-        return out;
+        AstNode* node = ast_create_node(AstNodeKindFieldAccessExpr);
+        node->data.field_access_expr->field_name = identifier->value;
+        return node;
     }
 
     return null;
@@ -1291,8 +1291,8 @@ static AstNode* ast_parse_suffix_op(Parser* parser) {
 static AstNode* ast_parse_string_literal(Parser* parser) {
     if(pc->kind == STRING) {
         parser_chomp(1);
-        AstNode* out = ast_create_node(AstNodeKindStringLiteral);
-        return out;
+        AstNode* node = ast_create_node(AstNodeKindStringLiteral);
+        return node;
     }
 
     WARN("Entered `ast_parse_string_literal` with unrelated token");
