@@ -263,6 +263,34 @@ static inline void lex_char(Lexer* lexer) {
 // Scan an escape char
 static inline void lex_esc_char(Lexer* lexer) {
     LOG("Inside lex_esc_char()");
+    CORETEN_ENFORCE(false, "TODO");
+    char ch = lexer_advance();
+    if(ch == '\\') {
+        ch = lexer_advance();
+        switch(ch) {
+            case 'a':  ch = '\a'; break;
+            case 'b':  ch = '\b'; break;
+            case 'e':  ch = '\x1b'; break;
+            case 'f':  ch = '\f'; break;
+            case 'n':  ch = '\n'; break;
+            case 'r':  ch = '\r'; break;
+            case 't':  ch = '\t'; break;
+            case 'v':  ch = '\f'; break;
+            case '"':  ch = '\"'; break;
+            case '\'': ch = '\''; break;
+            case '?':  ch = '?';  break;
+            case '1':  ch = '\1'; break;
+            case '2':  ch = '\2'; break;
+            case '3':  ch = '\3'; break;
+            case '4':  ch = '\4'; break;
+            case '5':  ch = '\5'; break;
+            case '6':  ch = '\6'; break;
+            case '7':  ch = '\7'; break;
+            case '\\': ch = '\\'; break;
+            default:
+                lexer_error(ErrorInvalidCharacter, "\\%c", ch);
+        }
+    }
 }
 
 // Scan a macro (begins with `@`)
