@@ -1302,3 +1302,17 @@ static AstNode* ast_parse_string_literal(Parser* parser) {
 static AstNode* ast_parse_root(Parser* parser) {
     return null;   
 }
+
+// Entry point for the Parser
+static AstNode* ast_parse(Parser* parser) {
+    LOG("Entering `ast_parse`");
+
+    // Begin with the module declaration
+    AstNode* module_decl = ast_parse_module_statement(parser);
+    
+    Vec* stmts = vec_new(AstNode, 1);
+    // Imports
+    for(;;) {
+        if(pc->kind == IMPORT)
+    }
+}

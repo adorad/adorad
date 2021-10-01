@@ -96,7 +96,7 @@ void coreten_panic(PanicLevel pl, const char* format, ...);
 #define coreten_unreachable()                                                                      \
     coreten_panic(                                                                                 \
         PanicLevelUnreachable,                                                                     \
-        "Unreachable: At %s:%d in %s. %s", __FILE__, __LINE__, __func__,    \
+        "Unreachable: At %s:%d in %s. %s", __FILE__, __LINE__, __func__,                           \
         "Please file an issue on Adorad's Github repository"                                       \
     )
 
@@ -111,7 +111,7 @@ void coreten_panic(PanicLevel pl, const char* format, ...);
             printf("\n");                                                                   \
             printf("The following assertion failed: \n");                                   \
             cstlColouredPrintf(CORETEN_COLOUR_CYAN, "    CORETEN_ENFORCE( %s )\n", #cond);  \
-            abort();                                                                        \
+            choke_and_die();                                                                \
         }                                                                                   \
     }                                                                                       \
     while(0)

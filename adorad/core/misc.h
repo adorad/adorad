@@ -177,10 +177,10 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #endif
 
 #ifndef __cplusplus
-    #define abort()     exit(1)
+    #define choke_and_die()     exit(1)
 #else
     #include <exception>
-    #define abort()     std::abort()
+    #define choke_and_die()     std::abort()
 #endif // __cplusplus
 
 // Make __attribute__ annotations (e.g. for checking printf-like functions a no-op for MSVC

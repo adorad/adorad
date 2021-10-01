@@ -112,7 +112,7 @@ UInt32 __internal_strlength(const char* str, bool is_utf8) {
             lomagic = ((lomagic << 16) << 16) | lomagic;
         }
         if(sizeof(longword) > 8)
-            abort();
+            choke_and_die();
 
         // Instead of the traditional loop which tests each character, we will test a longword at a time.
         // The tricky part is testing if *any of the four* bytes in the longword in question are zero.
@@ -565,7 +565,7 @@ void coreten_panic(PanicLevel pl, const char* format, ...) {
     }
     cstlColouredPrintf(CORETEN_COLOUR_ERROR, "%s", str);
     printf("%s\n", buffer);
-    abort();
+    choke_and_die();
 }
 
 // -------------------------------------------------------------------------

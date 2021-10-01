@@ -42,5 +42,5 @@ void panic(Error err, const char* format, ...) {
 
     cstlColouredPrintf(CORETEN_COLOUR_ERROR, "%s: ", error_str(err));
     printf("%s\n", buffer);
-    abort();
+    choke_and_die();
 }

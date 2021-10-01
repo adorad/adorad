@@ -79,7 +79,7 @@ inline Token* expect_token(Parser* parser, TokenKind tokenkind) {
     panic(ErrorUnexpectedToken, "Expected `%s`; got `%s`", 
                                         tokenHash[tokenkind],
                                         tokenHash[parser->curr_tok->kind]);
-    abort();
+    choke_and_die();
 }
 
 AstNode* ast_create_node(AstNodeKind kind) {
