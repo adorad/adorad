@@ -20,8 +20,25 @@ struct cstlBuffView {
 #define BV_FMT        "%.*s"
 #define BV_ARG(bv)    (int)(bv).len, (bv).data
 
-
 cstlBuffView buffview_new(const char* data, UInt64 len);
-cstlBuffView bv_from_cstr(const char* cstr);
+char* buffview_end(cstlBuffView* view);
+cstlBuffView buff_rev(cstlBuffView* view);
 
+char* buffview_end(cstlBuffView* view) {
+    return cast(char*)view->data + view->len - 1;
+}
+
+cstlBuffView buffview_rev(cstlBuffView* view) {
+    cstlBuffView rev = buff_new(null);
+    UInt64 length = buffer->len;
+    if(!length)
+        return rev;
+    
+    char* temp = cast(char*)calloc(1, length + 1);
+    for(UInt64 i=0; i<length; i++)
+        *(temp + i) = *(buffer->data + length - i - 1);
+    
+    buffview_new(temp);
+    return rev;
+}
 #endif // CORETEN_BUFFVIEW_H

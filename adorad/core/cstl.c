@@ -1025,6 +1025,7 @@ char* read_file(const char* fname) {
         cstlColouredPrintf(CORETEN_COLOUR_ERROR, "Could not open file: <%s>\n", fname);
         cstlColouredPrintf(CORETEN_COLOUR_ERROR, "%s\n", !file_exists(fname) ?  
                             "FileNotFoundError: File does not exist." : "");
+        cstlColouredPrintf(CORETEN_COLOUR_ERROR, "Does file exist? %s\n", !file_exists(fname) ? "false" : "true");
         exit(1);
     }
 
@@ -1212,26 +1213,25 @@ cstlBuffer* os_get_cwd() {
 #endif // CORETEN_OS_WINDOWS
 }
 
-cstlBuffer* __os_dirname_basename(cstlBuffer* path, bool is_basename) {
-    UInt64 length = path->len;
+cstlBuffView __os_dirname_basename(cstlBuffView path, bool is_basename) {
+    UInt64 length = path.len;
     if(!length)
         return path;
 
     cstlBuffer* result = buff_new(null);
-    char* end = buff_end(path);
+    char* end = buffview_end(&path);
 
     // dirname
     if(!is_basename) {
-        cstlBuffer* rev = buff_rev(path);
+        cstlBuffView rev = buff_rev(path);
 
         // The `/` or `\\` is not so important in getting the dirname, but it does interfere with `strchr`, so
         // we skip over it (if present)
-        if(*rev->data == CORETEN_OS_SEP_CHAR)
-            rev->data++;
-        char* rev_dir = strchr(rev->data, CORETEN_OS_SEP_CHAR);
+        if(*rev.data == CORETEN_OS_SEP_CHAR)
+            rev.data++;
+        char* rev_dir = strchr(rev.data, CORETEN_OS_SEP_CHAR);
         buff_set(result, rev_dir);
         result = buff_rev(result);
-        buff_free(rev);
     } 
 
     // basename
@@ -1241,19 +1241,18 @@ cstlBuffer* __os_dirname_basename(cstlBuffer* path, bool is_basename) {
             return buff_new(null);
         
         // If there is no `sep` in `path`, `path` is the basename
-        if(!(strstr(path->data, "/") or strstr(path->data, "\\")))
+        if(!(strstr(path.data, "/") or strstr(path.data, "\\")))
             return path;
         
         cstlBuffer* rev = buff_rev(path);
         for(UInt64 i = 0; i<length; i++) {
-            if(os_is_sep(*(rev->data + i))) {
-                *(rev->data + i) = nullchar;
+            if(os_is_sep(*(rev.data + i))) {
+                *(rev.data + i) = nullchar;
                 break;
             }
         }
-        buff_set(result, rev->data);
+        buff_set(result, rev.data);
         result = buff_rev(result);
-        buff_free(rev);
     }
     
     return result;
