@@ -679,7 +679,7 @@ typedef struct {
 
 struct AstNode {
     AstNodeKind kind; // type of AST Node
-    Location* loc;
+    Loc* loc;
 
     union {
         AstNodeIdentifier* identifier;

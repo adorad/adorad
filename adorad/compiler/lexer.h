@@ -51,7 +51,7 @@ typedef struct Lexer {
                         // and the curr char)
 
     Vec* toklist;       // list of tokens
-    Location* loc;      // location of the token in the source code
+    Loc* loc;      // location of the token in the source code
 
     bool is_inside_str; // set to true inside a string
     int nest_level;     // used to infer if we're inside many `{}`s

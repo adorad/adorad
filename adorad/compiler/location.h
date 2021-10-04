@@ -17,6 +17,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #include <adorad/core/buffer.h>
 
 typedef struct Location Location;
+typedef Location Loc;
 
 struct Location {
     UInt32 line;

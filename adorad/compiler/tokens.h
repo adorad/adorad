@@ -227,7 +227,7 @@ typedef struct Token {
     TokenKind kind;     // Token Kind
     UInt32 offset;      // Offset of the first character of the Token
     Buff* value;        // Token value
-    Location* loc;      // Location of the token in the source code
+    Loc* loc;      // Location of the token in the source code
 } Token;
 
 // Create a basic (ILLEGAL) token
