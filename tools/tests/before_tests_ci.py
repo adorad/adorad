@@ -83,7 +83,10 @@ def main():
                 if root.endswith(ACCEPTABLE_REMOVEABLE_DIRS):
                     s = s.replace('static inline ', '')
                     s = s.replace('static ', '')
-                    s = s.replace('inline ', '')
+                    ## This affects certain variables in Adorad (such as `is_inline`)
+                    ## TODO: Find a better implementation that just targets declarations
+                    # s = s.replace(' inline ', '')
+                    # s = s.replace('inline ', '')
                     s = s.replace('extern ', '')
                     s = s.replace('"C" {', 'extern "C" {')
 
