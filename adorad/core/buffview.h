@@ -11,7 +11,7 @@ struct cstlBuffView {
     UInt64 len;          // buffer size
 };
 
-#define BV(cstr_lit)   bv_from_parts(cstr_lit, sizeof(cstr_lit) - 1)
+#define BV(cstr_lit)   buffview_new(cstr_lit, sizeof(cstr_lit) - 1)
 
 // printf macros for BuffView
 // Usage:
@@ -21,7 +21,7 @@ struct cstlBuffView {
 #define BV_ARG(bv)    (int)(bv).len, (bv).data
 
 
-cstlBuffView bv_from_parts(const char* data, UInt64 len);
+cstlBuffView buffview_new(const char* data, UInt64 len);
 cstlBuffView bv_from_cstr(const char* cstr);
 
 #endif // CORETEN_BUFFVIEW_H
