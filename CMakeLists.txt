@@ -121,6 +121,7 @@ if(NOT MSVC)
 
     string(APPEND CMAKE_C_FLAGS " -Wall")
     string(APPEND CMAKE_C_FLAGS " -Wextra")
+    string(APPEND CMAKE_C_FLAGS " -Wno-switch")
     string(APPEND CMAKE_C_FLAGS " -Wno-unknown-pragmas")
     string(APPEND CMAKE_C_FLAGS " -Wno-sign-compare")
     string(APPEND CMAKE_C_FLAGS " -Wno-unused-parameter")

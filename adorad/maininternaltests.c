@@ -11,19 +11,14 @@ int main(int argc, const char* const argv[]) {
     int count = 0;
     lexer_lex(lexer);
     end = now();
-    printf("Lexing finished...\n");
+    printf("Lexing finished in ");
     double total = duration(st, end);
+    printf("%lfs\n", total);
 
-    printf("\033[1;32m\nTokens Vector: \033[0m\n");
-    for(UInt64 i=0; i < vec_size(lexer->toklist); i++) {
-        Token* tok = vec_at(lexer->toklist, i);
-        printf("TOKEN(%s, \"%s\")\n", tokenHash[tok->kind], tok->value->data);
-    } 
-    printf("\nTotal time = %lfs\n", total);
-
-    printf("Number of tokens = %d\n", vec_size(lexer->toklist));
-    printf("Total allocated memory (in bytes) = %d\n", lexer->toklist->internal.objsize * vec_size(lexer->toklist));
-    
+    Parser* parser = parser_init(lexer);
+    AstNode* node = return_result(parser);
+    if(node == null)
+        printf("Null node");
     lexer_free(lexer);
     return 0; 
 }

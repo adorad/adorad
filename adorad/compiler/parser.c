@@ -19,12 +19,12 @@
     #define TRACE_PARSER()                                                \
         cstlColouredPrintf(                                               \
             CORETEN_COLOUR_WARN,                                          \
-            "parsing file: `%s` | curr_tok: `%s` | position: `%d:%d`",    \
+            "parsing file: `%s` | curr_tok: `%s` | location: `%d:%d`",    \
             parser->basename,                                             \
             tokenHash[parser->curr_tok->kind],                            \
             parser->loc->line,                                            \
             parser->loc->col                                              \
-        )  nn y b8yih    
+        )
 #else
     #define TRACE_PARSER()
 #endif // ADORAD_DEBUG
@@ -91,6 +91,47 @@ AstNode* ast_create_node(AstNodeKind kind) {
     return node;
 }
 
+static AstNode* ast_parse_root(Parser* parser);
+static AstNode* ast_parse_string_literal(Parser* parser);
+static AstNode* ast_parse_suffix_op(Parser* parser);
+static AstNode* ast_parse_field_init(Parser* parser);
+static Token* ast_parse_block_label(Parser* parser);
+static Token* ast_parse_break_label(Parser* parser);
+static AstNode* ast_parse_match_item(Parser* parser);
+static AstNode* ast_parse_builtin_call(Parser* parser);
+static AstNode* ast_parse_struct_decl(Parser* parser);
+static AstNode* ast_parse_enum_decl(Parser* parser);
+static AstNode* ast_parse_match_when(Parser* );
+static AstNode* ast_parse_match_branch(Parser* parser);
+static AstNode* ast_parse_match_expr(Parser* parser);
+static AstNode* ast_parse_primary_type_expr(Parser* parser);
+// static AstNode* ast_parse_suffix_expr(Parser* parser);
+static AstNode* ast_parse_brace_suffix_expr(Parser* parser);
+static AstNode* ast_parse_block(Parser* parser);
+static AstNode* ast_parse_primary_expr(Parser* parser);
+static AstNode* ast_parse_type_expr(Parser* parser);
+static AstNode* ast_parse_prefix_expr(Parser* parser);
+static AstNode* ast_parse_precedence(Parser* parser, UInt8 min_prec);
+static AstNode* ast_parse_expr(Parser* parser);
+static AstNode* ast_parse_assignment_expr(Parser* parser);
+static AstNode* ast_parse_block_expr(Parser* parser);
+static AstNode* ast_parse_block_expr_statement(Parser* parser);
+static AstNode* ast_parse_loop_in_expr(Parser* parser);
+static AstNode* ast_parse_loop_c_expr(Parser* parser);
+static AstNode* ast_parse_loop_inf_expr(Parser* parser);
+static AstNode* ast_parse_loop_expr(Parser* parser);
+static AstNode* ast_parse_labeled_statement(Parser* parser);
+static AstNode* ast_parse_if_expr(Parser* parser);
+// static AstNode* ast_parse_container_members(pars);
+static AstNode* ast_parse_statement(Parser* parser);
+static AstNode* ast_parse_param_list(Parser* parser, bool* is_variadic);
+static AstNode* ast_parse_func_decl(Parser* parser);
+static AstNode* ast_parse_variable_decl(Parser* parser);
+static AstNode* ast_parse_alias_decl(Parser* parser);
+static AstNode* ast_parse_import_statement(Parser* parser);
+static AstNode* ast_parse_module_statement(Parser* parser);
+static AstNode* ast_parse_toplevel_decl(Parser* parser);
+
 // TopLevelDecl
 //      | ModuleStatement
 //      | ImportStatement
@@ -151,7 +192,7 @@ static AstNode* ast_parse_module_statement(Parser* parser) {
 }
 
 // ImportStatement
-//      | KEYWORD(import) Statement
+//      KEYWORD(import) Statement
 static AstNode* ast_parse_import_statement(Parser* parser) {
     Token* import_kwd = parser_chomp_if(IMPORT);
     if(import_kwd == null)
@@ -328,9 +369,11 @@ static AstNode* ast_parse_param_list(Parser* parser, bool* is_variadic) {
         }
 
         switch(pc->kind) {
-            case COMMA: parser_chomp(1);
+            case COMMA: parser_chomp(1); break;
             case RPAREN: parser_chomp(1); break;
-            case COLON: case RBRACE: case RSQUAREBRACK: 
+            case COLON: 
+            case RBRACE: 
+            case RSQUAREBRACK: 
                 ast_expected("RPAREN");
             default:
                 WARN("Expected comma");
@@ -419,6 +462,16 @@ static AstNode* ast_parse_container_members(pars) {
     } // while(true)
 }
 */
+
+static AstNode* ast_parse_struct_decl(Parser* parser) {
+    CORETEN_ENFORCE(false, "TODO");
+    return null;
+}
+
+static AstNode* ast_parse_enum_decl(Parser* parser) {
+    CORETEN_ENFORCE(false, "TODO");
+    return null;
+}
 
 // IfExpr
 //      | IfPrefix BlockExpr (KEYWORD(else) Statement)?
@@ -719,6 +772,10 @@ static AstNode* ast_parse_precedence(Parser* parser, UInt8 min_prec) {
     return node;
 }
 
+static AstNode* ast_parse_expr(Parser* parser) {
+    return ast_parse_precedence(parser, 0);
+}
+
 // PrefixExpr
 //      PrefixOp* PrimaryExpr
 // where PrefixOp is one of:
@@ -775,6 +832,7 @@ static AstNode* ast_parse_type_expr(Parser* parser) {
         default:
             CORETEN_ENFORCE(false, "TODO");
     }
+    return null;
 }
 
 // PrimaryExpr
@@ -853,6 +911,7 @@ static AstNode* ast_parse_primary_expr(Parser* parser) {
         default:
             ast_error("Invalid parser pattern");
     } // switch(pc->kind)
+    ast_error("Invalid parser pattern");
 }
 
 // Block
@@ -1108,11 +1167,21 @@ static AstNode* ast_parse_primary_type_expr(Parser* parser) {
             node->data.expr->grouped_expr->expr = expr;
             return node;
     }
+    return null;
 }
 
+static AstNode* ast_parse_builtin_call(Parser* parser) {
+    CORETEN_ENFORCE(false, "TODO");
+    return null;
+}
+
+// MatchExpr
+//      KEYWORD(match) LPAREN? Expr RPAREN? LBRACE (MatchBranch)* RBRACE
+// where MatchBranch is:
+//      KEYWORD(when) Expr EQUALS_ARROW (AssignmentExpr / BlockExpr)
 static AstNode* ast_parse_match_expr(Parser* parser) {
-    Token* switch_kwd = parser_chomp_if(MATCH);
-    if(switch_kwd == null)
+    Token* match_kwd = parser_chomp_if(MATCH);
+    if(match_kwd == null)
         ast_expected("`switch` keyword");
     
     Token* lparen = parser_chomp_if(LPAREN); // this is optional
@@ -1122,10 +1191,15 @@ static AstNode* ast_parse_match_expr(Parser* parser) {
     Token* rparen = parser_chomp_if(RPAREN); // this is optional
     Token* lbrace = parser_expect_token(RBRACE); // required
 
-    Vec* branches = ast_parse_match_branches(parser);
-    if(branches == null)
+    // Branches
+    AstNode* branch_node = ast_parse_match_branch(parser);
+    if(branch_node == null)
         ast_expected("branches for `match`");
-    
+    Vec* branches = vec_new(AstNode, 1);
+    do {
+        vec_push(branches, branch_node);
+    } while((branch_node = ast_parse_match_branch(parser)) != null);
+
     // Parse any trailing comma
     Token* comma = parser_chomp_if(COMMA);
 
@@ -1136,19 +1210,30 @@ static AstNode* ast_parse_match_expr(Parser* parser) {
 }
 
 // MatchBranch
-//      KEYWORD(case) (COLON? / EQUALS_ARROW?) AssignmentExpr
+//      KEYWORD(when) MatchClause (COLON? / EQUALS_ARROW?) AssignmentExpr
+// where MatchClause is:
+//      Expr (DOT_DOT Expr)?
 static AstNode* ast_parse_match_branch(Parser* parser) {
-    AstNode* node = ast_parse_match_case_kwd(parser);
+    Token* when_kwd = parser_chomp_if(WHEN);
+    if(when_kwd == null)
+        ast_expected("`when` keyword");
+
+    AstNode* node = ast_parse_match_clause(parser);   // "when" in `when <cond>` or `when <cond1>, <cond2>...`
     CORETEN_ENFORCE(node->kind == AstNodeKindMatchBranch);
     if(node == null)
         return null;
     
-    Token* colon = parser_chomp_if(COLON); // `:`
     Token* equals_arrow = parser_chomp_if(EQUALS_ARROW); // `=>`
-    if(colon == null && equals_arrow == null)
-        ast_error("Missing token after `case`. Either `:` or `=>`");
+    if(equals_arrow == null)
+        ast_error("Missing token `=>` after `when`");
 
     AstNode* expr = ast_parse_assignment_expr(parser);
+    if(expr == null) {
+        expr = ast_parse_block_expr(parser);
+        if(expr == null)
+            ast_expected("An assignment/block expression after the `when` clause");
+    }
+    node->data.expr->match_branch_expr->block_node = node;
     node->data.expr->match_branch_expr->expr = expr;
 
     return node;
@@ -1157,7 +1242,7 @@ static AstNode* ast_parse_match_branch(Parser* parser) {
 // MatchCase
 //      | MatchItem (COMMA MatchItem)* COMMA?
 //      | KEYWORD(else)
-static AstNode* ast_parse_match_case_kwd(Parser* parser) {
+static AstNode* ast_parse_match_clause(Parser* parser) {
     AstNode* match_item = ast_parse_match_item(parser);
     if(match_item != null) {
         AstNode* node = ast_create_node(AstNodeKindMatchBranch);
@@ -1304,15 +1389,19 @@ static AstNode* ast_parse_root(Parser* parser) {
 }
 
 // Entry point for the Parser
-static AstNode* ast_parse(Parser* parser) {
-    LOG("Entering `ast_parse`");
+// static AstNode* ast_parse(Parser* parser) {
+//     LOG("Entering `ast_parse`");
 
-    // Begin with the module declaration
-    AstNode* module_decl = ast_parse_module_statement(parser);
+//     // Begin with the module declaration
+//     AstNode* module_decl = ast_parse_module_statement(parser);
     
-    Vec* stmts = vec_new(AstNode, 1);
-    // Imports
-    for(;;) {
-        if(pc->kind == IMPORT)
-    }
+//     Vec* stmts = vec_new(AstNode, 1);
+//     // Imports
+//     for(;;) {
+//         if(pc->kind == IMPORT)
+//     }
+// }
+
+AstNode* return_result(Parser* parser) {
+    return ast_parse_block_expr(parser);
 }

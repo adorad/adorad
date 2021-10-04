@@ -198,18 +198,18 @@ typedef struct {
     AstNode* expr;
 } AstNodeGroupedExpr;
 
-// `match x { when 0..3 ==> ...  }`
-typedef struct {
-    AstNode* expr;
-    Vec* branches;
-} AstNodeMatchExpr;
-
-// Individual branch of a `match` expression
-// Eg: `when 0..3 ==> ...`
+// `match x { when 0..3 => ...  }`
 typedef struct {
     AstNode* expr;
     Vec* branches;
     bool any_branches_are_ranges; // if any branch is a range-based match
+} AstNodeMatchExpr;
+
+// Individual branch of a `match` expression
+// Eg: `when <cond> => ...`
+typedef struct {
+    AstNode* cond_node;   // <cond>
+    AstNode* block_node;  // the `...` in the above example
 } AstNodeMatchBranchExpr;
 
 typedef struct {

@@ -40,5 +40,6 @@ typedef struct Parser {
 
 Parser* parser_init(Lexer* lexer);
 AstNode* ast_create_node(AstNodeKind type);
+AstNode* return_result(Parser* parser);
 
 #endif // ADORAD_PARSER_H
