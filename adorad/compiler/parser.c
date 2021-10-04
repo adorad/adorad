@@ -1182,13 +1182,14 @@ static AstNode* ast_parse_builtin_call(Parser* parser) {
 static AstNode* ast_parse_match_expr(Parser* parser) {
     Token* match_kwd = parser_chomp_if(MATCH);
     if(match_kwd == null)
-        ast_expected("`switch` keyword");
+        ast_expected("`match` keyword");
     
     Token* lparen = parser_chomp_if(LPAREN); // this is optional
     AstNode* expr = ast_parse_expr(parser);
     if(expr == null)
         ast_expected("expression");
     Token* rparen = parser_chomp_if(RPAREN); // this is optional
+    
     Token* lbrace = parser_expect_token(RBRACE); // required
 
     // Branches
@@ -1210,7 +1211,7 @@ static AstNode* ast_parse_match_expr(Parser* parser) {
 }
 
 // MatchBranch
-//      KEYWORD(when) MatchClause (COLON? / EQUALS_ARROW?) AssignmentExpr
+//      KEYWORD(when) MatchClause (COLON? / EQUALS_ARROW?) (AssignmentExpr / BlockExpr)
 // where MatchClause is:
 //      Expr (DOT_DOT Expr)?
 static AstNode* ast_parse_match_branch(Parser* parser) {
@@ -1218,7 +1219,8 @@ static AstNode* ast_parse_match_branch(Parser* parser) {
     if(when_kwd == null)
         ast_expected("`when` keyword");
 
-    AstNode* node = ast_parse_match_clause(parser);   // "when" in `when <cond>` or `when <cond1>, <cond2>...`
+    // MatchClause
+    AstNode* node = ast_parse_match_clause(parser);
     CORETEN_ENFORCE(node->kind == AstNodeKindMatchBranch);
     if(node == null)
         return null;
@@ -1233,60 +1235,43 @@ static AstNode* ast_parse_match_branch(Parser* parser) {
         if(expr == null)
             ast_expected("An assignment/block expression after the `when` clause");
     }
-    node->data.expr->match_branch_expr->block_node = node;
-    node->data.expr->match_branch_expr->expr = expr;
 
+    node->data.expr->match_branch_expr->block_node = expr;
     return node;
 }
 
 // MatchCase
-//      | MatchItem (COMMA MatchItem)* COMMA?
-//      | KEYWORD(else)
+//      Expr (DDOT Expr)*
 static AstNode* ast_parse_match_clause(Parser* parser) {
-    AstNode* match_item = ast_parse_match_item(parser);
-    if(match_item != null) {
-        AstNode* node = ast_create_node(AstNodeKindMatchBranch);
-        vec_push(node->data.expr->match_branch_expr->branches, match_item);
-
-        Token* comma;
-        while((comma = parser_chomp_if(COMMA)) != null) {
-            AstNode* item = ast_parse_match_item(parser);
-            if(item == null)
-                break;
-            
-            vec_push(node->data.expr->match_branch_expr->branches, item);
-            node->data.expr->match_branch_expr->any_branches_are_ranges = cast(bool)(item->kind == AstNodeKindMatchRange);
-        }
-
-        return node;
-    }
-
-    Token* else_kwd = parser_chomp_if(ELSE);
-    if(else_kwd != null) {
-        AstNode* node = ast_create_node(AstNodeKindMatchBranch);
-        return node;
-    }
-
-    return null;
-}
-
-// MatchItem
-//      Expr (ELLIPSIS Expr)?
-static AstNode* ast_parse_match_item(Parser* parser) {
     AstNode* expr = ast_parse_expr(parser);
-    if(expr == null)
+    if(expr == null) {
+        WARN("Expression is null");
         return null;
-    
-    Token* ellipsis = parser_chomp_if(ELLIPSIS);
-    if(ellipsis != null) {
-        AstNode* expr2 = ast_parse_expr(parser);
-        AstNode* node = ast_create_node(AstNodeKindMatchRange);
-        node->data.expr->match_range_expr->begin = expr;
-        node->data.expr->match_range_expr->end = expr2;
-        return node;
     }
 
-    return expr;
+    AstNode* out = ast_create_node(AstNodeKindMatchBranch);
+    out->data.expr->match_branch_expr->is_range = false;
+    AstNode* cond_node = expr;
+
+    Token* dot_dot = parser_chomp_if(DDOT);
+    if(dot_dot != null) {
+        // Range-based
+        AstNode* expr2 = ast_parse_expr(parser);
+        if(expr2 == null)
+            ast_expected("Expected expression after `..`");
+
+        AstNode* range = ast_create_node(AstNodeKindMatchRange);
+        range->data.expr->match_range_expr->begin = expr;
+        range->data.expr->match_range_expr->end = expr2;
+        cond_node = range;
+        out->data.expr->match_branch_expr->is_range = true;
+    }
+    
+    out->data.expr->match_branch_expr->cond_node = cond_node;
+
+    CORETEN_ENFORCE(parser_peek_next(parser)->kind == EQUALS_ARROW, "Expected `=>` after expression.");
+
+    return out;
 }
 
 // BreakLabel

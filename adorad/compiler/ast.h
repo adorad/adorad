@@ -200,7 +200,7 @@ typedef struct {
 
 // `match x { when 0..3 => ...  }`
 typedef struct {
-    AstNode* expr;
+    AstNode* expr;  // `x`
     Vec* branches;
     bool any_branches_are_ranges; // if any branch is a range-based match
 } AstNodeMatchExpr;
@@ -208,6 +208,8 @@ typedef struct {
 // Individual branch of a `match` expression
 // Eg: `when <cond> => ...`
 typedef struct {
+    // If range-based
+    bool is_range;
     AstNode* cond_node;   // <cond>
     AstNode* block_node;  // the `...` in the above example
 } AstNodeMatchBranchExpr;
