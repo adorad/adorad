@@ -14,7 +14,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #ifndef ADORAD_TYPES_H 
 #define ADORAD_TYPES_H 
 
-// list of Data types/ used in the Adorad Programming Language
+// list of Data types used in the Adorad Programming Language
 typedef enum {
     AdoradTypeAny, 
     AdoradTypeNull, 

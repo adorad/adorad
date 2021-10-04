@@ -12,7 +12,7 @@
 #define parser_expect_token(kind)   expect_token(parser, kind)
 
 #define ast_error(...)              panic(ErrorParseError, __VA_ARGS__)
-#define ast_expected(...)           (ast_error("Expected %s; got `%s`", __VA_ARGS__, tokenHash[pc->kind]))
+#define ast_expected(...)           (ast_error("Expected %s; got `%s`", (__VA_ARGS__), tokenHash[pc->kind]))
 #define ast_unexpected(...)         (panic(ErrorUnexpectedToken, __VA_ARGS__))
 
 #ifdef ADORAD_DEBUG
@@ -82,7 +82,7 @@ static inline Token* expect_token(Parser* parser, TokenKind tokenkind) {
     if(parser->curr_tok->kind == tokenkind)
         return parser_chomp(1);
         
-    ast_expected("`%s`", tokenHash[tokenkind]);
+    ast_error("Expected `%s`; got `%s`", tokenHash[tokenkind], tokenHash[pc->kind]);
 }
 
 AstNode* ast_create_node(AstNodeKind kind) {
@@ -101,7 +101,7 @@ static AstNode* ast_parse_match_item(Parser* parser);
 static AstNode* ast_parse_builtin_call(Parser* parser);
 static AstNode* ast_parse_struct_decl(Parser* parser);
 static AstNode* ast_parse_enum_decl(Parser* parser);
-static AstNode* ast_parse_match_when(Parser* );
+static AstNode* ast_parse_match_clause(Parser* );
 static AstNode* ast_parse_match_branch(Parser* parser);
 static AstNode* ast_parse_match_expr(Parser* parser);
 static AstNode* ast_parse_primary_type_expr(Parser* parser);
@@ -122,8 +122,8 @@ static AstNode* ast_parse_loop_inf_expr(Parser* parser);
 static AstNode* ast_parse_loop_expr(Parser* parser);
 static AstNode* ast_parse_labeled_statement(Parser* parser);
 static AstNode* ast_parse_if_expr(Parser* parser);
-// static AstNode* ast_parse_container_members(pars);
 static AstNode* ast_parse_statement(Parser* parser);
+static AstNode* ast_parse_toplevel_comptime_expr(Parser* parser);
 static AstNode* ast_parse_param_list(Parser* parser, bool* is_variadic);
 static AstNode* ast_parse_func_decl(Parser* parser);
 static AstNode* ast_parse_variable_decl(Parser* parser);
@@ -135,12 +135,14 @@ static AstNode* ast_parse_toplevel_decl(Parser* parser);
 // TopLevelDecl
 //      | ModuleStatement
 //      | ImportStatement
-//      | KEYWORD(alias) Expr
-//      | ATTRIBUTE(comptime) (Expr / BlockExpr)
-//      | KEYWORD(export)? VariableDecl
-//      | (ATTRIBUTE(INLINE) / ATTRIBUTE(NOINLINE) / ATTRIBUTE(NORETURN))? FuncDecl
+//      | AliasExpr
+//      | TopLevelComptime
+//      | VariableDecl
+//      | FuncDecl
 //      | StructDecl
 //      | EnumDecl
+// where `TopLevelComptime` is
+//      ATTRIBUTE(comptime) BlockExpr
 static AstNode* ast_parse_toplevel_decl(Parser* parser) {
     AstNode* module = ast_parse_module_statement(parser);
     if(module != null)
@@ -148,13 +150,13 @@ static AstNode* ast_parse_toplevel_decl(Parser* parser) {
     
     AstNode* import = ast_parse_import_statement(parser);
     if(import != null)
-        return null;
+        return import;
     
     AstNode* alias = ast_parse_alias_decl(parser);
     if(alias != null)
         return alias;
     
-    AstNode* comptime = ast_parse_attribute_expr(parser, ATTR_COMPTIME);
+    AstNode* comptime = ast_parse_toplevel_comptime_expr(parser);
     if(comptime != null)
         return comptime;
 
@@ -166,9 +168,13 @@ static AstNode* ast_parse_toplevel_decl(Parser* parser) {
     if(func_decl != null)
         return func_decl;
     
-    AstNode* container_decl = ast_parse_container_decl(parser);
-    if(container_decl != null)
-        return container_decl;
+    AstNode* struct_decl = ast_parse_struct_decl(parser);
+    if(struct_decl != null)
+        return struct_decl;
+
+    AstNode* enum_decl = ast_parse_enum_decl(parser);
+    if(enum_decl != null)
+        return enum_decl;
     
     return null;
 }
@@ -226,7 +232,7 @@ static AstNode* ast_parse_alias_decl(Parser* parser) {
     
     Token* aliased = parser_chomp_if(IDENTIFIER);
     if(aliased == null)
-        ast_expected("an alias for identifier `%s`", original->value);
+        ast_expected("an alias for identifier");
     
     Token* semicolon = parser_chomp_if(SEMICOLON); // this is optional
 
@@ -251,7 +257,7 @@ static AstNode* ast_parse_variable_decl(Parser* parser) {
             ast_expected("a type. Use `any` to let the compiler infer the type");
     }
 
-    Token* identifier = parser_chomp_if(parser);
+    Token* identifier = parser_chomp_if(IDENTIFIER);
     if(identifier == null)
         ast_expected("an identifier");
     
@@ -302,7 +308,7 @@ static AstNode* ast_parse_func_decl(Parser* parser) {
     if(token_is_attribute(pc->kind))
         ast_error("Can only have one attribute decorating a function");
 
-func_no_attrs:
+func_no_attrs:;
     Token* export_kwd = parser_chomp_if(EXPORT);
     Token* func_kwd = parser_chomp_if(FUNC);
     if(func_kwd == null)
@@ -350,6 +356,24 @@ func_no_attrs:
     node->data.decl->func_decl->is_noinline = is_noinline;
 
     return node;
+}
+
+// TopLevelComptime
+//      ATTRIBUTE(comptime) BlockExpr
+static AstNode* ast_parse_toplevel_comptime_expr(Parser* parser) {
+    Token* comptime_attr = parser_chomp_if(ATTR_COMPTIME);
+    if(comptime_attr == null)
+        return null;
+    
+    Token* lbrace = parser_chomp_if(LBRACE);
+    if(lbrace = null)
+        ast_expected("Left brace `{`");
+
+    AstNode* block = ast_parse_block_expr(parser);
+
+    AstNode* out = ast_create_node(AstNodeKindTopLevelComptime);
+    out->data.toplevel_comptime_expr->expr = block;
+    return out;
 }
 
 // ParamList
@@ -419,49 +443,6 @@ static AstNode* ast_parse_statement(Parser* parser) {
     WARN("Hmmm could not parse a suitable statement. Returning null");
     return null;
 }
-
-/*
-// ContainerMembers
-//      ContainerDeclarations (ContainerField COMMA)* (ContainerField / ConstainerDeclarations)
-// ContainerDeclarations
-//      | TestDecl ContainerDeclarations
-//      | TopLevelComptime ContainerDeclarations
-//      | KEYWORD(export)? TopLevelDecl ContainerDeclarations
-// TopLevelComptime
-//      ATTRIBUTE(comptime) BlockExpr
-static AstNode* ast_parse_container_members(pars) {
-    while(true) {
-        switch(pc->kind) {
-            case ATTR_COMPTIME:
-                Token* comptime_attr = parser_chomp(1);
-                switch(pc->kind) {
-                    // // Currently, a top-level comptime decl is as follows:
-                    // //      `[comptime] { ... }`
-                    // // TODO: Support single statements as well, like
-                    // //      `[comptime] UInt32 i = 2` 
-                    // case IDENTIFIER:
-                    //     pc += 1;
-                    case LBRACE:
-                        AstNode* block = ast_parse_block(parser);
-                        if(block != null) {
-                            AstNode* node = ast_create_node(AstNodeKindAttributeExpr);
-                            node->data.expr->attr_expr->kind = AttributeKindCompileTime;
-                            node->data.expr->attr_expr->expr = block;
-                            nodepush(out);
-                        }
-                        break;
-                    default:
-                        ast_error("Expected a `[comptime]` block");
-                }
-                break;
-            
-            // TODO: Handle more toplevel decls
-            default:
-                unreachable();
-        } // switch(pc->kind)
-    } // while(true)
-}
-*/
 
 static AstNode* ast_parse_struct_decl(Parser* parser) {
     CORETEN_ENFORCE(false, "TODO");
@@ -820,9 +801,10 @@ static AstNode* ast_parse_prefix_expr(Parser* parser) {
 //      LSQUAREBRACK Expr (COLON Expr)? RSQUAREBRACK
 static AstNode* ast_parse_type_expr(Parser* parser) {
     AstNode* node = null;
+    AstNode* expr = null;
     switch(pc->kind) {
         case QUESTION:
-            AstNode* expr = ast_parse_expr(parser);
+            expr = ast_parse_expr(parser);
             if(expr == null)
                 ast_error("expression");
             node = ast_create_node(AstNodeKindPrefixOpExpr);
@@ -844,30 +826,33 @@ static AstNode* ast_parse_type_expr(Parser* parser) {
 //      | BlockLabel? ATTRIBUTE(inline)? LoopExpr
 //      | Block
 static AstNode* ast_parse_primary_expr(Parser* parser) {
+    AstNode* node = null;
+    AstNode* expr = null;
+    Token* label = null;
     switch(pc->kind) {
         case IF: return ast_parse_if_expr(parser);
         case BREAK: 
             parser_chomp(1);
-            Token* label = ast_parse_break_label(parser);
-            AstNode* expr = ast_parse_expr(parser);
+            label = ast_parse_break_label(parser);
+            expr = ast_parse_expr(parser);
 
-            AstNode* node = ast_create_node(AstNodeKindBreak);
+            node = ast_create_node(AstNodeKindBreak);
             node->data.stmt->branch_stmt->type = AstNodeBranchStatementBreak;
             node->data.stmt->branch_stmt->name = label != null ? label->value : null;
             node->data.stmt->branch_stmt->expr = expr;
             return node;
         case CONTINUE:
             parser_chomp(1);
-            Token* label = ast_parse_break_label(parser);
-            AstNode* node = ast_create_node(AstNodeKindBreak);
+            label = ast_parse_break_label(parser);
+            node = ast_create_node(AstNodeKindBreak);
             node->data.stmt->branch_stmt->type = AstNodeBranchStatementContinue;
             node->data.stmt->branch_stmt->name = label != null ? label->value : null;
             node->data.stmt->branch_stmt->expr = null;
             return node;
         case ATTR_COMPTIME:
             parser_chomp(1);
-            AstNode* node = ast_create_node(AstNodeKindAttributeExpr);
-            AstNode* expr = ast_parse_expr(parser);
+            node = ast_create_node(AstNodeKindAttributeExpr);
+            expr = ast_parse_expr(parser);
             if(expr == null)
                 ast_expected("expression");
             
@@ -875,8 +860,8 @@ static AstNode* ast_parse_primary_expr(Parser* parser) {
             return node;
         case RETURN:
             parser_chomp(1);
-            AstNode* node = ast_create_node(AstNodeKindReturn);
-            AstNode* expr = ast_parse_expr(parser);
+            node = ast_create_node(AstNodeKindReturn);
+            expr = ast_parse_expr(parser);
             node->data.stmt->return_stmt->expr = expr;
             return node;
         case IDENTIFIER:

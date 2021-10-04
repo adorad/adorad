@@ -86,6 +86,7 @@ enum AstNodeKind {
     AstNodeKindMatchBranch,
     AstNodeKindMatchRange,
     AstNodeKindOptional,
+    AstNodeKindTopLevelComptime,
 };
 
 typedef enum {
@@ -677,6 +678,10 @@ typedef struct {
     Buff* field_name;
 } AstNodeFieldAccessExpr;
 
+typedef struct {
+    AstNode* expr;
+} AstNodeTopLevelComptime;
+
 struct AstNode {
     AstNodeKind kind; // type of AST Node
     Loc* loc;
@@ -698,6 +703,7 @@ struct AstNode {
         AstNodeInferredArrayType* inferred_array_type;
         AstNodeArrayType* array_type;
         AstNodeFieldAccessExpr* field_access_expr;
+        AstNodeTopLevelComptime* toplevel_comptime_expr;
     } data;
 };
 
