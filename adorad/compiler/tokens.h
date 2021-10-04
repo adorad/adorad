@@ -220,7 +220,7 @@ typedef enum TokenKind {
     #undef TOKENKIND
 } TokenKind;
 
-extern const char* tokenHash[TOK_COUNT];
+extern const char* tokenHash[TOK_COUNT + 1];
 
 // Main Token Struct 
 typedef struct Token {

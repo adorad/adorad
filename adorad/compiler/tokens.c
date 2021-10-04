@@ -14,7 +14,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #include <stdlib.h>
 #include <adorad/compiler/tokens.h>
 
-const char* tokenHash[TOK_COUNT] = {
+const char* tokenHash[TOK_COUNT + 1] = {
     #define TOKENKIND(kind, str)    str
         ALLTOKENS
     #undef TOKENKIND

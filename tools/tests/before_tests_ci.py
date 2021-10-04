@@ -87,7 +87,7 @@ def main():
                     ## TODO: Find a better implementation that just targets declarations
                     # s = s.replace(' inline ', '')
                     # s = s.replace('inline ', '')
-                    s = s.replace('extern ', '')
+                    # s = s.replace('extern ', '')
                     s = s.replace('"C" {', 'extern "C" {')
 
                 s = s.replace('// "C"', '// extern "C"')

@@ -383,14 +383,13 @@ typedef struct {
 
 // Function or Method Declaration
 typedef struct {
-    Buff* name;
     Buff* module;         // name of the module
-    Vec* params;
+    Buff* name;
+    AstNode* params;
     AstNode* body;        // can be nullptr for no-body functions (just declarations)
     AstNode* return_type;
     Buff* parent_type;    // the `type` of which the function belongs to (null, if not a method)
-    bool is_variadic;     // variadic arguments
-    bool is_generic;
+    // bool is_generic;      // TODO
 
     bool is_main;         // true for `func main()`
     bool is_test;         // true for `func test_yyy()`

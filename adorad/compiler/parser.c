@@ -124,6 +124,7 @@ static AstNode* ast_parse_labeled_statement(Parser* parser);
 static AstNode* ast_parse_if_expr(Parser* parser);
 static AstNode* ast_parse_statement(Parser* parser);
 static AstNode* ast_parse_toplevel_comptime_expr(Parser* parser);
+static AstNode* ast_parse_param_decl(Parser* parser);
 static AstNode* ast_parse_param_list(Parser* parser, bool* is_variadic);
 static AstNode* ast_parse_func_decl(Parser* parser);
 static AstNode* ast_parse_variable_decl(Parser* parser);
@@ -316,7 +317,8 @@ func_no_attrs:;
     
     bool is_variadic = false;
     Token* identifier = parser_chomp_if(IDENTIFIER);
-    Vec* params = ast_parse_param_list(parser, &is_variadic);
+    AstNode* params = ast_parse_param_list(parser, &is_variadic);
+    
     Token* larrow = parser_chomp_if(LARROW);
     AstNode* return_type_expr = ast_parse_type_expr(parser);
     if(return_type_expr == null)
@@ -344,12 +346,12 @@ func_no_attrs:;
     node->data.decl->func_decl->name = identifier->value;
     node->data.decl->func_decl->params = params;
     node->data.decl->func_decl->return_type = return_type_expr;
+    node->data.decl->func_decl->no_body = no_body;
     node->data.decl->func_decl->body = body;
     node->data.decl->func_decl->params = params;
     node->data.decl->func_decl->visibility = export_kwd != null ? VisibilityModePublic : VisibilityModePrivate;
 
     // Attributes
-    node->data.decl->func_decl->is_variadic = is_variadic;
     node->data.decl->func_decl->is_comptime = is_comptime;
     node->data.decl->func_decl->is_noreturn = is_noreturn;
     node->data.decl->func_decl->is_inline = is_inline;
@@ -366,7 +368,7 @@ static AstNode* ast_parse_toplevel_comptime_expr(Parser* parser) {
         return null;
     
     Token* lbrace = parser_chomp_if(LBRACE);
-    if(lbrace = null)
+    if(lbrace == null)
         ast_expected("Left brace `{`");
 
     AstNode* block = ast_parse_block_expr(parser);
@@ -408,8 +410,15 @@ static AstNode* ast_parse_param_list(Parser* parser, bool* is_variadic) {
     AstNode* node = ast_create_node(AstNodeKindParamList);
     node->data.param_list->is_variadic = cast(bool)seen_varargs;
     node->data.param_list->params = params;
-    is_variadic = seen_varargs;
+    node->data.param_list->is_variadic = seen_varargs;
+    *is_variadic = seen_varargs;
     return node;
+}
+
+// ParamDecl
+static AstNode* ast_parse_param_decl(Parser* parser) {
+    CORETEN_ENFORCE(false, "TODO");
+    return null;
 }
 
 // Statement
@@ -495,7 +504,7 @@ static AstNode* ast_parse_if_expr(Parser* parser) {
     AstNode* else_body = null;
     Token* else_kwd = parser_chomp_if(ELSE);
     if(else_kwd != null)
-        else_body = body_parser(parser);
+        else_body = ast_parse_block_expr(parser);
     
     if(else_body == null and semicolon == null)  
         ast_expected("Semicolon or `else` block");
@@ -967,7 +976,7 @@ static AstNode* ast_parse_brace_suffix_expr(Parser* parser) {
     }
 
     AstNode* node = ast_create_node(AstNodeKindArrayInitExpr);
-    node->data.expr->init_expr->type = InitExprKindArray;
+    node->data.expr->init_expr->kind = InitExprKindArray;
 
     AstNode* expr = ast_parse_expr(parser);
     if(expr != null) {
