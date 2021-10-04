@@ -1755,12 +1755,12 @@ cstlVector* _vec_new(UInt64 objsize, UInt64 capacity) {
     cstlVector* vec = cast(cstlVector*)calloc(1, sizeof(cstlVector));
     CORETEN_ENFORCE_NN(vec, "Could not allocate memory. Memory full.");
 
-    vec->internal.data = cast(void*)calloc(objsize, capacity);
-    CORETEN_ENFORCE_NN(vec->internal.data, "Could not allocate memory. Memory full.");
+    vec->core.data = cast(void*)calloc(objsize, capacity);
+    CORETEN_ENFORCE_NN(vec->core.data, "Could not allocate memory. Memory full.");
 
-    vec->internal.capacity = capacity;
-    vec->internal.len = 0;
-    vec->internal.objsize = objsize;
+    vec->core.capacity = capacity;
+    vec->core.len = 0;
+    vec->core.objsize = objsize;
 
     return vec;
 } 
@@ -1768,8 +1768,8 @@ cstlVector* _vec_new(UInt64 objsize, UInt64 capacity) {
 // Free a cstlVector from it's associated memory
 void vec_free(cstlVector* vec) {
     if(vec != null) {
-        if(vec->internal.data != null)
-            free(vec->internal.data);
+        if(vec->core.data != null)
+            free(vec->core.data);
         free(vec);
     }
 }
@@ -1777,9 +1777,9 @@ void vec_free(cstlVector* vec) {
 // Return a pointer to element `i` in `vec`
 void* vec_at(cstlVector* vec, UInt64 elem) {
     CORETEN_ENFORCE_NN(vec, "Expected not null");
-    CORETEN_ENFORCE_NN(vec->internal.data, "Expected not null");
+    CORETEN_ENFORCE_NN(vec->core.data, "Expected not null");
 
-    if(elem > vec->internal.len)
+    if(elem > vec->core.len)
         return null;
 
     return VECTOR_AT_MACRO(vec, elem);
@@ -1788,87 +1788,87 @@ void* vec_at(cstlVector* vec, UInt64 elem) {
 // Return a pointer to first element in `vec`
 void* vec_begin(cstlVector* vec) {
     CORETEN_ENFORCE_NN(vec, "Expected not null");
-    CORETEN_ENFORCE_NN(vec->internal.data, "Expected not null");
+    CORETEN_ENFORCE_NN(vec->core.data, "Expected not null");
 
-    if(vec->internal.len == 0) 
+    if(vec->core.len == 0) 
         return null;
     
-    return vec->internal.data;
+    return vec->core.data;
 }
 
 // Return a pointer to last element in `vec`
 void* vec_end(cstlVector* vec) {
     CORETEN_ENFORCE_NN(vec, "Expected not null");
-    CORETEN_ENFORCE_NN(vec->internal.data, "Expected not null");
+    CORETEN_ENFORCE_NN(vec->core.data, "Expected not null");
 
-    if(vec->internal.data == 0)
+    if(vec->core.data == 0)
         return null;
     
-    return (void*)(cast(char*)vec->internal.data + (vec->internal.len - 1) * sizeof(cstlVector));
+    return (void*)(cast(char*)vec->core.data + (vec->core.len - 1) * sizeof(cstlVector));
 }
 
 // Is `vec` empty?
 bool vec_is_empty(cstlVector* vec) {
     CORETEN_ENFORCE_NN(vec, "Expected not null");
-    CORETEN_ENFORCE_NN(vec->internal.data, "Expected not null");
+    CORETEN_ENFORCE_NN(vec->core.data, "Expected not null");
 
-    return vec->internal.len == 0;
+    return vec->core.len == 0;
 }
 
 // Returns the size of `vec` (i.e the number of bytes)
 UInt64 vec_size(cstlVector* vec) {
     CORETEN_ENFORCE_NN(vec, "Expected not null");
-    CORETEN_ENFORCE_NN(vec->internal.data, "Expected not null");
+    CORETEN_ENFORCE_NN(vec->core.data, "Expected not null");
 
-    return vec->internal.len;
+    return vec->core.len;
 }
 
 // Returns the allocated capacity of `vec` (i.e the number of bytes)
 UInt64 vec_cap(cstlVector* vec) {
     CORETEN_ENFORCE_NN(vec, "Expected not null");
-    CORETEN_ENFORCE_NN(vec->internal.data, "Expected not null");
+    CORETEN_ENFORCE_NN(vec->core.data, "Expected not null");
 
-    return vec->internal.capacity;
+    return vec->core.capacity;
 }
 
 // Clear all contents of `vec`
 bool vec_clear(cstlVector* vec) {
     CORETEN_ENFORCE_NN(vec, "Expected not null");
-    CORETEN_ENFORCE_NN(vec->internal.data, "Expected not null");
+    CORETEN_ENFORCE_NN(vec->core.data, "Expected not null");
 
-    vec->internal.len = 0;
+    vec->core.len = 0;
     return true;
 }
 
 // Push an element into `vec` (at the end)
 bool vec_push(cstlVector* vec, const void* data) {
     CORETEN_ENFORCE_NN(vec, "Expected not null");
-    CORETEN_ENFORCE_NN(vec->internal.data, "Expected not null");
+    CORETEN_ENFORCE_NN(vec->core.data, "Expected not null");
 
-    if(vec->internal.len + 1 > vec->internal.capacity) {
-        bool result = __vec_grow(vec, vec->internal.len + 1);
+    if(vec->core.len + 1 > vec->core.capacity) {
+        bool result = __vec_grow(vec, vec->core.len + 1);
         if(!result)
             return false;
     }
 
-    CORETEN_ENFORCE(vec->internal.objsize > 0);
+    CORETEN_ENFORCE(vec->core.objsize > 0);
 
-    if(vec->internal.data != null)
-        memcpy(VECTOR_AT_MACRO(vec, vec->internal.len), data, vec->internal.objsize);
+    if(vec->core.data != null)
+        memcpy(VECTOR_AT_MACRO(vec, vec->core.len), data, vec->core.objsize);
 
-    vec->internal.len++;
+    vec->core.len++;
     return true;
 }
 
 // Pop an element from the end of `vec`
 bool vec_pop(cstlVector* vec) {
     CORETEN_ENFORCE_NN(vec, "Expected not null");
-    CORETEN_ENFORCE_NN(vec->internal.data, "Expected not null");
+    CORETEN_ENFORCE_NN(vec->core.data, "Expected not null");
 
-    if(vec->internal.len == 0) 
+    if(vec->core.len == 0) 
         return false;
     
-    vec->internal.len--;
+    vec->core.len--;
     return true;
 }
 
@@ -1879,29 +1879,29 @@ bool __vec_grow(cstlVector* vec, UInt64 capacity) {
     UInt64 newcapacity;
 
     CORETEN_ENFORCE_NN(vec, "Expected not null");
-    CORETEN_ENFORCE_NN(vec->internal.data, "Expected not null");
+    CORETEN_ENFORCE_NN(vec->core.data, "Expected not null");
 
-    if (capacity <= vec->internal.capacity)
+    if (capacity <= vec->core.capacity)
         return true;
 
-    CORETEN_ENFORCE(vec->internal.objsize > 0);
-    CORETEN_ENFORCE(capacity < cast(UInt64)-1/vec->internal.objsize);
+    CORETEN_ENFORCE(vec->core.objsize > 0);
+    CORETEN_ENFORCE(capacity < cast(UInt64)-1/vec->core.objsize);
 
     // Grow small vectors by a factor of 2, and 1.5 for larger ones
-    if (vec->internal.capacity < VEC_INIT_ALLOC_CAP / vec->internal.objsize) {
-        newcapacity = vec->internal.capacity + vec->internal.capacity + 1;
+    if (vec->core.capacity < VEC_INIT_ALLOC_CAP / vec->core.objsize) {
+        newcapacity = vec->core.capacity + vec->core.capacity + 1;
     } else {
-        newcapacity = vec->internal.capacity + vec->internal.capacity / 2 + 1;
+        newcapacity = vec->core.capacity + vec->core.capacity / 2 + 1;
     }
 
-    if (capacity > newcapacity or newcapacity >= (size_t) -1 / vec->internal.objsize)
+    if (capacity > newcapacity or newcapacity >= (size_t) -1 / vec->core.objsize)
         newcapacity = capacity;
 
-    newdata = realloc(vec->internal.data, newcapacity * vec->internal.objsize);
+    newdata = realloc(vec->core.data, newcapacity * vec->core.objsize);
     CORETEN_ENFORCE_NN(newdata, "Expected not null");
 
-    vec->internal.data = newdata;
-    vec->internal.capacity = newcapacity;
+    vec->core.data = newdata;
+    vec->core.capacity = newcapacity;
 
     return true;
 }
