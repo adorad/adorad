@@ -39,17 +39,21 @@ Fruits = enum {
 
 func main() {
     parser = parser_new()
-    parser := parser_new()
     if parser == nil
         print("nil value")
     loop {
         match parser.curr_tok {
-            when '\n' ==> ...
-            when '\v' ==> ...
-            default ==> ...
+            when "\n" => ...
+            when "\v" => ...
+            default => ...
         }
     } // loop
 }
 
 // Aliases
 alias Fruits as DeliciousFruits
+
+// Comptime Block
+[comptime] {
+    <statements>
+}
