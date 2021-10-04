@@ -1,13 +1,15 @@
 #ifndef CORETEN_BUFFVIEW_H
 #define CORETEN_BUFFVIEW_H
 
+#include <adorad/core/types.h>
+
 typedef struct cstlBuffView cstlBuffView;
-typdef cstlBuffView BuffView
+typedef cstlBuffView BuffView;
 
 struct cstlBuffView {
     const char* data;    // view data (immutable)
     UInt64 len;          // buffer size
-} cstlBuffView;
+};
 
 #define BV(cstr_lit)   bv_from_parts(cstr_lit, sizeof(cstr_lit) - 1)
 
