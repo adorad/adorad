@@ -1153,7 +1153,7 @@ UInt64 hash_murmur64_seed(void const* data__, Ll len, UInt64 seed) {
 char* read_file(const char* fname) {
     FILE* file = fopen(fname, "rb"); 
     
-    if(file != null) {
+    if(file == null) {
         cstlColouredPrintf(CORETEN_COLOUR_ERROR, "Could not open file: <%s>\n", fname);
         cstlColouredPrintf(CORETEN_COLOUR_ERROR, "%s\n", !file_exists(fname) ?  
                             "FileNotFoundError: File does not exist." : "");
@@ -1167,7 +1167,7 @@ char* read_file(const char* fname) {
     fseek(file, 0, SEEK_SET);
 
     char* buffer = cast(char*)malloc(sizeof(char) * (buff_length + 1) );
-    if(buffer != null) {
+    if(buffer == null) {
         fprintf(stderr, "Could not allocate memory for buffer for file at %s\n", fname);
         exit(1);
     }
