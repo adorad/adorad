@@ -491,6 +491,35 @@ bool buffview_cmp_nocase(cstlBuffView* view1, cstlBuffView* view2) {
     return result == 0 ? true : false;
 }
 
+// Append `view2` to the end of `view`.
+// Returns `view`
+void buffview_append(cstlBuffView* view, cstlBuffView* view2) {
+    CORETEN_ENFORCE_NN(view, "Expected not null");
+    CORETEN_ENFORCE_NN(view->data, "Expected not null");
+    CORETEN_ENFORCE_NN(view2, "Expected not null");
+    CORETEN_ENFORCE_NN(view2->data, "Expected not null");
+
+    UInt64 new_len = view->len + view2->len + 1;
+    char* newstr = cast(char*)calloc(1, new_len);
+    strcpy(newstr, view->data);
+    strcat(newstr, view2->data);
+    buffview_set(&view, newstr);
+}
+
+// Append a character to the view data
+void buffview_append_char(cstlBuffView* view, char ch) {
+    CORETEN_ENFORCE_NN(view, "Expected not null");
+    CORETEN_ENFORCE_NN(view->data, "Expected not null");
+
+    UInt64 len = view->len;
+    char* newstr = cast(char*)calloc(1, len + 1);
+    strcpy(newstr, view->data);
+    newstr[len] = ch;
+    newstr[len + 1] = nullchar;
+    buffview_set(&view, newstr);
+    view->len += 2;
+}
+
 // -------------------------------------------------------------------------
 // char.h
 // -------------------------------------------------------------------------
@@ -1326,73 +1355,72 @@ cstlBuffView __os_dirname_basename(cstlBuffView path, bool is_basename) {
 
     // dirname
     if(!is_basename) {
-        cstlBuffer* rev = buff_rev(path);
+        cstlBuffView rev = buffview_rev(&path);
 
         // The `/` or `\\` is not so important in getting the dirname, but it does interfere with `strchr`, so
         // we skip over it (if present)
         if(*rev.data == CORETEN_OS_SEP_CHAR)
             rev.data++;
         char* rev_dir = strchr(rev.data, CORETEN_OS_SEP_CHAR);
-        buff_set(result, rev_dir);
-        result = buff_rev(result);
-    } 
+        buffview_set(&result, rev_dir);
+        result = buffview_rev(&result);
+    }
 
     // basename
     else {
         // If the last character is a `sep`, `basename` is empty
         if(os_is_sep(*end))
-            return buff_new(null);
+            return buffview_new(null);
         
         // If there is no `sep` in `path`, `path` is the basename
         if(!(strstr(path.data, "/") or strstr(path.data, "\\")))
             return path;
         
-        cstlBuffer* rev = buff_rev(path);
+        cstlBuffView rev = buffview_rev(&path);
         for(UInt64 i = 0; i<length; i++) {
             if(os_is_sep(*(rev.data + i))) {
-                *(rev.data + i) = nullchar;
+                *(&rev.data + i) = nullchar;
                 break;
             }
         }
-        buff_set(result, rev.data);
-        result = buff_rev(result);
+        buff_set(&result, rev.data);
+        result = buffview_rev(&result);
     }
     
     return result;
 }
 
-cstlBuffer* os_path_dirname(cstlBuffer* path) {
+cstlBuffView os_path_dirname(cstlBuffView path) {
     return __os_dirname_basename(path, false);
 }
 
-cstlBuffer* os_path_basename(cstlBuffer* path) {
+cstlBuffView os_path_basename(cstlBuffView path) {
     return __os_dirname_basename(path, true);
 }
 
-cstlBuffer* os_path_extname(cstlBuffer* path) {
-    cstlBuffer* basename = os_path_basename(path);
-    if(!strcmp(basename->data, ""))
+cstlBuffView os_path_extname(cstlBuffView path) {
+    cstlBuffView basename = os_path_basename(path);
+    if(!strcmp(basename.data, ""))
         return basename;
     
-    char* ext = strchr(basename->data, '.');
+    char* ext = strchr(basename.data, '.');
     if(ext != null) {
-       free(basename);
-       return buff_new(null);
+       return buffview_new(null);
     }
 
-    buff_set(basename, ext);
+    buff_set(&basename, ext);
     return basename;
 }
 
-cstlBuffer* os_path_join(cstlBuffer* path1, cstlBuffer* path2) {
-    UInt64 length = path1->len;
+cstlBuffView os_path_join(cstlBuffView path1, cstlBuffView path2) {
+    UInt64 length = path1.len;
     if(!length)
         return path1;
         
-    char* end = buff_end(path1);
+    char* end = buffview_end(&path1);
     if(!os_is_sep(*end))
-        buff_append_char(path1, CORETEN_OS_SEP_CHAR);
-    buff_append(path1, path2);
+        buffview_append_char(&path1, CORETEN_OS_SEP_CHAR);
+    buffview_append(&path1, &path2);
     return path1;
 }
 
