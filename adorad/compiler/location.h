@@ -25,7 +25,7 @@ struct Location {
     Buff* fname;
 };
 
-Location* loc_new(char* fname);
+Location* loc_new(const char* fname);
 void loc_reset(Location* loc);
 void loc_free(Location* loc);
 

@@ -1272,13 +1272,16 @@ Float32 coreten_arctan2(Float32 x, Float32 y) {
 
 Float32 coreten_exp(Float32 x) {
     union { Float32 f; int i; } u, v;
-    u.i = (int)(6051102 * x + 1056478197);
-    v.i = (int)(1056478197 - 6051102 * x);
+    u.i = cast(int)(6051102 * x + 1056478197);
+    v.i = cast(int)(1056478197 - 6051102 * x);
     return u.f / v.f;
 }
 
 Float32 coreten_log(Float32 x) {
-    union { Float32 f; int i; } u = {x};
+    union { 
+        Float32 f; 
+        int i; 
+    } u = {x};
     return (u.i - 1064866805) * 8.262958405176314e-8f; // 1 / 12102203.0;
 }
 

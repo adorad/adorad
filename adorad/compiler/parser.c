@@ -83,6 +83,7 @@ static inline Token* expect_token(Parser* parser, TokenKind tokenkind) {
         return parser_chomp(1);
         
     ast_error("Expected `%s`; got `%s`", tokenHash[tokenkind], tokenHash[pc->kind]);
+    return null; // Clang complains despite this point never being reached
 }
 
 AstNode* ast_create_node(AstNodeKind kind) {
@@ -721,6 +722,7 @@ static ast_prec lookup_precedence(TokenKind kind) {
             return precedence_table[i];
     }
     ast_error("Expected a valid assignment token op");
+    return null; // Clang complains despite this point never being reached
 }
 
 static AstNode* ast_parse_precedence(Parser* parser, UInt8 min_prec) {
@@ -906,6 +908,7 @@ static AstNode* ast_parse_primary_expr(Parser* parser) {
             ast_error("Invalid parser pattern");
     } // switch(pc->kind)
     ast_error("Invalid parser pattern");
+    return null; // Clang complains despite this point never being reached
 }
 
 // Block

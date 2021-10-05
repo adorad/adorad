@@ -117,6 +117,7 @@ if(NOT MSVC)
         string(APPEND CMAKE_C_FLAGS " -Wno-newline-eof")
         string(APPEND CMAKE_C_FLAGS " -Wno-reserved-id-macro")
         string(APPEND CMAKE_C_FLAGS " -Wno-deprecated-declarations")
+        string(APPEND CMAKE_C_FLAGS " -Wno-microsoft-enum-forward-reference")
     endif()
 
     string(APPEND CMAKE_C_FLAGS " -Wall")
