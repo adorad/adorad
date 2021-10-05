@@ -34,26 +34,9 @@ cstlBuffer* buff_new(char* buff_data) {
     cstlBuffer* buffer = cast(cstlBuffer*)calloc(1, sizeof(cstlBuffer));
     CORETEN_ENFORCE_NN(buffer, "Could not allocate memory. Memory full.");
 
-    // buffer->is_utf8 = false;
     buff_set(buffer, buff_data);
 
     return buffer;
-}
-
-// Returns a Stack object as opposed to a pointer
-cstlBuffer buffview_new(char* buff_data) {
-    cstlBuffer view;
-    view.data = buff_data;
-    view.len = __internal_strlength(cast(const)buff_data);
-    return view;
-}
-
-// Returns a Stack object as opposed to a pointer
-cstlBuffer buffview_new_from_len(char* buff_data, UInt64 len) {
-    cstlBuffer view;
-    view.data = buff_data;
-    view.len = len;
-    return view;
 }
 
 // Return the n'th character in the buffer data
@@ -392,16 +375,104 @@ cstlBuffer* buff_toupper(cstlBuffer* buffer) {
     return upper;
 }
 
-// -------------------------------------------------------------------------
-// buffview.h
-// -------------------------------------------------------------------------
-// Don't declare these as pointers.
-// Let the stack manage this memory for us.
-cstlBuffView buffview_new(const char* data, UInt64 len) {
-    cstlBuffView out;
-    out.data = data;
-    out.len = len;
-    return out;
+/*
+    cstlBuffView
+*/
+// Returns a Stack object as opposed to a pointer
+cstlBuffView buffview_new(char* buff_data) {
+    cstlBuffView view;
+    buffview_set(&view, buff_data);
+
+    return view;
+}
+
+// Returns a Stack object as opposed to a pointer
+cstlBuffView buffview_new_from_len(char* buff_data, UInt64 len) {
+    cstlBuffView view;
+    view.data = buff_data;
+    view.len = len;
+    return view;
+}
+
+// Non-destructive reverse of a buffer view
+cstlBuffView buffview_rev(cstlBuffView* view) {
+    cstlBuffView rev = buffview_new(null);
+    UInt64 length = view->len;
+    if(!length)
+        return rev;
+    
+    char* temp = cast(char*)calloc(1, length + 1);
+    for(UInt64 i=0; i<length; i++)
+        *(temp + i) = *(view->data + length - i - 1);
+    
+    buffview_set(&rev, temp);
+    return rev;
+}
+
+// Assign `new_data` to the view data
+void buffview_set(cstlBuffView* view, char* new_data) {
+    CORETEN_ENFORCE_NN(view, "Expected not null");
+
+    UInt64 len;
+    if(!new_data) {
+        len = 0;
+        new_data = "";
+    } else {
+        len = cast(UInt64)__internal_strlength(new_data);
+    }
+
+    view->data = new_data;
+    view->len = len;
+}
+
+char buffview_at(cstlBuffView* view, UInt64 n) {
+    CORETEN_ENFORCE_NN(view, "Expected not null");
+    CORETEN_ENFORCE_NN(view->data, "Expected not null");
+
+    if(n >= view->len)
+        return nullchar;
+    
+    return (char)view->data[n];
+}
+
+// Compare two BuffViews (case-sensitive)
+// Returns true if `view1` is lexicographically equal to `view2`
+bool buffview_cmp(cstlBuffView* view1, cstlBuffView* view2) {
+    if(view1->len != view2->len)
+        return false;
+    
+    const unsigned char* s1 = cast(const unsigned char*) view1->data;
+    const unsigned char* s2 = cast(const unsigned char*) view2->data;
+    unsigned char ch1, ch2;
+
+    do {
+        ch1 = cast(unsigned char) *s1++;
+        ch2 = cast(unsigned char) *s2++;
+        if(ch1 == nullchar)
+            return (ch1 - ch2) == 0 ? true : false;
+    } while(ch1 == ch2);
+
+    return (ch1 - ch2) == 0 ? true : false;
+}
+
+// Compare two BuffViews (ignoring case)
+// Returns true if `view1` is lexicographically equal to `view2`
+bool buffview_cmp_nocase(cstlBuffView* view1, cstlBuffView* view2) {
+    if(view1->len != view2->len)
+        return false;
+    
+    const unsigned char* s1 = cast(const unsigned char*) view1->data;
+    const unsigned char* s2 = cast(const unsigned char*) view2->data;
+    int result;
+
+    if(s1 == s2)
+        return true;
+    
+    while((result = char_to_lower(*s1) - char_to_lower(*s2++)) == 0) {
+        if(*s1++ == nullchar)
+            break;
+    }
+    return result == 0 ? true : false;
 }
 
 // -------------------------------------------------------------------------
@@ -1234,12 +1305,12 @@ cstlBuffView __os_dirname_basename(cstlBuffView path, bool is_basename) {
     if(!length)
         return path;
 
-    cstlBuffer* result = buff_new(null);
+    cstlBuffView result = buffview_new(null);
     char* end = buffview_end(&path);
 
     // dirname
     if(!is_basename) {
-        cstlBuffView rev = buff_rev(path);
+        cstlBuffer* rev = buff_rev(path);
 
         // The `/` or `\\` is not so important in getting the dirname, but it does interfere with `strchr`, so
         // we skip over it (if present)

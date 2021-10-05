@@ -22,10 +22,15 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 /*
     A `cstlBuffer` is a Fixed-Size Buffer.
     It works like a string, except that the actual type is just a pointer to the first `char` element
+    with `len` describing its length.
 */
 
 typedef struct cstlBuffer cstlBuffer;
 typedef cstlBuffer Buff;
+// These are usually when you want stack objects.
+// Isn't any different from `cstlBuffer`, but it makes it easier to read.
+typedef cstlBuffer cstlBuffView;
+typedef cstlBuffer BuffView;
 
 struct cstlBuffer {
     char* data;    // buffer data
@@ -38,8 +43,6 @@ struct cstlBuffer {
 #define BV_ARG(bv)    (int)(bv).len, (bv).data
 
 cstlBuffer* buff_new(char* buff_data);
-cstlBuffer buffview_new(char* buff_data); // returns a stack object
-cstlBuffer buffview_new_from_len(char* buff_data, UInt64 len); // returns a stack object
 char buff_at(cstlBuffer* buffer, UInt64 n);
 char* buff_begin(cstlBuffer* buffer);
 char* buff_end(cstlBuffer* buffer);
@@ -57,5 +60,13 @@ cstlBuffer* buff_slice(cstlBuffer* buffer, int begin, int bytes);
 void buff_free(cstlBuffer* buffer);
 cstlBuffer* buff_toupper(cstlBuffer* buffer);
 cstlBuffer* buff_tolower(cstlBuffer* buffer);
+
+cstlBuffView buffview_new(char* data); // returns a stack object
+cstlBuffView buffview_new_from_len(char* data, UInt64 len); // returns a stack object
+char buffview_at(cstlBuffView* view, UInt64 n);
+cstlBuffView buffview_rev(cstlBuffView* view);
+void buffview_set(cstlBuffView* view, char* data);
+bool buffview_cmp(cstlBuffView* view1, cstlBuffView* view2);
+bool buffview_cmp_nocase(cstlBuffView* view1, cstlBuffView* view2);
 
 #endif // CORETEN_BUFFER_H
