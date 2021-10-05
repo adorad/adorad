@@ -40,6 +40,22 @@ cstlBuffer* buff_new(char* buff_data) {
     return buffer;
 }
 
+// Returns a Stack object as opposed to a pointer
+cstlBuffer buffview_new(char* buff_data) {
+    cstlBuffer view;
+    view.data = buff_data;
+    view.len = __internal_strlength(cast(const)buff_data);
+    return view;
+}
+
+// Returns a Stack object as opposed to a pointer
+cstlBuffer buffview_new_from_len(char* buff_data, UInt64 len) {
+    cstlBuffer view;
+    view.data = buff_data;
+    view.len = len;
+    return view;
+}
+
 // Return the n'th character in the buffer data
 char buff_at(cstlBuffer* buffer, UInt64 n) {
     CORETEN_ENFORCE_NN(buffer, "Expected not null");

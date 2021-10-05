@@ -32,8 +32,14 @@ struct cstlBuffer {
     UInt64 len;    // buffer size
     // bool is_utf8;  // UTF-8 Strings
 };
+ 
+#define BV(cstr)      buffview_new_from_len(cstr, sizeof(cstr) - 1)
+#define BV_FMT        "%.*s"
+#define BV_ARG(bv)    (int)(bv).len, (bv).data
 
 cstlBuffer* buff_new(char* buff_data);
+cstlBuffer buffview_new(char* buff_data); // returns a stack object
+cstlBuffer buffview_new_from_len(char* buff_data, UInt64 len); // returns a stack object
 char buff_at(cstlBuffer* buffer, UInt64 n);
 char* buff_begin(cstlBuffer* buffer);
 char* buff_end(cstlBuffer* buffer);
