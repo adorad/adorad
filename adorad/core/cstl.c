@@ -1432,7 +1432,7 @@ bool os_is_sep(char ch) {
 #endif // CORETEN_OS_WINDOWS
 }
 
-bool os_path_is_abs(cstlBuffer* path) {
+bool os_path_is_abs(cstlBuffView* path) {
     bool result = false;
     CORETEN_ENFORCE_NN(path, "Cannot do anything useful on a null path :(");
 #ifdef CORETEN_OS_WINDOWS
@@ -1447,11 +1447,11 @@ bool os_path_is_abs(cstlBuffer* path) {
     return cast(bool)result;
 }
 
-bool os_path_is_rel(cstlBuffer* path) {
+bool os_path_is_rel(cstlBuffView* path) {
     return cast(bool) !os_path_is_abs(path);
 }
 
-bool os_path_is_root(cstlBuffer* path) {
+bool os_path_is_root(cstlBuffView* path) {
     bool result = false;
     CORETEN_ENFORCE_NN(path, "Cannot do anything useful on a null path :(");
 #ifdef CORETEN_OS_WINDOWS

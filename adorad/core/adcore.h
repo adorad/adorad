@@ -66,7 +66,6 @@ CREDITS
 #include <adorad/core/math.h>
 #include <adorad/core/os.h>
 #include <adorad/core/buffer.h>
-#include <adorad/core/buffview.h>
 #include <adorad/core/char.h>
 #include <adorad/core/utf8.h>
 #include <adorad/core/vector.h>

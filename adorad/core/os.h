@@ -26,13 +26,13 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 #endif // CORETEN_OS_WINDOWS
 
 cstlBuffer* os_get_cwd();
-cstlBuffer* os_path_dirname(cstlBuffer* path);
-cstlBuffer* os_path_extname(cstlBuffer* path);
-cstlBuffer* os_path_join(cstlBuffer* path1, cstlBuffer* path2);
+cstlBuffView os_path_dirname(cstlBuffView path);
+cstlBuffView os_path_extname(cstlBuffView path);
+cstlBuffView os_path_join(cstlBuffView path1, cstlBuffView path2);
 bool os_is_sep(char ch);
-bool os_path_is_abs(cstlBuffer* path);
-bool os_path_is_rel(cstlBuffer* path);
-bool os_path_is_root(cstlBuffer* path);
+bool os_path_is_abs(cstlBuffView* path);
+bool os_path_is_rel(cstlBuffView* path);
+bool os_path_is_root(cstlBuffView* path);
 
 #ifndef CORETEN_OS_FUNC_ALIASES
     #define CORETEN_OS_FUNC_ALIASES
