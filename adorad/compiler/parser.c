@@ -65,7 +65,7 @@ static inline Token* chomp(Parser* parser, UInt64 n) {
 
 // Consumes a token and moves on to the next, if the current token matches the expected token.
 static inline Token* chomp_if(Parser* parser, TokenKind tokenkind) {
-    if((parser->curr_tok + 1) != null && (parser->curr_tok + 1)->kind == tokenkind)
+    if((parser->curr_tok + 1) isnot null && (parser->curr_tok + 1)->kind == tokenkind)
         return chomp(parser, 1);
 
     return null;
@@ -146,35 +146,35 @@ static AstNode* ast_parse_toplevel_decl(Parser* parser);
 //      ATTRIBUTE(comptime) BlockExpr
 static AstNode* ast_parse_toplevel_decl(Parser* parser) {
     AstNode* module = ast_parse_module_statement(parser);
-    if(module != null)
+    if(module isnot null)
         return module;
     
     AstNode* import = ast_parse_import_statement(parser);
-    if(import != null)
+    if(import isnot null)
         return import;
     
     AstNode* alias = ast_parse_alias_decl(parser);
-    if(alias != null)
+    if(alias isnot null)
         return alias;
     
     AstNode* comptime = ast_parse_toplevel_comptime_expr(parser);
-    if(comptime != null)
+    if(comptime isnot null)
         return comptime;
 
     AstNode* variable = ast_parse_variable_decl(parser);
-    if(variable != null)
+    if(variable isnot null)
         return variable;
 
     AstNode* func_decl = ast_parse_func_decl(parser);
-    if(func_decl != null)
+    if(func_decl isnot null)
         return func_decl;
     
     AstNode* struct_decl = ast_parse_struct_decl(parser);
-    if(struct_decl != null)
+    if(struct_decl isnot null)
         return struct_decl;
 
     AstNode* enum_decl = ast_parse_enum_decl(parser);
-    if(enum_decl != null)
+    if(enum_decl isnot null)
         return enum_decl;
     
     return null;
@@ -264,7 +264,7 @@ static AstNode* ast_parse_variable_decl(Parser* parser) {
     
     Token* equals = parser_chomp_if(EQUALS);
     AstNode* init_expr = null;
-    if(equals != null) {
+    if(equals isnot null) {
         // Expect an expression
         init_expr = ast_parse_expr(parser);
     }
@@ -275,9 +275,9 @@ static AstNode* ast_parse_variable_decl(Parser* parser) {
     node->data.scope_obj->var->name = identifier->value;
     node->data.scope_obj->var->init_expr = init_expr;
     node->data.scope_obj->var->is_local = !parser->is_in_global_context;
-    node->data.scope_obj->var->is_comptime = cast(bool)(comptime_attr != null);
-    node->data.scope_obj->var->is_mutable = cast(bool)(mutable_kwd != null);
-    node->data.scope_obj->var->visibility = export_kwd != null ? VisibilityModePublic : VisibilityModePrivate;
+    node->data.scope_obj->var->is_comptime = cast(bool)(comptime_attr isnot null);
+    node->data.scope_obj->var->is_mutable = cast(bool)(mutable_kwd isnot null);
+    node->data.scope_obj->var->visibility = export_kwd isnot null ? VisibilityModePublic : VisibilityModePrivate;
     return node;
 }
 
@@ -323,7 +323,7 @@ func_no_attrs:;
     AstNode* return_type_expr = ast_parse_type_expr(parser);
     if(return_type_expr == null)
         ast_expected("Return type expression. Use `void` if your function doesn't return anything");
-    if(larrow == null and return_type_expr != null)
+    if(larrow == null and return_type_expr isnot null)
         ast_expected("trailing `->` after function prototype");
     
     bool no_body = false;
@@ -349,7 +349,7 @@ func_no_attrs:;
     node->data.decl->func_decl->no_body = no_body;
     node->data.decl->func_decl->body = body;
     node->data.decl->func_decl->params = params;
-    node->data.decl->func_decl->visibility = export_kwd != null ? VisibilityModePublic : VisibilityModePrivate;
+    node->data.decl->func_decl->visibility = export_kwd isnot null ? VisibilityModePublic : VisibilityModePrivate;
 
     // Attributes
     node->data.decl->func_decl->is_comptime = is_comptime;
@@ -388,7 +388,7 @@ static AstNode* ast_parse_param_list(Parser* parser, bool* is_variadic) {
         if(parser_chomp_if(RPAREN) == null)
             break;
         AstNode* param = ast_parse_param_decl(parser);
-        if(param != null) {
+        if(param isnot null) {
             vec_push(params, param);
         } else if((pc - 1)->kind == ELLIPSIS) {
             seen_varargs = true;
@@ -430,23 +430,23 @@ static AstNode* ast_parse_param_decl(Parser* parser) {
 //      | AssignmentExpr SEMICOLON?
 static AstNode* ast_parse_statement(Parser* parser) {
     AstNode* var_decl = ast_parse_variable_decl(parser);
-    if(var_decl != null)
+    if(var_decl isnot null)
         return var_decl;
     
     AstNode* block_expr = ast_parse_block_expr(parser);
-    if(block_expr != null)
+    if(block_expr isnot null)
         return block_expr;
     
     AstNode* if_expr = ast_parse_if_expr(parser);
-    if(if_expr != null)
+    if(if_expr isnot null)
         return if_expr;
     
     AstNode* match_expr = ast_parse_match_expr(parser);
-    if(match_expr != null)
+    if(match_expr isnot null)
         return match_expr;
     
     AstNode* assignment_expr = ast_parse_assignment_expr(parser);
-    if(assignment_expr != null)
+    if(assignment_expr isnot null)
         return assignment_expr;
     
     WARN("Hmmm could not parse a suitable statement. Returning null");
@@ -479,9 +479,9 @@ static AstNode* ast_parse_if_expr(Parser* parser) {
         ast_expected("condition");
     Token* rparen = parser_chomp_if(RPAREN); // this is optional
 
-    if(lparen != null and rparen == null)
+    if(lparen isnot null and rparen == null)
         ast_expected("closing `(`");
-    if(lparen == null and rparen != null)
+    if(lparen == null and rparen isnot null)
         ast_error("Extra `)` token not expected at this point");
     
     AstNode* if_body = null;
@@ -493,9 +493,9 @@ static AstNode* ast_parse_if_expr(Parser* parser) {
             ast_expected("block / assignment expression");
     }
 
-    if(block_expr != null)
+    if(block_expr isnot null)
         if_body = block_expr;
-    if(assignment_expr != null)
+    if(assignment_expr isnot null)
         if_body = assignment_expr;
 
     // If a semicolon is here, chomp it
@@ -503,7 +503,7 @@ static AstNode* ast_parse_if_expr(Parser* parser) {
     
     AstNode* else_body = null;
     Token* else_kwd = parser_chomp_if(ELSE);
-    if(else_kwd != null)
+    if(else_kwd isnot null)
         else_body = ast_parse_block_expr(parser);
     
     if(else_body == null and semicolon == null)  
@@ -512,7 +512,7 @@ static AstNode* ast_parse_if_expr(Parser* parser) {
     AstNode* node = ast_create_node(AstNodeKindIfExpr);
     node->data.expr->if_expr->condition = condition;
     node->data.expr->if_expr->if_body = if_body;
-    node->data.expr->if_expr->has_else = else_body != null;
+    node->data.expr->if_expr->has_else = else_body isnot null;
     node->data.expr->if_expr->else_node = else_body;
     return node;
 }
@@ -525,18 +525,18 @@ static AstNode* ast_parse_labeled_statement(Parser* parser) {
         ast_expected("Label");
 
     AstNode* block = ast_parse_block_expr(parser);
-    if(block != null) {
-        block->data.stmt->block_stmt->label = label != null ? label->value : null;
+    if(block isnot null) {
+        block->data.stmt->block_stmt->label = label isnot null ? label->value : null;
         return block;
     }
 
     AstNode* loop_statement = ast_parse_loop_expr(parser);
-    if(loop_statement != null) {
-        loop_statement->data.expr->loop_expr->label = label != null ? label->value : null;
+    if(loop_statement isnot null) {
+        loop_statement->data.expr->loop_expr->label = label isnot null ? label->value : null;
         return loop_statement;
     }
 
-    if(label != null)
+    if(label isnot null)
         ast_expected("either a block or loop statement");
 
     return null;
@@ -549,19 +549,19 @@ static AstNode* ast_parse_loop_expr(Parser* parser) {
     AstNode* node = null;
 
     AstNode* loop_inf_expr = ast_parse_loop_inf_expr(parser);
-    if(loop_inf_expr != null) {
+    if(loop_inf_expr isnot null) {
         node = loop_inf_expr;
         goto outexpect;
     }
 
     AstNode* loop_c_expr = ast_parse_loop_c_expr(parser);
-    if(loop_c_expr != null) {
+    if(loop_c_expr isnot null) {
         node = loop_c_expr;
         goto outexpect;
     }
 
     AstNode* loop_in_expr = ast_parse_loop_in_expr(parser);
-    if(loop_in_expr != null) {
+    if(loop_in_expr isnot null) {
         node = loop_in_expr;
         goto outexpect;
     }
@@ -570,7 +570,7 @@ outexpect:
     if(node == null)
         ast_expected("loop expression");
 
-    node->data.expr->loop_expr->is_inline = cast(bool)(inline_attr != null);
+    node->data.expr->loop_expr->is_inline = cast(bool)(inline_attr isnot null);
     return node;
 }
 
@@ -600,11 +600,11 @@ static AstNode* ast_parse_loop_in_expr(Parser* parser) {
 //      | AssignmentExpr SEMICOLON?
 static AstNode* ast_parse_block_expr_statement(Parser* parser) {
     AstNode* block_expr = ast_parse_block_expr(parser);
-    if(block_expr != null)
+    if(block_expr isnot null)
         return block_expr;
     
     AstNode* assignment_expr = ast_parse_assignment_expr(parser);
-    if(assignment_expr != null) {
+    if(assignment_expr isnot null) {
         Token* semicolon = parser_chomp_if(SEMICOLON);
         return assignment_expr;
     }
@@ -847,7 +847,7 @@ static AstNode* ast_parse_primary_expr(Parser* parser) {
 
             node = ast_create_node(AstNodeKindBreak);
             node->data.stmt->branch_stmt->type = AstNodeBranchStatementBreak;
-            node->data.stmt->branch_stmt->name = label != null ? label->value : null;
+            node->data.stmt->branch_stmt->name = label isnot null ? label->value : null;
             node->data.stmt->branch_stmt->expr = expr;
             return node;
         case CONTINUE:
@@ -855,7 +855,7 @@ static AstNode* ast_parse_primary_expr(Parser* parser) {
             label = ast_parse_break_label(parser);
             node = ast_create_node(AstNodeKindBreak);
             node->data.stmt->branch_stmt->type = AstNodeBranchStatementContinue;
-            node->data.stmt->branch_stmt->name = label != null ? label->value : null;
+            node->data.stmt->branch_stmt->name = label isnot null ? label->value : null;
             node->data.stmt->branch_stmt->expr = null;
             return node;
         case ATTR_COMPTIME:
@@ -917,7 +917,7 @@ static AstNode* ast_parse_block(Parser* parser) {
 
     Vec* statements = vec_new(AstNode, 1);
     AstNode* statement = null;
-    while((statement = ast_parse_statement(parser)) != null)
+    while((statement = ast_parse_statement(parser)) isnot null)
         vec_push(statements, statement);
 
     Token* rbrace = parser_chomp_if(RBRACE);
@@ -947,7 +947,7 @@ static AstNode* ast_parse_brace_suffix_expr(Parser* parser) {
     
     Vec* fields = null;
     AstNode* field_init = ast_parse_field_init(parser);
-    if(field_init != null) {
+    if(field_init isnot null) {
         fields = vec_new(AstNode, 1);
         vec_push(fields, field_init);
         while(true) {
@@ -961,7 +961,7 @@ static AstNode* ast_parse_brace_suffix_expr(Parser* parser) {
                     WARN("missing comma");
             }
             Token* rbrace = parser_chomp_if(RBRACE);
-            if(rbrace != null)
+            if(rbrace isnot null)
                 break;
             AstNode* field_init = ast_parse_field_init(parser);
             if(field_init == null)
@@ -979,11 +979,11 @@ static AstNode* ast_parse_brace_suffix_expr(Parser* parser) {
     node->data.expr->init_expr->kind = InitExprKindArray;
 
     AstNode* expr = ast_parse_expr(parser);
-    if(expr != null) {
+    if(expr isnot null) {
         Vec* fields = vec_new(AstNode, 1);
         vec_push(fields, expr);
         Token* comma = null;
-        while(pc->kind != COMMA) {
+        while(pc->kind isnot COMMA) {
             AstNode* exp = ast_parse_expr(parser);
             if(exp == null)
                 break;
@@ -1025,7 +1025,7 @@ static AstNode* ast_parse_suffix_expr(Parser* parser) {
 
     Vec* params = vec_new(AstNode, 1);
     AstNode* param = null;
-    while(parser_chomp(1)->kind != RPAREN) {
+    while(parser_chomp(1)->kind isnot RPAREN) {
         param = ast_parse_expr(parser);
         if(param == null)
             break;
@@ -1193,7 +1193,7 @@ static AstNode* ast_parse_match_expr(Parser* parser) {
     Vec* branches = vec_new(AstNode, 1);
     do {
         vec_push(branches, branch_node);
-    } while((branch_node = ast_parse_match_branch(parser)) != null);
+    } while((branch_node = ast_parse_match_branch(parser)) isnot null);
 
     // Parse any trailing comma
     Token* comma = parser_chomp_if(COMMA);
@@ -1248,7 +1248,7 @@ static AstNode* ast_parse_match_clause(Parser* parser) {
     AstNode* cond_node = expr;
 
     Token* dot_dot = parser_chomp_if(DDOT);
-    if(dot_dot != null) {
+    if(dot_dot isnot null) {
         // Range-based
         AstNode* expr2 = ast_parse_expr(parser);
         if(expr2 == null)
@@ -1313,15 +1313,15 @@ static AstNode* ast_parse_field_init(Parser* parser) {
 //      | DOT IDENTIFIER
 static AstNode* ast_parse_suffix_op(Parser* parser) {
     Token* lbrace = parser_chomp_if(LBRACE);
-    if(lbrace != null) {
+    if(lbrace isnot null) {
         AstNode* lower = ast_parse_expr(parser);
         AstNode* upper = null;
         Token* ellipsis = parser_chomp_if(ELLIPSIS);
-        if(ellipsis != null) {
+        if(ellipsis isnot null) {
             AstNode* sentinel = null;
             upper = ast_parse_expr(parser);
             Token* colon = parser_chomp_if(COLON);
-            if(colon != null) {
+            if(colon isnot null) {
                 sentinel = ast_parse_expr(parser);
             }
             Token* rbrace = parser_expect_token(RBRACE);
@@ -1341,7 +1341,7 @@ static AstNode* ast_parse_suffix_op(Parser* parser) {
     }
 
     Token* dot = parser_chomp_if(DOT);
-    if(dot != null) {
+    if(dot isnot null) {
         Token* identifier = parser_expect_token(IDENTIFIER);
         AstNode* node = ast_create_node(AstNodeKindFieldAccessExpr);
         node->data.field_access_expr->field_name = identifier->value;
