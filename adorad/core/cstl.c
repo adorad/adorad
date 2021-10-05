@@ -87,7 +87,7 @@ static UInt32 __internal_strlength(const char* str) {
 
         // Handle the first few characters by reading one character at a time.
         // Do this until CHAR_PTR is aligned on a longword boundary.
-        for(char_ptr = str; (cast(unsigned long int)char_ptr & (sizeof(longword) - 1)) isnot 0; ++char_ptr) {
+        for(char_ptr = str; (cast(unsigned long int)char_ptr & (sizeof(longword) - 1)) != 0; ++char_ptr) {
             if (*char_ptr is nullchar)
                 return char_ptr - str;
         }
@@ -119,7 +119,7 @@ static UInt32 __internal_strlength(const char* str) {
         for(;;) {
             longword = *longword_ptr++;
 
-            if (((longword - lomagic) & ~longword & himagic) isnot 0) {
+            if (((longword - lomagic) & ~longword & himagic) != 0) {
                 // Which of the bytes was the zero?  If none of them were, it was a misfire; continue the search.
                 const char* cp = cast(const char* )(longword_ptr - 1);
 
@@ -241,7 +241,7 @@ cstlBuffer* buff_rev(cstlBuffer* buffer) {
 // Compare two buffers (case-sensitive)
 // Returns true if `buff1` is lexicographically equal to `buff2`
 bool buff_cmp(cstlBuffer* buff1, cstlBuffer* buff2) {
-    if(buff1->len isnot buff2->len)
+    if(buff1->len != buff2->len)
         return false;
     
     const unsigned char* s1 = cast(const unsigned char*) buff1->data;
@@ -261,7 +261,7 @@ bool buff_cmp(cstlBuffer* buff1, cstlBuffer* buff2) {
 // Compare two buffers (ignoring case)
 // Returns true if `buff1` is lexicographically equal to `buff2`
 bool buff_cmp_nocase(cstlBuffer* buff1, cstlBuffer* buff2) {
-    if(buff1->len isnot buff2->len)
+    if(buff1->len != buff2->len)
         return false;
     
     const unsigned char* s1 = cast(const unsigned char*) buff1->data;
@@ -331,7 +331,7 @@ cstlBuffer* buff_clone_n(cstlBuffer* buffer, int n) {
 
 // Free the buffer from its associated memory
 void buff_free(cstlBuffer* buffer) {
-    if(buffer isnot null)
+    if(buffer != null)
         free(buffer);
 }
 
@@ -454,7 +454,7 @@ char* buffview_end(cstlBuffView* view) {
 // Compare two BuffViews (case-sensitive)
 // Returns true if `view1` is lexicographically equal to `view2`
 bool buffview_cmp(cstlBuffView* view1, cstlBuffView* view2) {
-    if(view1->len isnot view2->len)
+    if(view1->len != view2->len)
         return false;
     
     const unsigned char* s1 = cast(const unsigned char*) view1->data;
@@ -474,7 +474,7 @@ bool buffview_cmp(cstlBuffView* view1, cstlBuffView* view2) {
 // Compare two BuffViews (ignoring case)
 // Returns true if `view1` is lexicographically equal to `view2`
 bool buffview_cmp_nocase(cstlBuffView* view1, cstlBuffView* view2) {
-    if(view1->len isnot view2->len)
+    if(view1->len != view2->len)
         return false;
     
     const unsigned char* s1 = cast(const unsigned char*) view1->data;
@@ -603,7 +603,7 @@ Int32 hexdigit_to_int(char c) {
 }
 
 char* char_first_occurence(char* str, char ch) {
-    for(; *str isnot ch; str++) {
+    for(; *str != ch; str++) {
         if(*str is nullchar)
             return null; // didn't find a `ch`
     }
@@ -683,7 +683,7 @@ cstlColouredPrintf(int colour, const char* fmt, ...) {
                                                    FOREGROUND_INTENSITY; break;
             default:                        attr = 0; break;
         }
-        if(attr isnot 0)
+        if(attr != 0)
             SetConsoleTextAttribute(h, attr);
         n = printf("%s", buffer);
         SetConsoleTextAttribute(h, info.wAttributes);
@@ -1044,7 +1044,7 @@ UInt64 hash_murmur64_seed(void const* data__, Ll len, UInt64 seed) {
     UInt8  const* data2 = cast(UInt8 const* )data__;
     UInt64 const* end = data + (len / 8);
 
-    while(data isnot end) {
+    while(data != end) {
         UInt64 k = *data++;
 
         k *= m;
@@ -1181,7 +1181,7 @@ char* read_file(const char* fname) {
 
 bool file_exists(const char* path) {
 #ifdef WIN32
-    if (GetFileAttributesA(path) isnot INVALID_FILE_ATTRIBUTES) return true;
+    if (GetFileAttributesA(path) != INVALID_FILE_ATTRIBUTES) return true;
 #else
     // if(access(path, 0) is 0) return true;
     struct stat st;
@@ -1329,7 +1329,7 @@ cstlBuffView os_get_cwd() {
     char *buf;
 
     n = pathconf(".", _PC_PATH_MAX);
-    CORETEN_ENFORCE(n isnot -1);
+    CORETEN_ENFORCE(n != -1);
     buf = cast(char*)calloc(n, sizeof(*buf));
     CORETEN_ENFORCE_NN(buf, "calloc failed. Out of memory");
     char* result = getcwd(buf, n);
@@ -1404,7 +1404,7 @@ cstlBuffView os_path_extname(cstlBuffView path) {
         return basename;
     
     char* ext = strchr(basename.data, '.');
-    if(ext isnot null) {
+    if(ext != null) {
        return buffview_new(null);
     }
 
@@ -1862,7 +1862,7 @@ Byte ubuff_at(cstlUTF8Str* ubuff, Int64 n) {
     int a[1];
 
     UInt64 byte_offset = 0;
-    while(n isnot 0) {
+    while(n != 0) {
         Byte b = __byte_offset_at(ubuff, byte_offset, a); // we only care about `a`
         byte_offset += cast(UInt64)a;
         --n;
@@ -1897,8 +1897,8 @@ cstlVector* _vec_new(UInt64 objsize, UInt64 capacity) {
 
 // Free a cstlVector from it's associated memory
 void vec_free(cstlVector* vec) {
-    if(vec isnot null) {
-        if(vec->core.data isnot null)
+    if(vec != null) {
+        if(vec->core.data != null)
             free(vec->core.data);
         free(vec);
     }
@@ -1983,7 +1983,7 @@ bool vec_push(cstlVector* vec, const void* data) {
 
     CORETEN_ENFORCE(vec->core.objsize > 0);
 
-    if(vec->core.data isnot null)
+    if(vec->core.data != null)
         memcpy(VECTOR_AT_MACRO(vec, vec->core.len), data, vec->core.objsize);
 
     vec->core.len++;

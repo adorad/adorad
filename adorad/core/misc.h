@@ -145,7 +145,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     #define or      ||
     #define is      ==
     #define not     !
-    #define isnot   !=
+    #define !=   !=
 #endif // BIN_OP_TYPES
 
 #ifndef CORETEN_GLOBAL

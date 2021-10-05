@@ -97,7 +97,7 @@ static void lexer_toklist_push(Lexer* lexer, Token* token) {
 }
 
 static void lexer_free(Lexer* lexer) {
-    if(lexer isnot null) {
+    if(lexer != null) {
         vec_free(lexer->toklist);
         buff_free(lexer->buffer);
         loc_free(lexer->loc);
@@ -210,7 +210,7 @@ static inline void lex_sl_comment(Lexer* lexer) {
     LOG("Inside lex_sl_comment()");
     char ch = lexer_advance();
 
-    while(ch isnot nullchar and ch isnot '\n') {
+    while(ch != nullchar and ch != '\n') {
         ch = lexer_advance();
     }
 
@@ -227,7 +227,7 @@ static inline void lex_ml_comment(Lexer* lexer) {
     bool asterisk_found = false; 
     while(ch and !(ch is '/' and asterisk_found)) {
         asterisk_found = false; 
-        while(ch and (ch isnot '*'))
+        while(ch and (ch != '*'))
             ch = lexer_advance();
         
         if(ch is '*')
@@ -243,7 +243,7 @@ static inline void lex_char(Lexer* lexer) {
     LOG("Inside lex_char()");
 
     char ch = lexer_advance();
-    if(ch isnot nullchar) {
+    if(ch != nullchar) {
         LEXER_INCREMENT_OFFSET;
         if(ch is '\n') {
             LEXER_INCREMENT_LINENO;
@@ -320,7 +320,7 @@ static inline void lex_string(Lexer* lexer) {
 
     // We already know that the curr char is _not_ a quote (`"`) since an empty string token (`""`) is
     // handled by `lexer_lex()`
-    CORETEN_ENFORCE(LEXER_CURR_CHAR isnot '"');
+    CORETEN_ENFORCE(LEXER_CURR_CHAR != '"');
     char ch = lexer_advance();
     int str_length = 0;
     UInt32 prev_offset = lexer->offset - 1;
@@ -328,7 +328,7 @@ static inline void lex_string(Lexer* lexer) {
     UInt32 col = lexer->loc->col;
     lexer->is_inside_str = true;
 
-    while(ch isnot '"') {
+    while(ch != '"') {
         if(ch is '\\') {
             // lexer_lex_esc_char(lexer);
             ch = lexer_advance();
@@ -433,7 +433,7 @@ static inline void lex_attribute(Lexer* lexer) {
                 }
             }
 
-            CORETEN_ENFORCE(kind isnot TOK_NULL, "Compiler error. Expected `kind` to be an attribute");
+            CORETEN_ENFORCE(kind != TOK_NULL, "Compiler error. Expected `kind` to be an attribute");
             
             maketoken(lexer, kind, attr_value, prev_offset - 1, line, col - 1);
 
@@ -561,10 +561,10 @@ static inline void lex_digit(Lexer* lexer) {
         // ch = lexer_advance();
     }
 
-    // CORETEN_ENFORCE(tokenkind isnot TOK_ILLEGAL);
+    // CORETEN_ENFORCE(tokenkind != TOK_ILLEGAL);
 
     int offset_diff = cast(int)(lexer->offset - prev_offset);
-    CORETEN_ENFORCE(offset_diff isnot 0);
+    CORETEN_ENFORCE(offset_diff != 0);
 
     if(digit_length > MAX_TOKEN_LENGTH)
         WARN("A number can never have more than 256 characters");
@@ -691,7 +691,7 @@ static void lexer_lex(Lexer* lexer) {
                 if(lexer->loc->line is 1 and next is '!' and peekn(lexer, 1) is '/') {
                     tokenkind = TOK_NULL;
                     // Skip till end of line
-                    while(LEXER_CURR_CHAR and (LEXER_CURR_CHAR isnot '\n' or LEXER_CURR_CHAR isnot nullchar))
+                    while(LEXER_CURR_CHAR and (LEXER_CURR_CHAR != '\n' or LEXER_CURR_CHAR != nullchar))
                         curr = lexer_advance();
                 }
                 // Comment
