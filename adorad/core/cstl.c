@@ -503,7 +503,7 @@ void buffview_append(cstlBuffView* view, cstlBuffView* view2) {
     char* newstr = cast(char*)calloc(1, new_len);
     strcpy(newstr, view->data);
     strcat(newstr, view2->data);
-    buffview_set(&view, newstr);
+    buffview_set(view, newstr);
 }
 
 // Append a character to the view data
@@ -516,7 +516,7 @@ void buffview_append_char(cstlBuffView* view, char ch) {
     strcpy(newstr, view->data);
     newstr[len] = ch;
     newstr[len + 1] = nullchar;
-    buffview_set(&view, newstr);
+    buffview_set(view, newstr);
     view->len += 2;
 }
 
