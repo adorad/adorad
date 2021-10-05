@@ -1277,7 +1277,7 @@ Float32 coreten_exp(Float32 x) {
     return u.f / v.f;
 }
 
-Float32 coreten_log(Float32 x) {
+Float32 coreten_log(Float32 x) { 
     union { 
         Float32 f; 
         int i; 
