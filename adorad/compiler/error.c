@@ -38,7 +38,6 @@ void panic(Error err, const char* format, ...) {
     vsnprintf(buffer, sizeof(buffer), format, args);
     va_end(args);
     buffer[sizeof(buffer)-1] = '\0';
-    const char* str;
 
     cstlColouredPrintf(CORETEN_COLOUR_ERROR, "%s: ", error_str(err));
     printf("%s\n", buffer);

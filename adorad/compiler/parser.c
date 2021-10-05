@@ -722,7 +722,7 @@ static ast_prec lookup_precedence(TokenKind kind) {
             return precedence_table[i];
     }
     ast_error("Expected a valid assignment token op");
-    return null; // Clang complains despite this point never being reached
+    return cast(ast_prec) {0}; // Clang complains despite this point never being reached
 }
 
 static AstNode* ast_parse_precedence(Parser* parser, UInt8 min_prec) {
