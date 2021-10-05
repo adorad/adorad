@@ -214,7 +214,7 @@ static inline void lex_sl_comment(Lexer* lexer) {
         ch = lexer_advance();
     }
 
-    CORETEN_ENFORCE(ch is '\n');
+    CORETEN_ENFORCE(ch == '\n');
     
     LEXER_DECREMENT_OFFSET;
 }
@@ -225,12 +225,12 @@ static inline void lex_ml_comment(Lexer* lexer) {
 
     char ch = lexer_advance();
     bool asterisk_found = false; 
-    while(ch and !(ch is '/' and asterisk_found)) {
+    while(ch and !(ch == '/' and asterisk_found)) {
         asterisk_found = false; 
         while(ch and (ch != '*'))
             ch = lexer_advance();
         
-        if(ch is '*')
+        if(ch == '*')
             asterisk_found = true;
 
         ch = lexer_advance();
@@ -245,7 +245,7 @@ static inline void lex_char(Lexer* lexer) {
     char ch = lexer_advance();
     if(ch != nullchar) {
         LEXER_INCREMENT_OFFSET;
-        if(ch is '\n') {
+        if(ch == '\n') {
             LEXER_INCREMENT_LINENO;
             LEXER_RESET_COLNO;
         }
@@ -257,7 +257,7 @@ static inline void lex_esc_char(Lexer* lexer) {
     LOG("Inside lex_esc_char()");
     CORETEN_ENFORCE(false, "TODO");
     char ch = lexer_advance();
-    if(ch is '\\') {
+    if(ch == '\\') {
         ch = lexer_advance();
         switch(ch) {
             case 'a':  ch = '\a'; break;
@@ -329,7 +329,7 @@ static inline void lex_string(Lexer* lexer) {
     lexer->is_inside_str = true;
 
     while(ch != '"') {
-        if(ch is '\\') {
+        if(ch == '\\') {
             // lexer_lex_esc_char(lexer);
             ch = lexer_advance();
         } else {
@@ -339,7 +339,7 @@ static inline void lex_string(Lexer* lexer) {
     }
     lexer->is_inside_str = false;
 
-    CORETEN_ENFORCE(ch is '"');
+    CORETEN_ENFORCE(ch == '"');
     UInt32 offset_diff = lexer->offset - prev_offset;
 
     // `offset_diff - 1` so as to ignore the closing quote `"`
@@ -353,7 +353,7 @@ static inline TokenKind is_keyword_or_identifier(char* value) {
     // Search `tokenHash` for a match for `value`. 
     // If we can't find one, we assume an identifier
     for(TokenKind tokenkind = TOK___KEYWORDS_BEGIN + 1; tokenkind < TOK___KEYWORDS_END; tokenkind++)
-        if(strcmp(tokenHash[tokenkind], value) is 0)
+        if(strcmp(tokenHash[tokenkind], value) == 0)
             return tokenkind; // Found a match
 
     // If we're still here, we haven't found a keyword match
@@ -407,7 +407,7 @@ static inline void lex_attribute(Lexer* lexer) {
     int attr_length = 0;
 
     // Skip whitespace
-    while(LEXER_CURR_CHAR is ' ')
+    while(LEXER_CURR_CHAR == ' ')
         lexer_advance();
     
     char ch;
@@ -427,7 +427,7 @@ static inline void lex_attribute(Lexer* lexer) {
             // Determine what kind of attribute this is:
             TokenKind kind = TOK_NULL;
             for(TokenKind i = TOK___ATTRIBUTES_BEGIN; i < TOK___ATTRIBUTES_END; i++) {
-                if(strcmp(attr_value->data, tokenHash[i]) is 0) {
+                if(strcmp(attr_value->data, tokenHash[i]) == 0) {
                     kind = i;
                     break;
                 }
@@ -463,7 +463,7 @@ static inline void lex_digit(Lexer* lexer) {
     CORETEN_ENFORCE(char_is_digit(ch));
     while(char_is_digit(ch)) {
         // Hex, Octal, or Binary?
-        if(ch is '0') {
+        if(ch == '0') {
             ch = lexer_advance();
             switch(ch) {
                 // Hex
@@ -475,7 +475,7 @@ static inline void lex_digit(Lexer* lexer) {
                         ++hexcount; 
                         ch = lexer_advance();
                     }
-                    if(hexcount is 0)
+                    if(hexcount == 0)
                         lexer_error(ErrorSyntaxError, "Expected hexadecimal digits [0-9A-Fa-f] after `0x`");
                     
                     tokenkind = HEX_INT;
@@ -490,7 +490,7 @@ static inline void lex_digit(Lexer* lexer) {
                         ++bincount; 
                         ch = lexer_advance();
                     }
-                    if(bincount is 0)
+                    if(bincount == 0)
                         lexer_error(ErrorSyntaxError, "Expected binary digit [0-1] after `0b`");
                     
                     tokenkind = BIN_INT;
@@ -507,7 +507,7 @@ static inline void lex_digit(Lexer* lexer) {
                         ++octcount; 
                         ch = lexer_advance();
                     }
-                    if(octcount is 0)
+                    if(octcount == 0)
                         lexer_error(ErrorSyntaxError, "Expected octal digits [0-7] after `0o`");
                     
                     tokenkind = OCT_INT;
@@ -526,17 +526,17 @@ static inline void lex_digit(Lexer* lexer) {
         // Fractions, or Integer?
         else {
             // Normal Floats
-            if(ch is '.' or ch is '_') {
+            if(ch == '.' or ch == '_') {
                 ch = lexer_advance();
-                if(ch is '_')
+                if(ch == '_')
                     lexer_error(ErrorSyntaxError, "Unexpected `_` near `.`");
             }
             
             // Exponents (Float)
-            else if(ch is 'e' or ch is 'E') {
+            else if(ch == 'e' or ch == 'E') {
                 // Skip over [eE]
                 ch = lexer_advance();
-                if(ch is '+' or ch is '-') { 
+                if(ch == '+' or ch == '-') { 
                     ch = lexer_advance();
                 } else {
                     lexer_error(ErrorSyntaxError, "Expected [+-] after exponent `e`. Got `%c`", ch);
@@ -547,14 +547,14 @@ static inline void lex_digit(Lexer* lexer) {
                     ch = lexer_advance();
                     ++exp_digits;
                 }
-                if(exp_digits is 0)
+                if(exp_digits == 0)
                     lexer_error(ErrorSyntaxError, "Invalid character after exponent `e`. Expected a digit, got `%c`", ch);
                 
                 // (TODO) Verify this is correct
                 digit_length = exp_digits + 1; // Account for the prev digit
             }
             // Imaginary
-            else if(ch is 'j' or ch is 'J') {
+            else if(ch == 'j' or ch == 'J') {
                 // digit_length = imag_count;
             }
         }
@@ -587,7 +587,7 @@ static void lexer_lex(Lexer* lexer) {
     // Some UTF8 text may start with a 3-byte 'BOM' marker sequence. If it exists, skip over them because they 
     // are useless bytes. Generally, it is not recommended to add BOM markers to UTF8 texts, but it's not 
     // uncommon (especially on Windows).
-    if(lexer->buffer->data[0] is (char)0xef and lexer->buffer->data[1] is (char)0xbb and lexer->buffer->data[2] is (char)0xbf)
+    if(lexer->buffer->data[0] == (char)0xef and lexer->buffer->data[1] == (char)0xbb and lexer->buffer->data[2] == (char)0xbf)
         lexer_advancen(3);
 
     char next = nullchar;
@@ -688,7 +688,7 @@ static void lexer_lex(Lexer* lexer) {
                 break;
             case '#': 
                 // Ignore shebang on the first line
-                if(lexer->loc->line is 1 and next is '!' and peekn(lexer, 1) is '/') {
+                if(lexer->loc->line == 1 and next == '!' and peekn(lexer, 1) == '/') {
                     tokenkind = TOK_NULL;
                     // Skip till end of line
                     while(LEXER_CURR_CHAR and (LEXER_CURR_CHAR != '\n' or LEXER_CURR_CHAR != nullchar))
@@ -741,7 +741,7 @@ static void lexer_lex(Lexer* lexer) {
                     case '<': 
                         LEXER_INCREMENT_OFFSET;
                         char c = peek(lexer);
-                        if(c is '=') {
+                        if(c == '=') {
                             LEXER_INCREMENT_OFFSET; tokenkind = LBITSHIFT_EQUALS;
                         } else {
                             tokenkind = LBITSHIFT;
@@ -756,7 +756,7 @@ static void lexer_lex(Lexer* lexer) {
                     case '>': 
                         LEXER_INCREMENT_OFFSET;
                         char c = peek(lexer);
-                        if(c is '=') {
+                        if(c == '=') {
                             LEXER_INCREMENT_OFFSET; tokenkind = RBITSHIFT_EQUALS;
                         } else {
                             tokenkind = RBITSHIFT;
@@ -776,7 +776,7 @@ static void lexer_lex(Lexer* lexer) {
                     case '.': 
                         LEXER_INCREMENT_OFFSET;
                         char c = peek(lexer);
-                        if(c is '.') {
+                        if(c == '.') {
                             LEXER_INCREMENT_OFFSET; tokenkind = ELLIPSIS;
                         } else {
                             tokenkind = DDOT;
@@ -801,7 +801,7 @@ static void lexer_lex(Lexer* lexer) {
                 break;
         } // switch(ch)
 
-        if(tokenkind is TOK_NULL) continue;
+        if(tokenkind == TOK_NULL) continue;
         maketoken(lexer, tokenkind, buff_new(null), lexer->offset - 1, lexer->loc->line, lexer->loc->col - 1);
     } // while
 
