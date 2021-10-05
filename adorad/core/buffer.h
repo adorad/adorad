@@ -64,6 +64,8 @@ cstlBuffer* buff_tolower(cstlBuffer* buffer);
 cstlBuffView buffview_new(char* data); // returns a stack object
 cstlBuffView buffview_new_from_len(char* data, UInt64 len); // returns a stack object
 char buffview_at(cstlBuffView* view, UInt64 n);
+char* buffview_begin(cstlBuffView* view);
+char* buffview_end(cstlBuffView* view);
 cstlBuffView buffview_rev(cstlBuffView* view);
 void buffview_set(cstlBuffView* view, char* data);
 bool buffview_cmp(cstlBuffView* view1, cstlBuffView* view2);

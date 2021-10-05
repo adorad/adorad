@@ -435,6 +435,22 @@ char buffview_at(cstlBuffView* view, UInt64 n) {
     return (char)view->data[n];
 }
 
+// Returns a pointer to the beginning of the view data
+char* buffview_begin(cstlBuffView* view) {
+    CORETEN_ENFORCE_NN(view, "Expected not null");
+    CORETEN_ENFORCE_NN(view->data, "Expected not null");
+
+    return cast(char*)view->data;
+}
+
+// Returns a pointer to the end of the view data
+char* buffview_end(cstlBuffView* view) {
+    CORETEN_ENFORCE_NN(view, "Expected not null");
+    CORETEN_ENFORCE_NN(view->data, "Expected not null");
+
+    return cast(char*)(view->data + ((view->len - 1) * sizeof(char)));
+}
+
 // Compare two BuffViews (case-sensitive)
 // Returns true if `view1` is lexicographically equal to `view2`
 bool buffview_cmp(cstlBuffView* view1, cstlBuffView* view2) {
