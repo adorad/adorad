@@ -71,7 +71,7 @@ bool buff_is_empty(cstlBuffer* buffer) {
     CORETEN_ENFORCE_NN(buffer, "Expected not null");
     CORETEN_ENFORCE_NN(buffer->data, "Expected not null");
 
-    return buffer->len == 0;
+    return buffer->len is 0;
 }
 
 // Returns the length of the buffer
@@ -88,7 +88,7 @@ static UInt32 __internal_strlength(const char* str) {
         // Handle the first few characters by reading one character at a time.
         // Do this until CHAR_PTR is aligned on a longword boundary.
         for(char_ptr = str; (cast(unsigned long int)char_ptr & (sizeof(longword) - 1)) isnot 0; ++char_ptr) {
-            if (*char_ptr == nullchar)
+            if (*char_ptr is nullchar)
                 return char_ptr - str;
         }
 
@@ -123,23 +123,23 @@ static UInt32 __internal_strlength(const char* str) {
                 // Which of the bytes was the zero?  If none of them were, it was a misfire; continue the search.
                 const char* cp = cast(const char* )(longword_ptr - 1);
 
-                if (cp[0] == 0)
+                if (cp[0] is 0)
                     return cp - str;
-                if (cp[1] == 0)
+                if (cp[1] is 0)
                     return cp - str + 1;
-                if (cp[2] == 0)
+                if (cp[2] is 0)
                     return cp - str + 2;
-                if (cp[3] == 0)
+                if (cp[3] is 0)
                     return cp - str + 3;
 
                 if (sizeof(longword) > 4) {
-                    if (cp[4] == 0)
+                    if (cp[4] is 0)
                         return cp - str + 4;
-                    if (cp[5] == 0)
+                    if (cp[5] is 0)
                         return cp - str + 5;
-                    if (cp[6] == 0)
+                    if (cp[6] is 0)
                         return cp - str + 6;
-                    if (cp[7] == 0)
+                    if (cp[7] is 0)
                         return cp - str + 7;
                 }
             }
@@ -152,9 +152,9 @@ static UInt32 __internal_strlength(const char* str) {
     //         UInt8 c = *str;
     //         UInt32 increment = 0;
     //              if(c < 0x80)               increment = 1;
-    //         else if((c & 0xe0) == 0xc0)     increment = 2;
-    //         else if((c & 0xf0) == 0xe0)     increment = 3;
-    //         else if((c & 0xf8) == 0xf0)     increment = 4;
+    //         else if((c & 0xe0) is 0xc0)     increment = 2;
+    //         else if((c & 0xf0) is 0xe0)     increment = 3;
+    //         else if((c & 0xf8) is 0xf0)     increment = 4;
     //         else return -1;
             
     //         str += increment;
@@ -216,7 +216,7 @@ UInt64 buff_len(cstlBuffer* buffer) {
 
 // Free the buffer from its associated memory
 void buff_reset(cstlBuffer* buffer) {
-    if(buffer == null)
+    if(buffer is null)
         return;
 
     buffer->data = null;
@@ -251,11 +251,11 @@ bool buff_cmp(cstlBuffer* buff1, cstlBuffer* buff2) {
     do {
         ch1 = cast(unsigned char) *s1++;
         ch2 = cast(unsigned char) *s2++;
-        if(ch1 == nullchar)
-            return (ch1 - ch2) == 0 ? true : false;
-    } while(ch1 == ch2);
+        if(ch1 is nullchar)
+            return (ch1 - ch2) is 0 ? true : false;
+    } while(ch1 is ch2);
 
-    return (ch1 - ch2) == 0 ? true : false;
+    return (ch1 - ch2) is 0 ? true : false;
 }
 
 // Compare two buffers (ignoring case)
@@ -268,14 +268,14 @@ bool buff_cmp_nocase(cstlBuffer* buff1, cstlBuffer* buff2) {
     const unsigned char* s2 = cast(const unsigned char*) buff2->data;
     int result;
 
-    if(s1 == s2)
+    if(s1 is s2)
         return true;
     
-    while((result = char_to_lower(*s1) - char_to_lower(*s2++)) == 0) {
-        if(*s1++ == nullchar)
+    while((result = char_to_lower(*s1) - char_to_lower(*s2++)) is 0) {
+        if(*s1++ is nullchar)
             break;
     }
-    return result == 0 ? true : false;
+    return result is 0 ? true : false;
 }
 
 // Get a slice of a buffer
@@ -338,7 +338,7 @@ void buff_free(cstlBuffer* buffer) {
 // Convert a buffer to lowercase
 cstlBuffer* buff_tolower(cstlBuffer* buffer) {
     cstlBuffer* lower = buff_new(null);
-    if(buffer->data == null)
+    if(buffer->data is null)
         return lower;
 
     char* temp = cast(char*)calloc(1, buffer->len);    
@@ -358,7 +358,7 @@ cstlBuffer* buff_tolower(cstlBuffer* buffer) {
 // Convert a buffer to uppercase
 cstlBuffer* buff_toupper(cstlBuffer* buffer) {
     cstlBuffer* upper = buff_new(null);
-    if(buffer->data == null)
+    if(buffer->data is null)
         return upper;
 
     char* temp = cast(char*)calloc(1, buffer->len);    
@@ -464,11 +464,11 @@ bool buffview_cmp(cstlBuffView* view1, cstlBuffView* view2) {
     do {
         ch1 = cast(unsigned char) *s1++;
         ch2 = cast(unsigned char) *s2++;
-        if(ch1 == nullchar)
-            return (ch1 - ch2) == 0 ? true : false;
-    } while(ch1 == ch2);
+        if(ch1 is nullchar)
+            return (ch1 - ch2) is 0 ? true : false;
+    } while(ch1 is ch2);
 
-    return (ch1 - ch2) == 0 ? true : false;
+    return (ch1 - ch2) is 0 ? true : false;
 }
 
 // Compare two BuffViews (ignoring case)
@@ -481,14 +481,14 @@ bool buffview_cmp_nocase(cstlBuffView* view1, cstlBuffView* view2) {
     const unsigned char* s2 = cast(const unsigned char*) view2->data;
     int result;
 
-    if(s1 == s2)
+    if(s1 is s2)
         return true;
     
-    while((result = char_to_lower(*s1) - char_to_lower(*s2++)) == 0) {
-        if(*s1++ == nullchar)
+    while((result = char_to_lower(*s1) - char_to_lower(*s2++)) is 0) {
+        if(*s1++ is nullchar)
             break;
     }
-    return result == 0 ? true : false;
+    return result is 0 ? true : false;
 }
 
 // Append `view2` to the end of `view`.
@@ -549,7 +549,7 @@ bool char_is_octal_digit(char c) {
 }
 
 bool char_is_binary_digit(char c) { 
-    return c == '0' or c == '1'; 
+    return c is '0' or c is '1'; 
 }
 
 Int32 digit_to_int(char c) { 
@@ -565,7 +565,7 @@ bool char_is_hex_digit(char c) {
 bool char_is_letter(char c) {
     return  (c >= 'a' and c <= 'z') or 
             (c >= 'A' and c <= 'Z') or 
-            (c == '_') ;
+            (c is '_') ;
 }
 
 char char_to_lower(char c) {
@@ -604,7 +604,7 @@ Int32 hexdigit_to_int(char c) {
 
 char* char_first_occurence(char* str, char ch) {
     for(; *str isnot ch; str++) {
-        if(*str == nullchar)
+        if(*str is nullchar)
             return null; // didn't find a `ch`
     }
     return str;
@@ -613,7 +613,7 @@ char* char_first_occurence(char* str, char ch) {
 char* char_last_occurence(char* str, char ch) {
     char* result = null;
     do {
-        if(*str == ch)
+        if(*str is ch)
             result = str;
     } while(*str++);
     return result;
@@ -1153,7 +1153,7 @@ UInt64 hash_murmur64_seed(void const* data__, Ll len, UInt64 seed) {
 char* read_file(const char* fname) {
     FILE* file = fopen(fname, "rb"); 
     
-    if(file == null) {
+    if(file is null) {
         cstlColouredPrintf(CORETEN_COLOUR_ERROR, "Could not open file: <%s>\n", fname);
         cstlColouredPrintf(CORETEN_COLOUR_ERROR, "%s\n", !file_exists(fname) ?  
                             "FileNotFoundError: File does not exist." : "");
@@ -1167,7 +1167,7 @@ char* read_file(const char* fname) {
     fseek(file, 0, SEEK_SET);
 
     char* buffer = cast(char*)malloc(sizeof(char) * (buff_length + 1) );
-    if(buffer == null) {
+    if(buffer is null) {
         fprintf(stderr, "Could not allocate memory for buffer for file at %s\n", fname);
         exit(1);
     }
@@ -1183,7 +1183,7 @@ bool file_exists(const char* path) {
 #ifdef WIN32
     if (GetFileAttributesA(path) isnot INVALID_FILE_ATTRIBUTES) return true;
 #else
-    // if(access(path, 0) == 0) return true;
+    // if(access(path, 0) is 0) return true;
     struct stat st;
     return !stat(path, &st);
 #endif // WIN32
@@ -1359,7 +1359,7 @@ cstlBuffView __os_dirname_basename(cstlBuffView path, bool is_basename) {
 
         // The `/` or `\\` is not so important in getting the dirname, but it does interfere with `strchr`, so
         // we skip over it (if present)
-        if(*rev.data == CORETEN_OS_SEP_CHAR)
+        if(*rev.data is CORETEN_OS_SEP_CHAR)
             rev.data++;
         char* rev_dir = strchr(rev.data, CORETEN_OS_SEP_CHAR);
         buffview_set(&result, rev_dir);
@@ -1426,9 +1426,9 @@ cstlBuffView os_path_join(cstlBuffView path1, cstlBuffView path2) {
 
 bool os_is_sep(char ch) {
 #ifdef CORETEN_OS_WINDOWS
-    return ch == '\\' or ch == '/';
+    return ch is '\\' or ch is '/';
 #else
-    return ch == '/';
+    return ch is '/';
 #endif // CORETEN_OS_WINDOWS
 }
 
@@ -1439,10 +1439,10 @@ bool os_path_is_abs(cstlBuffView* path) {
     // The 'C:\...`
     result = path->len > 2 and
              char_is_alpha(path->data[0]) and
-             (path->data[1] == ':' and path->data[2] == CORETEN_OS_SEP_CHAR);
+             (path->data[1] is ':' and path->data[2] is CORETEN_OS_SEP_CHAR);
 #else
     result = path->len > 2 and
-             path->data[0] == CORETEN_OS_SEP_CHAR;
+             path->data[0] is CORETEN_OS_SEP_CHAR;
 #endif // CORETEN_OS_WINDOWS
     return cast(bool)result;
 }
@@ -1455,9 +1455,9 @@ bool os_path_is_root(cstlBuffView* path) {
     bool result = false;
     CORETEN_ENFORCE_NN(path, "Cannot do anything useful on a null path :(");
 #ifdef CORETEN_OS_WINDOWS
-    result = os_path_is_abs(path) and path->len == 3;
+    result = os_path_is_abs(path) and path->len is 3;
 #else
-    result = os_path_is_abs(path) and path->len == 1;
+    result = os_path_is_abs(path) and path->len is 1;
 #endif // CORETEN_OS_WINDOWS
     return result;
 }
@@ -1657,12 +1657,12 @@ Ll utf8_decode_nbytes(Rune byte) {
     Ll nbytes;
 
     // If the byte starts with 10xxxxx, it's the middle of a UTF-8 sequence, so don't count it at all.
-    if((byte & 0xc0) == 0x80) nbytes = 0;
+    if((byte & 0xc0) is 0x80) nbytes = 0;
     
     // The first byte's high bits tell us how many bytes are in the UTF-8 sequence.
-    else if((byte & 0xf8) == 0xf0) nbytes = 4;
-    else if((byte & 0xf0) == 0xe0) nbytes = 3;
-    else if((byte & 0xe0) == 0xc0) nbytes = 2;
+    else if((byte & 0xf8) is 0xf0) nbytes = 4;
+    else if((byte & 0xf0) is 0xe0) nbytes = 3;
+    else if((byte & 0xe0) is 0xc0) nbytes = 2;
     else nbytes = 0;
     CORETEN_ENFORCE(nbytes > 0, "Invalid code point");
     return nbytes;
@@ -1724,7 +1724,7 @@ void __grow_ubuff(cstlUTF8Str* ubuff, int grow_by) {
 }
 
 void ubuff_push_char(cstlUTF8Str* ubuff, Rune ch) {
-    CORETEN_ENFORCE(ubuff->data[ubuff->len] == 0); // ensure this is writeable (we shouldn't overwrite over a char)
+    CORETEN_ENFORCE(ubuff->data[ubuff->len] is 0); // ensure this is writeable (we shouldn't overwrite over a char)
 
     // 0b0xxxxxxx
     if(ch <= 0x7f) {
@@ -1810,7 +1810,7 @@ static int __byte_offset_at(cstlUTF8Str* ubuff, Int64 n, int* out) {
     // }
 
     Byte byte = cast(Byte)(ubuff->data[n]);
-    if(byte == 0) {
+    if(byte is 0) {
         return cast(Byte)0;
     } 
     // 1-byte UTF8
@@ -1920,7 +1920,7 @@ void* vec_begin(cstlVector* vec) {
     CORETEN_ENFORCE_NN(vec, "Expected not null");
     CORETEN_ENFORCE_NN(vec->core.data, "Expected not null");
 
-    if(vec->core.len == 0) 
+    if(vec->core.len is 0) 
         return null;
     
     return vec->core.data;
@@ -1931,7 +1931,7 @@ void* vec_end(cstlVector* vec) {
     CORETEN_ENFORCE_NN(vec, "Expected not null");
     CORETEN_ENFORCE_NN(vec->core.data, "Expected not null");
 
-    if(vec->core.data == 0)
+    if(vec->core.data is 0)
         return null;
     
     return (void*)(cast(char*)vec->core.data + (vec->core.len - 1) * sizeof(cstlVector));
@@ -1942,7 +1942,7 @@ bool vec_is_empty(cstlVector* vec) {
     CORETEN_ENFORCE_NN(vec, "Expected not null");
     CORETEN_ENFORCE_NN(vec->core.data, "Expected not null");
 
-    return vec->core.len == 0;
+    return vec->core.len is 0;
 }
 
 // Returns the size of `vec` (i.e the number of bytes)
@@ -1995,7 +1995,7 @@ bool vec_pop(cstlVector* vec) {
     CORETEN_ENFORCE_NN(vec, "Expected not null");
     CORETEN_ENFORCE_NN(vec->core.data, "Expected not null");
 
-    if(vec->core.len == 0) 
+    if(vec->core.len is 0) 
         return false;
     
     vec->core.len--;

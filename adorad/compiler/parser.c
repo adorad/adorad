@@ -65,21 +65,21 @@ static inline Token* chomp(Parser* parser, UInt64 n) {
 
 // Consumes a token and moves on to the next, if the current token matches the expected token.
 static inline Token* chomp_if(Parser* parser, TokenKind tokenkind) {
-    if((parser->curr_tok + 1) isnot null && (parser->curr_tok + 1)->kind == tokenkind)
+    if((parser->curr_tok + 1) isnot null && (parser->curr_tok + 1)->kind is tokenkind)
         return chomp(parser, 1);
 
     return null;
 }
 
 static inline void parser_put_back(Parser* parser) {
-    if(parser->offset == 0)
+    if(parser->offset is 0)
         unreachable();
     parser->curr_tok -= 1;
     parser->offset -= 1;
 }
 
 static inline Token* expect_token(Parser* parser, TokenKind tokenkind) {
-    if(parser->curr_tok->kind == tokenkind)
+    if(parser->curr_tok->kind is tokenkind)
         return parser_chomp(1);
         
     ast_error("Expected `%s`; got `%s`", tokenHash[tokenkind], tokenHash[pc->kind]);
@@ -184,11 +184,11 @@ static AstNode* ast_parse_toplevel_decl(Parser* parser) {
 //      KEYWORD(module) Statement SEMICOLON?
 static AstNode* ast_parse_module_statement(Parser* parser) {
     Token* module_kwd = parser_chomp_if(MODULE);
-    if(module_kwd == null)
+    if(module_kwd is null)
         ast_expected("`module` keyword");
     
     Token* module_name = parser_chomp_if(IDENTIFIER);
-    if(module_name == null)
+    if(module_name is null)
         ast_expected("module name");
     
     Token* semicolon = parser_chomp_if(SEMICOLON); // this is optional
@@ -202,11 +202,11 @@ static AstNode* ast_parse_module_statement(Parser* parser) {
 //      KEYWORD(import) Statement
 static AstNode* ast_parse_import_statement(Parser* parser) {
     Token* import_kwd = parser_chomp_if(IMPORT);
-    if(import_kwd == null)
+    if(import_kwd is null)
         ast_expected("`import` keyword");
     
     Token* import_name = parser_chomp_if(IDENTIFIER);
-    if(import_name == null)
+    if(import_name is null)
         ast_expected("import name");
     
     Token* semicolon = parser_chomp_if(SEMICOLON); // this is optional
@@ -220,19 +220,19 @@ static AstNode* ast_parse_import_statement(Parser* parser) {
 //      KEYWORD(alias) IDENTIFER KEYWORD(as) IDENTIFIER SEMICOLON?
 static AstNode* ast_parse_alias_decl(Parser* parser) {
     Token* alias_kwd = parser_chomp_if(ALIAS);
-    if(alias_kwd == null)
+    if(alias_kwd is null)
         unreachable();
     
     Token* original = parser_chomp_if(IDENTIFIER);
-    if(original == null)
+    if(original is null)
         ast_expected("an identifier after `alias`");
     
     Token* as_kwd = parser_chomp_if(AS);
-    if(as_kwd == null)
+    if(as_kwd is null)
         ast_expected("`as` keyword");
     
     Token* aliased = parser_chomp_if(IDENTIFIER);
-    if(aliased == null)
+    if(aliased is null)
         ast_expected("an alias for identifier");
     
     Token* semicolon = parser_chomp_if(SEMICOLON); // this is optional
@@ -252,14 +252,14 @@ static AstNode* ast_parse_variable_decl(Parser* parser) {
 
     AstNode* type_expr = ast_parse_type_expr(parser);
     Token* any = null;
-    if(type_expr == null) {
+    if(type_expr is null) {
         any = parser_chomp_if(ANY);
-        if(any == null)
+        if(any is null)
             ast_expected("a type. Use `any` to let the compiler infer the type");
     }
 
     Token* identifier = parser_chomp_if(IDENTIFIER);
-    if(identifier == null)
+    if(identifier is null)
         ast_expected("an identifier");
     
     Token* equals = parser_chomp_if(EQUALS);
@@ -312,7 +312,7 @@ static AstNode* ast_parse_func_decl(Parser* parser) {
 func_no_attrs:;
     Token* export_kwd = parser_chomp_if(EXPORT);
     Token* func_kwd = parser_chomp_if(FUNC);
-    if(func_kwd == null)
+    if(func_kwd is null)
         ast_expected("`func` keyword");
     
     bool is_variadic = false;
@@ -321,9 +321,9 @@ func_no_attrs:;
     
     Token* larrow = parser_chomp_if(LARROW);
     AstNode* return_type_expr = ast_parse_type_expr(parser);
-    if(return_type_expr == null)
+    if(return_type_expr is null)
         ast_expected("Return type expression. Use `void` if your function doesn't return anything");
-    if(larrow == null and return_type_expr isnot null)
+    if(larrow is null and return_type_expr isnot null)
         ast_expected("trailing `->` after function prototype");
     
     bool no_body = false;
@@ -336,7 +336,7 @@ func_no_attrs:;
             break;
         case LBRACE:
             body = ast_parse_block(parser);
-            if(body == null)
+            if(body is null)
                 ast_expected("Expected a body");
             break;
         default:
@@ -364,11 +364,11 @@ func_no_attrs:;
 //      ATTRIBUTE(comptime) BlockExpr
 static AstNode* ast_parse_toplevel_comptime_expr(Parser* parser) {
     Token* comptime_attr = parser_chomp_if(ATTR_COMPTIME);
-    if(comptime_attr == null)
+    if(comptime_attr is null)
         return null;
     
     Token* lbrace = parser_chomp_if(LBRACE);
-    if(lbrace == null)
+    if(lbrace is null)
         ast_expected("Left brace `{`");
 
     AstNode* block = ast_parse_block_expr(parser);
@@ -385,12 +385,12 @@ static AstNode* ast_parse_param_list(Parser* parser, bool* is_variadic) {
     bool seen_varargs = false;
     Vec* params = vec_new(AstNode, 1);
     while(true) {
-        if(parser_chomp_if(RPAREN) == null)
+        if(parser_chomp_if(RPAREN) is null)
             break;
         AstNode* param = ast_parse_param_decl(parser);
         if(param isnot null) {
             vec_push(params, param);
-        } else if((pc - 1)->kind == ELLIPSIS) {
+        } else if((pc - 1)->kind is ELLIPSIS) {
             seen_varargs = true;
         }
 
@@ -470,26 +470,26 @@ static AstNode* ast_parse_enum_decl(Parser* parser) {
 //      KEYWORD(if) LPAREN? Expr RPAREN?
 static AstNode* ast_parse_if_expr(Parser* parser) {
     Token* if_token = parser_chomp_if(IF);
-    if(if_token == null)
+    if(if_token is null)
         unreachable();
 
     Token* lparen = parser_chomp_if(LPAREN); // this is optional
     AstNode* condition = ast_parse_expr(parser);
-    if(condition == null)
+    if(condition is null)
         ast_expected("condition");
     Token* rparen = parser_chomp_if(RPAREN); // this is optional
 
-    if(lparen isnot null and rparen == null)
+    if(lparen isnot null and rparen is null)
         ast_expected("closing `(`");
-    if(lparen == null and rparen isnot null)
+    if(lparen is null and rparen isnot null)
         ast_error("Extra `)` token not expected at this point");
     
     AstNode* if_body = null;
     AstNode* assignment_expr = null;
     AstNode* block_expr = ast_parse_block_expr(parser);
-    if(block_expr == null) {
+    if(block_expr is null) {
         assignment_expr = ast_parse_assignment_expr(parser);
-        if(assignment_expr == null)
+        if(assignment_expr is null)
             ast_expected("block / assignment expression");
     }
 
@@ -506,7 +506,7 @@ static AstNode* ast_parse_if_expr(Parser* parser) {
     if(else_kwd isnot null)
         else_body = ast_parse_block_expr(parser);
     
-    if(else_body == null and semicolon == null)  
+    if(else_body is null and semicolon is null)  
         ast_expected("Semicolon or `else` block");
 
     AstNode* node = ast_create_node(AstNodeKindIfExpr);
@@ -521,7 +521,7 @@ static AstNode* ast_parse_if_expr(Parser* parser) {
 //      BlockLabel? (Block / LoopStatement)
 static AstNode* ast_parse_labeled_statement(Parser* parser) {
     Token* label = ast_parse_block_label(parser);
-    if(label == null)
+    if(label is null)
         ast_expected("Label");
 
     AstNode* block = ast_parse_block_expr(parser);
@@ -567,7 +567,7 @@ static AstNode* ast_parse_loop_expr(Parser* parser) {
     }
 
 outexpect:
-    if(node == null)
+    if(node is null)
         ast_expected("loop expression");
 
     node->data.expr->loop_expr->is_inline = cast(bool)(inline_attr isnot null);
@@ -618,7 +618,7 @@ static AstNode* ast_parse_block_expr_statement(Parser* parser) {
 static AstNode* ast_parse_block_expr(Parser* parser) {
     switch(pc->kind) {
         case IDENTIFIER:
-            if((pc->kind + 1) == COLON and (pc->kind + 2) == LBRACE) {
+            if((pc->kind + 1) is COLON and (pc->kind + 2) is LBRACE) {
                 pc += 2;
                 return ast_parse_block(parser);    
             } else {
@@ -648,7 +648,7 @@ static AstNode* ast_parse_block_expr(Parser* parser) {
 //      | EQUALS            (=)
 static AstNode* ast_parse_assignment_expr(Parser* parser) {
     AstNode* lhs = ast_parse_expr(parser);
-    if(lhs == null)
+    if(lhs is null)
         return null;
 
     BinaryOpKind op;
@@ -670,7 +670,7 @@ static AstNode* ast_parse_assignment_expr(Parser* parser) {
     }
 
     AstNode* rhs = ast_parse_expr(parser);
-    if(rhs == null)
+    if(rhs is null)
         ast_expected("an expression after assignment op");
 
     AstNode* node = ast_create_node(AstNodeKindBinaryOpExpr);
@@ -717,7 +717,7 @@ static const ast_prec precedence_table[] = {
 
 static ast_prec lookup_precedence(TokenKind kind) {
     for(int i = 0; i < PRECEDENCE_TABLE_SIZE; i++) {
-        if(precedence_table[i].tok_kind == kind)
+        if(precedence_table[i].tok_kind is kind)
             return precedence_table[i];
     }
     ast_error("Expected a valid assignment token op");
@@ -725,21 +725,21 @@ static ast_prec lookup_precedence(TokenKind kind) {
 
 static AstNode* ast_parse_precedence(Parser* parser, UInt8 min_prec) {
     AstNode* node = ast_parse_prefix_expr(parser);
-    if(node == null)
+    if(node is null)
         return null;
     
     UInt8 banned_prec = 0;
 
     while(true) {
         ast_prec prec = lookup_precedence(pc->kind);
-        if(prec.prec < min_prec or prec.prec == banned_prec)
+        if(prec.prec < min_prec or prec.prec is banned_prec)
             break;
         
         parser_chomp(1);
         Token* op_token = pc;
 
         AstNode* rhs = ast_parse_precedence(parser, prec.prec + 1);
-        if(rhs == null)
+        if(rhs is null)
             ast_error("Invalid token");
         
         node->data.expr->binary_op_expr->lhs = node;
@@ -785,7 +785,7 @@ static AstNode* ast_parse_prefix_expr(Parser* parser) {
     }
 
     AstNode* lhs = ast_parse_prefix_expr(parser);
-    if(lhs == null)
+    if(lhs is null)
         ast_expected("prefix op expression");
 
     AstNode* node = ast_create_node(AstNodeKindPrefixOpExpr);
@@ -814,7 +814,7 @@ static AstNode* ast_parse_type_expr(Parser* parser) {
     switch(pc->kind) {
         case QUESTION:
             expr = ast_parse_expr(parser);
-            if(expr == null)
+            if(expr is null)
                 ast_error("expression");
             node = ast_create_node(AstNodeKindPrefixOpExpr);
             node->data.prefix_op_expr->expr = expr;
@@ -862,7 +862,7 @@ static AstNode* ast_parse_primary_expr(Parser* parser) {
             parser_chomp(1);
             node = ast_create_node(AstNodeKindAttributeExpr);
             expr = ast_parse_expr(parser);
-            if(expr == null)
+            if(expr is null)
                 ast_expected("expression");
             
             node->data.expr->attr_expr->expr = expr;
@@ -875,7 +875,7 @@ static AstNode* ast_parse_primary_expr(Parser* parser) {
             return node;
         case IDENTIFIER:
             // `foo:`
-            if((pc + 1)->kind == COLON) {
+            if((pc + 1)->kind is COLON) {
                 switch((pc + 2)->kind) {
                     case ATTR_INLINE:
                         parser_chomp(3);
@@ -912,7 +912,7 @@ static AstNode* ast_parse_primary_expr(Parser* parser) {
 //      LBRACE Statement* RBRACE
 static AstNode* ast_parse_block(Parser* parser) {
     Token* lbrace = parser_chomp_if(LBRACE);
-    if(lbrace == null)
+    if(lbrace is null)
         ast_expected("LBRACE `{`");
 
     Vec* statements = vec_new(AstNode, 1);
@@ -921,7 +921,7 @@ static AstNode* ast_parse_block(Parser* parser) {
         vec_push(statements, statement);
 
     Token* rbrace = parser_chomp_if(RBRACE);
-    if(rbrace == null)
+    if(rbrace is null)
         ast_expected("RBRACE `}`");
     
     AstNode* node = ast_create_node(AstNodeKindBlock);
@@ -938,11 +938,11 @@ static AstNode* ast_parse_block(Parser* parser) {
 //      | LBRACE RBRACE
 static AstNode* ast_parse_brace_suffix_expr(Parser* parser) {
     AstNode* type_expr = ast_parse_type_expr(parser);
-    if(type_expr == null)
+    if(type_expr is null)
         ast_expected("type expression");
     
     Token* lbrace = parser_chomp_if(LBRACE);
-    if(lbrace == null)
+    if(lbrace is null)
         return type_expr;
     
     Vec* fields = null;
@@ -964,7 +964,7 @@ static AstNode* ast_parse_brace_suffix_expr(Parser* parser) {
             if(rbrace isnot null)
                 break;
             AstNode* field_init = ast_parse_field_init(parser);
-            if(field_init == null)
+            if(field_init is null)
                 ast_expected("field init");
             vec_push(fields, field_init);
         } // while(true)
@@ -985,7 +985,7 @@ static AstNode* ast_parse_brace_suffix_expr(Parser* parser) {
         Token* comma = null;
         while(pc->kind isnot COMMA) {
             AstNode* exp = ast_parse_expr(parser);
-            if(exp == null)
+            if(exp is null)
                 break;
             vec_push(fields, exp);
         }
@@ -994,7 +994,7 @@ static AstNode* ast_parse_brace_suffix_expr(Parser* parser) {
     }
 
     Token* rbrace = parser_chomp_if(RBRACE);
-    if(rbrace == null)
+    if(rbrace is null)
         ast_expected("RBRACE");
     
     return node;
@@ -1013,12 +1013,12 @@ static AstNode* ast_parse_suffix_expr(Parser* parser) {
     AstNode* node = ast_parse_primary_type_expr(parser);
     while(true) {
         AstNode* suffix_op = ast_parse_suffix_op(parser);
-        if(suffix_op == null)
+        if(suffix_op is null)
             break;
         node = suffix_op;
     }
     Token* lparen = parser_chomp_if(LPAREN);
-    if(lparen == null) {
+    if(lparen is null) {
         WARN("expected param list");
         return node;
     }
@@ -1027,7 +1027,7 @@ static AstNode* ast_parse_suffix_expr(Parser* parser) {
     AstNode* param = null;
     while(parser_chomp(1)->kind isnot RPAREN) {
         param = ast_parse_expr(parser);
-        if(param == null)
+        if(param is null)
             break;
         vec_push(params, param);
         switch(pc->kind) {
@@ -1101,7 +1101,7 @@ static AstNode* ast_parse_primary_type_expr(Parser* parser) {
         case ATTR_COMPTIME:
             node = ast_create_node(AstNodeKindAttributeExpr);
             expr = ast_parse_type_expr(parser);
-            if(expr == null)
+            if(expr is null)
                 ast_expected("type expr");
             node->data.expr->attr_expr->expr = expr;
             return node;
@@ -1152,10 +1152,10 @@ static AstNode* ast_parse_primary_type_expr(Parser* parser) {
         case LPAREN:
             node = ast_create_node(AstNodeKindGroupedExpr);
             expr = ast_parse_expr(parser);
-            if(expr == null)
+            if(expr is null)
                 ast_expected("expression");
             tok = parser_chomp_if(RPAREN);
-            if(tok == null)
+            if(tok is null)
                 ast_expected("RPAREN");
 
             node->data.expr->grouped_expr->expr = expr;
@@ -1175,12 +1175,12 @@ static AstNode* ast_parse_builtin_call(Parser* parser) {
 //      KEYWORD(when) Expr EQUALS_ARROW (AssignmentExpr / BlockExpr)
 static AstNode* ast_parse_match_expr(Parser* parser) {
     Token* match_kwd = parser_chomp_if(MATCH);
-    if(match_kwd == null)
+    if(match_kwd is null)
         ast_expected("`match` keyword");
     
     Token* lparen = parser_chomp_if(LPAREN); // this is optional
     AstNode* expr = ast_parse_expr(parser);
-    if(expr == null)
+    if(expr is null)
         ast_expected("expression");
     Token* rparen = parser_chomp_if(RPAREN); // this is optional
     
@@ -1188,7 +1188,7 @@ static AstNode* ast_parse_match_expr(Parser* parser) {
 
     // Branches
     AstNode* branch_node = ast_parse_match_branch(parser);
-    if(branch_node == null)
+    if(branch_node is null)
         ast_expected("branches for `match`");
     Vec* branches = vec_new(AstNode, 1);
     do {
@@ -1210,23 +1210,23 @@ static AstNode* ast_parse_match_expr(Parser* parser) {
 //      Expr (DOT_DOT Expr)?
 static AstNode* ast_parse_match_branch(Parser* parser) {
     Token* when_kwd = parser_chomp_if(WHEN);
-    if(when_kwd == null)
+    if(when_kwd is null)
         ast_expected("`when` keyword");
 
     // MatchClause
     AstNode* node = ast_parse_match_clause(parser);
-    CORETEN_ENFORCE(node->kind == AstNodeKindMatchBranch);
-    if(node == null)
+    CORETEN_ENFORCE(node->kind is AstNodeKindMatchBranch);
+    if(node is null)
         return null;
     
     Token* equals_arrow = parser_chomp_if(EQUALS_ARROW); // `=>`
-    if(equals_arrow == null)
+    if(equals_arrow is null)
         ast_error("Missing token `=>` after `when`");
 
     AstNode* expr = ast_parse_assignment_expr(parser);
-    if(expr == null) {
+    if(expr is null) {
         expr = ast_parse_block_expr(parser);
-        if(expr == null)
+        if(expr is null)
             ast_expected("An assignment/block expression after the `when` clause");
     }
 
@@ -1238,7 +1238,7 @@ static AstNode* ast_parse_match_branch(Parser* parser) {
 //      Expr (DDOT Expr)*
 static AstNode* ast_parse_match_clause(Parser* parser) {
     AstNode* expr = ast_parse_expr(parser);
-    if(expr == null) {
+    if(expr is null) {
         WARN("Expression is null");
         return null;
     }
@@ -1251,7 +1251,7 @@ static AstNode* ast_parse_match_clause(Parser* parser) {
     if(dot_dot isnot null) {
         // Range-based
         AstNode* expr2 = ast_parse_expr(parser);
-        if(expr2 == null)
+        if(expr2 is null)
             ast_expected("Expected expression after `..`");
 
         AstNode* range = ast_create_node(AstNodeKindMatchRange);
@@ -1263,7 +1263,7 @@ static AstNode* ast_parse_match_clause(Parser* parser) {
     
     out->data.expr->match_branch_expr->cond_node = cond_node;
 
-    CORETEN_ENFORCE(parser_peek_next(parser)->kind == EQUALS_ARROW, "Expected `=>` after expression.");
+    CORETEN_ENFORCE(parser_peek_next(parser)->kind is EQUALS_ARROW, "Expected `=>` after expression.");
 
     return out;
 }
@@ -1272,7 +1272,7 @@ static AstNode* ast_parse_match_clause(Parser* parser) {
 //      COLON IDENTIFIER
 static Token* ast_parse_break_label(Parser* parser) {
     Token* colon = parser_chomp_if(COLON);
-    if(colon == null)
+    if(colon is null)
         return null;
         
     Token* ident = parser_expect_token(IDENTIFIER);
@@ -1283,11 +1283,11 @@ static Token* ast_parse_break_label(Parser* parser) {
 //      IDENTIFIER COLON
 static Token* ast_parse_block_label(Parser* parser) {
     Token* ident = parser_chomp_if(IDENTIFIER);
-    if(ident == null)
+    if(ident is null)
         return null;
     
     Token* colon = parser_chomp_if(COLON);
-    if(colon == null)
+    if(colon is null)
         return null;
 
     return ident;
@@ -1296,12 +1296,12 @@ static Token* ast_parse_block_label(Parser* parser) {
 // FieldInit
 //      DOT IDENTIFIER EQUALS Expr
 static AstNode* ast_parse_field_init(Parser* parser) {
-    if((pc + 0)->kind == DOT and
-       (pc + 1)->kind == IDENTIFIER and
-       (pc + 2)->kind == EQUALS) {
+    if((pc + 0)->kind is DOT and
+       (pc + 1)->kind is IDENTIFIER and
+       (pc + 2)->kind is EQUALS) {
             parser_chomp(3);
             AstNode* expr = ast_parse_expr(parser);
-            if(expr == null)
+            if(expr is null)
                 ast_expected("expression");
             return expr;
     }
@@ -1353,7 +1353,7 @@ static AstNode* ast_parse_suffix_op(Parser* parser) {
 
 // StringLiteral
 static AstNode* ast_parse_string_literal(Parser* parser) {
-    if(pc->kind == STRING) {
+    if(pc->kind is STRING) {
         parser_chomp(1);
         AstNode* node = ast_create_node(AstNodeKindStringLiteral);
         return node;
@@ -1377,7 +1377,7 @@ static AstNode* ast_parse_root(Parser* parser) {
 //     Vec* stmts = vec_new(AstNode, 1);
 //     // Imports
 //     for(;;) {
-//         if(pc->kind == IMPORT)
+//         if(pc->kind is IMPORT)
 //     }
 // }
 
