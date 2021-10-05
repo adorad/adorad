@@ -25,7 +25,7 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
     #include <direct.h>
 #endif // CORETEN_OS_WINDOWS
 
-cstlBuffer* os_get_cwd();
+cstlBuffView os_get_cwd();
 cstlBuffView os_path_dirname(cstlBuffView path);
 cstlBuffView os_path_extname(cstlBuffView path);
 cstlBuffView os_path_join(cstlBuffView path1, cstlBuffView path2);

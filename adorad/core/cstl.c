@@ -1312,7 +1312,7 @@ Float32 coreten_log2(Float32 x){
 // os.h
 // -------------------------------------------------------------------------
 
-cstlBuffer* os_get_cwd() {
+cstlBuffView os_get_cwd() {
 #if defined(CORETEN_OS_WINDOWS)
     // This (or its equivalent) is not defined in any include in Windows as far as I've come across
     #define PATH_MAX 4096
@@ -1322,8 +1322,8 @@ cstlBuffer* os_get_cwd() {
         fprintf(stderr, "Unable to `os_get_cwd()`. 'getcwd()' failed");
         exit(1);
     }
-    cstlBuffer* buff = buff_new(result);
-    return buff;
+    cstlBuffView view = buffview_new(result);
+    return view;
 #elif defined(CORETEN_OS_POSIX)
     long n;
     char *buf;
@@ -1337,8 +1337,8 @@ cstlBuffer* os_get_cwd() {
         fprintf(stderr, "Unable to `os_get_cwd()`. 'getcwd()' failed");
         exit(1);
     }
-    cstlBuffer* buff = buff_new(buf);
-    return buff;
+    cstlBuffView view = buffview_new(buf);
+    return view;
 #else
     #error "No `os_get_cwd()` implementation supported for your platform."
     return null;
