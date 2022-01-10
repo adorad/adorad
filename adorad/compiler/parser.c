@@ -1,3 +1,16 @@
+/*
+          _____   ____  _____            _____
+    /\   |  __ \ / __ \|  __ \     /\   |  __ \
+   /  \  | |  | | |  | | |__) |   /  \  | |  | | Adorad - The Fast, Expressive & Elegant Programming Language
+  / /\ \ | |  | | |  | |  _  /   / /\ \ | |  | | Languages: C, C++, and Assembly
+ / ____ \| |__| | |__| | | \ \  / ____ \| |__| | https://github.com/adorad/adorad/
+/_/    \_\_____/ \____/|_|  \_\/_/    \_\_____/
+
+Licensed under the MIT License <http://opensource.org/licenses/MIT>
+SPDX-License-Identifier: MIT
+Copyright (c) 2021 Jason Dsouza <@jasmcaus>
+*/
+
 #include <adorad/compiler/ast.h>
 #include <adorad/compiler/parser.h>
 #include <adorad/core/debug.h>
@@ -53,7 +66,7 @@ static inline Token* parser_peek_next(Parser* parser) {
     return cast(Token*)(parser->toklist + parser->offset + 1);
 }
 
-// Consumes a token and moves on to the next `N` tokenS
+// Consumes a token && moves on to the next `N` tokenS
 static inline Token* parser_chomp(Parser* parser, UInt64 n) {
     if(parser->offset + n >= parser->num_tokens)
         return null;
@@ -63,7 +76,7 @@ static inline Token* parser_chomp(Parser* parser, UInt64 n) {
     return cast(Token*)parser->curr_tok;
 }
 
-// Consumes a token and moves on to the next, if the current token matches the expected token.
+// Consumes a token && moves on to the next, if the current token matches the expected token.
 static inline Token* parser_chomp_if(Parser* parser, TokenKind tokenkind) {
     if((parser->curr_tok + 1) != null && (parser->curr_tok + 1)->kind == tokenkind)
         return parser_chomp(parser, 1);
@@ -324,7 +337,7 @@ func_no_attrs:;
     AstNode* return_type_expr = ast_parse_type_expr(parser);
     if(return_type_expr == null)
         ast_expected("Return type expression. Use `void` if your function doesn't return anything");
-    if(larrow == null and return_type_expr != null)
+    if(larrow == null && return_type_expr != null)
         ast_expected("trailing `->` after function prototype");
     
     bool no_body = false;
@@ -480,9 +493,9 @@ static AstNode* ast_parse_if_expr(Parser* parser) {
         ast_expected("condition");
     Token* rparen = CHOMP_IF(RPAREN); // this == optional
 
-    if(lparen != null and rparen == null)
+    if(lparen != null && rparen == null)
         ast_expected("closing `(`");
-    if(lparen == null and rparen != null)
+    if(lparen == null && rparen != null)
         ast_error("Extra `)` token not expected at this point");
     
     AstNode* if_body = null;
@@ -507,7 +520,7 @@ static AstNode* ast_parse_if_expr(Parser* parser) {
     if(else_kwd != null)
         else_body = ast_parse_block_expr(parser);
     
-    if(else_body == null and semicolon == null)  
+    if(else_body == null && semicolon == null)  
         ast_expected("Semicolon or `else` block");
 
     AstNode* node = ast_create_node(AstNodeKindIfExpr);
@@ -619,7 +632,7 @@ static AstNode* ast_parse_block_expr_statement(Parser* parser) {
 static AstNode* ast_parse_block_expr(Parser* parser) {
     switch(pc->kind) {
         case IDENTIFIER:
-            if((pc->kind + 1) == COLON and (pc->kind + 2) == LBRACE) {
+            if((pc->kind + 1) == COLON && (pc->kind + 2) == LBRACE) {
                 pc += 2;
                 return ast_parse_block(parser);    
             } else {
@@ -734,7 +747,7 @@ static AstNode* ast_parse_precedence(Parser* parser, UInt8 min_prec) {
 
     while(true) {
         ast_prec prec = lookup_precedence(pc->kind);
-        if(prec.prec < min_prec or prec.prec == banned_prec)
+        if(prec.prec < min_prec || prec.prec == banned_prec)
             break;
         
         CHOMP(1);
@@ -808,7 +821,7 @@ static AstNode* ast_parse_prefix_expr(Parser* parser) {
 // PointerTypeStart
 //      | MULT (*)
 //      | LSQUAREBRACK MULT (LETTERC / COLON Expr)? RSQUAREBRACK
-// and ArrayTypeStart
+// && ArrayTypeStart
 //      LSQUAREBRACK Expr (COLON Expr)? RSQUAREBRACK
 static AstNode* ast_parse_type_expr(Parser* parser) {
     AstNode* node = null;
@@ -1010,7 +1023,7 @@ static AstNode* ast_parse_brace_suffix_expr(Parser* parser) {
 //      PrimaryTypeExpr (SuffixOp / FuncCallArgs)*
 // where FuncCallArgs are:
 //      LPAREN ExprList RPAREN
-// and ExprList is
+// && ExprList is
 //      (Expr COMMA)* Expr?
 static AstNode* ast_parse_suffix_expr(Parser* parser) {
     AstNode* node = ast_parse_primary_type_expr(parser);
@@ -1064,7 +1077,7 @@ static AstNode* ast_parse_suffix_expr(Parser* parser) {
 //      MatchExpr
 // where GroupedExpr is:
 //      LPAREN Expr RPAREN
-// and LabeledTypeExpr is one of:
+// && LabeledTypeExpr is one of:
 //      | BlockLabel Block
 //      | BlockLabel? LoopTypeExpr
 static AstNode* ast_parse_primary_type_expr(Parser* parser) {
@@ -1299,8 +1312,8 @@ static Token* ast_parse_block_label(Parser* parser) {
 // FieldInit
 //      DOT IDENTIFIER EQUALS Expr
 static AstNode* ast_parse_field_init(Parser* parser) {
-    if((pc + 0)->kind == DOT and
-       (pc + 1)->kind == IDENTIFIER and
+    if((pc + 0)->kind == DOT &&
+       (pc + 1)->kind == IDENTIFIER &&
        (pc + 2)->kind == EQUALS) {
             CHOMP(3);
             AstNode* expr = ast_parse_expr(parser);

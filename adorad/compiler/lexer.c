@@ -208,7 +208,7 @@ static inline void lex_sl_comment(Lexer* lexer) {
     LEXER_LOG("Inside lex_sl_comment()");
     char ch = ADVANCE();
 
-    while(ch != nullchar and ch != '\n') {
+    while(ch != nullchar && ch != '\n') {
         ch = ADVANCE();
     }
 
@@ -223,9 +223,9 @@ static inline void lex_ml_comment(Lexer* lexer) {
 
     char ch = ADVANCE();
     bool asterisk_found = false; 
-    while(ch and !(ch == '/' and asterisk_found)) {
+    while(ch && !(ch == '/' && asterisk_found)) {
         asterisk_found = false; 
-        while(ch and (ch != '*'))
+        while(ch && (ch != '*'))
             ch = ADVANCE();
         
         if(ch == '*')
@@ -295,7 +295,7 @@ static inline void lex_macro(Lexer* lexer) {
     UInt32 line = lexer->loc->line;
     UInt32 col = lexer->loc->col;
 
-    while(char_is_letter(ch) or char_is_digit(ch)) {
+    while(char_is_letter(ch) || char_is_digit(ch)) {
         ch = ADVANCE();
         ++macro_length;
     }
@@ -365,7 +365,7 @@ static inline void lex_identifier(Lexer* lexer) {
     // When this function is called, we alread know that the first character statisfies the `case ALPHA`.
     // So, the remaining characters are ALPHA, DIGIT, or `_`
     // Still, we check it either way to ensure sanity.
-    CORETEN_ENFORCE(char_is_letter(prev(lexer)) or char_is_digit(prev(lexer)),
+    CORETEN_ENFORCE(char_is_letter(prev(lexer)) || char_is_digit(prev(lexer)),
                "This message means you've encountered a serious bug within Adorad. Please file an issue on "
                "Adorad's Github repo.\nError: `lex_identifier()` hasn't been called with a valid identifier character");
 
@@ -375,7 +375,7 @@ static inline void lex_identifier(Lexer* lexer) {
     int ident_length = 0;
     char ch = ADVANCE();
 
-    while(char_is_letter(ch) or char_is_digit(ch)) {
+    while(char_is_letter(ch) || char_is_digit(ch)) {
         ch = ADVANCE();
         ++ident_length;
     }
@@ -413,7 +413,7 @@ static inline void lex_attribute(Lexer* lexer) {
         // Possible attribute text
         case ALPHA:
             ch = ADVANCE();
-            while(char_is_letter(ch) or char_is_digit(ch)) {
+            while(char_is_letter(ch) || char_is_digit(ch)) {
                 ch = ADVANCE();
                 ++attr_length;
             }
@@ -524,17 +524,17 @@ static inline void lex_digit(Lexer* lexer) {
         // Fractions, or Integer?
         else {
             // Normal Floats
-            if(ch == '.' or ch == '_') {
+            if(ch == '.' || ch == '_') {
                 ch = ADVANCE();
                 if(ch == '_')
                     lexer_error(ErrorSyntaxError, "Unexpected `_` near `.`");
             }
             
             // Exponents (Float)
-            else if(ch == 'e' or ch == 'E') {
+            else if(ch == 'e' || ch == 'E') {
                 // Skip over [eE]
                 ch = ADVANCE();
-                if(ch == '+' or ch == '-') { 
+                if(ch == '+' || ch == '-') { 
                     ch = ADVANCE();
                 } else {
                     lexer_error(ErrorSyntaxError, "Expected [+-] after exponent `e`. Got `%c`", ch);
@@ -552,7 +552,7 @@ static inline void lex_digit(Lexer* lexer) {
                 digit_length = exp_digits + 1; // Account for the prev digit
             }
             // Imaginary
-            else if(ch == 'j' or ch == 'J') {
+            else if(ch == 'j' || ch == 'J') {
                 // digit_length = imag_count;
             }
         }
@@ -585,7 +585,7 @@ static void lexer_lex(Lexer* lexer) {
     // Some UTF8 text may start with a 3-byte 'BOM' marker sequence. If it exists, skip over them because they 
     // are useless bytes. Generally, it is not recommended to add BOM markers to UTF8 texts, but it's not 
     // uncommon (especially on Windows).
-    if(lexer->buffer->data[0] == (char)0xef and lexer->buffer->data[1] == (char)0xbb and lexer->buffer->data[2] == (char)0xbf)
+    if(lexer->buffer->data[0] == (char)0xef && lexer->buffer->data[1] == (char)0xbb && lexer->buffer->data[2] == (char)0xbf)
         ADVANCEN(3);
 
     char next = nullchar;
@@ -686,10 +686,10 @@ static void lexer_lex(Lexer* lexer) {
                 break;
             case '#': 
                 // Ignore shebang on the first line
-                if(lexer->loc->line == 1 and next == '!' and peekn(lexer, 1) == '/') {
+                if(lexer->loc->line == 1 && next == '!' && peekn(lexer, 1) == '/') {
                     tokenkind = TOK_NULL;
                     // Skip till end of line
-                    while(LEXER_CURR_CHAR and (LEXER_CURR_CHAR != '\n' or LEXER_CURR_CHAR != nullchar))
+                    while(LEXER_CURR_CHAR && (LEXER_CURR_CHAR != '\n' || LEXER_CURR_CHAR != nullchar))
                         curr = ADVANCE();
                 }
                 // Comment

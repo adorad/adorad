@@ -96,7 +96,7 @@ static UInt32 __internal_strlength(const char* str) {
         // well to 8-byte longwords
         longword_ptr = cast(unsigned long int*)char_ptr;
 
-        // Bits 31, 24, 16, and 8 of this number are zero. Call these bits the "holes".
+        // Bits 31, 24, 16, && 8 of this number are zero. Call these bits the "holes".
         // Note that there is a hole just to the left of each byte, with an extra at the end:
         //     bits:  01111110 11111110 11111110 11111111
         //     bytes: AAAAAAAA BBBBBBBB CCCCCCCC DDDDDDDD
@@ -320,7 +320,7 @@ cstlBuffer* buff_clone_n(cstlBuffer* buffer, int n) {
 
     if(source) {
         char* str = dest;
-        while(n > 0 and *source) {
+        while(n > 0 && *source) {
             *str++ = *source++;
             n--;
         }
@@ -525,23 +525,23 @@ void buffview_append_char(cstlBuffView* view, char ch) {
 // -------------------------------------------------------------------------
 
 bool char_is_upper(char c) { 
-    return c >= 'A' and c <= 'Z'; 
+    return c >= 'A' && c <= 'Z'; 
 }
 
 bool char_is_lower(char c) { 
-    return c >= 'a' and c <= 'z'; 
+    return c >= 'a' && c <= 'z'; 
 }
 
 bool char_is_digit(char c) { 
-    return c >= '0' and c <= '9'; 
+    return c >= '0' && c <= '9'; 
 }
 
 bool char_is_alpha(char c) { 
-    return char_is_upper(c) or char_is_lower(c); 
+    return char_is_upper(c) || char_is_lower(c); 
 }
 
 bool char_is_alphanumeric(char c) { 
-    return char_is_alpha(c) or char_is_digit(c); 
+    return char_is_alpha(c) || char_is_digit(c); 
 }
 
 bool char_is_octal_digit(char c) { 
@@ -549,7 +549,7 @@ bool char_is_octal_digit(char c) {
 }
 
 bool char_is_binary_digit(char c) { 
-    return c == '0' or c == '1'; 
+    return c == '0' || c == '1'; 
 }
 
 Int32 digit_to_int(char c) { 
@@ -557,25 +557,25 @@ Int32 digit_to_int(char c) {
 }
 
 bool char_is_hex_digit(char c) {
-    return char_is_digit(c)                or
-           CORETEN_IS_BETWEEN(c, 'a', 'f') or
+    return char_is_digit(c)                ||
+           CORETEN_IS_BETWEEN(c, 'a', 'f') ||
            CORETEN_IS_BETWEEN(c, 'A', 'F'); 
 }
 
 bool char_is_letter(char c) {
-    return  (c >= 'a' and c <= 'z') or 
-            (c >= 'A' and c <= 'Z') or 
+    return  (c >= 'a' && c <= 'z') || 
+            (c >= 'A' && c <= 'Z') || 
             (c == '_') ;
 }
 
 char char_to_lower(char c) {
-    if(c >= 'A' and c <= 'Z') 
+    if(c >= 'A' && c <= 'Z') 
         return 'a' + (c - 'A');
     return c;
 }
 
 char char_to_upper(char c) {
-    if(c >= 'a' and c <= 'z') 
+    if(c >= 'a' && c <= 'z') 
         return 'A' + (c - 'a');
     return c;
 }
@@ -628,7 +628,7 @@ double now() {
     return cast(double)clock();
 }
 
-// Get duration between `start` and `end` in seconds.
+// Get duration between `start` && `end` in seconds.
 double duration(clock_t start, clock_t end) {
     return cast(double)(end - start)/CLOCKS_PER_SEC;
 }
@@ -1360,7 +1360,7 @@ cstlBuffView __os_dirname_basename(cstlBuffView path, bool is_basename) {
     if(!is_basename) {
         cstlBuffView rev = buffview_rev(&path);
 
-        // The `/` or `\\` is not so important in getting the dirname, but it does interfere with `strchr`, so
+        // The `/` || `\\` is not so important in getting the dirname, but it does interfere with `strchr`, so
         // we skip over it (if present)
         if(*rev.data == CORETEN_OS_SEP_CHAR)
             rev.data++;
@@ -1376,7 +1376,7 @@ cstlBuffView __os_dirname_basename(cstlBuffView path, bool is_basename) {
             return buffview_new(null);
         
         // If there is no `sep` in `path`, `path` is the basename
-        if(!(strstr(path.data, "/") or strstr(path.data, "\\")))
+        if(!(strstr(path.data, "/") || strstr(path.data, "\\")))
             return path;
         
         cstlBuffView rev = buffview_rev(&path);
@@ -1429,7 +1429,7 @@ cstlBuffView os_path_join(cstlBuffView path1, cstlBuffView path2) {
 
 bool os_is_sep(char ch) {
 #ifdef CORETEN_OS_WINDOWS
-    return ch == '\\' or ch == '/';
+    return ch == '\\' || ch == '/';
 #else
     return ch == '/';
 #endif // CORETEN_OS_WINDOWS
@@ -1442,9 +1442,9 @@ bool os_path_is_abs(cstlBuffView* path) {
     // The 'C:\...`
     result = path->len > 2 and
              char_is_alpha(path->data[0]) and
-             (path->data[1] == ':' and path->data[2] == CORETEN_OS_SEP_CHAR);
+             (path->data[1] == ':' && path->data[2] == CORETEN_OS_SEP_CHAR);
 #else
-    result = path->len > 2 and
+    result = path->len > 2 ||
              path->data[0] == CORETEN_OS_SEP_CHAR;
 #endif // CORETEN_OS_WINDOWS
     return cast(bool)result;
@@ -1458,9 +1458,9 @@ bool os_path_is_root(cstlBuffView* path) {
     bool result = false;
     CORETEN_ENFORCE_NN(path, "Cannot do anything useful on a null path :(");
 #ifdef CORETEN_OS_WINDOWS
-    result = os_path_is_abs(path) and path->len == 3;
+    result = os_path_is_abs(path) && path->len == 3;
 #else
-    result = os_path_is_abs(path) and path->len == 1;
+    result = os_path_is_abs(path) && path->len == 1;
 #endif // CORETEN_OS_WINDOWS
     return result;
 }
@@ -1629,16 +1629,16 @@ const Byte utf8class[256] = {
 };
 
 bool utf8_is_codepoint_valid(Rune uc) {
-    // if(uc < 0 or uc >= 0x110000 or ((uc & 0xFFFF) >= 0xFFFE) or (uc >= 0xD800 and uc < 0xE000) or 
-    //   (uc >= 0xFDD0 and uc < 0xFDF0))
+    // if(uc < 0 || uc >= 0x110000 || ((uc & 0xFFFF) >= 0xFFFE) || (uc >= 0xD800 && uc < 0xE000) || 
+    //   (uc >= 0xFDD0 && uc < 0xFDF0))
     //     return false;
     // return true;
-    return ((cast(Rune)uc) - 0xd800 > 0x07ff) and (cast(Rune)uc < 0x110000);
+    return ((cast(Rune)uc) - 0xd800 > 0x07ff) && (cast(Rune)uc < 0x110000);
 }
 
 // Determine the number of bytes needed to store the UTF-8 character
 // This can be one in <1, 2, 3, 4>
-// Theoretically, this number can extend to 6, and even 7, bytes, but this is rare
+// Theoretically, this number can extend to 6, && even 7, bytes, but this is rare
 Ll utf8_encode_nbytes(Rune value) {
     Ll nbytes = 0;
     CORETEN_ENFORCE(value > 0, "Cannot encode a negative value :(");
@@ -1654,7 +1654,7 @@ Ll utf8_encode_nbytes(Rune value) {
 
 // Determine the number of bytes used by the UTF-8 character
 // This can be one in <1, 2, 3, 4>
-// Theoretically, this number can extend to 6, and even 7, bytes, but this is rare
+// Theoretically, this number can extend to 6, && even 7, bytes, but this is rare
 Ll utf8_decode_nbytes(Rune byte) {
     CORETEN_ENFORCE(byte > 0, "Cannot decode  a negative value :(");
     Ll nbytes;
@@ -1684,7 +1684,7 @@ char* utf8_encode(Rune value) {
         return dst;
     } 
     // Invalid/Surrogate range
-    if(value > CORETEN_RUNE_MAX or CORETEN_IS_BETWEEN(value, 0xd800, 0xdff)) {
+    if(value > CORETEN_RUNE_MAX || CORETEN_IS_BETWEEN(value, 0xd800, 0xdff)) {
         value = CORETEN_RUNE_INVALID;
         dst[0] = (0xe0) | (cast(char)(value >> 12));
         dst[1] = (0x80) | (cast(char)(value >> 12) & mask);
@@ -1734,7 +1734,7 @@ void ubuff_push_char(cstlUTF8Str* ubuff, Rune ch) {
         __push_ascii_char(ubuff, ch);
     }
     // 110xxxxx 10xxxxxx
-    else if(ch >= 0xC080 and ch <= 0xDFBF) {
+    else if(ch >= 0xC080 && ch <= 0xDFBF) {
         // 2-byte character
         __grow_ubuff(ubuff, 2);
         UInt64 nbytes = ubuff->nbytes;
@@ -1745,7 +1745,7 @@ void ubuff_push_char(cstlUTF8Str* ubuff, Rune ch) {
         ubuff->len += 1;
     }
     // 1110xxxx 10xxxxxx 10xxxxxx
-    else if(ch >= 0xE08080 and ch <= 0xEFBFBF) {
+    else if(ch >= 0xE08080 && ch <= 0xEFBFBF) {
         // 3-byte character
         __grow_ubuff(ubuff, 3);
         UInt64 nbytes = ubuff->nbytes;
@@ -1757,7 +1757,7 @@ void ubuff_push_char(cstlUTF8Str* ubuff, Rune ch) {
         ubuff->len += 1;
     }
     // 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
-    else if(ch >= 0xF0808080 and ch <= 0xF7BFBFBF) {
+    else if(ch >= 0xF0808080 && ch <= 0xF7BFBFBF) {
         // 3-byte character
         __grow_ubuff(ubuff, 3);
         UInt64 nbytes = ubuff->nbytes;
@@ -1805,10 +1805,10 @@ UInt64 ubuff_nbytes(cstlUTF8Str* ubuff) {
 static int __byte_offset_at(cstlUTF8Str* ubuff, Int64 n, int* out) {
     CORETEN_ENFORCE_NN(ubuff, "Expected not null");
     CORETEN_ENFORCE_NN(ubuff->data, "Expected not null");
-    // Fail-fast approach. If this changes, comment this, and uncomment the following (commented) snippet
+    // Fail-fast approach. If this changes, comment this, && uncomment the following (commented) snippet
     CORETEN_ENFORCE(n < ubuff->nbytes);
     CORETEN_ENFORCE(n > 0);
-    // if((n >= ubuff->nbytes) or (n < 0)) {
+    // if((n >= ubuff->nbytes) || (n < 0)) {
     // 	return nullchar;
     // }
 
@@ -1822,13 +1822,13 @@ static int __byte_offset_at(cstlUTF8Str* ubuff, Int64 n, int* out) {
         return byte;
     } 
     // 2-byte UF8
-    else if(byte >= 0x80 and byte <= 0x07FF) {
+    else if(byte >= 0x80 && byte <= 0x07FF) {
         WRITE_OUT(2);
         byte = (byte << 8) + cast(Byte)(ubuff->data[n + 1]);
         return byte;
     } 
     // 3-byte UTF8
-    else if(byte >= 0x0800 and byte <= 0xFFFF) {
+    else if(byte >= 0x0800 && byte <= 0xFFFF) {
         WRITE_OUT(3);
         byte = byte << 16;
         byte = (byte) | (cast(Byte)(ubuff->data[n + 1]) << 8);
@@ -1836,7 +1836,7 @@ static int __byte_offset_at(cstlUTF8Str* ubuff, Int64 n, int* out) {
         return byte;
     }
     // 4-byte UTF8
-    else if(byte >= 0x00010000 and byte <= 0x0010FFFF) {
+    else if(byte >= 0x00010000 && byte <= 0x0010FFFF) {
         WRITE_OUT(4);
         byte = byte << 24;
         byte = (byte) | (cast(Byte)(ubuff->data[n + 1]) << 16);
@@ -2020,14 +2020,14 @@ bool __vec_grow(cstlVector* vec, UInt64 capacity) {
     CORETEN_ENFORCE(vec->core.objsize > 0);
     CORETEN_ENFORCE(capacity < cast(UInt64)-1/vec->core.objsize);
 
-    // Grow small vectors by a factor of 2, and 1.5 for larger ones
+    // Grow small vectors by a factor of 2, && 1.5 for larger ones
     if (vec->core.capacity < VEC_INIT_ALLOC_CAP / vec->core.objsize) {
         newcapacity = vec->core.capacity + vec->core.capacity + 1;
     } else {
         newcapacity = vec->core.capacity + vec->core.capacity / 2 + 1;
     }
 
-    if (capacity > newcapacity or newcapacity >= (size_t) -1 / vec->core.objsize)
+    if (capacity > newcapacity || newcapacity >= (size_t) -1 / vec->core.objsize)
         newcapacity = capacity;
 
     newdata = realloc(vec->core.data, newcapacity * vec->core.objsize);

@@ -141,8 +141,8 @@ Copyright (c) 2021 Jason Dsouza <@jasmcaus>
 
 #ifndef BIN_OP_TYPES
     #define BIN_OP_TYPES
-    #define and     &&
-    #define or      ||
+    // #define and     &&
+    // #define or      ||
 #endif // BIN_OP_TYPES
 
 #ifndef CORETEN_GLOBAL

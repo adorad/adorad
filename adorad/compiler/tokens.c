@@ -47,5 +47,5 @@ Buff* token_to_buff(TokenKind kind) {
 
 // Is `kind` an attribute?
 bool token_is_attribute(TokenKind kind) {
-    return kind > TOK___ATTRIBUTES_BEGIN and kind < TOK___ATTRIBUTES_END;
+    return kind > TOK___ATTRIBUTES_BEGIN && kind < TOK___ATTRIBUTES_END;
 }
