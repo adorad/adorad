@@ -21,10 +21,12 @@ configure_file(
 # 
 # Note that this library must have _minimal_ dependencies 
 # _DO NOT_ add `main.c` here (we're building a library, remember?)
-file(GLOB LIBADORAD_SOURCES
+file(GLOB 
+    LIBADORAD_SOURCES
     compiler/*.c
 )
-file(GLOB_RECURSE ADORAD_HEADERS 
+file(GLOB_RECURSE 
+    ADORAD_HEADERS 
     *.h
 )
 
@@ -62,12 +64,16 @@ if(ADORAD_BUILD_STATIC_LIB)
     target_link_libraries(AdoradStatic libAdoradStatic)
     target_link_libraries(AdoradStatic Coreten)
 
-    target_compile_definitions(AdoradStatic PUBLIC
+    target_compile_definitions(
+        AdoradStatic PUBLIC
         _ADORAD_=1
     )
 
     # Installation
-    install(TARGETS libAdoradStatic DESTINATION lib)
+    install(
+        TARGETS libAdoradStatic 
+        DESTINATION lib
+    )
 endif() # ADORAD_BUILD_STATIC_LIB
 
 
