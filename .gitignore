@@ -7,7 +7,7 @@
 python/Adorad.egg-info/*
 python/build/*
 docs/build/*
-build/*
+build
 out/*
 AdoradInternalTests/*
 test.c
