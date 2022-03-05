@@ -1,0 +1,300 @@
+name: Windows
+
+on:
+  push:
+    branches:
+      - dev
+      - master
+      - temp
+  pull_request:
+    branches:
+      - dev
+      - master
+      - temp
+
+jobs:
+  mingw:
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        architecture: [x64, x86]
+        # build_type: [Debug, RelWithDebInfo, MinSizeRel, Release] 
+        build_type: [Release]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up MinGW
+        uses: egor-tensin/setup-mingw@v2
+        with:
+          platform: ${{ matrix.architecture }}
+      
+      - name: Set up AdoradInternalTests folder
+        run: |
+          python tools/tests/before_tests_ci.py 
+
+      - name: CMake
+        run: |
+          cmake -S . -B build -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DADORAD_BUILDTESTS=On
+
+      - name: Build
+        run: |
+          cmake --build build --config ${{ matrix.build_type }} --parallel 10
+
+      - name: Test
+        run: |
+          cd build/test 
+          ctest -j 10 -C ${{ matrix.build_type }} --output-on-failure
+          echo ' <<<<<<<<<<<<<<<<<<<<<<< cd .. <<<<<<<<<<<<<<<<<<<<<<<'
+          cd .. 
+          echo ' <<<<<<<<<<<<<<<<<<<<<<< cd bin/  <<<<<<<<<<<<<<<<<<<<<<<'
+          cd bin/ 
+          echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain <<<<<<<<<<<<<<<<<<<<<<<'
+          dir
+          ./AdoradInternalTestsWithMain
+          echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain <<<<<<<<<<<<<<<<<<<<<<<'
+
+  # Slight hack when it comes to building on using Windows on Github runners:
+  # CMake apparently defaults to an older Windows SDK Version that has quite a few bugs which lead to compilation
+  # bugs. 
+  # After *hours* of work trying to track down this issue (and also a lil' help from the StackOverflow question below), 
+  # we need to force CMake to choose a later SDK version
+  # SO link: https://stackoverflow.com/questions/65402366/c5105-and-other-compiler-warnings-when-building-with-github-actions-winsdk-10
+  # 
+  # For Visual Studio projects, CMAKE_BUILD_TYPE has _no_ effect whatsoever in setting the right build type..
+  # Building with `-DCMAKE_BUILD_TYPE` doesn't work either for the same reason.
+  # In order to force MSVC to select the right build type, the `--config` flag needs to be passed in when building
+  # the CMake project as below:
+  # For info here: https://stackoverflow.com/questions/19024259/how-to-change-the-build-type-to-release-mode-in-cmake
+  MSVC2017:
+    runs-on: windows-2016
+    strategy:
+      fail-fast: false
+      matrix:
+        # build_type: [Debug, RelWithDebInfo, MinSizeRel, Release] 
+        build_type: [Release]
+        architecture: [Win32, x64]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up AdoradInternalTests folder
+      run: |
+        python tools/tests/before_tests_ci.py 
+
+    - name: CMake (Release, x64)
+      if: matrix.build_type == 'Release' && matrix.architecture == 'x64'
+      run: |
+        cmake -S . -B build -G "Visual Studio 15 2017" -A ${{ matrix.architecture }} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DADORAD_BUILDTESTS=On -DCMAKE_EXE_LINKER_FLAGS="/STACK:4000000" -DCMAKE_SYSTEM_VERSION="10.0.18362.0"
+      
+    - name: CMake (Release, !x64)
+      if: matrix.build_type == 'Release' && matrix.architecture != 'x64'
+      run: |
+        cmake -S . -B build -G "Visual Studio 15 2017" -A ${{ matrix.architecture }} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DADORAD_BUILDTESTS=On -DCMAKE_SYSTEM_VERSION="10.0.18362.0"
+
+    - name: CMake (Default Configs)
+      if: matrix.build_type != 'Release'
+      run: |
+        cmake -S . -B build -G "Visual Studio 15 2017" -A ${{ matrix.architecture }} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DADORAD_BUILDTESTS=On -DCMAKE_SYSTEM_VERSION="10.0.18362.0"
+
+    - name: Build
+      run: |
+        cmake --build build --config ${{ matrix.build_type }} --parallel 10
+
+    - name: Test
+      run: |
+        cd build/test 
+        ctest -j 10 -C ${{ matrix.build_type }} --output-on-failure
+        echo ' <<<<<<<<<<<<<<<<<<<<<<< PYTHON <<<<<<<<<<<<<<<<<<<<<<<'
+        python ../../tools/tests/before_tests_run_ci.py ${{ matrix.build_type }}
+        echo ' <<<<<<<<<<<<<<<<<<<<<<< cd .. <<<<<<<<<<<<<<<<<<<<<<<'
+        cd .. 
+        echo ' <<<<<<<<<<<<<<<<<<<<<<< cd bin/  <<<<<<<<<<<<<<<<<<<<<<<'
+        cd bin/ 
+        echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain <<<<<<<<<<<<<<<<<<<<<<<'
+        dir
+        bash -c "./AdoradInternalTestsWithMain"
+        echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain <<<<<<<<<<<<<<<<<<<<<<<'
+
+
+  MSVC2017_latest:
+    runs-on: windows-2016
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up AdoradInternalTests folder
+      run: |
+        python tools/tests/before_tests_ci.py 
+
+    - name: CMake
+      run: |
+        cmake -S . -B build -G "Visual Studio 15 2017" -DCMAKE_BUILD_TYPE=Release -DADORAD_BUILDTESTS=On -DCMAKE_C_FLAGS="/permissive- /std:c11 /utf-8 /W4" -DCMAKE_SYSTEM_VERSION="10.0.18362.0"
+
+    - name: Build
+      run: |
+        cmake --build build --config Release --parallel 10
+
+    - name: Test
+      run: |
+        cd build/test 
+        ctest -j 10 -C Release --output-on-failure
+        echo ' <<<<<<<<<<<<<<<<<<<<<<< PYTHON <<<<<<<<<<<<<<<<<<<<<<<'
+        python ../../tools/tests/before_tests_run_ci.py Release
+        echo ' <<<<<<<<<<<<<<<<<<<<<<< cd .. <<<<<<<<<<<<<<<<<<<<<<<'
+        cd .. 
+        echo ' <<<<<<<<<<<<<<<<<<<<<<< cd bin/  <<<<<<<<<<<<<<<<<<<<<<<'
+        cd bin/ 
+        echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain <<<<<<<<<<<<<<<<<<<<<<<'
+        dir
+        bash -c "./AdoradInternalTestsWithMain"
+        echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain <<<<<<<<<<<<<<<<<<<<<<<'
+
+
+  MSVC2019:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        # build_type: [Debug, RelWithDebInfo, MinSizeRel, Release] 
+        build_type: [Release]
+        architecture: [Win32, x64]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up AdoradInternalTests folder
+      run: |
+        python tools/tests/before_tests_ci.py 
+
+    - name: CMake
+      run: |
+        cmake -S . -B build -G "Visual Studio 16 2019" -A ${{ matrix.architecture }} -DADORAD_BUILDTESTS=On -DCMAKE_SYSTEM_VERSION="10.0.18362.0"
+      
+    - name: Build
+      run: |
+        cmake --build build --config ${{ matrix.build_type }} --parallel 10
+
+    - name: Test
+      run: |
+        cd build/test 
+        ctest -j 10 -C ${{ matrix.build_type }} --output-on-failure
+        echo ' <<<<<<<<<<<<<<<<<<<<<<< PYTHON <<<<<<<<<<<<<<<<<<<<<<<'
+        python ../../tools/tests/before_tests_run_ci.py ${{ matrix.build_type }}
+        echo ' <<<<<<<<<<<<<<<<<<<<<<< cd .. <<<<<<<<<<<<<<<<<<<<<<<'
+        cd .. 
+        echo ' <<<<<<<<<<<<<<<<<<<<<<< cd bin/  <<<<<<<<<<<<<<<<<<<<<<<'
+        cd bin/ 
+        echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain <<<<<<<<<<<<<<<<<<<<<<<'
+        dir
+        bash -c "./AdoradInternalTestsWithMain"
+        echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain <<<<<<<<<<<<<<<<<<<<<<<'
+
+
+  MSVC2019_latest:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up AdoradInternalTests folder
+      run: |
+        python tools/tests/before_tests_ci.py 
+
+    - name: CMake
+      run: |
+        cmake -S . -B build -G "Visual Studio 16 2019" -DADORAD_BUILDTESTS=On -DCMAKE_C_FLAGS="/permissive- /std:c++latest /utf-8 /W4" -DCMAKE_SYSTEM_VERSION="10.0.18362.0"
+
+    - name: Build
+      run: |
+        cmake --build build --config Release --parallel 10
+
+    - name: Test
+      run: |
+        cd build/test 
+        ctest -j 10 -C Release --output-on-failure
+        echo ' <<<<<<<<<<<<<<<<<<<<<<< PYTHON <<<<<<<<<<<<<<<<<<<<<<<'
+        python ../../tools/tests/before_tests_run_ci.py Release
+        echo ' <<<<<<<<<<<<<<<<<<<<<<< cd .. <<<<<<<<<<<<<<<<<<<<<<<'
+        cd .. 
+        echo ' <<<<<<<<<<<<<<<<<<<<<<< cd bin/  <<<<<<<<<<<<<<<<<<<<<<<'
+        cd bin/ 
+        echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain <<<<<<<<<<<<<<<<<<<<<<<'
+        dir
+        bash -c "./AdoradInternalTestsWithMain"
+        echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain <<<<<<<<<<<<<<<<<<<<<<<'
+
+
+  Clang:
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # build_type: [Debug, RelWithDebInfo, MinSizeRel, Release] 
+        build_type: [Release]
+        version: [10, 11]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up AdoradInternalTests folder
+        run: |
+          python tools/tests/before_tests_ci.py 
+
+      - name: Install Clang
+        run: |
+          curl -fsSL -o LLVM${{ matrix.version }}.exe https://github.com/llvm/llvm-project/releases/download/llvmorg-${{ matrix.version }}.0.0/LLVM-${{ matrix.version }}.0.0-win64.exe ; 7z x LLVM${{ matrix.version }}.exe -y -o"C:/Program Files/LLVM"
+
+      - name: CMake
+        run: |
+          cmake -S . -B build -G"MinGW Makefiles" -DCMAKE_C_COMPILER="C:/Program Files/LLVM/bin/clang.exe" -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DADORAD_BUILDTESTS=On
+
+      - name: Build
+        run: |
+          cmake --build build --parallel 10
+
+      - name: Test
+        run: |
+          cd build/test 
+          ctest -j 10 -C ${{ matrix.build_type }} --output-on-failure
+          echo ' <<<<<<<<<<<<<<<<<<<<<<< cd .. <<<<<<<<<<<<<<<<<<<<<<<'
+          cd .. 
+          echo ' <<<<<<<<<<<<<<<<<<<<<<< cd bin/  <<<<<<<<<<<<<<<<<<<<<<<'
+          cd bin/ 
+          echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain <<<<<<<<<<<<<<<<<<<<<<<'
+          dir
+          ./AdoradInternalTestsWithMain
+          echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain <<<<<<<<<<<<<<<<<<<<<<<'
+
+
+  Clang-cl-11:
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # build_type: [Debug, RelWithDebInfo, MinSizeRel, Release] 
+        build_type: [Release]
+        architecture: [Win32, x64]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up AdoradInternalTests folder
+        run: |
+          python tools/tests/before_tests_ci.py 
+
+      - name: CMake
+        run: |
+          cmake -S . -B build -G "Visual Studio 16 2019" -A ${{ matrix.architecture }} -T ClangCL -DADORAD_BUILDTESTS=On
+
+      - name: Build
+        run: |
+          cmake --build build --config ${{ matrix.build_type }} --parallel 10
+
+      - name: Test
+        run: |
+          cd build/test 
+          ctest -j 10 -C ${{ matrix.build_type }} --output-on-failure
+          echo ' <<<<<<<<<<<<<<<<<<<<<<< PYTHON <<<<<<<<<<<<<<<<<<<<<<<'
+          python ../../tools/tests/before_tests_run_ci.py ${{ matrix.build_type }}
+          echo ' <<<<<<<<<<<<<<<<<<<<<<< cd .. <<<<<<<<<<<<<<<<<<<<<<<'
+          cd .. 
+          echo ' <<<<<<<<<<<<<<<<<<<<<<< cd bin/  <<<<<<<<<<<<<<<<<<<<<<<'
+          cd bin/ 
+          echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain <<<<<<<<<<<<<<<<<<<<<<<'
+          dir
+          ./AdoradInternalTestsWithMain
+          echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain <<<<<<<<<<<<<<<<<<<<<<<'

@@ -1,0 +1,25 @@
+name: SLOC
+
+on: 
+  push:
+    branches:
+      - dev
+  pull_request:
+    branches:
+      - dev
+
+
+jobs:
+  lines:
+    name: Count Lines, eh?
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v2
+
+    - name: Install SLOCCount
+      run: sudo apt-get install sloccount
+
+    - name: Check <50000 lines
+      run: sloccount adorad examples test; if [ $(sloccount adorad | sed -n 's/.*Total Physical Source Lines of Code (SLOC)[ ]*= \([^ ]*\).*/\1/p' | tr -d ',') -gt 50000 ]; then exit 1; fi

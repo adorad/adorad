@@ -1,0 +1,25 @@
+import os
+
+test(hello) {
+    @test
+}
+
+type Fruits enum {
+    Apple,
+    Orange,
+    Jackfruit,
+    Banana
+}
+
+type Vegetables enum {
+    Tomato,
+    Avocado, # is this a fruit?
+    Cauliflower
+}
+type Market = Fruits | Vegetables
+
+func main() {
+    # Execute this piece of code
+    print(f"os.pwd = {os.pwd}")
+    print("That's it!")
+}
