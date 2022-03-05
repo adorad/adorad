@@ -9,13 +9,6 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED TRUE)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-# Configure the Macro file 
-set(ADORAD_BUILD_SHARED_LIB ${BUILD_SHARED_LIBS}) # used in ../cmake/cmake_macros.h.in
-configure_file(
-    ${CMAKE_SOURCE_DIR}/cmake/cmake_macros.h.in
-    ${CMAKE_SOURCE_DIR}/adorad/core/cmake_macros.h
-)
-
 #
 # Main Build File for the main Adorad Library
 # 
@@ -125,12 +118,6 @@ install(
     DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
     DESTINATION include
     FILES_MATCHING PATTERN "*.h"
-)
-
-# adorad/core/CMake_Macros.h --> include/adorad/core/CMake_Macros.h
-install(
-    FILES ${CMAKE_BINARY_DIR}/adorad/core/cmake_macros.h
-    DESTINATION include/adorad/core/macros
 )
 
 # For CORETEN_BUILD_SHARED_LIB, see Core/Export.h

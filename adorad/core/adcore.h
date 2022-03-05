@@ -49,10 +49,6 @@ CREDITS
     Reminder: Be Explicit. 
 */
 
-#ifndef CORETEN_USING_CUSTOM_GENERATED_MACROS
-    #include <adorad/core/cmake_macros.h>
-#endif // CORETEN_USING_CUSTOM_GENERATED_MACROS
-
 #include <adorad/core/os_defs.h>
 #include <adorad/core/cpu.h>
 #include <adorad/core/compilers.h>
