@@ -20,6 +20,7 @@ Copyright (c) 2021-22 Jason Dsouza <@jasmcaus>
 #include <adorad/core/misc.h>
 #include <adorad/core/compilers.h>
 
+
 // Static asserts (aka compile-time asserts)
 #ifndef __CORTEN_STATIC_ASSERT_DEFINED
     #define __CORTEN_STATIC_ASSERT_DEFINED
@@ -28,6 +29,7 @@ Copyright (c) 2021-22 Jason Dsouza <@jasmcaus>
         __coreten_assert_stmt(cond, msg)   \
         __coreten_assert_warning_pop       
 #endif // __CORTEN_STATIC_ASSERT_DEFINED
+
 
 #if __STDC_VERSION__ >= 201112L || CORETEN_HAS_FEATURE(c_static_assert)
     #define __coreten_assert_stmt(cond, msg)    _Static_assert(cond, msg)
@@ -84,18 +86,18 @@ int ATTRIBUTE_PRINTF(2, 3)
 cstlColouredPrintf(int colour, const char* fmt, ...);
 
 typedef enum {
-    PanicLevelUnreachable = 0,
-    PanicLevelAssertionFailed
-} PanicLevel;
+    DreadLevelUnreachable = 0,
+    DreadLevelAssertionFailed
+} DreadLevel;
 
 ATTRIBUTE_COLD
 ATTRIBUTE_NORETURN
 ATTRIBUTE_PRINTF(2, 3)
-void coreten_panic(PanicLevel pl, const char* format, ...);
+void coreten_dread(DreadLevel pl, const char* format, ...);
 
 #define coreten_unreachable()                                                                      \
-    coreten_panic(                                                                                 \
-        PanicLevelUnreachable,                                                                     \
+    coreten_dread(                                                                                 \
+        DreadLevelUnreachable,                                                                     \
         "Unreachable: At %s:%d in %s. %s", __FILE__, __LINE__, __func__,                           \
         "Please file an issue on Adorad's Github repository"                                       \
     )

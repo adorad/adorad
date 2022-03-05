@@ -734,7 +734,7 @@ It's also possible to use an `or {}` block to handle missing keys:
 
 ```adorad
 mm = map[string]int{}
-val = mm['bad_key'] or { panic('key not found') }
+val = mm['bad_key'] or { dread('key not found') }
 ```
 
 The same optional check applies to tensors:
@@ -742,7 +742,7 @@ The same optional check applies to tensors:
 ```adorad
 arr = [1, 2, 3]
 large_index = 999
-val = arr[large_index] or { panic('out of bounds') }
+val = arr[large_index] or { dread('out of bounds') }
 ```
 
 ## Module imports
@@ -1243,7 +1243,7 @@ import os
 
 func read_log() {
 	mutable ok = false
-	mutable f = os.open('log.txt') or { panic(err.msg) }
+	mutable f = os.open('log.txt') or { dread(err.msg) }
 	defer {
 		f.close()
 	}
@@ -1824,7 +1824,7 @@ func eprint(s string) # same as print(), but use stderr
 func eprint(s string) # same as print(), but use stderr
 
 func exit(code int) # terminate the program with a custom error code
-func panic(s string) # print a message and backtraces on stderr, and terminate the program with error code 1
+func dread(s string) # print a message and backtraces on stderr, and terminate the program with error code 1
 func print_backtrace() # print backtraces on stderr
 ```
 
@@ -2158,7 +2158,7 @@ func main() {
 }
 ```
 
-`as` will panic if `w` doesn't hold a `Mars` instance.
+`as` will dread if `w` doesn't hold a `Mars` instance.
 A safer way is to use a smart cast.
 
 #### Smart casting
@@ -2317,7 +2317,7 @@ func f(url string) ?string {
 error will be propagated to the caller of `f`. When using `?` after a
 function call producing an optional, the enclosing function must return
 an optional as well. If error propagation is used in the `main()`
-function it will `panic` instead, since the error cannot be propagated
+function it will `dread` instead, since the error cannot be propagated
 any further.
 
 The body of `f` is essentially a condensed version of:
@@ -2334,13 +2334,13 @@ The second method is to break from execution early:
 user = repo.find_user_by_id(7) or { return }
 ```
 
-Here, you can either call `panic()` or `exit()`, which will stop the execution of the
+Here, you can either call `dread()` or `exit()`, which will stop the execution of the
 entire program, or use a control flow statement (`return`, `break`, `continue`, etc)
 to break from the current block.
 Note that `break` and `continue` can only be used inside a `for` loop.
 
 Adorad does not have a way to forcibly "unwrap" an optional (as other languages do,
-for instance Rust's `unwrap()` or Swift's `!`). To do this, use `or { panic(err.msg) }` instead.
+for instance Rust's `unwrap()` or Swift's `!`). To do this, use `or { dread(err.msg) }` instead.
 
 ---
 The third method is to provide a default value at the end of the `or` block.
@@ -2592,7 +2592,7 @@ y = <-ch2 # pop into existing variable
 ```
 
 A channel can be closed to indicate that no further objects can be pushed. Any attempt
-to do so will then result in a runtime panic (with the exception of `select` and
+to do so will then result in a runtime dread (with the exception of `select` and
 `try_push()` - see below). Attempts to pop will return immediately if the
 associated channel has been closed and the buffer is empty. This situation can be
 handled using an or branch (see [Handling Optionals](#handling-optionals)).
@@ -3091,7 +3091,7 @@ reference value unless the struct already defines its own initial value.
 Zero-value references, or nil pointers, will **NOT** be supported in the future,
 for now data structures such as Linked Lists or Binary Trees that rely on reference
 fields that can use the value `0`, understanding that it is unsafe, and that it can
-cause a panic.
+cause a dread.
 
 ```adorad
 struct Node {
@@ -3328,12 +3328,12 @@ To debug issues in the generated C code, you can pass these flags:
 
 - `-g` - produces a less optimized executable with more debug information in it.
     Adorad will enforce line numbers from the .ad files in the stacktraces, that the
-    executable will produce on panic. It is usually better to pass -g, unless
+    executable will produce on dread. It is usually better to pass -g, unless
     you are writing low level code, in which case use the next option `-cg`.
 - `-cg` - produces a less optimized executable with more debug information in it.
 	The executable will use C source line numbers in this case. It is frequently
     used in combination with `-keepc`, so that you can inspect the generated
-    C program in case of panic, or so that your debugger (`gdb`, `lldb` etc.)
+    C program in case of dread, or so that your debugger (`gdb`, `lldb` etc.)
     can show you the generated C source code.
 - `-showcc` - prints the C command that is used to build the program.
 - `-show-c-output` - prints the output, that your C compiler produced
@@ -3417,7 +3417,7 @@ Full list of builtin options:
 module main
 func main() {
 	embedded_file = $embed_file('v.png')
-	mutable fw = os.create('exported.png') or { panic(err.msg) }
+	mutable fw = os.create('exported.png') or { dread(err.msg) }
 	fw.write_bytes(embedded_file.data(), embedded_file.len)
 	fw.close()
 }
@@ -3580,7 +3580,7 @@ eprint('file: ' + @FILE + ' | line: ' + @LINE + ' | def: ' + @MOD + '.' + @FN)
 Another example, is if you want to embed the version/name from v.mod *inside* your executable:
 ```adorad
 import v.admod
-vm = vmod.decode( @VMOD_FILE ) or { panic(err.msg) }
+vm = vmod.decode( @VMOD_FILE ) or { dread(err.msg) }
 eprint('$vm.name $vm.version\n $vm.description')
 ```
 

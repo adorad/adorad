@@ -30,7 +30,7 @@ char* error_str(Error err) {
     return "<invalid error>";
 }
 
-void panic(Error err, const char* format, ...) {
+void dread(Error err, const char* format, ...) {
     va_list args;
     char buffer[256];
 

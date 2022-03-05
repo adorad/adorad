@@ -695,7 +695,7 @@ cstlColouredPrintf(int colour, const char* fmt, ...) {
 #endif // CORETEN_UNIX_
 }
 
-void coreten_panic(PanicLevel pl, const char* format, ...) {
+void coreten_dread(DreadLevel pl, const char* format, ...) {
     va_list args;
     char buffer[256];
 
@@ -706,8 +706,8 @@ void coreten_panic(PanicLevel pl, const char* format, ...) {
     const char* str;
 
     switch(pl) {
-        case PanicLevelUnreachable: str = "CoretenUnreachable: "; break;
-        default: str = "Panic: "; break;
+        case DreadLevelUnreachable: str = "CoretenUnreachable: "; break;
+        default: str = "Dread: "; break;
     }
     cstlColouredPrintf(CORETEN_COLOUR_ERROR, "%s", str);
     printf("%s\n", buffer);
@@ -1772,7 +1772,7 @@ void ubuff_push_char(cstlUTF8Str* ubuff, Rune ch) {
         ubuff->len += 1;
     }
     else {
-        // TODO (jasmcaus): `panic()` here
+        // TODO (jasmcaus): `dread()` here
         fprintf(stderr, "Invalid UTF-8 character: %x", ch);
         exit(1);
     }
@@ -1846,7 +1846,7 @@ static int __byte_offset_at(cstlUTF8Str* ubuff, Int64 n, int* out) {
         byte = (byte) | (cast(Byte)(ubuff->data[n + 3]));
         return byte;
     } else {
-        // TODO (jasmcaus): `panic()` here
+        // TODO (jasmcaus): `dread()` here
         fprintf(stderr, "Cannot decode UTF8 byte `%hx` at byte offset %d", byte, n);
         exit(1);
     }
