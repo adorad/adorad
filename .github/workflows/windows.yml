@@ -160,12 +160,18 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Install Visual Studio 19
+      run: |
+        choco install visualstudio2019community
+        choco install visualstudio2019-workload-nativedesktop
+    
     - name: Set up AdoradInternalTests folder
       run: |
         python tools/tests/before_tests_ci.py 
 
     - name: CMake
       run: |
+        SET PATH=%PATH%;"C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/Tools"
         cmake -S . -B build -G "Visual Studio 16 2019" -A ${{ matrix.architecture }} -DADORAD_BUILDTESTS=On -DCMAKE_SYSTEM_VERSION="10.0.18362.0"
       
     - name: Build
@@ -192,12 +198,18 @@ jobs:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v2
+    - name: Install Visual Studio 19
+      run: |
+        choco install visualstudio2019community
+        choco install visualstudio2019-workload-nativedesktop
+        
     - name: Set up AdoradInternalTests folder
       run: |
         python tools/tests/before_tests_ci.py 
 
     - name: CMake
       run: |
+        SET PATH=%PATH%;"C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/Tools"
         cmake -S . -B build -G "Visual Studio 16 2019" -DADORAD_BUILDTESTS=On -DCMAKE_C_FLAGS="/permissive- /std:c++latest /utf-8 /W4" -DCMAKE_SYSTEM_VERSION="10.0.18362.0"
 
     - name: Build
@@ -261,40 +273,47 @@ jobs:
           echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain <<<<<<<<<<<<<<<<<<<<<<<'
 
 
-  Clang-cl-11:
-    runs-on: windows-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        # build_type: [Debug, RelWithDebInfo, MinSizeRel, Release] 
-        build_type: [Release]
-        architecture: [Win32, x64]
+  # Clang-cl-11:
+  #   runs-on: windows-latest
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       # build_type: [Debug, RelWithDebInfo, MinSizeRel, Release] 
+  #       build_type: [Release]
+  #       architecture: [Win32, x64]
 
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up AdoradInternalTests folder
-        run: |
-          python tools/tests/before_tests_ci.py 
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: Install Visual Studio 19
+  #       run: |
+  #         choco install visualstudio2019community
+  #         choco install visualstudio2019-workload-nativedesktop
+          
+  #     - name: Set up AdoradInternalTests folder
+  #       run: |
+  #         python tools/tests/before_tests_ci.py 
 
-      - name: CMake
-        run: |
-          cmake -S . -B build -G "Visual Studio 16 2019" -A ${{ matrix.architecture }} -T ClangCL -DADORAD_BUILDTESTS=On
+  #     - name: CMake
+  #       run: |
+  #         SET PATH=%PATH%;"C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/Tools"
 
-      - name: Build
-        run: |
-          cmake --build build --config ${{ matrix.build_type }} --parallel 10
+  #         cmake -S . -B build -G "Visual Studio 16 2019" -T ClangCL -A ${{ matrix.architecture }} -DADORAD_BUILDTESTS=On
 
-      - name: Test
-        run: |
-          cd build/test 
-          ctest -j 10 -C ${{ matrix.build_type }} --output-on-failure
-          echo ' <<<<<<<<<<<<<<<<<<<<<<< PYTHON <<<<<<<<<<<<<<<<<<<<<<<'
-          python ../../tools/tests/before_tests_run_ci.py ${{ matrix.build_type }}
-          echo ' <<<<<<<<<<<<<<<<<<<<<<< cd .. <<<<<<<<<<<<<<<<<<<<<<<'
-          cd .. 
-          echo ' <<<<<<<<<<<<<<<<<<<<<<< cd bin/  <<<<<<<<<<<<<<<<<<<<<<<'
-          cd bin/ 
-          echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain <<<<<<<<<<<<<<<<<<<<<<<'
-          dir
-          ./AdoradInternalTestsWithMain
-          echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain <<<<<<<<<<<<<<<<<<<<<<<'
+  #     - name: Build
+  #       run: |
+  #         cmake --build build --config ${{ matrix.build_type }} --parallel 10
+
+  #     - name: Test
+  #       run: |
+  #         cd build/test 
+  #         ctest -j 10 -C ${{ matrix.build_type }} --output-on-failure
+  #         echo ' <<<<<<<<<<<<<<<<<<<<<<< PYTHON <<<<<<<<<<<<<<<<<<<<<<<'
+  #         python ../../tools/tests/before_tests_run_ci.py ${{ matrix.build_type }}
+  #         echo ' <<<<<<<<<<<<<<<<<<<<<<< cd .. <<<<<<<<<<<<<<<<<<<<<<<'
+  #         cd .. 
+  #         echo ' <<<<<<<<<<<<<<<<<<<<<<< cd bin/  <<<<<<<<<<<<<<<<<<<<<<<'
+  #         cd bin/ 
+  #         echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain <<<<<<<<<<<<<<<<<<<<<<<'
+  #         dir
+  #         ./AdoradInternalTestsWithMain
+  #         echo ' <<<<<<<<<<<<<<<<<<<<<<< ./AdoradInternalTestsWithMain <<<<<<<<<<<<<<<<<<<<<<<'
