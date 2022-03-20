@@ -17,7 +17,9 @@ Copyright (c) 2021-22 Jason Dsouza <@jasmcaus>
     #define _ADORAD_
 #endif // _ADORAD_
 
-#include <adorad/core/adcore.h>
+#define CORETEN_IMPL
+    #include <adorad/core/adcore.h>
+#undef CORETEN_IMPL
 
 #include <adorad/compiler/types.h>
 #include <adorad/compiler/tokens.h>

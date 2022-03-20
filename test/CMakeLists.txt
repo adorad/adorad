@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.20 FATAL_ERROR)
 
 # Adorad's Internal Tests
-# We use the Tau, a custom unit testing framework built by Jason Dsouza <@jasmcaus>
+# We use Tau, a custom unit testing framework built by Jason Dsouza <@jasmcaus>
 
 # Tau requires at least C11/C++11
 set(CMAKE_C_STANDARD 11)
@@ -37,36 +37,6 @@ file(GLOB_RECURSE ADORAD_INTERNALTEST_HEADERS
     ${CMAKE_CURRENT_SOURCE_DIR}/../AdoradInternalTests/*.h
 )
 
-# Main Build File for the main CSTL Library
-file(GLOB LIBCSTLINTERNALTESTS_SOURCES
-    ${CMAKE_CURRENT_SOURCE_DIR}/../AdoradInternalTests/core/*.c
-)
-file(GLOB_RECURSE CSTLINTERNALTESTS_HEADERS 
-    ${CMAKE_CURRENT_SOURCE_DIR}/../AdoradInternalTests/core/*.c
-)
-set(
-    CSTLINTERNALTESTS_BUILD_INCLUDE_DIRS
-    # "${ADORAD_ROOT_DIR}/AdoradInternalTests/core" # results in weird <windows.h> errors (conflicts with adorad/core/windows.h)
-    "${ADORAD_ROOT_DIR}"
-)
-
-################
-##  Building CSTL
-################
-
-message("--------- [INFO] Building the Static Library for CSTLInternalTests ")
-add_library(
-    libCoretenTests STATIC
-    ${LIBCSTLINTERNALTESTS_SOURCES}
-    ${CSTLINTERNALTESTS_HEADERS}
-)
-# Add an alias
-add_library(libCoretenTests::libCoretenTests ALIAS libCoretenTests)
-
-target_include_directories(
-    libCoretenTests PUBLIC
-    "$<BUILD_INTERFACE:${CSTLINTERNALTESTS_BUILD_INCLUDE_DIRS}>"
-)
 
 ################
 ##  Building AdoradInternalTests
@@ -98,7 +68,6 @@ add_executable(
 target_link_libraries(
     AdoradInternalTestsWithMain PUBLIC
     libAdoradInternalTests
-    libCoretenTests::libCoretenTests
 )
 
 # Installation
@@ -121,7 +90,6 @@ foreach(source ${ADORAD_INTERNAL_TESTS_SOURCES})
         ${testcase}
         PRIVATE
         libAdoradInternalTests
-        libCoretenTests::libCoretenTests
         Tau::Tau
     )
 
