@@ -99,7 +99,7 @@ static inline Token* parser_expect_token(Parser* parser, TokenKind tokenkind) {
         return CHOMP(1);
 
     ast_error(
-        "Expected `%s`; got `%s`.\nHint: %s", 
+        "Expected `%s`; got `%s`",
         tokenHash[tokenkind], 
         tokenHash[pc->kind]
     );
