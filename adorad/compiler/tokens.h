@@ -196,10 +196,11 @@ TOKENKIND(TOK___KEYWORDS_BEGIN, ""),  \
     TOKENKIND(NOT,           "not"),      \
     TOKENKIND(ORELSE,        "orelse"),   \
     TOKENKIND(PRAGMA,        "pragma"),   \
+    TOKENKIND(PUT,           "put"),      \
     TOKENKIND(RAISE,         "raise"),    \
     TOKENKIND(RANGE,         "range"),    \
     TOKENKIND(RETURN,        "return"),   \
-    TOKENKIND(STRUCT,        "struct"),  \
+    TOKENKIND(STRUCT,        "struct"),   \
     TOKENKIND(SUSPEND,       "suspend"),  \
     TOKENKIND(TRY,           "try"),      \
     TOKENKIND(TUPLE,         "tuple"),    \
