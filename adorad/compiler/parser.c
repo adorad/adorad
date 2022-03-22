@@ -30,6 +30,7 @@ Copyright (c) 2021-22 Jason Dsouza <@jasmcaus>
 #include <adorad/compiler/ast.h>
 #include <adorad/compiler/parser.h>
 #include <adorad/core/debug.h>
+#include <adorad/core/os.h>
 
 #define pt      parser->toklist
 #define pc      parser->curr_tok
@@ -49,7 +50,7 @@ Copyright (c) 2021-22 Jason Dsouza <@jasmcaus>
         cstlColouredPrintf(                                               \
             CORETEN_COLOUR_WARN,                                          \
             "parsing file: `%s` | curr_tok: `%s` | location: `%d:%d`",    \
-            parser->basename,                                             \
+            parser->fullpath,                                             \
             tokenHash[parser->curr_tok->kind],                            \
             parser->loc->line,                                            \
             parser->loc->col                                              \
@@ -64,7 +65,7 @@ Parser* parser_init(Lexer* lexer) {
     parser->fullpath = lexer->loc->fname;
     // Generally, the ratio of lexer tokens to parser nodes is about 4:1
     // So, preallocate roughly 25% of the number of lexer tokens
-    parser->nodelist = vec_new(AstNode, cast(UInt64)(vec_size(lexer->toklist) * .25));
+    parser->nodelist = VEC_NEW(AstNode, cast(UInt64)(vec_size(lexer->toklist) * .25));
     parser->lexer = lexer;
     parser->toklist = lexer->toklist;
     parser->curr_tok = cast(Token*)vec_at(parser->toklist, 0);
@@ -242,7 +243,7 @@ static AstNode* ast_parse_module_statement(Parser* parser) {
 // This seems reasonable, but I much prefer my original thinking `from foo use { ... }` since
 // it's a much more streamlined process (in terms of reading) when browsing an Adorad codebase.
 static AstNode* ast_parse_use_statement(Parser* parser) {
-    Token* use_kwd = CHOMP_IF(IMPORT);
+    Token* use_kwd = CHOMP_IF(USE);
     if(use_kwd == null)
         return null;
     
@@ -258,18 +259,23 @@ static AstNode* ast_parse_use_statement(Parser* parser) {
 }
 
 // VariableDecl
-//      ATTRIBUTE(comptime)? KEYWORD(export)? KEYWORD(mutable)? (TypeExpr / KEYWORD(any)) IDENTIFIER (EQUALS EXPR)? SEMICOLON?
+//      ATTRIBUTE(comptime)? KEYWORD(put) KEYWORD(mutable)? IDENTIFIER (COLON TypeExpr)? (EQUALS EXPR)? SEMICOLON?
+// 
+// Example:
+//      | put x: int = 34 * 34;
+//      | put mutable y: &StructMutability = ...
+//      | put mutable z = 34
 static AstNode* ast_parse_variable_decl(Parser* parser) {
     Token* comptime_attr = CHOMP_IF(ATTR_COMPTIME);
-    Token* export_kwd = CHOMP_IF(EXPORT);
+    Token* put_kwd = CHOMP_IF(PUT);
+    if(put_kwd == null)
+        ast_expected("put keyword");
+
     Token* mutable_kwd = CHOMP_IF(MUTABLE);
 
     AstNode* type_expr = ast_parse_type_expr(parser);
-    Token* any = null;
     if(type_expr == null) {
-        any = CHOMP_IF(ANY);
-        if(any == null)
-            ast_expected("a type. Use `any` to let the compiler infer the type");
+        ast_expected("a type");
     }
 
     Token* identifier = CHOMP_IF(IDENTIFIER);
@@ -291,7 +297,6 @@ static AstNode* ast_parse_variable_decl(Parser* parser) {
     node->data.scope_obj->var->is_local = !parser->is_in_global_context;
     node->data.scope_obj->var->is_comptime = cast(bool)(comptime_attr != null);
     node->data.scope_obj->var->is_mutable = cast(bool)(mutable_kwd != null);
-    node->data.scope_obj->var->visibility = export_kwd != null ? VisibilityModePublic : VisibilityModePrivate;
     return node;
 }
 
@@ -380,7 +385,7 @@ func_no_attrs:;
 static AstNode* ast_parse_param_list(Parser* parser, bool* is_variadic) {
     Token* lparen = EXPECT_TOK(LPAREN);
     bool seen_varargs = false;
-    Vec* params = vec_new(AstNode, 1);
+    Vec* params = VEC_NEW(AstNode, 1);
     while(true) {
         if(CHOMP_IF(RPAREN) == null)
             break;
@@ -766,35 +771,37 @@ static AstNode* ast_parse_prefix_expr(Parser* parser) {
 }
 
 // TypeExpr
-//      PrefixTypeOp*
-// where PrefixTypeOp is one of:
-//      | QUESTION  (?)
-//      | SliceTypeStart 
-//      | PointerTypeStart LPAREN Expr RPAREN 
-//      | ArrayTypeStart
-// where SliceTypeStart is
-//      LSQUAREBRACK (COLON EXPR)? RSQUAREBRACK
-// PointerTypeStart
-//      | MULT (*)
-//      | LSQUAREBRACK MULT (LETTERC / COLON Expr)? RSQUAREBRACK
-// && ArrayTypeStart
-//      LSQUAREBRACK Expr (COLON Expr)? RSQUAREBRACK
+//      (QUESTION / AND)? TypeExpr SliceExpr?
+// where SliceExpr is:
+//      LSQUAREBRACK (COLON Expr)? RSQUAREBRACK
 static AstNode* ast_parse_type_expr(Parser* parser) {
     AstNode* node = null;
     AstNode* expr = null;
+    TokenKind kind;
+
     switch(pc->kind) {
-        case QUESTION:
+        case QUESTION: case AND:
+            kind = pc->kind;
             expr = ast_parse_expr(parser);
-            if(expr == null)
-                ast_error("expression");
-            node = ast_create_node(AstNodeKindPrefixOpExpr);
-            node->data.prefix_op_expr->expr = expr;
-            node->data.prefix_op_expr->op = PrefixOpKindOptional;
-            return node;
+
+            node = ast_create_node(AstNodeKindTypeExpr);
+            node->data.expr->type_expr->expr = expr;
+            node->data.expr->type_expr->is_address = kind == AND;
+            node->data.expr->type_expr->is_optional = kind == QUESTION;
+            node->data.expr->type_expr->is_slice_expr = false;
+            break;
+        case IDENTIFIER:
+            expr = ast_parse_expr(parser);
+            if(pc->kind == LSQUAREBRACK) {
+                CORETEN_ENFORCE(false, "TODO: Parse optional SliceExpr");
+            }
+            break;
         default:
-            CORETEN_ENFORCE(false, "TODO");
+            ast_expected("Something");
+            break;
     }
-    return null;
+
+    return node;
 }
 
 // PrimaryExpr
@@ -887,7 +894,7 @@ static AstNode* ast_parse_block(Parser* parser) {
     if(lbrace == null)
         ast_expected("LBRACE `{`");
 
-    Vec* statements = vec_new(AstNode, 1);
+    Vec* statements = VEC_NEW(AstNode, 1);
     AstNode* statement = null;
     while((statement = ast_parse_statement(parser)) != null)
         vec_push(statements, statement);
@@ -920,7 +927,7 @@ static AstNode* ast_parse_brace_suffix_expr(Parser* parser) {
     Vec* fields = null;
     AstNode* field_init = ast_parse_field_init(parser);
     if(field_init != null) {
-        fields = vec_new(AstNode, 1);
+        fields = VEC_NEW(AstNode, 1);
         vec_push(fields, field_init);
         while(true) {
             switch(pc->kind) {
@@ -952,7 +959,7 @@ static AstNode* ast_parse_brace_suffix_expr(Parser* parser) {
 
     AstNode* expr = ast_parse_expr(parser);
     if(expr != null) {
-        Vec* fields = vec_new(AstNode, 1);
+        Vec* fields = VEC_NEW(AstNode, 1);
         vec_push(fields, expr);
         Token* comma = null;
         while(pc->kind != COMMA) {
@@ -995,7 +1002,7 @@ static AstNode* ast_parse_suffix_expr(Parser* parser) {
         return node;
     }
 
-    Vec* params = vec_new(AstNode, 1);
+    Vec* params = VEC_NEW(AstNode, 1);
     AstNode* param = null;
     while(CHOMP(1)->kind != RPAREN) {
         param = ast_parse_expr(parser);
@@ -1162,7 +1169,7 @@ static AstNode* ast_parse_match_expr(Parser* parser) {
     AstNode* branch_node = ast_parse_match_branch(parser);
     if(branch_node == null)
         ast_expected("branches for `match`");
-    Vec* branches = vec_new(AstNode, 1);
+    Vec* branches = VEC_NEW(AstNode, 1);
     do {
         vec_push(branches, branch_node);
     } while((branch_node = ast_parse_match_branch(parser)) != null);
@@ -1346,7 +1353,7 @@ static AstNode* ast_parse_root(Parser* parser) {
 //     // Begin with the module declaration
 //     AstNode* module_decl = ast_parse_module_statement(parser);
     
-//     Vec* stmts = vec_new(AstNode, 1);
+//     Vec* stmts = VEC_NEW(AstNode, 1);
 //     // Imports
 //     for(;;) {
 //         if(pc->kind == IMPORT)
@@ -1355,4 +1362,14 @@ static AstNode* ast_parse_root(Parser* parser) {
 
 AstNode* return_result(Parser* parser) {
     return ast_parse_block_expr(parser);
+}
+
+// Free a Parser* instance
+static void parser_free(Parser* parser) {
+    if(parser != null) {
+        lexer_free(parser->lexer);
+        buff_free(parser->mod_name);
+        vec_free(parser->nodelist);
+        free(parser);
+    }
 }

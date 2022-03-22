@@ -23,7 +23,7 @@ Copyright (c) 2021-22 Jason Dsouza <@jasmcaus>
 typedef struct Parser {
     UInt32 id;
     Buff* fullpath;     // path/to/file.ad
-    Buff* basename;     // file.ad
+    // Buff* basename;     // file.ad
     Vec* nodelist;      // List of `AstNode*`s
     Lexer* lexer;
     Vec* toklist;       // shortcut to `lexer->toklist`
@@ -39,6 +39,7 @@ typedef struct Parser {
 } Parser;
 
 Parser* parser_init(Lexer* lexer);
+static void parser_free(Parser* parser);
 AstNode* ast_create_node(AstNodeKind type);
 AstNode* return_result(Parser* parser);
 

@@ -56,6 +56,7 @@ enum AstNodeKind {
     AstNodeKindFieldAccessExpr,
     AstNodeKindAttributeExpr,
     AstNodeKindGroupedExpr,
+    AstNodeKindTypeExpr,
     
     AstNodeKindInitExpr,
     AstNodeKindSliceExpr,
@@ -280,9 +281,17 @@ typedef struct {
     AstNode* rhs;
 } AstNodeBinaryOpExpr;
 
+// TypeExpr
+//      (QUESTION / AND)? TypeExpr SliceExpr?
+// where SliceExpr is:
+//      LSQUAREBRACK (COLON Expr)? RSQUAREBRACK
 typedef struct {
     AstNode* expr;
-} AstNodeTypeOfExpr;
+    bool is_address;  // if `AND`
+    bool is_optional; // if `QUESTION`
+    bool is_slice_expr;
+    AstNode* slice_expr; // null if `is_slice_expr` is false
+} AstNodeTypeExpr;
 
 typedef struct {
     Vec* exprs;
@@ -329,8 +338,7 @@ typedef struct {
         AstNodeCatchExpr* catch_expr;
         AstNodeTryExpr* try_expr;
         AstNodeBinaryOpExpr* binary_op_expr;
-        // AstNodeTypeExpr* type_expr;
-        AstNodeTypeOfExpr* typeof_expr;
+        AstNodeTypeExpr* type_expr;
         AstNodeSetExpr* set_expr;
         AstNodeLambdaExpr* lambda_expr;
         AstNodeSliceExpr* slice_expr;
@@ -590,7 +598,6 @@ typedef struct {
     bool is_used;
     bool is_tmp;
     bool is_heap_obj;
-    VisibilityMode visibility;
 } AstNodeVariable;
 
 // This can be one of:

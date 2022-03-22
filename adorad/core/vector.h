@@ -18,7 +18,7 @@ Copyright (c) 2021-22 Jason Dsouza <@jasmcaus>
 
 #define VEC_INIT_ALLOC_CAP      5
 #define VECTOR_AT_MACRO(v, i)   ((void *)((char *) (v)->core.data + (i) * (v)->core.objsize))
-#define vec_new(obj, nelem)     _vec_new(sizeof(obj), (nelem))
+#define VEC_NEW(strct, nelem)     _vec_new(sizeof(strct), (nelem))
 
 typedef struct cstlVector cstlVector;
 typedef cstlVector Vec;

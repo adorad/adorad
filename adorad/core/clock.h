@@ -16,19 +16,19 @@ Copyright (c) 2021-22 Jason Dsouza <@jasmcaus>
 
 #include <time.h>
 
-double now();
-double duration(clock_t start, clock_t end);
+double clock_now();
+double clock_duration(clock_t start, clock_t end);
 
 #ifdef CORETEN_IMPL
     #include <adorad/core/misc.h>
     
     // Returns the current time (in clock_t)
-    double now() {
+    double clock_now() {
         return cast(double)clock();
     }
 
     // Get duration between `start` && `end` in seconds.
-    double duration(clock_t start, clock_t end) {
+    double clock_duration(clock_t start, clock_t end) {
         return cast(double)(end - start)/CLOCKS_PER_SEC;
     }
 #endif // CORETEN_IMPL
