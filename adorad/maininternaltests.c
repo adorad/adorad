@@ -7,22 +7,34 @@ int main(int argc, const char* const argv[]) {
     BuffView filepath = ospj(ospd(ospd(cwd)), BV("test/LexerDemo.ad"));
     printf("Reading file from %s\n", filepath.data);
 	char* buffer = read_file(filepath.data);
+
 	Lexer* lexer = lexer_init(buffer, "test/LexerDemo.ad"); 
 
     clock_t st, end;
     printf("Lexing beginning...\n");
-    st = now();
-    int count = 0;
+    st = clock_now();
     lexer_lex(lexer);
-    end = now();
+    end = clock_now();
     printf("Lexing finished in ");
-    double total = duration(st, end);
+    double total = clock_duration(st, end);
     printf("%lfs\n", total);
+
+    // Loop over tokens
+    Token* token = null;
+    printf("Tokens: \n---------------------\n");
+    for(UInt64 i=0; i<lexer->toklist->core.len; i++) {
+        token = cast(Token*)vec_at(lexer->toklist, i);
+        printf("%s: %s\n", token_to_buff(token->kind)->data, token->value->data);
+    }
+    printf("---------------------\n");
+
 
     Parser* parser = parser_init(lexer);
     AstNode* node = return_result(parser);
     if(node == null)
-        printf("Null node");
-    lexer_free(lexer);
+        printf("Null node\n");
+
+    parser_free(parser); // Frees the lexer as well
+
     return 0; 
 }
