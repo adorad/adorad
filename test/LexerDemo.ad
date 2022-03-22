@@ -1,25 +1,21 @@
-import os
+use os
+from vegetables use oranges // doesn't exist :)
 
-test(hello) {
-    @test
+struct Fruits {
+    name: String,
+    type: String,
+    id:   UInt64
 }
 
-type Fruits enum {
+enum Fruits {
     Apple,
     Orange,
     Jackfruit,
     Banana
 }
 
-type Vegetables enum {
-    Tomato,
-    Avocado, # is this a fruit?
-    Cauliflower
-}
-type Market = Fruits | Vegetables
-
 func main() {
     # Execute this piece of code
-    print(f"os.pwd = {os.pwd}")
-    print("That's it!")
+    show(f"os::pwd = {os::pwd}")
+    show("That's it!")
 }
