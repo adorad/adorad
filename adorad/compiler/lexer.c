@@ -84,7 +84,7 @@ Lexer* lexer_init(char* buffer, const char* fname) {
     lexer->offset = 0;
     lexer->buffer = buff_new(buffer);
     lexer->buff_cap = buff_len(lexer->buffer);
-    lexer->toklist = vec_new(Token, TOKENLIST_ALLOC_CAPACITY);
+    lexer->toklist = VEC_NEW(Token, TOKENLIST_ALLOC_CAPACITY);
     lexer->loc = loc_new(fname);
 
     return lexer;
@@ -94,7 +94,7 @@ static void lexer_toklist_push(Lexer* lexer, Token* token) {
     vec_push(lexer->toklist, token);
 }
 
-static void lexer_free(Lexer* lexer) {
+void lexer_free(Lexer* lexer) {
     if(lexer != null) {
         vec_free(lexer->toklist);
         buff_free(lexer->buffer);
@@ -581,7 +581,7 @@ static inline void lex_digit(Lexer* lexer) {
 }
 
 // Lex the Source files
-static void lexer_lex(Lexer* lexer) {
+void lexer_lex(Lexer* lexer) {
     // Some UTF8 text may start with a 3-byte 'BOM' marker sequence. If it exists, skip over them because they 
     // are useless bytes. Generally, it is not recommended to add BOM markers to UTF8 texts, but it's not 
     // uncommon (especially on Windows).

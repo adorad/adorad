@@ -58,9 +58,9 @@ typedef struct Lexer {
 } Lexer;
 
 Lexer* lexer_init(char* buffer, const char* fname);
-static void lexer_free(Lexer* lexer);
-void lexer_error(Lexer* lexer, Error e, const char* format, ...);
+void lexer_free(Lexer* lexer);
+void lexer_error(Lexer* lexer, Error err, const char* format, ...);
 // Lex the source files
-static void lexer_lex(Lexer* lexer);
+void lexer_lex(Lexer* lexer);
 
 #endif // ADORAD_LEXER_H
