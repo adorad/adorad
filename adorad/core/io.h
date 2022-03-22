@@ -32,10 +32,10 @@ bool file_exists(const char* path);
         FILE* file = fopen(fname, "rb"); 
         
         if(file == null) {
-            cstlColouredPrintf(CORETEN_COLOUR_ERROR, "Could not open file: <%s>\n", fname);
-            cstlColouredPrintf(CORETEN_COLOUR_ERROR, "%s\n", !file_exists(fname) ?  
+            cstl_colored_printf(CORETEN_COLOUR_ERROR, "Could not open file: <%s>\n", fname);
+            cstl_colored_printf(CORETEN_COLOUR_ERROR, "%s\n", !file_exists(fname) ?  
                                 "FileNotFoundError: File does not exist." : "");
-            cstlColouredPrintf(CORETEN_COLOUR_ERROR, "Does file exist? %s\n", !file_exists(fname) ? "false" : "true");
+            cstl_colored_printf(CORETEN_COLOUR_ERROR, "Does file exist? %s\n", !file_exists(fname) ? "false" : "true");
             exit(1);
         }
 

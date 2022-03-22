@@ -47,7 +47,7 @@ Copyright (c) 2021-22 Jason Dsouza <@jasmcaus>
 
 #ifdef ADORAD_DEBUG
     #define TRACE_PARSER()                                                \
-        cstlColouredPrintf(                                               \
+        cstl_colored_printf(                                               \
             CORETEN_COLOUR_WARN,                                          \
             "parsing file: `%s` | curr_tok: `%s` | location: `%d:%d`",    \
             parser->fullpath,                                             \

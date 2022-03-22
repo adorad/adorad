@@ -83,7 +83,7 @@ Copyright (c) 2021-22 Jason Dsouza <@jasmcaus>
 #define CORETEN_COLOUR_BOLD      5
 
 int ATTRIBUTE_PRINTF(2, 3)
-cstlColouredPrintf(int colour, const char* fmt, ...);
+cstl_colored_printf(int colour, const char* fmt, ...);
 
 typedef enum {
     DreadLevelUnreachable = 0,
@@ -107,12 +107,12 @@ void coreten_dread(DreadLevel pl, const char* format, ...);
         if(!(cond)) {                                                                       \
             printf("%s:%u: ", __FILE__, __LINE__);                                          \
             if((sizeof(char[]){__VA_ARGS__}) <= 1)                                          \
-                cstlColouredPrintf(CORETEN_COLOUR_ERROR, "FAILED");                         \
+                cstl_colored_printf(CORETEN_COLOUR_ERROR, "FAILED");                        \
             else                                                                            \
-                cstlColouredPrintf(CORETEN_COLOUR_ERROR, __VA_ARGS__);                      \
+                cstl_colored_printf(CORETEN_COLOUR_ERROR, __VA_ARGS__);                     \
             printf("\n");                                                                   \
             printf("The following assertion failed: \n");                                   \
-            cstlColouredPrintf(CORETEN_COLOUR_CYAN, "    CORETEN_ENFORCE( %s )\n", #cond);  \
+            cstl_colored_printf(CORETEN_COLOUR_CYAN, "    CORETEN_ENFORCE( %s )\n", #cond); \
             choke_and_die();                                                                \
         }                                                                                   \
     }                                                                                       \
@@ -142,14 +142,14 @@ void coreten_dread(DreadLevel pl, const char* format, ...);
 #define CORETEN_ENFORCE_NN(val,...)           CORETEN_ENFORCE((val) != null, __VA_ARGS__)
 
 #define WARN(...)     \
-    cstlColouredPrintf(CORETEN_COLOUR_WARN, "%s:%u:\nWARNING: %s\n", __FILE__, __LINE__, __VA_ARGS__)
+    cstl_colored_printf(CORETEN_COLOUR_WARN, "%s:%u:\nWARNING: %s\n", __FILE__, __LINE__, __VA_ARGS__)
 
 #define LOG(...)     \
-    cstlColouredPrintf(CORETEN_COLOUR_WARN, "%s:%u: LOG: %s\n", __FILE__, __LINE__, __VA_ARGS__)
+    cstl_colored_printf(CORETEN_COLOUR_WARN, "%s:%u: LOG: %s\n", __FILE__, __LINE__, __VA_ARGS__)
 
 #ifdef CORETEN_IMPL
     int CORETEN_ATTRIBUTE_(format (printf, 2, 3))
-    cstlColouredPrintf(int colour, const char* fmt, ...) {
+    cstl_colored_printf(int colour, const char* fmt, ...) {
         va_list args;
         char buffer[256];
         int n;
@@ -185,12 +185,12 @@ void coreten_dread(DreadLevel pl, const char* format, ...);
             GetConsoleScreenBufferInfo(h, &info);
 
             switch(colour) {
-                case CORETEN_COLOUR_ERROR:      attr = FOREGROUND_RED | FOREGROUND_INTENSITY; break;
+                case CORETEN_COLOUR_ERROR:      attr = FOREGROUND_RED   | FOREGROUND_INTENSITY; break;
                 case CORETEN_COLOUR_SUCCESS:    attr = FOREGROUND_GREEN | FOREGROUND_INTENSITY; break;
-                case CORETEN_COLOUR_CYAN:       attr = FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY; break;
-                case CORETEN_COLOUR_WARN:       attr = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY; break;
-                case CORETEN_COLOUR_BOLD:       attr = FOREGROUND_BLUE | FOREGROUND_GREEN |FOREGROUND_RED | 
-                                                    FOREGROUND_INTENSITY; break;
+                case CORETEN_COLOUR_CYAN:       attr = FOREGROUND_BLUE  | FOREGROUND_GREEN | FOREGROUND_INTENSITY; break;
+                case CORETEN_COLOUR_WARN:       attr = FOREGROUND_RED   | FOREGROUND_GREEN | FOREGROUND_INTENSITY; break;
+                case CORETEN_COLOUR_BOLD:       attr = FOREGROUND_BLUE  | FOREGROUND_GREEN | FOREGROUND_INTENSITY | 
+                                                       FOREGROUND_RED; break;
                 default:                        attr = 0; break;
             }
             if(attr != 0)
@@ -219,7 +219,7 @@ void coreten_dread(DreadLevel pl, const char* format, ...);
             case DreadLevelUnreachable: str = "CoretenUnreachable: "; break;
             default: str = "Dread: "; break;
         }
-        cstlColouredPrintf(CORETEN_COLOUR_ERROR, "%s", str);
+        cstl_colored_printf(CORETEN_COLOUR_ERROR, "%s", str);
         printf("%s\n", buffer);
         choke_and_die();
     }
