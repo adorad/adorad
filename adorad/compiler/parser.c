@@ -307,6 +307,9 @@ static AstNode* ast_parse_variable_decl(Parser* parser) {
 //      | ATTR_COMPTIME
 //      | ATTR_INLINE
 //      | ATTR_NOINLINE
+//
+// Example:
+//      [comptime] func foo(arg1: UInt64, arg2: String) -> FooBarStruct { ... }
 static AstNode* ast_parse_func_decl(Parser* parser) {
     bool is_noreturn = false;
     bool is_comptime = false;
@@ -382,6 +385,9 @@ func_no_attrs:;
 
 // ParamList
 //      (ParamDecl COMMA)* ParamDecl?
+//
+// Example:
+//      (arg1: Foo, arg2: Bar)
 static AstNode* ast_parse_param_list(Parser* parser, bool* is_variadic) {
     Token* lparen = EXPECT_TOK(LPAREN);
     bool seen_varargs = false;
@@ -455,11 +461,27 @@ static AstNode* ast_parse_statement(Parser* parser) {
     return null;
 }
 
+// StructDecl
+//      KEYWORD(struct) IDENTIFIER? LBRACE StructFields RBRACE
+// 
+// Example:
+//      struct Foo { 
+//          id: FooFoo
+//          name: BarBar
+//      }
 static AstNode* ast_parse_struct_decl(Parser* parser) {
     CORETEN_ENFORCE(false, "TODO");
     return null;
 }
 
+// EnumDecl
+//      KEYWORD(struct) IDENTIFIER? LBRACE EnumFields RBRACE
+// 
+// Example:
+//      enum Foo { 
+//          FooFoo
+//          BarBar
+//      }
 static AstNode* ast_parse_enum_decl(Parser* parser) {
     CORETEN_ENFORCE(false, "TODO");
     return null;
@@ -470,21 +492,24 @@ static AstNode* ast_parse_enum_decl(Parser* parser) {
 //      | IfPrefix AssignmentExpr (SEMICOLON / KEYWORD(else) Statement)?
 // where IfPrefix is:
 //      KEYWORD(if) LPAREN? Expr RPAREN?
+// 
+// Example:
+//      if cond { ... } else { ... }
 static AstNode* ast_parse_if_expr(Parser* parser) {
     Token* if_token = CHOMP_IF(IF);
     if(if_token == null)
         return null;
 
-    Token* lparen = CHOMP_IF(LPAREN); // this == optional
+    Token* lparen = CHOMP_IF(LPAREN); // this is optional
     AstNode* condition = ast_parse_expr(parser);
     if(condition == null)
         AST_EXPECTED("condition");
-    Token* rparen = CHOMP_IF(RPAREN); // this == optional
+    Token* rparen = CHOMP_IF(RPAREN); // this is optional
 
     if(lparen != null && rparen == null)
         AST_EXPECTED("closing `(`");
     if(lparen == null && rparen != null)
-        AST_ERROR("Extra `)` token not expected at this point");
+        AST_ERROR("Extra `)` token not expected at this point. Did you forget to close a `(`?");
     
     AstNode* if_body = null;
     AstNode* assignment_expr = null;
@@ -520,7 +545,15 @@ static AstNode* ast_parse_if_expr(Parser* parser) {
 }
 
 // LoopExpr
-//      ATTRIBUTE(inline)? (LoopWhileExpr / LoopCExpr / LoopInExpr)
+//      ATTRIBUTE(inline)? (LoopInExpr / LoopCExpr / LoopInExpr)
+// 
+// Example:
+//      LoopInExpr
+//          loop foo in bar { ... } // `bar` needs to be an Iterator
+//      LoopCExpr
+//          loop i=0; i<=30; i++ { ... }
+//      LoopInfExpr
+//          loop { ... }
 static AstNode* ast_parse_loop_expr(Parser* parser) {
     Token* inline_attr = CHOMP_IF(ATTR_INLINE);
     AstNode* node = null;
