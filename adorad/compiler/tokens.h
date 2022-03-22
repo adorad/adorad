@@ -156,61 +156,41 @@ TOKENKIND(TOK___ATTRIBUTES_END, ""),          \
     /* Keywords */ \
 TOKENKIND(TOK___KEYWORDS_BEGIN, ""),  \
     TOKENKIND(KEYWORD,       ""), /* Token Classification*/ \
-    TOKENKIND(ANY,           "any"),      \
     TOKENKIND(AS,            "as"),       \
     TOKENKIND(ALIAS,         "alias"),    \
-    TOKENKIND(ASYNC,         "async"),    \
-    TOKENKIND(ATOMIC,        "atomic"),   \
     TOKENKIND(BREAK,         "break"),    \
-    TOKENKIND(CASE,          "case"),     \
-    TOKENKIND(CAST,          "cast"),     \
-    TOKENKIND(CATCH,         "catch"),    \
     TOKENKIND(CONST,         "const"),    \
     TOKENKIND(CONTINUE,      "continue"), \
-    TOKENKIND(DO,            "do"),       \
-    TOKENKIND(DECL,          "decl"),     \
     TOKENKIND(DEFAULT,       "default"),  \
     TOKENKIND(DEFER,         "defer"),    \
     TOKENKIND(ENUM,          "enum"),     \
     TOKENKIND(ELSE,          "else"),     \
     TOKENKIND(ELSEIF,        "elseif"),   \
-    TOKENKIND(EXCEPT,        "except"),   \
     TOKENKIND(EXPORT,        "export"),   \
-    TOKENKIND(EXTERN,        "extern"),   \
-    TOKENKIND(FINALLY,       "finally"),  \
     TOKENKIND(FALLTHROUGH,   "fallthrough"),  \
     TOKENKIND(FROM,          "from"),     \
     TOKENKIND(FUNC,          "func"),     \
     TOKENKIND(GLOBAL,        "global"),   \
     TOKENKIND(IF,            "if"),       \
-    TOKENKIND(IMPORT,        "import"),   \
     TOKENKIND(IN,            "in"),       \
-    TOKENKIND(INCLUDE,       "include"),  \
-    TOKENKIND(ISA,           "isa"),      \
     TOKENKIND(LOOP,          "loop"),     \
     TOKENKIND(MACRO,         "macro"),    \
-    TOKENKIND(MAP,           "map"),      \
     TOKENKIND(MATCH,         "match"),    \
     TOKENKIND(MODULE,        "module"),   \
     TOKENKIND(MUTABLE,       "mutable"),  \
     TOKENKIND(NOT,           "not"),      \
     TOKENKIND(ORELSE,        "orelse"),   \
-    TOKENKIND(PRAGMA,        "pragma"),   \
     TOKENKIND(PUT,           "put"),      \
     TOKENKIND(RAISE,         "raise"),    \
     TOKENKIND(RANGE,         "range"),    \
     TOKENKIND(RETURN,        "return"),   \
     TOKENKIND(STRUCT,        "struct"),   \
-    TOKENKIND(SUSPEND,       "suspend"),  \
     TOKENKIND(TRY,           "try"),      \
-    TOKENKIND(TUPLE,         "tuple"),    \
-    TOKENKIND(TYPE,          "type"),     \
     TOKENKIND(TYPEOF,        "typeof"),   \
     TOKENKIND(WHEN,          "when"),     \
     TOKENKIND(WHERE,         "where"),    \
     TOKENKIND(UNION,         "union"),    \
     TOKENKIND(USE,           "use"),      \
-    TOKENKIND(VOLATILE,      "volatile"), \
 TOKENKIND(TOK___KEYWORDS_END, ""),    \
 \
     TOKENKIND(TOK_COUNT, "")
