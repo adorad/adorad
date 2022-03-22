@@ -76,14 +76,16 @@ Copyright (c) 2021-22 Jason Dsouza <@jasmcaus>
 #endif // __STDC_VERSION__
 
 
-#define CORETEN_COLOUR_ERROR     1
-#define CORETEN_COLOUR_SUCCESS   2
-#define CORETEN_COLOUR_WARN      3
-#define CORETEN_COLOUR_CYAN      4
-#define CORETEN_COLOUR_BOLD      5
+typedef enum CoretenColor {
+    CORETEN_COLOR_ERROR = 1,
+    CORETEN_COLOR_SUCCESS,
+    CORETEN_COLOR_WARN,
+    CORETEN_COLOR_CYAN,
+    CORETEN_COLOR_BOLD
+} CoretenColor;
 
 int ATTRIBUTE_PRINTF(2, 3)
-cstl_colored_printf(int colour, const char* fmt, ...);
+cstl_colored_printf(CoretenColor color, const char* fmt, ...);
 
 typedef enum {
     DreadLevelUnreachable = 0,
@@ -107,12 +109,12 @@ void coreten_dread(DreadLevel pl, const char* format, ...);
         if(!(cond)) {                                                                       \
             printf("%s:%u: ", __FILE__, __LINE__);                                          \
             if((sizeof(char[]){__VA_ARGS__}) <= 1)                                          \
-                cstl_colored_printf(CORETEN_COLOUR_ERROR, "FAILED");                        \
+                cstl_colored_printf(CORETEN_COLOR_ERROR, "FAILED");                        \
             else                                                                            \
-                cstl_colored_printf(CORETEN_COLOUR_ERROR, __VA_ARGS__);                     \
+                cstl_colored_printf(CORETEN_COLOR_ERROR, __VA_ARGS__);                     \
             printf("\n");                                                                   \
             printf("The following assertion failed: \n");                                   \
-            cstl_colored_printf(CORETEN_COLOUR_CYAN, "    CORETEN_ENFORCE( %s )\n", #cond); \
+            cstl_colored_printf(CORETEN_COLOR_CYAN, "    CORETEN_ENFORCE( %s )\n", #cond); \
             choke_and_die();                                                                \
         }                                                                                   \
     }                                                                                       \
@@ -142,14 +144,14 @@ void coreten_dread(DreadLevel pl, const char* format, ...);
 #define CORETEN_ENFORCE_NN(val,...)           CORETEN_ENFORCE((val) != null, __VA_ARGS__)
 
 #define WARN(...)     \
-    cstl_colored_printf(CORETEN_COLOUR_WARN, "%s:%u:\nWARNING: %s\n", __FILE__, __LINE__, __VA_ARGS__)
+    cstl_colored_printf(CORETEN_COLOR_WARN, "%s:%u:\nWARNING: %s\n", __FILE__, __LINE__, __VA_ARGS__)
 
 #define LOG(...)     \
-    cstl_colored_printf(CORETEN_COLOUR_WARN, "%s:%u: LOG: %s\n", __FILE__, __LINE__, __VA_ARGS__)
+    cstl_colored_printf(CORETEN_COLOR_WARN, "%s:%u: LOG: %s\n", __FILE__, __LINE__, __VA_ARGS__)
 
 #ifdef CORETEN_IMPL
     int CORETEN_ATTRIBUTE_(format (printf, 2, 3))
-    cstl_colored_printf(int colour, const char* fmt, ...) {
+    cstl_colored_printf(CoretenColor color, const char* fmt, ...) {
         va_list args;
         char buffer[256];
         int n;
@@ -162,17 +164,17 @@ void coreten_dread(DreadLevel pl, const char* format, ...);
     #if defined(CORETEN_OS_UNIX)
         {
             const char* str;
-            switch(colour) {
-                case CORETEN_COLOUR_ERROR:    str = "\033[1;31m"; break;
-                case CORETEN_COLOUR_SUCCESS:  str = "\033[1;32m"; break;
-                case CORETEN_COLOUR_WARN:     str = "\033[1;33m"; break;
-                case CORETEN_COLOUR_CYAN:     str = "\033[1;36m"; break;
-                case CORETEN_COLOUR_BOLD:     str = "\033[1m"; break;
+            switch(color) {
+                case CORETEN_COLOR_ERROR:    str = "\033[1;31m"; break;
+                case CORETEN_COLOR_SUCCESS:  str = "\033[1;32m"; break;
+                case CORETEN_COLOR_WARN:     str = "\033[1;33m"; break;
+                case CORETEN_COLOR_CYAN:     str = "\033[1;36m"; break;
+                case CORETEN_COLOR_BOLD:     str = "\033[1m"; break;
                 default:                      str = "\033[0m"; break;
             }
             printf("%s", str);
             n = printf("%s", buffer);
-            printf("\033[0m"); // Reset the colour
+            printf("\033[0m"); // Reset the color
             return n;
         }
     #elif defined(CORETEN_OS_WINDOWS)
@@ -184,12 +186,12 @@ void coreten_dread(DreadLevel pl, const char* format, ...);
             h = GetStdHandle(STD_OUTPUT_HANDLE);
             GetConsoleScreenBufferInfo(h, &info);
 
-            switch(colour) {
-                case CORETEN_COLOUR_ERROR:      attr = FOREGROUND_RED   | FOREGROUND_INTENSITY; break;
-                case CORETEN_COLOUR_SUCCESS:    attr = FOREGROUND_GREEN | FOREGROUND_INTENSITY; break;
-                case CORETEN_COLOUR_CYAN:       attr = FOREGROUND_BLUE  | FOREGROUND_GREEN | FOREGROUND_INTENSITY; break;
-                case CORETEN_COLOUR_WARN:       attr = FOREGROUND_RED   | FOREGROUND_GREEN | FOREGROUND_INTENSITY; break;
-                case CORETEN_COLOUR_BOLD:       attr = FOREGROUND_BLUE  | FOREGROUND_GREEN | FOREGROUND_INTENSITY | 
+            switch(color) {
+                case CORETEN_COLOR_ERROR:      attr = FOREGROUND_RED   | FOREGROUND_INTENSITY; break;
+                case CORETEN_COLOR_SUCCESS:    attr = FOREGROUND_GREEN | FOREGROUND_INTENSITY; break;
+                case CORETEN_COLOR_CYAN:       attr = FOREGROUND_BLUE  | FOREGROUND_GREEN | FOREGROUND_INTENSITY; break;
+                case CORETEN_COLOR_WARN:       attr = FOREGROUND_RED   | FOREGROUND_GREEN | FOREGROUND_INTENSITY; break;
+                case CORETEN_COLOR_BOLD:       attr = FOREGROUND_BLUE  | FOREGROUND_GREEN | FOREGROUND_INTENSITY | 
                                                        FOREGROUND_RED; break;
                 default:                        attr = 0; break;
             }
@@ -219,7 +221,7 @@ void coreten_dread(DreadLevel pl, const char* format, ...);
             case DreadLevelUnreachable: str = "CoretenUnreachable: "; break;
             default: str = "Dread: "; break;
         }
-        cstl_colored_printf(CORETEN_COLOUR_ERROR, "%s", str);
+        cstl_colored_printf(CORETEN_COLOR_ERROR, "%s", str);
         printf("%s\n", buffer);
         choke_and_die();
     }

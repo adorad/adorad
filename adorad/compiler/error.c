@@ -39,7 +39,7 @@ void dread(Error err, const char* format, ...) {
     va_end(args);
     buffer[sizeof(buffer)-1] = '\0';
 
-    cstl_colored_printf(CORETEN_COLOUR_ERROR, "%s: ", error_str(err));
+    cstl_colored_printf(CORETEN_COLOR_ERROR, "%s: ", error_str(err));
     printf("%s\n", buffer);
     choke_and_die();
 }
