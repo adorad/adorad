@@ -41,9 +41,9 @@ Copyright (c) 2021-22 Jason Dsouza <@jasmcaus>
 #define CHOMP_IF(kind)          parser_chomp_if(parser, kind)
 #define EXPECT_TOK(kind)        parser_expect_token(parser, kind)
 
-#define ast_error(...)          dread(ErrorParseError, __VA_ARGS__)
-#define ast_expected(...)       ast_error("Expected %s; got `%s`", (__VA_ARGS__), tokenHash[pc->kind])
-#define ast_unexpected(...)     dread(ErrorUnexpectedToken, __VA_ARGS__)
+#define AST_ERROR(...)          dread(ErrorParseError, __VA_ARGS__)
+#define AST_EXPECTED(...)       AST_ERROR("Expected %s; got `%s`", (__VA_ARGS__), tokenHash[pc->kind])
+#define AST_UNEXPECTED(...)     dread(ErrorUnexpectedToken, __VA_ARGS__)
 
 #ifdef ADORAD_DEBUG
     #define TRACE_PARSER()                                                \
@@ -99,7 +99,7 @@ static inline Token* parser_expect_token(Parser* parser, TokenKind tokenkind) {
     if(pc->kind == tokenkind)
         return CHOMP(1);
 
-    ast_error(
+    AST_ERROR(
         "Expected `%s`; got `%s`",
         tokenHash[tokenkind], 
         tokenHash[pc->kind]
@@ -219,7 +219,7 @@ static AstNode* ast_parse_module_statement(Parser* parser) {
     
     Token* module_name = CHOMP_IF(IDENTIFIER);
     if(module_name == null)
-        ast_expected("module name");
+        AST_EXPECTED("module name");
     
     Token* semicolon = CHOMP_IF(SEMICOLON); // this is optional
 
@@ -249,7 +249,7 @@ static AstNode* ast_parse_use_statement(Parser* parser) {
     
     Token* use_name = CHOMP_IF(IDENTIFIER);
     if(use_name == null)
-        ast_expected("use name");
+        AST_EXPECTED("use name");
     
     Token* semicolon = CHOMP_IF(SEMICOLON); // this is optional
 
@@ -269,18 +269,18 @@ static AstNode* ast_parse_variable_decl(Parser* parser) {
     Token* comptime_attr = CHOMP_IF(ATTR_COMPTIME);
     Token* put_kwd = CHOMP_IF(PUT);
     if(put_kwd == null)
-        ast_expected("put keyword");
+        AST_EXPECTED("put keyword");
 
     Token* mutable_kwd = CHOMP_IF(MUTABLE);
 
     AstNode* type_expr = ast_parse_type_expr(parser);
     if(type_expr == null) {
-        ast_expected("a type");
+        AST_EXPECTED("a type");
     }
 
     Token* identifier = CHOMP_IF(IDENTIFIER);
     if(identifier == null)
-        ast_expected("an identifier");
+        AST_EXPECTED("an identifier");
     
     Token* equals = CHOMP_IF(EQUALS);
     AstNode* init_expr = null;
@@ -327,13 +327,13 @@ static AstNode* ast_parse_func_decl(Parser* parser) {
     }
     Token* attr = CHOMP(1);
     if(token_is_attribute(pc->kind))
-        ast_error("Can only have one attribute decorating a function");
+        AST_ERROR("Can only have one attribute decorating a function");
 
 func_no_attrs:;
     Token* export_kwd = CHOMP_IF(EXPORT);
     Token* func_kwd = CHOMP_IF(FUNC);
     if(func_kwd == null)
-        ast_expected("`func` keyword");
+        AST_EXPECTED("`func` keyword");
     
     bool is_variadic = false;
     Token* identifier = CHOMP_IF(IDENTIFIER);
@@ -342,9 +342,9 @@ func_no_attrs:;
     Token* larrow = CHOMP_IF(LARROW);
     AstNode* return_type_expr = ast_parse_type_expr(parser);
     if(return_type_expr == null)
-        ast_expected("Return type expression. Use `void` if your function doesn't return anything");
+        AST_EXPECTED("Return type expression. Use `void` if your function doesn't return anything");
     if(larrow == null && return_type_expr != null)
-        ast_expected("trailing `->` after function prototype");
+        AST_EXPECTED("trailing `->` after function prototype");
     
     bool no_body = false;
     AstNode* body = null;
@@ -357,10 +357,10 @@ func_no_attrs:;
         case LBRACE:
             body = ast_parse_block(parser);
             if(body == null)
-                ast_expected("Expected a body");
+                AST_EXPECTED("Expected a body");
             break;
         default:
-            ast_expected("Semicolon or Function Body");
+            AST_EXPECTED("Semicolon or Function Body");
     } // switch
 
     node->data.decl->func_decl->name = identifier->value;
@@ -402,7 +402,7 @@ static AstNode* ast_parse_param_list(Parser* parser, bool* is_variadic) {
             case COLON: 
             case RBRACE: 
             case RSQUAREBRACK: 
-                ast_expected("RPAREN");
+                AST_EXPECTED("RPAREN");
             default:
                 WARN("Expected comma");
                 break;
@@ -478,13 +478,13 @@ static AstNode* ast_parse_if_expr(Parser* parser) {
     Token* lparen = CHOMP_IF(LPAREN); // this == optional
     AstNode* condition = ast_parse_expr(parser);
     if(condition == null)
-        ast_expected("condition");
+        AST_EXPECTED("condition");
     Token* rparen = CHOMP_IF(RPAREN); // this == optional
 
     if(lparen != null && rparen == null)
-        ast_expected("closing `(`");
+        AST_EXPECTED("closing `(`");
     if(lparen == null && rparen != null)
-        ast_error("Extra `)` token not expected at this point");
+        AST_ERROR("Extra `)` token not expected at this point");
     
     AstNode* if_body = null;
     AstNode* assignment_expr = null;
@@ -492,7 +492,7 @@ static AstNode* ast_parse_if_expr(Parser* parser) {
     if(block_expr == null) {
         assignment_expr = ast_parse_assignment_expr(parser);
         if(assignment_expr == null)
-            ast_expected("block / assignment expression");
+            AST_EXPECTED("block / assignment expression");
     }
 
     if(block_expr != null)
@@ -509,7 +509,7 @@ static AstNode* ast_parse_if_expr(Parser* parser) {
         else_body = ast_parse_block_expr(parser);
     
     if(else_body == null && semicolon == null)  
-        ast_expected("Semicolon or `else` block");
+        AST_EXPECTED("Semicolon or `else` block");
 
     AstNode* node = ast_create_node(AstNodeKindIfExpr);
     node->data.expr->if_expr->condition = condition;
@@ -545,7 +545,7 @@ static AstNode* ast_parse_loop_expr(Parser* parser) {
 
 outexpect:
     if(node == null)
-        ast_expected("loop expression");
+        AST_EXPECTED("loop expression");
 
     node->data.expr->loop_expr->is_inline = cast(bool)(inline_attr != null);
     return node;
@@ -586,7 +586,7 @@ static AstNode* ast_parse_block_expr_statement(Parser* parser) {
         return assignment_expr;
     }
 
-    ast_expected("block or assignment expression");
+    AST_EXPECTED("block or assignment expression");
     return null;
 }
 
@@ -648,7 +648,7 @@ static AstNode* ast_parse_assignment_expr(Parser* parser) {
 
     AstNode* rhs = ast_parse_expr(parser);
     if(rhs == null)
-        ast_expected("an expression after assignment op");
+        AST_EXPECTED("an expression after assignment op");
 
     AstNode* node = ast_create_node(AstNodeKindBinaryOpExpr);
     node->data.expr->binary_op_expr->op = op;
@@ -697,7 +697,7 @@ static inline ast_prec lookup_precedence(TokenKind kind) {
         if(precedence_table[i].tok_kind == kind)
             return precedence_table[i];
     }
-    ast_error("Expected a valid assignment token op");
+    AST_ERROR("Expected a valid assignment token op");
     return cast(ast_prec) {0}; // Clang complains despite this point never being reached
 }
 
@@ -718,7 +718,7 @@ static AstNode* ast_parse_precedence(Parser* parser, UInt8 min_prec) {
 
         AstNode* rhs = ast_parse_precedence(parser, prec.prec + 1);
         if(rhs == null)
-            ast_error("Invalid token");
+            AST_ERROR("Invalid token");
         
         node->data.expr->binary_op_expr->lhs = node;
         node->data.expr->binary_op_expr->op = prec.bin_kind;
@@ -762,7 +762,7 @@ static AstNode* ast_parse_prefix_expr(Parser* parser) {
 
     AstNode* lhs = ast_parse_prefix_expr(parser);
     if(lhs == null)
-        ast_expected("prefix op expression");
+        AST_EXPECTED("prefix op expression");
 
     AstNode* node = ast_create_node(AstNodeKindPrefixOpExpr);
     node->data.prefix_op_expr->op = op;
@@ -797,7 +797,7 @@ static AstNode* ast_parse_type_expr(Parser* parser) {
             }
             break;
         default:
-            ast_expected("Something");
+            AST_EXPECTED("Something");
             break;
     }
 
@@ -841,7 +841,7 @@ static AstNode* ast_parse_primary_expr(Parser* parser) {
             node = ast_create_node(AstNodeKindAttributeExpr);
             expr = ast_parse_expr(parser);
             if(expr == null)
-                ast_expected("expression");
+                AST_EXPECTED("expression");
             
             node->data.expr->attr_expr->expr = expr;
             return node;
@@ -859,7 +859,7 @@ static AstNode* ast_parse_primary_expr(Parser* parser) {
                         CHOMP(3);
                         switch(pc->kind) {
                             case LOOP: return ast_parse_loop_expr(parser);
-                            default: ast_expected("inlinable expression");
+                            default: AST_EXPECTED("inlinable expression");
                         }
                     case LOOP:
                         CHOMP(2);
@@ -876,14 +876,14 @@ static AstNode* ast_parse_primary_expr(Parser* parser) {
             CHOMP(1);
             switch(pc->kind) {
                 case LOOP: return ast_parse_loop_expr(parser);
-                default: ast_expected("inlinable expression");
+                default: AST_EXPECTED("inlinable expression");
             }
         case LOOP: 
             return ast_parse_loop_expr(parser);
         default:
-            ast_error("Invalid parser pattern");
+            AST_ERROR("Invalid parser pattern");
     } // switch(pc->kind)
-    ast_error("Invalid parser pattern");
+    AST_ERROR("Invalid parser pattern");
     return null; // Clang complains despite this point never being reached
 }
 
@@ -892,7 +892,7 @@ static AstNode* ast_parse_primary_expr(Parser* parser) {
 static AstNode* ast_parse_block(Parser* parser) {
     Token* lbrace = CHOMP_IF(LBRACE);
     if(lbrace == null)
-        ast_expected("LBRACE `{`");
+        AST_EXPECTED("LBRACE `{`");
 
     Vec* statements = VEC_NEW(AstNode, 1);
     AstNode* statement = null;
@@ -901,7 +901,7 @@ static AstNode* ast_parse_block(Parser* parser) {
 
     Token* rbrace = CHOMP_IF(RBRACE);
     if(rbrace == null)
-        ast_expected("RBRACE `}`");
+        AST_EXPECTED("RBRACE `}`");
     
     AstNode* node = ast_create_node(AstNodeKindBlock);
     node->data.stmt->block_stmt->statements = statements;
@@ -918,7 +918,7 @@ static AstNode* ast_parse_block(Parser* parser) {
 static AstNode* ast_parse_brace_suffix_expr(Parser* parser) {
     AstNode* type_expr = ast_parse_type_expr(parser);
     if(type_expr == null)
-        ast_expected("type expression");
+        AST_EXPECTED("type expression");
     
     Token* lbrace = CHOMP_IF(LBRACE);
     if(lbrace == null)
@@ -934,7 +934,7 @@ static AstNode* ast_parse_brace_suffix_expr(Parser* parser) {
                 case COMMA: CHOMP(1); break;
                 case RBRACE: CHOMP(1); break;
                 case COLON: case RPAREN: case RSQUAREBRACK:
-                    ast_expected("RBRACE");
+                    AST_EXPECTED("RBRACE");
                 default:
                     // Likely just a missing comma; warn, but continue parsing
                     WARN("missing comma");
@@ -944,7 +944,7 @@ static AstNode* ast_parse_brace_suffix_expr(Parser* parser) {
                 break;
             AstNode* field_init = ast_parse_field_init(parser);
             if(field_init == null)
-                ast_expected("field init");
+                AST_EXPECTED("field init");
             vec_push(fields, field_init);
         } // while(true)
         Token* comma = CHOMP_IF(COMMA);
@@ -974,7 +974,7 @@ static AstNode* ast_parse_brace_suffix_expr(Parser* parser) {
 
     Token* rbrace = CHOMP_IF(RBRACE);
     if(rbrace == null)
-        ast_expected("RBRACE");
+        AST_EXPECTED("RBRACE");
     
     return node;
 }
@@ -1013,7 +1013,7 @@ static AstNode* ast_parse_suffix_expr(Parser* parser) {
             case COMMA: CHOMP(1);
             case RPAREN: CHOMP(1); break;
             case COLON: case RBRACE: case RSQUAREBRACK:
-                ast_expected("RBRACE");
+                AST_EXPECTED("RBRACE");
             default:
                 WARN("expected comma");
         }
@@ -1081,7 +1081,7 @@ static AstNode* ast_parse_primary_type_expr(Parser* parser) {
             node = ast_create_node(AstNodeKindAttributeExpr);
             expr = ast_parse_type_expr(parser);
             if(expr == null)
-                ast_expected("type expr");
+                AST_EXPECTED("type expr");
             node->data.expr->attr_expr->expr = expr;
             return node;
         case IDENTIFIER:
@@ -1092,7 +1092,7 @@ static AstNode* ast_parse_primary_type_expr(Parser* parser) {
                             CHOMP(3);
                             switch(pc->kind) {
                                 case LOOP: return ast_parse_loop_expr(parser);
-                                default: ast_expected("inlinable expression");
+                                default: AST_EXPECTED("inlinable expression");
                             }
                         case LOOP:
                             CHOMP(2);
@@ -1115,7 +1115,7 @@ static AstNode* ast_parse_primary_type_expr(Parser* parser) {
             CHOMP(1);
             switch(pc->kind) {
                 case LOOP: return ast_parse_loop_expr(parser);
-                default: ast_expected("inlinable expression");
+                default: AST_EXPECTED("inlinable expression");
             }
             break;
         case LOOP: return ast_parse_loop_expr(parser);
@@ -1132,10 +1132,10 @@ static AstNode* ast_parse_primary_type_expr(Parser* parser) {
             node = ast_create_node(AstNodeKindGroupedExpr);
             expr = ast_parse_expr(parser);
             if(expr == null)
-                ast_expected("expression");
+                AST_EXPECTED("expression");
             tok = CHOMP_IF(RPAREN);
             if(tok == null)
-                ast_expected("RPAREN");
+                AST_EXPECTED("RPAREN");
 
             node->data.expr->grouped_expr->expr = expr;
             return node;
@@ -1155,12 +1155,12 @@ static AstNode* ast_parse_builtin_call(Parser* parser) {
 static AstNode* ast_parse_match_expr(Parser* parser) {
     Token* match_kwd = CHOMP_IF(MATCH);
     if(match_kwd == null)
-        ast_expected("`match` keyword");
+        AST_EXPECTED("`match` keyword");
     
     Token* lparen = CHOMP_IF(LPAREN); // this is optional
     AstNode* expr = ast_parse_expr(parser);
     if(expr == null)
-        ast_expected("expression");
+        AST_EXPECTED("expression");
     Token* rparen = CHOMP_IF(RPAREN); // this is optional
     
     Token* lbrace = EXPECT_TOK(RBRACE); // required
@@ -1168,7 +1168,7 @@ static AstNode* ast_parse_match_expr(Parser* parser) {
     // Branches
     AstNode* branch_node = ast_parse_match_branch(parser);
     if(branch_node == null)
-        ast_expected("branches for `match`");
+        AST_EXPECTED("branches for `match`");
     Vec* branches = VEC_NEW(AstNode, 1);
     do {
         vec_push(branches, branch_node);
@@ -1190,7 +1190,7 @@ static AstNode* ast_parse_match_expr(Parser* parser) {
 static AstNode* ast_parse_match_branch(Parser* parser) {
     Token* when_kwd = CHOMP_IF(WHEN);
     if(when_kwd == null)
-        ast_expected("`when` keyword");
+        AST_EXPECTED("`when` keyword");
 
     // MatchClause
     AstNode* node = ast_parse_match_clause(parser);
@@ -1200,13 +1200,13 @@ static AstNode* ast_parse_match_branch(Parser* parser) {
     
     Token* equals_arrow = CHOMP_IF(EQUALS_ARROW); // `=>`
     if(equals_arrow == null)
-        ast_error("Missing token `=>` after `when`");
+        AST_ERROR("Missing token `=>` after `when`");
 
     AstNode* expr = ast_parse_assignment_expr(parser);
     if(expr == null) {
         expr = ast_parse_block_expr(parser);
         if(expr == null)
-            ast_expected("An assignment/block expression after the `when` clause");
+            AST_EXPECTED("An assignment/block expression after the `when` clause");
     }
 
     node->data.expr->match_branch_expr->block_node = expr;
@@ -1231,7 +1231,7 @@ static AstNode* ast_parse_match_clause(Parser* parser) {
         // Range-based
         AstNode* expr2 = ast_parse_expr(parser);
         if(expr2 == null)
-            ast_expected("Expected expression after `..`");
+            AST_EXPECTED("Expected expression after `..`");
 
         AstNode* range = ast_create_node(AstNodeKindMatchRange);
         range->data.expr->match_range_expr->begin = expr;
@@ -1281,7 +1281,7 @@ static AstNode* ast_parse_field_init(Parser* parser) {
             CHOMP(3);
             AstNode* expr = ast_parse_expr(parser);
             if(expr == null)
-                ast_expected("expression");
+                AST_EXPECTED("expression");
             return expr;
     }
     return null;
