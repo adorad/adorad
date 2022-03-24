@@ -447,11 +447,16 @@ bool buffview_cmp_nocase(cstlBuffView* view1, cstlBuffView* view2);
         if(!length)
             return rev;
         
+        printf("View data = %s\n", view->data);
         char* temp = cast(char*)calloc(1, length + 1);
+        printf("Allocated %d\n", length+1);
         for(UInt64 i=0; i<length; i++)
             *(temp + i) = *(view->data + length - i - 1);
         
+        printf("Temp after = %s\n", temp);
         buffview_set(&rev, temp);
+        printf("Rev data = %s\n", rev.data);
+        
         return rev;
     }
 

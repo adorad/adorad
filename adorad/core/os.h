@@ -88,9 +88,11 @@ bool os_path_is_root(cstlBuffView* path);
         cstlBuffView result = buffview_new(null);
         char* end = buffview_end(&path);
 
-        // dirname
+        // Dirname
         if(!is_basename) {
+            printf("Path before reverse: %s\n", path.data);
             cstlBuffView rev = buffview_rev(&path);
+            printf("Path after reverse: %s\n", rev.data);
 
             // The `/` || `\\` is not so important in getting the dirname, but it does interfere with `strchr`, so
             // we skip over it (if present)
@@ -101,7 +103,7 @@ bool os_path_is_root(cstlBuffView* path);
             result = buffview_rev(&result);
         }
 
-        // basename
+        // Basename
         else {
             // If the last character is a `sep`, `basename` is empty
             if(os_is_sep(*end))
