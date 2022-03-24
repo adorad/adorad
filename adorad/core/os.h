@@ -131,6 +131,7 @@ bool os_path_is_root(cstlBuffView* path);
     }
 
     cstlBuffView os_path_dirname(cstlBuffView path) {
+        printf("This is what is passed here: %s\n", path.data);
         return __os_dirname_basename(path, false);
     }
 
