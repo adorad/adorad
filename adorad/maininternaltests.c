@@ -4,9 +4,13 @@ int main(int argc, const char* const argv[]) {
     // The CWD for this executable is in ".../build/bin"
     BuffView cwd = os_get_cwd();
     printf("CWD = %s\n", cwd.data);
-    printf("Test1 = %s\n", ospd(cwd).data);
-    printf("Test2 = %s\n", ospd(ospd(cwd)).data);
-    printf("Test3 = %s\n", ospj(ospd(ospd(cwd)), BV("test/LexerDemo.ad")).data);
+    BuffView first = ospd(cwd);
+    BuffView second = ospd(first);
+    BuffView join = ospj(second, BV("test/LexerDemo.ad"));
+    printf("\n\nTest1 = %s\n", first.data);
+    printf("Test2 = %s\n", second.data);
+    printf("Test3 = %s\n", join.data);
+    
     BuffView filepath = ospj(ospd(ospd(cwd)), BV("test/LexerDemo.ad"));
     printf("Reading file from %s\n", filepath.data);
 	char* buffer = read_file(filepath.data);
