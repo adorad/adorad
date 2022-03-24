@@ -80,7 +80,7 @@ bool os_path_is_root(cstlBuffView* path);
     #endif // CORETEN_OS_WINDOWS
     }
 
-    cstlBuffView __os_dirname_basename(cstlBuffView path, bool is_basename) {
+    cstlBuffView os_path_dirname(cstlBuffView path) {
         printf("What is passed: %s\n", path.data);
         UInt64 length = path.len;
         if(!length)
@@ -92,51 +92,48 @@ bool os_path_is_root(cstlBuffView* path);
         printf("After data = %s\n\n\n", path.data);
 
         // Dirname
-        if(!is_basename) {
-            printf("Path before reverse: %s\n", path.data);
-            cstlBuffView rev = buffview_rev(&path);
-            printf("Path after reverse: %s\n", rev.data);
+        printf("Path before reverse: %s\n", path.data);
+        cstlBuffView rev = buffview_rev(&path);
+        printf("Path after reverse: %s\n", rev.data);
 
-            // The `/` || `\\` is not so important in getting the dirname, but it does interfere with `strchr`, so
-            // we skip over it (if present)
-            if(*rev.data == CORETEN_OS_SEP_CHAR)
-                rev.data++;
-            char* rev_dir = strchr(rev.data, CORETEN_OS_SEP_CHAR);
-            buffview_set(&result, rev_dir);
-            result = buffview_rev(&result);
-        }
-
-        // Basename
-        else {
-            // If the last character is a `sep`, `basename` is empty
-            if(os_is_sep(*end))
-                return buffview_new(null);
-            
-            // If there is no `sep` in `path`, `path` is the basename
-            if(!(strstr(path.data, "/") || strstr(path.data, "\\")))
-                return path;
-            
-            cstlBuffView rev = buffview_rev(&path);
-            for(UInt64 i = 0; i<length; i++) {
-                if(os_is_sep(*(rev.data + i))) {
-                    *(&rev.data + i) = nullchar;
-                    break;
-                }
-            }
-            buff_set(&result, rev.data);
-            result = buffview_rev(&result);
-        }
+        // The `/` || `\\` is not so important in getting the dirname, but it does interfere with `strchr`, so
+        // we skip over it (if present)
+        if(*rev.data == CORETEN_OS_SEP_CHAR)
+            rev.data++;
+        char* rev_dir = strchr(rev.data, CORETEN_OS_SEP_CHAR);
+        buffview_set(&result, rev_dir);
+        result = buffview_rev(&result);
         
         return result;
     }
 
-    cstlBuffView os_path_dirname(cstlBuffView path) {
-        printf("This is what is passed here: %s\n", path.data);
-        return __os_dirname_basename(path, false);
-    }
-
     cstlBuffView os_path_basename(cstlBuffView path) {
-        return __os_dirname_basename(path, true);
+        UInt64 length = path.len;
+        if(!length)
+            return path;
+
+        cstlBuffView result = buffview_new(null);
+        char* end = buffview_end(&path);
+
+        // If the last character is a `sep`, `basename` is empty
+        if(os_is_sep(*end))
+            return buffview_new(null);
+        
+        // If there is no `sep` in `path`, `path` is the basename
+        if(!(strstr(path.data, "/") || strstr(path.data, "\\")))
+            return path;
+        
+        cstlBuffView rev = buffview_rev(&path);
+        for(UInt64 i = 0; i<length; i++) {
+            if(os_is_sep(*(rev.data + i))) {
+                *(&rev.data + i) = nullchar;
+                break;
+            }
+        }
+        buff_set(&result, rev.data);
+        result = buffview_rev(&result);
+        
+        return result;
     }
 
     cstlBuffView os_path_extname(cstlBuffView path) {
