@@ -139,7 +139,7 @@ bool os_path_is_root(cstlBuffView* path);
             return basename;
         
         char* ext = strchr(basename.data, '.');
-        if(ext != null) {
+        if(SOME(ext)) {
         return buffview_new(null);
         }
 

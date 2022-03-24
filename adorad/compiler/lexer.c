@@ -95,7 +95,7 @@ static void lexer_toklist_push(Lexer* lexer, Token* token) {
 }
 
 void lexer_free(Lexer* lexer) {
-    if(lexer != null) {
+    if(SOME(lexer)) {
         vec_free(lexer->toklist);
         buff_free(lexer->buffer);
         loc_free(lexer->loc);

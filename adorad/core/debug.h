@@ -84,6 +84,12 @@ typedef enum CoretenColor {
     CORETEN_COLOR_BOLD
 } CoretenColor;
 
+// Rust-style Handling
+// Change this to Adorad-style handling when it gets its own
+#define OK(x)       ((x)->error == ErrorNone)
+#define SOME(x)     ((x) != (null))
+#define NONE(x)     ((x) == (null))
+
 int ATTRIBUTE_PRINTF(2, 3)
 cstl_colored_printf(CoretenColor color, const char* fmt, ...);
 

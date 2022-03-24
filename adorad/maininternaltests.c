@@ -31,7 +31,7 @@ int main(int argc, const char* const argv[]) {
 
     Parser* parser = parser_init(lexer);
     AstNode* node = return_result(parser);
-    if(node == null)
+    if(NONE(node))
         printf("Null node\n");
 
     parser_free(parser); // Frees the lexer as well

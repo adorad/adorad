@@ -187,7 +187,7 @@ Copyright (c) 2021-22 Jason Dsouza <@jasmcaus>
 // That way, the known semantics of __attribute__(...) remains clear and no wrapper needs to be used.
 #if defined(CORETEN_COMPILER_MSVC)
     #define __attribute__(X)
-    #define __zu               "%Iu"
+    #define __zu                "%Iu"
     #define strdup              _strdup
 #endif // CORETEN_COMPILER_MSVC
 

@@ -262,7 +262,7 @@ bool buffview_cmp_nocase(cstlBuffView* view1, cstlBuffView* view2);
 
     // Free the buffer from its associated memory
     void buff_reset(cstlBuffer* buffer) {
-        if(buffer == null)
+        if(NONE(buffer))
             return;
 
         buffer->data = null;
@@ -377,14 +377,14 @@ bool buffview_cmp_nocase(cstlBuffView* view1, cstlBuffView* view2);
 
     // Free the buffer from its associated memory
     void buff_free(cstlBuffer* buffer) {
-        if(buffer != null)
+        if(SOME(buffer))
             free(buffer);
     }
 
     // Convert a buffer to lowercase
     cstlBuffer* buff_tolower(cstlBuffer* buffer) {
         cstlBuffer* lower = buff_new(null);
-        if(buffer->data == null)
+        if(NONE(buffer->data))
             return lower;
 
         char* temp = cast(char*)calloc(1, buffer->len);    
@@ -404,7 +404,7 @@ bool buffview_cmp_nocase(cstlBuffView* view1, cstlBuffView* view2);
     // Convert a buffer to uppercase
     cstlBuffer* buff_toupper(cstlBuffer* buffer) {
         cstlBuffer* upper = buff_new(null);
-        if(buffer->data == null)
+        if(NONE(buffer->data))
             return upper;
 
         char* temp = cast(char*)calloc(1, buffer->len);    
