@@ -132,6 +132,8 @@ if(NOT MSVC)
     string(APPEND CMAKE_C_FLAGS " -Wno-unused-local-typedefs")
     string(APPEND CMAKE_C_FLAGS " -Wno-strict-overflow")
     string(APPEND CMAKE_C_FLAGS " -Wno-strict-aliasing")
+    string(APPEND CMAKE_C_FLAGS " -Wno-non-literal-null-conversion")
+    string(APPEND CMAKE_C_FLAGS " -Wno-implicit-const-int-float-conversion")
     string(APPEND CMAKE_C_FLAGS " -Werror=return-type")
     string(APPEND CMAKE_C_FLAGS " -Wno-error=deprecated-declarations")
 

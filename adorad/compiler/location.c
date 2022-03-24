@@ -14,7 +14,7 @@ Copyright (c) 2021-22 Jason Dsouza <@jasmcaus>
 #include <stdlib.h>
 #include <adorad/compiler/location.h>
 
-Location* loc_new(const char* fname) {
+Location* loc_new(char* fname) {
     Location* loc = cast(Location*)calloc(1, sizeof(Location));
     loc->line = 1;
     loc->col = 1;

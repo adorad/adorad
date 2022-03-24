@@ -78,7 +78,7 @@ Copyright (c) 2021-22 Jason Dsouza <@jasmcaus>
          'b': case 'o': case 'x': case 'B': case 'O': case 'X': case ALPHA_EXCEPT_B_O_X
 
 
-Lexer* lexer_init(char* buffer, const char* fname) {
+Lexer* lexer_init(char* buffer, char* fname) {
     Lexer* lexer = cast(Lexer*)calloc(1, sizeof(Lexer));
 
     lexer->offset = 0;

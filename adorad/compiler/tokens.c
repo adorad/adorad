@@ -41,7 +41,7 @@ void token_reset_token(Token* token) {
 
 // Convert a Token to its respective string representation
 Buff* token_to_buff(TokenKind kind) {
-    Buff* buf = buff_new(tokenHash[kind]);
+    Buff* buf = buff_new(cast(char*)tokenHash[kind]);
     return buf;
 }
 

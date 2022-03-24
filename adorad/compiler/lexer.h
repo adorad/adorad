@@ -57,7 +57,7 @@ typedef struct Lexer {
     int nest_level;     // used to infer if we're inside many `{}`s
 } Lexer;
 
-Lexer* lexer_init(char* buffer, const char* fname);
+Lexer* lexer_init(char* buffer, char* fname);
 void lexer_free(Lexer* lexer);
 void lexer_error(Lexer* lexer, Error err, const char* format, ...);
 // Lex the source files
