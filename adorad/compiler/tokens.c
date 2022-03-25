@@ -25,7 +25,7 @@ Token* token_init() {
     Token* token = cast(Token*)calloc(1, sizeof(Token));
     token->kind = TOK_ILLEGAL;
     token->offset = 0;
-    token->value = buff_new(null);
+    token->value = BUFF_NEW(null);
     token->loc = loc_new(null);
 
     return token;
@@ -41,7 +41,7 @@ void token_reset_token(Token* token) {
 
 // Convert a Token to its respective string representation
 Buff* token_to_buff(TokenKind kind) {
-    Buff* buf = buff_new(cast(char*)tokenHash[kind]);
+    Buff* buf = BUFF_NEW(cast(char*)tokenHash[kind]);
     return buf;
 }
 

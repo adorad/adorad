@@ -18,7 +18,7 @@ Location* loc_new(char* fname) {
     Location* loc = cast(Location*)calloc(1, sizeof(Location));
     loc->line = 1;
     loc->col = 1;
-    loc->fname = buff_new(fname);
+    loc->fname = BUFF_NEW(fname);
     
     return loc;
 }

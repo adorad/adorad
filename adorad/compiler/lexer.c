@@ -82,7 +82,7 @@ Lexer* lexer_init(char* buffer, char* fname) {
     Lexer* lexer = cast(Lexer*)calloc(1, sizeof(Lexer));
 
     lexer->offset = 0;
-    lexer->buffer = buff_new(buffer);
+    lexer->buffer = BUFF_NEW(buffer);
     lexer->buff_cap = buff_len(lexer->buffer);
     lexer->toklist = VEC_NEW(Token, TOKENLIST_ALLOC_CAPACITY);
     lexer->loc = loc_new(fname);
@@ -617,7 +617,7 @@ void lexer_lex(Lexer* lexer) {
             case '"':
                 switch(next) {
                     // Empty String literal 
-                    case '"': LEXER_INCREMENT_OFFSET; maketoken(lexer, STRING, buff_new("\"\""), lexer->offset - 1, 
+                    case '"': LEXER_INCREMENT_OFFSET; maketoken(lexer, STRING, BUFF_NEW("\"\""), lexer->offset - 1, 
                                                                 lexer->loc->line, lexer->loc->col - 1); 
                               break;
                     default: tokenkind = TOK_NULL; lex_string(lexer); break;
@@ -800,10 +800,10 @@ void lexer_lex(Lexer* lexer) {
         } // switch(ch)
 
         if(tokenkind == TOK_NULL) continue;
-        maketoken(lexer, tokenkind, buff_new(null), lexer->offset - 1, lexer->loc->line, lexer->loc->col - 1);
+        maketoken(lexer, tokenkind, BUFF_NEW(null), lexer->offset - 1, lexer->loc->line, lexer->loc->col - 1);
     } // while
 
 lex_eof:;
 
-    maketoken(lexer, TOK_EOF, buff_new(null), lexer->offset - 1, lexer->loc->line, lexer->loc->col - 1);
+    maketoken(lexer, TOK_EOF, BUFF_NEW(null), lexer->offset - 1, lexer->loc->line, lexer->loc->col - 1);
 }

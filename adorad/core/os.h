@@ -81,7 +81,6 @@ bool os_path_is_root(cstlBuffView* path);
     }
 
     cstlBuffView os_path_dirname(cstlBuffView path) {
-        printf("What is passed: %s\n", path.data);
         UInt64 length = path.len;
         if(!length)
             return path;

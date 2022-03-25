@@ -37,10 +37,11 @@ struct cstlBuffer {
     UInt64 len;    // buffer size
     // bool is_utf8;  // UTF-8 Strings
 };
- 
-#define BV(cstr)      buffview_new_from_len(cstr, sizeof(cstr) - 1)
-#define BV_FMT        "%.*s"
-#define BV_ARG(bv)    (int)(bv).len, (bv).data
+
+#define BUFF_NEW(buff_data)     buff_new(buff_data)
+#define BV(cstr)                buffview_new_from_len(cstr, sizeof(cstr) - 1)
+#define BV_FMT                  "%.*s"
+#define BV_ARG(bv)              (int)(bv).len, (bv).data
 
 cstlBuffer* buff_new(char* buff_data);
 char buff_at(cstlBuffer* buffer, UInt64 n);
@@ -134,7 +135,7 @@ bool buffview_cmp_nocase(cstlBuffView* view1, cstlBuffView* view2);
             // Handle the first few characters by reading one character at a time.
             // Do this until CHAR_PTR is aligned on a longword boundary.
             for(char_ptr = str; (cast(unsigned long int)char_ptr & (sizeof(longword) - 1)) != 0; ++char_ptr) {
-                if (*char_ptr == nullchar)
+                if(*char_ptr == nullchar)
                     return char_ptr - str;
             }
 
@@ -165,27 +166,27 @@ bool buffview_cmp_nocase(cstlBuffView* view1, cstlBuffView* view2);
             for(;;) {
                 longword = *longword_ptr++;
 
-                if (((longword - lomagic) & ~longword & himagic) != 0) {
+                if(((longword - lomagic) & ~longword & himagic) != 0) {
                     // Which of the bytes was the zero?  If none of them were, it was a misfire; continue the search.
-                    const char* cp = cast(const char* )(longword_ptr - 1);
+                    const char* cp = cast(const char*)(longword_ptr - 1);
 
-                    if (cp[0] == 0)
+                    if(cp[0] == 0)
                         return cp - str;
-                    if (cp[1] == 0)
+                    if(cp[1] == 0)
                         return cp - str + 1;
-                    if (cp[2] == 0)
+                    if(cp[2] == 0)
                         return cp - str + 2;
-                    if (cp[3] == 0)
+                    if(cp[3] == 0)
                         return cp - str + 3;
 
-                    if (sizeof(longword) > 4) {
-                        if (cp[4] == 0)
+                    if(sizeof(longword) > 4) {
+                        if(cp[4] == 0)
                             return cp - str + 4;
-                        if (cp[5] == 0)
+                        if(cp[5] == 0)
                             return cp - str + 5;
-                        if (cp[6] == 0)
+                        if(cp[6] == 0)
                             return cp - str + 6;
-                        if (cp[7] == 0)
+                        if(cp[7] == 0)
                             return cp - str + 7;
                     }
                 }
@@ -280,6 +281,7 @@ bool buffview_cmp_nocase(cstlBuffView* view1, cstlBuffView* view2);
         for(UInt64 i=0; i<length; i++)
             *(temp + i) = *(buffer->data + length - i - 1);
         
+        temp[length] = nullchar;
         buff_set(rev, temp);
         return rev;
     }
@@ -447,15 +449,11 @@ bool buffview_cmp_nocase(cstlBuffView* view1, cstlBuffView* view2);
         if(!length)
             return rev;
         
-        printf("View data = %s\n", view->data);
         char* temp = cast(char*)calloc(1, length + 1);
-        printf("Allocated %d\n", length+1);
         for(UInt64 i=0; i<length; i++)
             *(temp + i) = *(view->data + length - i - 1);
         
-        printf("Temp after = %s\n", temp);
         buffview_set(&rev, temp);
-        printf("Rev data = %s\n", rev.data);
         
         return rev;
     }

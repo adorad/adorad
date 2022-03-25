@@ -63,7 +63,7 @@ Ll utf8_decode_nbytes(Rune byte);
 /*
     WIP
 */
-cstlUTF8Str* ubuff_new(Rune* data);
+cstlUTF8Str* uBUFF_NEW(Rune* data);
 cstlUTF8Str* ubuff_set(cstlUTF8Str* ubuff, Rune* data);
 void __grow_ubuff(cstlUTF8Str* ubuff, int grow_by);
 void __push_byte(cstlUTF8Str* ubuff, Byte byte);
@@ -428,7 +428,7 @@ typedef enum {
         WIP
     */
 
-    cstlUTF8Str* ubuff_new(Rune* data) {
+    cstlUTF8Str* uBUFF_NEW(Rune* data) {
         cstlUTF8Str* ubuff = cast(cstlUTF8Str*)calloc(1, sizeof(ubuff));
         CORETEN_ENFORCE_NN(ubuff, "Could not allocate memory. Memory full.");
 
