@@ -86,14 +86,9 @@ bool os_path_is_root(cstlBuffView* path);
             return path;
 
         cstlBuffView result = buffview_new(null);
-        // printf("Original data = %s\n", path.data);
-        char* end = buffview_end(&path);
-        // printf("After data = %s\n\n\n", path.data);
 
         // Dirname
-        // printf("Path before reverse: %s\n", path.data);
         cstlBuffView rev = buffview_rev(&path);
-        // printf("Path after reverse: %s\n", rev.data);
 
         // The `/` || `\\` is not so important in getting the dirname, but it does interfere with `strchr`, so
         // we skip over it (if present)

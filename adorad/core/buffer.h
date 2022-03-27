@@ -57,7 +57,7 @@ void buff_reset(cstlBuffer* buffer);
 cstlBuffer* buff_rev(cstlBuffer* buffer);
 bool buff_cmp(cstlBuffer* buff1, cstlBuffer* buff2);
 bool buff_cmp_nocase(cstlBuffer* buff1, cstlBuffer* buff2);
-cstlBuffer* buff_slice(cstlBuffer* buffer, int begin, int bytes);
+cstlBuffer* buff_slice(cstlBuffer* buffer, int begin, int num_bytes);
 void buff_free(cstlBuffer* buffer);
 cstlBuffer* buff_toupper(cstlBuffer* buffer);
 cstlBuffer* buff_tolower(cstlBuffer* buffer);
@@ -94,7 +94,7 @@ bool buffview_cmp_nocase(cstlBuffView* view1, cstlBuffView* view2);
         if(n >= buffer->len)
             return nullchar;
 
-        return (char)buffer->data[n];
+        return cast(char)buffer->data[n];
     }
 
     // Returns a pointer to the beginning of the buffer data
@@ -244,12 +244,12 @@ bool buffview_cmp_nocase(cstlBuffView* view1, cstlBuffView* view2);
         CORETEN_ENFORCE_NN(buffer, "Expected not null");
 
         UInt64 len;
-        if(!new_buff) {
+        if(NONE(new_buff)) {
             len = 0;
             new_buff = "";
         } else {
             // len = (UInt64)__internal_strlength(new_buff, buffer->is_utf8);
-            len = (UInt64)__internal_strlength(new_buff);
+            len = cast(UInt64)__internal_strlength(new_buff);
         }
 
         buffer->data = new_buff;
@@ -327,15 +327,15 @@ bool buffview_cmp_nocase(cstlBuffView* view1, cstlBuffView* view2);
     }
 
     // Get a slice of a buffer
-    cstlBuffer* buff_slice(cstlBuffer* buffer, int begin, int bytes) {
+    cstlBuffer* buff_slice(cstlBuffer* buffer, int begin, int num_bytes) {
         CORETEN_ENFORCE_NN(buffer, "`buffer` cannot be null");
         CORETEN_ENFORCE(begin >= 0);
-        CORETEN_ENFORCE(bytes >  0);
+        CORETEN_ENFORCE(num_bytes >  0);
 
         cstlBuffer* slice = buff_new(null);
         CORETEN_ENFORCE_NN(slice, "`slice` cannot be null");
-        char* temp = cast(char*)calloc(1, bytes);
-        strncpy(temp, &(buffer->data[begin]), bytes);
+        char* temp = cast(char*)calloc(1, num_bytes);
+        strncpy(temp, &(buffer->data[begin]), num_bytes);
         buff_set(slice, temp);
         CORETEN_ENFORCE_NN(slice, "`slice source` cannot be null");
         return slice;
